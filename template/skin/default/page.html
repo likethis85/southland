@@ -1,0 +1,32 @@
+<{include file=skin/$skin/header.html}>
+<table id="box" align="center" cellpadding="5" cellspacing="0">
+	<tr>
+		<td id="content" valign="top">
+			<h1 class="title" style="font-size:14px;"><{T w=$tNavigationDetail.title}></h1>
+			
+			<{$tNavigationDetail.content}>
+			<!-- module: <{$tModule}> -->
+			<{include file="module/$tModule.html"}>
+		</td> 
+		<td id="sidebar" width="240" valign="top">
+			<table align="center" cellpadding="0" cellspacing="0">
+				<tr ><td class="title"><a href="<{spUrl c=main a=page nid=$tNavigationDetail.nid}>"><{$tNavigationDetail.title}></a></td></tr>
+				<tr>
+					<td width="240px">
+					<{foreach item=item name=nav from=$tNavigation}>
+					<{if $item.nid eq $smarty.get.nid or $item.nid eq $tNavigationDetail.parentid }>
+					<ul id="subnav">
+						<{foreach item=i name=nav from=$item.submenu}>
+						<li><img src="<{$skinpath}>/images/115.gif" /> <A href="<{spUrl c=main a=page nid=$i.nid}>"><{$i.name}></a></li>
+						<{foreachelse}><script>$('#subnav').hide();$('#sidebar').hide();</script><{/foreach}>
+					</ul>
+					<{else}>
+					<{/if}>
+					<{foreachelse}><{/foreach}>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+</table>
+<{include file=skin/$skin/footer.html}>

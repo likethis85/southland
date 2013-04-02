@@ -1,0 +1,147 @@
+<{include file=admin/header.html}>
+<link rel="stylesheet" type="text/css" href="/media/admin/css/navigation_index.css" />
+<script type="text/javascript" src="/media/js/fancybox/jquery.mousewheel-3.0.2.pack.js"></script>
+<script type="text/javascript" src="/media/js/fancybox/jquery.fancybox-1.3.1.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/js/fancybox/jquery.fancybox-1.3.1.css" media="screen" />
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".previewcontent").fancybox();
+});
+	</script>
+<div id="wrapper">
+            <div id="content">
+				<div id="box">
+                <h3 id="topnavigation"><{T w='Top navigation'}></T></h3>
+				<form action="<{spUrl c=content a=index}>"  accept-charset="UTF-8" method="post" id="menu-overview-form">
+					<div>
+					<table id="menu-top" class="sticky-enabled">
+					<thead>
+						<tr><th><{T w='Navigation item'}></th><th><{T w='Title'}></th><th colspan="3"><{T w='Operations'}></th> </tr></thead>
+					<tbody>
+						<{foreach item=item name=nav from=$tNavigationTop}>
+						<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+							<td><a href="<{spUrl c=content a=edit cid=$item.nid}>"><{$item.name}></a></td>
+							<td>
+								<{$item.title}>
+							</td>
+							<td width=50><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item.nid}>" ><{T w='preview'}></a></td>
+							<td>
+								<a href="<{spUrl c=content a=edit cid=$item.nid}>"><{T w='edit'}></a>
+							</td>
+						</tr>
+								<{foreach item=item2 name=nav2 from=$item.submenu}>
+								<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+									<td><div class="indentation">&nbsp;</div><a href="<{spUrl c=content a=edit cid=$item2.nid}>"><{$item2.name}></a></td>
+									<td><{$item2.title}></td>
+									<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item2.nid}>" ><{T w='preview'}></a></td>
+									<td>
+										<a href="<{spUrl c=content a=edit cid=$item2.nid}>"><{T w='edit'}></a>
+									</td>
+								</tr>
+										<{foreach item=item3 name=nav3 from=$item2.submenu}>
+										<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+											<td><div class="indentation">&nbsp;</div><div class="indentation">&nbsp;</div><a href="<{spUrl c=content a=edit cid=$item3.nid}>"><{$item3.name}></a></td>
+											<td><{$item3.title}></td>
+											<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item3.nid}>" ><{T w='preview'}></a></td>
+											<td>
+												<a href="<{spUrl c=content a=edit cid=$item3.nid}>"><{T w='edit'}></a>
+											</td>
+										</tr>
+										<{foreachelse}><{/foreach}>
+								<{foreachelse}><{/foreach}>
+						<{foreachelse}><{/foreach}>
+						</tbody>
+					</table>
+					</div>
+				</form>
+				</div>
+				<div id="box">
+                <h3 id="bottomnavigation"><{T w='Bottom navigation'}></T></h3>
+				<form action="<{spUrl c=content a=index}>"  accept-charset="UTF-8" method="post" id="menu-overview-form">
+					<div>
+					<table id="menu-bottom" class="sticky-enabled">
+					<thead>
+						<tr><th><{T w='Navigation item'}></th><th><{T w='Title'}></th><th colspan="3"><{T w='Operations'}></th> </tr></thead>
+					<tbody>
+						<{foreach item=item name=nav from=$tNavigationBottom}>
+						<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+							<td><a href="<{spUrl c=content a=edit cid=$item.nid}>"><{$item.name}></a></td>
+							<td><{$item.title}></td>
+							<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item.nid}>" ><{T w='preview'}></a></td>
+							<td>
+								<a href="<{spUrl c=content a=edit cid=$item.nid}>"><{T w='edit'}></a>
+							</td>
+						</tr>
+								<{foreach item=item2 name=nav2 from=$item.submenu}>
+								<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+									<td><div class="indentation">&nbsp;</div><a href="<{spUrl c=content a=edit cid=$item2.nid}>"><{$item2.name}></a></td>
+									<td><{$item2.title}></td>
+									<td><a class="previewcontent" href=""<{spUrl c=content a=preview cid=$item2.nid}>" ><{T w='preview'}></a></td>
+									<td>
+										<a href=""<{spUrl c=content a=edit cid=$item2.nid}>"><{T w='edit'}></a>
+									</td>
+								</tr>
+										<{foreach item=item3 name=nav3 from=$item2.submenu}>
+										<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+											<td><div class="indentation">&nbsp;</div><div class="indentation">&nbsp;</div><a href="<{spUrl c=content a=edit cid=$item3.nid}>"><{$item3.name}></a></td>
+											<td><{$item3.title}></td>
+											<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item3.nid}>" ><{T w='preview'}></a></td>
+											<td>
+												<a href="<{spUrl c=content a=edit cid=$item3.nid}>"><{T w='edit'}></a>
+											</td>
+										</tr>
+										<{foreachelse}><{/foreach}>
+								<{foreachelse}><{/foreach}>
+						<{foreachelse}><{/foreach}>
+						</tbody>
+					</table>
+					</div>
+				</form>
+				</div>
+				<div id="box">
+                <h3 id="othernavigation"><{T w='Other navigation'}></T></h3>
+				<form action="<{spUrl c=content a=index}>"  accept-charset="UTF-8" method="post" id="menu-overview-form">
+					<div>
+					<table id="menu-other" class="sticky-enabled">
+					<thead>
+						<tr><th><{T w='Navigation item'}></th><th><{T w='Title'}></th><th colspan="3"><{T w='Operations'}></th> </tr></thead>
+					<tbody>
+						<{foreach item=item name=nav from=$tNavigationOther}>
+						<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+							<td><a href="<{spUrl c=content a=edit cid=$item.nid}>"><{$item.name}></a></td>
+							<td><{$item.title}></td>
+							<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item.nid}>" ><{T w='preview'}></a></td>
+							<td>
+								<a href="<{spUrl c=content a=edit cid=$item.nid}>"><{T w='edit'}></a>
+							</td>
+						</tr>
+								<{foreach item=item2 name=nav2 from=$item.submenu}>
+								<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+									<td><div class="indentation">&nbsp;</div><a href="<{spUrl c=content a=edit cid=$item2.nid}>"><{$item2.name}></a></td>
+									<td><{$item2.title}></td>
+									<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item2.nid}>" ><{T w='preview'}></a></td>
+									<td>
+										<a href="<{spUrl c=content a=edit cid=$item2.nid}>"><{T w='edit'}></a>
+									</td>
+								</tr>
+										<{foreach item=item3 name=nav3 from=$item2.submenu}>
+										<tr class="menu-enabled draggable <{if $smarty.foreach.nav.index is div by 2}>even<{else}>odd<{/if}>">
+											<td><div class="indentation">&nbsp;</div><div class="indentation">&nbsp;</div><a href="<{spUrl c=content a=edit cid=$item3.nid}>"><{$item3.name}></a></td>
+											<td><{$item3.title}></td>
+											<td><a class="previewcontent" href="<{spUrl c=content a=preview cid=$item3.nid}>" ><{T w='preview'}></a></td>
+											<td>
+												<a href="<{spUrl c=content a=edit cid=$item3.nid}>"><{T w='edit'}></a>
+											</td>
+										</tr>
+										<{foreachelse}><{/foreach}>
+								<{foreachelse}><{/foreach}>
+						<{foreachelse}><{/foreach}>
+						</tbody>
+					</table>
+					</div>
+				</form>  
+				</div>
+            </div>
+			<{include file=admin/sidebar.html}>
+</div>
+<{include file=admin/footer.html}>

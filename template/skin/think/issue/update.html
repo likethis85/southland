@@ -1,0 +1,48 @@
+<{include file=skin/$skin/header.html}>
+<script type="text/javascript">
+$(document).ready(function(){
+    CKEDITOR.replace("TaskDesc");
+	$("#form").validate({
+		rules:{
+			subject: {required:true}
+		}
+	});
+	$("#project").change(function(){
+		location.href = "/index.php?c=main&a=project&id="+$("#project").val();
+	});
+});
+</script>
+<div style="margin-left:12px;width:600px;">
+    <form id="form" method="post">
+        <table>
+            <tr>
+                <td><label style="margin-right:8px" for="subject"><{T w='TaskTitle'}></label></td>
+                <td><input name="subject" id="subject" type="text" value="<{$tTask.subject}>" style="width:490px"/></td>
+            </tr>                
+            <tr>
+                <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='TaskPriority'}></label></td>
+                <td>
+                    <span style="background:red; "><input type="radio" name="TaskPri" value="1" <{if $tTask.priority eq 1}> checked <{/if}>><{T w="High"}></span>
+                    <span style="background:#FC0;"><input type="radio" name="TaskPri" value="2" <{if $tTask.priority eq 2}> checked <{/if}>><{T w="Medium"}></span>
+                    <span style="background:gray;"><input type="radio" name="TaskPri" value="3" <{if $tTask.priority eq 3}> checked <{/if}>><{T w="Low"}></span>
+                </td>
+            </tr>
+            <tr>
+                <td><label style="margin-right:8px" for="TaskCat"><{T w='TaskCategory'}></label></td>
+                <td>
+                    <span style="background:red; "><input type="radio" name="TaskCat" value="1" <{if $tTask.category eq 1}> checked <{/if}> ><{T w="TaskTodo"}></span>
+                    <span style="background:#FC0;"><input type="radio" name="TaskCat" value="2" <{if $tTask.category eq 2}> checked <{/if}>><{T w="TaskFeature"}></span>
+                </td>
+            </tr>
+            <tr><td colspan="2"><label style="margin-right:8px" for="TaskDesc"><{T w='TaskDesc'}></label></td></tr>
+            <tr>
+                <td colspan="2">
+                    <textarea id="TaskDesc" name="TaskDesc"><{$tTask.detail}></textarea>
+                    <input class="btn-rounded" type="submit" value=<{T w="UpdateTask"}> />
+                    <input name="submittask" type="hidden" id="submittask" value="1" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<{include file=skin/$skin/footer.html}>

@@ -1,0 +1,62 @@
+<{include file=skin/$skin/header.html}>
+    <div style="clear:both;margin-left:32px;margin-top:32px;">
+        <script type="text/javascript">
+        $(document).ready(function(){
+            jQuery.extend(jQuery.validator.messages, {
+                required:"<span style=\"color:red\">*</span>"
+            });
+            CKEDITOR.replace("IssueDesc");
+            $("#form").validate({
+                rules:{
+                    subject:{required:true}
+                }
+            });
+        });
+        </script>
+        <div style="margin-left:12px;width:600px;">
+            <form id="form" method="post">
+                <table>
+                    <tr>
+                        <td><label style="margin-right:8px" for="IssueBrief"><{T w='IssueTitle'}></label></td>
+                        <td><input name="IssueBrief" type="text" value="" style="width:490px"/></td>
+                    </tr>                
+                    <tr>
+                        <td><label style="margin-right:8px"><{T w='IssueRef'}></label></td>
+                        <td>
+                            <select style="width:490px;" name="tid">
+                                <option value="0" <{if $tTid eq 0}>selected<{/if}>>N/A</option>
+                                <{foreach item=item from=$tTasks}>
+                                <option value="$item.id" <{if $tTid eq $item.id}>selected<{/if}> ><{$item.subject}></option>
+                                <{/foreach}>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label style="margin-right:8px"><{T w='IssueOwner'}></label></td>
+                        <td>
+                            <select style="width:490px;" name="oid">
+                                <option value="<{$tUser.uid}>" selected><{$tUser.nick}></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width:88px;"><label style="margin-right:8px" for="IssuePri"><{T w='IssuePriority'}></label></td>
+                        <td>
+                            <span style="background:red;"><input type="radio" name="IssuePri" value="1"><{T w="High"}></span>
+                            <span style="background:#FC0;"><input type="radio" name="IssuePri" value="2" checked><{T w="Medium"}></span>
+                            <span style="background:gray;"><input type="radio" name="IssuePri" value="3"><{T w="Low"}></span>
+                        </td>
+                    </tr>
+                    <tr><td colspan="2"><label style="margin-right:8px" for="IssueDesc"><{T w='IssueDesc'}></label></td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <textarea id="IssueDesc" name="IssueDesc"></textarea>
+                            <input class="btn-rounded" type="submit" value=<{T w="CreateNewIssue"}> />
+                            <input name="submit" type="hidden" value="1" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+<{include file=skin/$skin/footer.html}>

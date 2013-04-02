@@ -1,0 +1,13 @@
+#
+# robots.txt for SpeedCMS
+#
+ 
+User-agent: *
+Disallow: /db/
+Disallow: /lib/
+Disallow: /modules/
+Disallow: /template/
+Disallow: /themes/
+Disallow: /tmp/
+Disallow: /media/
+Disallow: /admin.php

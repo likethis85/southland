@@ -1,0 +1,53 @@
+<{include file=skin/$skin/header.html}>
+<script type="text/javascript">
+    $(document).ready(function(){
+        CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
+        $("#form").validate({
+            rules:{
+                dsrte_text: {required:true}
+            }
+        });
+        $("#project").change(function(){
+            location.href = "/index.php?c=main&a=project&id="+$("#project").val();
+        });
+        $(".btn-rounded").hover(
+            function(){ $(this).css('color','red');}, 
+            function(){ $(this).css('color','white');}
+        );
+});
+</script>
+<div style="margin-left:32px;margin-top:22px;width:600px;">
+    <table id="box" cellpadding="5" cellspacing="0">
+        <tr>
+            <td id="content" valign="top">
+                <h1 class="title"><{$tTask.subject}></h1>
+                <div>
+                    <{$tTask.detail}>
+                    <div align=right><input type="button" class="btn-rounded" value=<{T w='IssueReport'}> /></div>
+                </div>
+            </td> 
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <{foreach item=item from=$tComments}>
+                    <div style="border-top:solid grey 1px;">
+                        <div><{$item.content}></div>
+                        <div style="text-align:right;"><{$item.addtime}>&nbsp;--&nbsp;<{$item.user.nick}></div>
+                    </div>
+                    <{/foreach}>
+                </div>
+                <div style="width:600px;">
+                    <form id="form" method="post" action="/task.php?a=cmt&id=<{$tTask.id}>">
+                        <div style="margin-top:32px;">
+                            <input type="submit" class="btn-rounded" value=<{T w='Reply'}> />
+                            <textarea class="ckeditor" id="reply" name="reply"></textarea>
+                        </div>
+                        <input name="submitreply" type="hidden" id="submitreply" value="1" />
+                    </form>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<{include file=skin/$skin/footer.html}>

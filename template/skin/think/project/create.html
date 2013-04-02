@@ -1,0 +1,36 @@
+<{include file=skin/$skin/header.html}>
+	<script language="javascript" type="text/javascript">
+	$(document).ready(function(){
+        CKEDITOR.replace("projDesc");
+		$("#project").change(function(){
+			location.href = $("#project").val();
+		});
+        $("#form").validate({
+            rules:{
+                title: {required:true}
+            }
+        });
+        $("#project").change(function(){
+            location.href = "/index.php?c=main&a=project&id="+$("#project").val();
+        });
+	});
+	</script>
+    <div style="margin-left:16px;margin-top:20px;width:600px;">
+        <form id="form" method="post" action="/project.php?c=main&a=create">
+        <div style="margin-left:26px;">
+            <div style="margin-bottom:8px">
+                <label style="margin-right:12px;" for="subject"><{T w='ProjectTitle'}></label>
+                <input name="title" id="title" type="text" value="" style="width:490px"/>
+            </div>
+            <div>
+                <label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label>
+                <textarea id="projDesc" name="projDesc"></textarea>
+            </div>
+            <div>
+                <input type="submit" value="<{T w='ProjectCreate'}>" />
+                <input name="submitcreate" type="hidden" id="submitcreate" value="1" />
+            </div>
+        </div>
+        </form>
+    </div>
+<{include file=skin/$skin/footer.html}>

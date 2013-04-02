@@ -1,0 +1,84 @@
+<{include file=admin/header.html}>
+ <div id="wrapper">
+            <div id="content">
+                <div id="box">
+                	<h3><{T w='Orders'}></h3>
+                	<table width="100%">
+						<thead>
+							<tr>
+                            	<th width="40px"><a href="#">ID<img src="img/icons/arrow_down_mini.gif" width="16" height="16" align="absmiddle" /></a></th>
+                            	<th><a href="#"><{T w='Name'}></a></th>
+                            	<th><a href="#"><{T w='Email'}></a></th>
+                                <th><a href="#"><{T w='Contact Number'}></a></th>
+                                <th><a href="#"><{T w='Date time'}></a></th>
+                                <th width="60px"><a href="#"><{T w='Action'}></a></th>
+                            </tr>
+						</thead>
+						<tbody>
+							<{foreach item=item name=user from=$tList}>
+							<tr>
+                            	<td class="a-center"><{$item.id}></td>
+                            	<td><{$item.name}></td>
+                            	<td><{$item.email}></td>
+                            	<td><{$item.tel}></td>
+                                <td><{$item.mealdate}> <{$item.timearrive}></td>
+                                <td  class="a-center"><a href="<{spUrl c=module a=order action=preview id=$item.id}>"><img src="/media/admin/img/icons/user.png" title="<{T w='preview'}>" width="16" height="16" /></a><a href="<{spUrl c=module a=order action=edit id=$item.id}>"><img src="/media/admin/img/icons/user_edit.png" title="<{T w='Edit Order'}>" width="16" height="16" /></a><a onclick="if(confirm('<{T w='delete this record?'}>')){return true}else{return false};" href="<{spUrl c=module a=order action=delete id=$item.id}>"><img src="/media/admin/img/icons/user_delete.png" title="<{T w='Delete order'}>" width="16" height="16" /></a></td>
+                            </tr>
+                            <{foreachelse}><{/foreach}>
+						</tbody>
+					</table>
+                    <{if $tPageBar ne null}>
+                    <div id="pager">
+                    	Page <a href="<{spUrl c=user a=index page=$tPageBar.prev_page size=$tPageBar.page_size}>"><img src="/media/admin/img/icons/arrow_left.gif" width="16" height="16" /></a> 
+                    	<input size="2" value="<{$tPageBar.current_page}>" type="text" name="page" id="page" /> 
+                    	<a href="<{spUrl c=user a=index page=$tPageBar.next_page size=$tPageBar.page_size}>"><img src="/media/admin/img/icons/arrow_right.gif" width="16" height="16" /></a>of <{$tPageBar.total_page}>
+                    pages | View <select id="size" name="size" onchange="location.href='/admin.php/user/index/page/1/size/'+$('#size').val();">
+                    				<option <{if $tPageBar.page_size eq 10}>selected="selected"<{/if}>>10</option>
+                                    <option <{if $tPageBar.page_size eq 20}>selected="selected"<{/if}>>20</option>
+                                    <option <{if $tPageBar.page_size eq 50}>selected="selected"<{/if}>>50</option>
+                                    <option <{if $tPageBar.page_size eq 100}>selected="selected"<{/if}>>100</option>
+                    			</select> 
+                    per page | Total <strong><{$tPageBar.total_count}></strong> records found
+                    </div>
+                    <{/if}>
+                </div>
+                <{if $action eq 'edit'}>
+                <div id="box">
+                	<h3 id="adduser"><{if $action eq 'add'}><{T w='Add Order'}><{/if}><{if $action eq 'edit'}><{T w='Edit Order'}><{/if}></h3>
+                    <form id="form" name="form" action="<{spUrl c=module a=order action=post}>" method="post">
+                      <fieldset id="personal">
+                        <label for="name"><{T w='Name'}> : </label>
+                        <input name="name" id="name" type="text" value="<{$tDetail.name}>" />
+                        <br />
+                        <label for="email"><{T w='Email'}> : </label>
+                        <input name="email" id="email" type="text" value="<{$tDetail.email}>" />
+                        <br />
+                        <label for="tel"><{T w='Contact number'}> : </label> 
+                        <input name="tel" id="tel" type="text" value="<{$tDetail.tel}>" />
+                        <br />
+                        <label for="mealdate"><{T w='Date of meal'}> : </label>
+                        <input name="mealdate" id="mealdate" type="text" value="<{$tDetail.mealdate}>" />
+                        <br />
+                        <label for="timearrive"><{T w='Time of arrival'}> : </label>
+                        <input name="timearrive" id="timearrive" type="text" value="<{$tDetail.timearrive}>" />
+                        <br />
+                        <label for="encountertype"><{T w='Encounter type'}>: </label>
+                        <input name="encountertype" id="encountertype" type="text" value="<{$tDetail.encountertype}>" />
+                        <br />
+                        Your Order: include meal quantities, don't include drinks:<br/>
+                        <textarea name="mealorder" id="mealorder"><{$tDetail.mealorder}></textarea><br/>
+                         Special Notes: requests, dietary requirements etc :<br/>
+                        <textarea name="extranotes" id="extranotes"><{$tDetail.extranotes}></textarea><br/>
+                      </fieldset>
+                      <div align="center">
+                      <input type="hidden" name='id' value="<{$tDetail.id}>"/>
+                      <input id="button1" type="submit" value="<{T w='Submit'}>" /> 
+                      <input id="button2" type="reset" />
+                      </div>
+                    </form>
+			</div>
+                <{/if}>
+            </div>
+            <{include file=admin/sidebar.html}>
+      </div>
+<{include file=admin/footer.html}>

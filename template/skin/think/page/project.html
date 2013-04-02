@@ -1,0 +1,21 @@
+<script language="javascript" type="text/javascript">
+    $(document).ready(function(){
+        $("#Del").click(function(){
+            return confirm('<{T w="Confirm?"}>'+$(this).html());
+        });
+    });
+</script>
+<div style="margin-left:36px;margin-top:16px;border-right:#c3daf9 1px solid;overflow:none;width:20%;float:left;">
+	<table>
+		<tr><td><h2><{T w="ProjectAuthor"}></h2></td></tr>
+		<tr><td><div title="<{$tProject.uid.email}>"><{$tProject.uid.nick}></td></tr>
+		<tr><td><h2><{T w="ProjectCreateTime"}></h2></td></tr>
+		<tr><td><{$tProject.addtime}></td></tr>
+		<tr><td><h2><{T w="ProjectOperator"}></h2></td></tr>
+        <tr><td><div class="btn-capsule"><a id="Del" href="/project.php?c=main&a=del&id=<{$tCurrProj}>"><{T w="DeleteProject"}></a></div></td></tr>
+        <tr><td><div class="btn-capsule"><a href="/project.php?c=main&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
+	</table>
+</div>
+<div style="margin-top:16px;float:left;margin-left:12px;width:70%">
+	<{$tProject.description}>	
+</div>

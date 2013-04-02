@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    font-size: 12px;
+    font-family: "Trebuchet MS",Trebuchet,Arial,Helvetica,Sans-serif;
+}
+img {
+	border:0;
+}
+a:link {
+    text-decoration: none;
+    color: #666666;
+}
+a:visited {
+    text-decoration: none;
+    color: #666666;
+}
+a:hover {
+    text-decoration: none;
+    color: #1362a7;
+}
+.btn-rounded {
+    padding: 4px 24px;
+    background: #3FA156;
+    color:white;
+    border: 1px solid #528641;
+    font-size: 12px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+.btn-capsule {
+    background: #335AA4;
+    text-decoration: none;
+    margin: 0 10px 0 10px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -khtml-border-radius: 10px;
+}
+.btn-rounded a:link,
+.btn-rounded a:visited,
+.btn-rounded a:hover,
+a.btn-rounded:link,
+a.btn-rounded:visited,
+a.btn-rounded:hover,
+.btn-capsule a:link,
+.btn-capsule a:visited,
+.btn-capsule a:hover,
+a.btn-capsule:link,
+a.btn-capsule:visited,
+a.btn-capsule:hover 
+{
+    text-decoration: none;
+    color:white;
+}
+div.login_bar {
+    float:right;
+    margin-right:32px;
+    color:white;
+}
+div.login_bar a:link,div.login_bar a:visited,div.login_bar a:hover {
+    text-decoration: none;
+    color:white;    
+}
+ul.navigator {
+    position:absolute;
+    top:-6px;
+    *top:6px;
+    line-height:32px;
+}
+ul.navigator li {
+    float:left;
+    background:white;
+    list-style:none;
+    margin-right:6px;
+    padding-left:10px;
+    padding-right:10px;
+    line-height:32px;
+}
+ul.navigator li.active_nav {
+    background:#C00;
+}

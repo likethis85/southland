@@ -1,0 +1,49 @@
+<div style="clear:both;margin-left:40px;margin-top:32px;">
+    <script language="javascript" type="text/javascript">
+        $().ready(function(){
+            $(".set_task_complete").change(function(){
+                location.href = $(this).val();
+            });   
+            $(".set_task_incomplete").change(function(){
+                location.href = $(this).val();
+            });
+            $(".operator").hide();
+        });
+    </script>
+    <div style="margin-top:16px;height:16px;margin-bottom:16px;">
+        <table align="left" cellpadding="0" cellspacing="0">
+            <tr>
+                <td><a class="btn-capsule" href="/task.php?c=main&a=add&id=0"><{T w='AddTask'}></a></td>
+            </tr>
+        </table>
+        <div style="clear:both;"></div>
+    </div>
+    <{foreach item=item from=$tTasks}>
+    <div style="padding-top:2px;" id="<{$item.id}>">
+         <div class="task-link" style="clear:both;float:left;margin-bottom:8px;">
+            <{if $item.status gt 127}>
+            <input class="set_task_incomplete" type="checkbox"  value="/task.php?c=main&a=incomplete&id=<{$item.id}>" checked></input>
+            <span style="background:#53FF53;">&nbsp;&nbsp;&nbsp;</span>
+            <{else}>
+            <input class="set_task_complete" type="checkbox"  value="/task.php?c=main&a=complete&id=<{$item.id}>"></input>
+            <{if $item.priority eq 1}><span style="background:red;">&nbsp;&nbsp;&nbsp;</span><{/if}>
+            <{if $item.priority eq 2}><span style="background:#FC0;">&nbsp;&nbsp;&nbsp;</span><{/if}>
+            <{if $item.priority gt 2}><span style="background:gray;">&nbsp;&nbsp;&nbsp;</span><{/if}>
+            <{/if}>
+            <a href="/task.php?c=main&a=view&id=<{$item.id}>"><{$item.subject}></a>
+            <a class="operator" title="<{T w='EditTask'}>" href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16></a>
+            <a class="operator" title="<{T w='DelTask'}>" href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16></a>
+        </div>
+    </div>
+    <{/foreach}>
+
+    <script type="text/javascript">
+        ($("div.task-link")).each(function() {
+            $(this).hover(function() {
+                $(this).children(".operator").show();
+            },function() {
+                $(this).children(".operator").hide();
+            });
+        });
+    </script>
+</div>

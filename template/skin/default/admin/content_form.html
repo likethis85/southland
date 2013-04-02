@@ -1,0 +1,60 @@
+<{include file=admin/header.html}>
+<script>
+$(document).ready(function(){
+	$("#form").validate();
+});
+</script>
+<script src="/lib/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="/lib/ckfinder/ckfinder.js"></script>
+<script type="text/javascript" src="/lib/ckeditor/adapters/jquery.js"></script>
+<script type="text/javascript" src="/media/admin/js/editor.js"></script>
+<div id="wrapper">
+            <div id="content">
+                <div id="box">
+                	<h3 id="addnavigation"><{if $action eq 'add'}><{T w='Add Content'}><{/if}><{if $action eq 'edit'}><{T w='Edit Content'}><{/if}></h3>
+                    <form id="form" action="<{spUrl c=content a=post}>" method="post">
+                      <fieldset id="personal">
+                        <legend>BASIC INFORMATION</legend>
+                        <label for="navigation"><{T w='Navigation'}>  : </label> 
+                        <{$tNavigationDetail.name}>
+                        <br />
+                        <label for="title"><{T w='Title'}>  : </label> 
+                        <input name="title" id="title" type="text" tabindex="1" value="<{$tNavigationDetail.title|escape}>" />
+                        <br />
+                        <textarea name="content" id="content" class="jquery_ckeditor"><{$tNavigationDetail.content}></textarea>
+                        <br />
+                      </fieldset>
+                      <fieldset id="opt">
+                        <legend>OPTIONS</legend>
+                        <label for="module"><{T w='Modules'}> : </label>
+                        <select name="module">
+                          <option>---------</option>
+                          <{foreach item=item from=$tModules}>
+                          <option <{if $tNavigationDetail.module eq $item.mid}>selected="selected"<{/if}> label="<{$item.mname}>" value="<{$item.mid}>">
+                          <{$item.mname}>
+                          </option>
+                          <{foreachelse}><{/foreach}>
+                        </select>
+                        <br/>
+                        <label for="enabled"><{T w='Enabled'}> : </label>
+                        <select name="enabled">
+                          <{foreach item=item from=$tNavigationEnabled}>
+                          <option <{if $tNavigationDetail.enabled eq $item.value}>selected="selected"<{/if}> label="<{$item.name}>" value="<{$item.value}>">
+                          <{$item.name}>
+                          </option>
+                          <{foreachelse}><{/foreach}>
+                        </select>
+                      </fieldset>
+                      <div align="center">
+                      <input type="hidden" name='action' value="<{$action}>"/>
+                      <input type="hidden" name='nid' value="<{$tNavigationDetail.nid}>"/>
+                      <input id="button1" type="submit" value="<{T w='Submit'}>" /> 
+                      <input id="button2" type="reset" />
+                      </div>
+                    </form>
+
+                </div>  
+            </div>
+			<{include file=admin/sidebar.html}>
+</div>
+<{include file=admin/footer.html}>

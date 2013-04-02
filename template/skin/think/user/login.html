@@ -1,0 +1,44 @@
+<{include file=skin/$skin/header.html}>
+<center>
+<div style="margin-top:80px;">
+<script language="javascript" type="text/javascript">
+    jQuery.extend(jQuery.validator.messages, {
+        required:"<span style=\"color:red\">*</span>"
+    });
+    $(document).ready(function(){
+        $("#form").validate({
+            rules:{
+                uname:{required:true},
+                pass:{required:true}
+            },
+            submitHandler:function(form){
+                $("#upass").attr("value",$.md5($("#pass").attr("value")));
+                form.submit();
+            }
+        });
+    });
+</script>
+<form id=form name=form action="<{spUrl c=user a=login}>" method="POST">
+	<table width="400" cellpadding="2" cellspacing="0">
+      <tr>
+        <td width="120" align="right" valign="top"><label for="uname"><span class="fontwhite"><{T w='User'}></span></label></td>
+		<td><input name="uname" id="uname" style="width:80 px" size="40" /></td>
+
+      </tr>
+      <tr>
+        <td width="120><label for=" align="right" valign="top" class="fontwhite"><{T w='Password'}></td>
+		<td><input name="pass" type="password" id="pass" style="width:80 px" size="40"/>
+		 </td>
+      </tr>
+      <tr>
+        <td></td>
+
+		<td align="center"><br />
+		<input name="upass" id="upass" type="hidden" value=""><input class="blackbutton" type="submit" value="<{T w='Login'}>" />
+		  &nbsp;&nbsp;<input class="blackbutton" type="reset" value="<{T w='Reset'}>" /></td>
+      </tr>
+    </table>
+</form>
+</div>
+</center>
+<{include file=skin/$skin/footer.html}>

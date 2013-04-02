@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>SpeedCMS 安装过程</title>
+<link href="./template/install/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="page">
+	<div id="logo">
+		<h1><a href="#">SpeedCMS安装过程</a></h1>
+		<p><em>{ by <a href="http://speedcms.googlecode.com/" target="_blank">SpeedCMS程序</a> }</em></p>
+	</div>
+	<hr />
+	<!-- end #logo -->
+	<div id="content">
+		<div class="post">
+			<h2 class="title">第二步，填写信息</h2>
+			<p class="meta"><em>{ 填写以下的数据库设置及网站设置 }</em></p>
+			<form action="./index.php?step=3" method="POST" onsubmit="return window.confirm('确定信息正确吗？');">
+<?php if(!empty($err)){?>
+				<p><i><?php echo $err;?></i></p>
+<?php }?>
+			<div class="entry">
+				
+				<h3>数据库信息</h3>
+				<p><span>网站数据库地址：</span><input type="text" name="DB_HOST" value="<?php echo $tips["DB_HOST"];?>" /></p>
+				<p><span>网站数据库用户名：</span><input type="text" name="DB_USER" value="<?php echo $tips["DB_USER"];?>" /></p>
+				<p><span>网站数据库密码：</span><input type="text" name="DB_PASSWORD" value="<?php echo $tips["DB_PASSWORD"];?>" /></p>
+				<p><span>网站数据库名称：</span><input type="text" name="DB_DBNAME" value="<?php echo $tips["DB_DBNAME"];?>" /></p>
+				<p><span>网站数据库表前缀：</span><input type="text" name="DB_PREFIX" value="<?php echo $tips["DB_PREFIX"];?>" /></p>
+				
+				<h3>管理员设置</h3>
+				<p><span>管理员名称：</span><input type="text" name="USERNAME" value="<?php echo $tips["USERNAME"];?>" /></p>
+				<p><span>管理员昵称：</span><input type="text" name="NICKNAME" value="<?php echo $tips["NICKNAME"];?>" /></p>
+				<p><span>管理员电子邮件：</span><input type="text" name="EMAIL" value="<?php echo $tips["EMAIL"];?>" /></p>
+				<p><span>管理员密码：</span><input type="text" name="PASSWORD" value="<?php echo $tips["PASSWORD"];?>" /></p>
+				<p class="links"><input type="submit" class="button" value="进入下一步" /></p>
+			</div>
+			</form>
+		</div>
+	</div>
+	<!-- end #content -->
+</div>
+<!-- end #page -->
+</body>
+</html>

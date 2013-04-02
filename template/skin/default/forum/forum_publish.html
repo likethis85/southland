@@ -1,0 +1,23 @@
+<{include file=skin/$skin/header.html}>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#form").validate({
+		rules:{
+			subject: {required:true}
+		}
+	});
+	$("#project").change(function(){
+		location.href = "/index.php?c=main&a=project&id="+$("#project").val();
+	});
+});
+</script>
+<form id="form" method="post" action="<{$smarty.server.REQUEST_URI}>">
+<div style="margin-bottom:8px"><label for="subject"><{T w='Subject'}></label><input name="subject" id="subject" type="text" value="" style="width:490px"/></div>
+<div>
+<{$dsrte->getHTML("Hello World")}>
+<br />
+<input type="submit" value="发布" />
+<input name="submittopic" type="hidden" id="submittopic" value="1" />
+</div>
+</form>
+<{include file=skin/$skin/footer.html}>

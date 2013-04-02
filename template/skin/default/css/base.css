@@ -1,0 +1,149 @@
+/*
+Theme Name: SpeedCMS default Theme
+Theme URI: http://speedcms.yancreate.com/
+Description: SpeedCMS - 标准化企业内容管理系统(CMS) 
+Version: 1.0
+Author: Yancreate
+Author URI: http://www.yancreate.com/
+Tags: 
+*/
+body {
+background-color:#cccccc /*#F3F7FA*/;
+margin: 0;
+font-size: 12px;
+font-family: "Trebuchet MS",Trebuchet,Arial,Helvetica,Sans-serif;
+}
+
+img{
+	border:0;
+}
+/**link**/
+a:link {
+text-decoration: none;
+color: #666666;
+}
+a:visited {
+text-decoration: none;
+color: #666666;
+}
+a:hover {
+text-decoration: none;
+color: #1362a7;
+}
+
+#main {
+background-color:white;
+width: 860px;
+}
+
+/**头部**/
+ #header {
+background-color:white;
+width: 800px;
+height: 68px;
+
+}
+
+
+#logo {
+float: left;
+}
+/**语言选择**/
+#lang {
+padding-top:20px;
+color: #999999;
+font-size: 12px;
+font-family: "Trebuchet MS",Trebuchet,Arial,Helvetica,Sans-serif;
+padding-right:10px;
+}
+#lang a:link {
+color: #999999;
+}
+#lang a:visited {
+color: #999999;
+}
+#lang a:hover {
+color: #1362a7;
+}
+/**导航菜单表格**/
+#menu_table {
+
+background-color:white;
+width: 860px;
+height: 50px;
+}
+/**焦点图**/
+#focus {
+width:800px;
+height:350px;
+background-color:white;
+}
+#focus td {
+padding-left:0px;
+padding-top:5px;
+}
+
+/**box**/
+#box {
+background-color:white;
+width:800px;
+height:100px;
+}
+
+#about {
+padding-left:5px;
+width: 240px;
+height:160px;
+}
+
+#news {
+padding-left:20px;
+width: 240px;
+height:160px;
+}
+#advantage {
+padding-left:20px;
+width: 240px;
+height:160px;
+}
+
+.title {
+background-image: url('../images/line_bg.gif');
+background-position:bottom;
+background-repeat:repeat-x;
+height: 30px;
+color: #1362A7;
+font-weight: bold;
+font-size: 12px;
+}
+
+/**footer**/
+#footer {
+width:800px;
+height:40px;
+background-image: url('../images/line_bg.gif');
+background-position:top;
+background-repeat:repeat-x;
+}
+
+#announce {
+width: 800px;
+height:40px;
+background-color:white;
+}
+#youshi{list-style:none;padding:0;margin:0}
+#youshi li{padding:0;margin:0;height:25px;line-height:25px;
+vertical-align:middle;
+overflow:hidden;
+background-image: url('../images/line_bg.gif');
+background-position:bottom;
+background-repeat:repeat-x;
+}
+#subnav{list-style:none;padding:0;margin:0}
+#subnav li{padding:0;margin:0;height:25px;line-height:25px;
+vertical-align:middle;
+overflow:hidden;
+background-image: url('../images/line_bg.gif');
+background-position:bottom;
+background-repeat:repeat-x;
+}

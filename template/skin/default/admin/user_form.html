@@ -1,0 +1,107 @@
+<{include file=admin/header.html}>
+<script type="text/javascript">
+$(document).ready(function(){
+	var v = $("#form").validate({
+		rules:{
+			uname: {required:true, maxlength:20},
+			email: {required:true, email:true},
+			<{if $action eq 'add'}>password: {required:true, minlength:6},<{/if}>
+			confirmpassword: {equalTo: '#upass'},
+			zip: {number:true}
+		},
+		submitHandler: function(form) {
+			jQuery(form).ajaxSubmit({
+				dataType: "json",
+				success: function(result) {
+					if(result.status) {
+						alert(result.msg);
+						location.href=result.url;
+					}else{
+						v.showErrors(result.data);
+						v.focusInvalid();
+						
+					}
+				}
+			});
+		}
+	});
+});
+</script>
+<div id="wrapper">
+	<div id="content">
+		<div id="box">
+                	<h3 id="adduser"><{if $action eq 'add'}><{T w='Add user'}><{/if}><{if $action eq 'edit'}><{T w='Edit user'}><{/if}></h3>
+                    <form id="form" name="form" action="<{spUrl c=user a=post}>" method="post">
+                      <fieldset id="personal">
+                        <legend><{T w='PERSONAL INFORMATION'}></legend>
+                        <label for="uname"><{T w='User name'}> : </label>
+                        <input name="uname" id="uname" type="text" value="<{$user.uname}>" />
+                        <br />
+                        <label for="firstname"><{T w='First name'}> : </label>
+                        <input name="firstname" id="firstname" type="text" value="<{$user.firstname}>" />
+                        <br />
+                        <label for="lastname"><{T w='Last name'}> : </label> 
+                        <input name="lastname" id="lastname" type="text" value="<{$user.lastname}>" />
+                        <br />
+                        <label for="email"><{T w='Email'}> : </label>
+                        <input name="email" id="email" type="text" value="<{$user.email}>" />
+                        <br />
+                        <label for="upass"><{T w='Password'}> : </label>
+                        <input name="upass" id="upass" type="password"  />
+                        <br />
+                        <label for="confirmpassword"><{T w='Confirm password'}>: </label>
+                        <input name="confirmpassword" id="confirmpassword" type="password" />
+                        <br />
+                      </fieldset>
+                      <fieldset id="address">
+                        <legend><{T w='Address'}></legend>
+                        <label for="street"><{T w='Street address'}> : </label> 
+                        <input name="street" id="street" type="text" value="<{$user.street}>" />
+                        <br />
+                        <label for="city"><{T w='City'}> : </label>
+                        <input name="city" id="city" type="text" value="<{$user.city}>" />
+                        <br />
+                        <label for="country"><{T w='Country'}> : </label> 
+                        <input name="country" id="country" type="text" value="<{$user.country}>" />
+                        <br />
+                        <label for="state"><{T w='State/Province'}> : </label>
+                        <input name="state" id="state" type="text" value="<{$user.state}>" />
+                        <br />
+                        <label for="zip"><{T w='Zip/Postal Code'}> : </label>
+                        <input name="zip" id="zip" type="text" value="<{$user.zip}>" />
+                        <br />
+                        <label for="tel"><{T w='Telephone'}> : </label>
+                        <input name="tel" id="tel" type="text" value="<{$user.tel}>" />
+                      </fieldset>
+                      <fieldset id="opt">
+                        <legend><{T w='OPTIONS'}></legend>
+                        <label for="usergroup"><{T w='User group'}> : </label>
+                        <select name="usergroup">
+                          <{foreach item=item from=$tUserGroup}>
+                          <option <{if $user.acl eq $item.acl}>selected="selected"<{/if}> label="<{$item.gname}>" value="<{$item.acl}>">
+                          <{$item.gname}>
+                          </option>
+                          <{foreachelse}><{/foreach}>
+                        </select>
+                        <br/>
+                        <label for="enabled"><{T w='Enabled'}> : </label>
+                        <select name="enabled">
+                          <{foreach item=item from=$tUserEnabled}>
+                          <option <{if $user.enabled eq $item.value}>selected="selected"<{/if}> label="<{$item.name}>" value="<{$item.value}>">
+                          <{$item.name}>
+                          </option>
+                          <{foreachelse}><{/foreach}>
+                        </select>
+                      </fieldset>
+                      <div align="center">
+                      <input type="hidden" name='action' value="<{$action}>"/>
+                      <input type="hidden" name='uid' value="<{$user.uid}>"/>
+                      <input id="button1" type="submit" value="<{T w='Submit'}>" /> 
+                      <input id="button2" type="reset" />
+                      </div>
+                    </form>
+			</div>
+ 		</div>
+	<{include file=admin/sidebar.html}>
+</div>
+<{include file=admin/footer.html}>
