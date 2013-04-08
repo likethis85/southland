@@ -18,8 +18,41 @@ CKEDITOR.editorConfig = function( config ) {
             //dialogDefinition.removeContents('Link');
             //dialogDefinition.removeContents('Upload');
             dialogDefinition.removeContents('advanced');
+
+            var infoTab = dialogDefinition.getContents( 'info' );
+            infoTab.add({
+                type : 'button',
+                id : 'upload_image',
+                align : 'center',
+                label : 'upload',
+                onClick : function( evt ){
+                    var thisDialog = this.getDialog();
+                    var txtUrlObj = thisDialog.getContentElement('info', 'txtUrl');
+                    var txtUrlId = txtUrlObj.getInputElement().$.id;
+                    addUploadImage(txtUrlId);
+                }
+            }, 'browse'); //place front of the browser button
         }
     });
+
+    function addUploadImage(theURLElementId){
+        var uploadUrl = "..."; //这是我自己的处理文件/图片上传的页面URL
+        var imgUrl = window.showModalDialog(uploadUrl); 
+        imgUrl = imgUrl.trim();      
+        if(imgUrl.length!=0){
+            reg=/^http:////[A-Za-z0-9]+/.[A-Za-z0-9]+[//=/?%/-&_~`@[/]/':+!]*([^<>/"/"])*$/
+            if(!reg.test(imgUrl))
+                return;
+        }
+        //在upload结束后通过js代码window.returnValue=...可以将图片url返回给imgUrl变量。
+        //更多window.showModalDialog的使用方法参考
+        //http://blog.csdn.net/jrq/archive/2010/01/27/5259946.aspx 
+        var urlObj = document.getElementById(theURLElementId);
+        urlObj.value = imgUrl;
+        urlObj.fireEvent("onchange"); //触发url文本框的onchange事件，以便预览图片
+    }
+
+    config.extraPlugins = 'myAddImage';
 
     config.skin='kama';
     config.resize_enabled=false;
@@ -48,7 +81,7 @@ CKEDITOR.editorConfig = function( config ) {
             ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
             ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-            ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+            ['AddImage','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
             ['Font','FontSize','TextColor','BGColor']
         ];
 };
