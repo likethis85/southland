@@ -94,9 +94,9 @@ CKEDITOR.plugins.add( 'myAddImage',{
         editor.addCommand( 'myImageCmd', new CKEDITOR.dialogCommand( 'myAddImage' ) );
         editor.ui.addButton( 'AddImage',
         {
-                label : '图片',
-                icon:'images/image.png', //toolbar上icon的地址,要自己上传图片到images下
-                command : 'myImageCmd'
+            label : '图片',
+            icon:   this.path+'images/image.png', //toolbar上icon的地址,要自己上传图片到images下
+            command : 'myImageCmd'
         });
     },
     requires : [ 'dialog' ]
