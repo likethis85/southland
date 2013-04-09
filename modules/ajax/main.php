@@ -36,7 +36,11 @@ class main extends general
         exit;
     }
 
-	public function __destruct(){
+    function pushimg() {    // upload image
+        
+    }
+
+	function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}
 }
