@@ -2,7 +2,7 @@
  /**
   * 文件上传类
   */
- class uploadFile {
+ class spUpload {
 
  	public $max_size = '1000000';//设置上传文件大小
  	public $file_name = 'date';//重命名方式代表以时间命名，其他则使用给予的名称
@@ -22,11 +22,11 @@
  	 */
  	public function __construct($args) {
  		$this->allow_types = 'jpg|gif|png|zip|rar';
- 		extract($args, EXTR_PREFIX_ALL, "ex_");
+ 		extract($args);
  		if(isset($ex_file_name))
 			$this->file_name   = $ex_file_name;//重命名方式代表以时间命名，其他则使用给予的名称
-		if(isset($ex_save_path))
-			$this->save_path   = $ex_save_path;
+		if(isset($save_path))
+			$this->save_path   = $save_path;
 		if(isset($ex_allow_types))
 			$this->allow_types = $ex_allow_types;
  	}
@@ -172,7 +172,7 @@
  * @author kickflip@php100 QQ263340607
  *************************************************/
 
- class uploadImg extends uploadFile {
+ class uploadImg extends spUpload {
 
 	public $mark_str = 'kickflip@php100';  //水印字符串
 	public $str_r = 0; //字符串颜色R
