@@ -37,13 +37,15 @@ class main extends general
     }
 
     function pushimg() {    // upload image
-        $dir = APP_PATH.'/mass/'.spClass('spSession')->getUser()->getUserId();
+        $uid = spClass('spSession')->getUser()->getUserId();
+        $dir = APP_PATH."/mass/$uid";
         __mkdirs($dir, 0777);
         __mkdirs("$dir/origin", 0777);
         __mkdirs("$dir/thumbnail", 0777);
         __mkdirs("$dir/avatar", 0777);
         $uf = spClass('spUpload', array('save_path' => "$dir/origin"));
         $uf->upload_file($_FILES['photo']);
+        echo "/mass/$uid/origin/".$uf->file_name;
         exit;
     }
 

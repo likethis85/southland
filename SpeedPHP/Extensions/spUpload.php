@@ -76,6 +76,7 @@
 			//移动文件
 			if(move_uploaded_file($tmp_name,$this->uploaded)){
 				$this->errmsg = '文件<font color=red>'.$this->uploaded.'</font>上传成功！';
+                $this->file_name = $new_name;
 				return TRUE;
 			}else{
 				$this->errmsg = '文件<font color=red>'.$this->uploaded.'</font>上传失败！';
