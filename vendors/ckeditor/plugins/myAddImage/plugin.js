@@ -49,7 +49,6 @@ CKEDITOR.plugins.add( 'myAddImage', {
                                 id :    'uploadButton',
                                 label : '上传',
                                 filebrowser : {
-                                    action : 'QuickUpload',
                                     target : 'addImage:txtUrl',
                                     onSelect:function(fileUrl, errorMessage){
                                     }
