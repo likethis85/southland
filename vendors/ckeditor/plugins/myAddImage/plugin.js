@@ -7,12 +7,12 @@ CKEDITOR.plugins.add( 'myAddImage', {
         }
 
         var getAjaxResult = function (t){
-            var _id = this.getId();
-            var _doc = this.getFrameDocument();
+            var _doc = t.listenerData.getFrameDocument();
             //获取页面返回值
             var data = _doc.getBody().getHtml();
             //firebrowser的处理
-            CKEDITOR.tools.callFunction(t.listenerData, data);
+            this.onUpload(data,null);
+            //CKEDITOR.tools.callFunction(t.listenerData, data);
             this.removeListener('load', getAjaxResult);
         }
 
@@ -27,7 +27,6 @@ CKEDITOR.plugins.add( 'myAddImage', {
                         id :    'addImage',
                         label : '添加图片',
                         title : '添加图片',
-                        filebrowser : 'uploadButton',
                         elements :
                         [
                             {    
@@ -48,10 +47,9 @@ CKEDITOR.plugins.add( 'myAddImage', {
                                 type :  'fileButton',
                                 id :    'uploadButton',
                                 label : '上传',
-                                filebrowser : {
-                                    target : 'addImage:txtUrl',
-                                    onSelect:function(fileUrl, errorMessage){
-                                    }
+                                onUpload:function(fileUrl, errorMessage){
+                                    if(typeof fileUrl==='string' && fileUrl!='') 
+                                        this.getDialog().getContentElement('addImage','txtUrl').setValue(fileUrl);
                                 },
                                 onClick: function(){
                                     var d = this.getDialog();
@@ -60,7 +58,7 @@ CKEDITOR.plugins.add( 'myAddImage', {
                                     var _iframe =  CKEDITOR.document.getById(_photo._.frameId);
                                     //可以查看ckeditor.event doc 了解此段代码
                                     //http://docs.cksource.com/ckeditor_api/
-                                    _iframe.on('load', getAjaxResult, _iframe, _funcNum);
+                                    _iframe.on('load', getAjaxResult, this, _iframe);
                                 },
                                 'for' : [ 'addImage', 'photo']
                             }
