@@ -44,8 +44,18 @@ class main extends general
         __mkdirs("$dir/thumbnail", 0777);
         __mkdirs("$dir/avatar", 0777);
         $uf = spClass('spUpload', array('save_path' => "$dir/origin"));
-        $uf->upload_file($_FILES['photo']);
-        echo "/mass/$uid/origin/".$uf->file_name;
+        if(TRUE === $uf->upload_file($_FILES['photo'])) {
+            $recorder = array(
+                'uid' => $uid,
+                'bytes' => $_FILES['photo']['size'],
+                'reason' => "upload file ".$_FILES['photo']['name'].' rename '.$uf->file_name
+            );
+            spClass('occupyModel')->create($recorder);
+            echo "/mass/$uid/origin/".$uf->file_name;
+        }
+        else {
+
+        }
         exit;
     }
 

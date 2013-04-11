@@ -33,7 +33,7 @@
             <a href="/task.php?c=main&a=view&id=<{$item.id}>"><{$item.subject}></a>
             <a class="operator" title="<{T w='IssueReport'}>" href="/issue.php?a=add&tid=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/bug.png" width=16 height=16></a>
             <a class="operator" title="<{T w='EditTask'}>" href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16></a>
-            <a class="operator" title="<{T w='DelTask'}>" href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16></a>
+            <a class="operator" title="<{T w='DelTask'}>" href="/task.php?a=del&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16></a>
         </div>
     </div>
     <{/foreach}>
