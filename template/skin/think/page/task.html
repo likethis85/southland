@@ -8,6 +8,8 @@
                 location.href = $(this).val();
             });
             $(".operator").hide();
+
+            var hm = new HoverMenu('taskstatus');
         });
     </script>
     <div style="margin-top:16px;height:16px;margin-bottom:16px;">
@@ -20,16 +22,18 @@
     </div>
     <{foreach item=item from=$tTasks}>
     <div style="padding-top:2px;" id="<{$item.id}>">
-         <div class="task-link" style="clear:both;float:left;margin-bottom:8px;">
-            <{if $item.status gt 127}>
-            <input class="set_task_incomplete" type="checkbox"  value="/task.php?c=main&a=incomplete&id=<{$item.id}>" checked></input>
-            <span style="background:#53FF53;">&nbsp;&nbsp;&nbsp;</span>
-            <{else}>
-            <input class="set_task_complete" type="checkbox"  value="/task.php?c=main&a=complete&id=<{$item.id}>"></input>
+         <div class="task-link" style="clear:both;float:left;margin-bottom:8px;width:100%;">
+                <ul id="taskstatus" class="nav">
+                   <li class="top"><a href="#" class="top_link"><img src="<{$skinpath}>/img/working.png" width=16 height=16></a>
+                    <ul class="sub">
+                       <li><a href="#"><img src="<{$skinpath}>/img/working.png" width=16 height=16>Working</a>
+                       <li><a href="#"><img src="<{$skinpath}>/img/completed.png"width=16 height=16>Complete</a>
+                    </ul>
+                   </li>
+                </ul>
             <{if $item.priority eq 1}><span style="background:red;">&nbsp;&nbsp;&nbsp;</span><{/if}>
             <{if $item.priority eq 2}><span style="background:#FC0;">&nbsp;&nbsp;&nbsp;</span><{/if}>
             <{if $item.priority gt 2}><span style="background:gray;">&nbsp;&nbsp;&nbsp;</span><{/if}>
-            <{/if}>
             <a href="/task.php?c=main&a=view&id=<{$item.id}>"><{$item.subject}></a>
             <a class="operator" title="<{T w='IssueReport'}>" href="/issue.php?a=add&tid=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/bug.png" width=16 height=16></a>
             <a class="operator" title="<{T w='EditTask'}>" href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16></a>
