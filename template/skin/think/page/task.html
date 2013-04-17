@@ -23,11 +23,24 @@
     <{foreach item=item from=$tTasks}>
     <div style="padding-top:2px;" id="<{$item.id}>">
          <div class="task-link" style="clear:both;float:left;margin-bottom:8px;width:100%;">
-                <ul id="taskstatus" class="nav">
-                   <li class="top"><a href="#" class="top_link"><img src="<{$skinpath}>/img/working.png" width=16 height=16></a>
-                    <ul class="sub">
-                       <li><a href="#"><img src="<{$skinpath}>/img/working.png" width=16 height=16>Working</a>
-                       <li><a href="#"><img src="<{$skinpath}>/img/completed.png"width=16 height=16>Complete</a>
+                <ul id="taskstatus" class="hm_nav">
+                    <{if $item.status eq 1}>
+                    <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/working.png" width=16 height=16></a>
+                    <{elseif $item.status eq 2}>
+                    <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/codecompleted.png" width=16 height=16></a>
+                    <{elseif $item.status eq 3}>
+                    <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/verified.png" width=16 height=16></a>
+                    <{elseif $item.status eq 4}>
+                    <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/completed.png" width=16 height=16></a>
+                    <{else}>
+                    <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/pending.png" width=16 height=16></a>
+                    <{/if}>
+                    <ul class="hm_sub">
+                       <li><a href="/task.php?a=working&id=<{$item.id}>"><img src="<{$skinpath}>/img/working.png" width=16 height=16>Working</a></li>
+                       <li><a href="/task.php?a=cc&id=<{$item.id}>"><img src="<{$skinpath}>/img/codecompleted.png"width=16 height=16>Code Complete</a></li>
+                       <li><a href="/task.php?a=veri&id=<{$item.id}>"><img src="<{$skinpath}>/img/verified.png" width=16 height=16>Verified</a></li>
+                       <li><a href="/task.php?a=complete&id=<{$item.id}>"><img src="<{$skinpath}>/img/completed.png"width=16 height=16>Complete</a></li>
+                       <li><a href="/task.php?a=pending&id=<{$item.id}>"><img src="<{$skinpath}>/img/pending.png"width=16 height=16>Pending</a></li>
                     </ul>
                    </li>
                 </ul>

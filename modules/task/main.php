@@ -3,10 +3,10 @@ if (!defined('SOUTHLAND')) { exit(1);}
 
 class main extends general
 {
-    var $COMPLETED = 128;
-    var $VERIFIED = 64;
-    var $CODECOMPLETE = 32;
-    var $WORKING = 16;
+    var $COMPLETED = 4;
+    var $VERIFIED = 3;
+    var $CODECOMPLETE = 2;
+    var $WORKING = 1;
 
 	function __construct(){ // 公用
 		parent::__construct(); // 这是必须的
@@ -85,61 +85,40 @@ class main extends general
         }
         $this->jumpTaskPage();
     }
+    function pending() {
+        $status = $this->get_status($this->spArgs('id'));
+        if($status === false)
+            $this->jumpTaskPage();
+        else 
+            $this->update_status(0);
+    }
     function complete() {
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($status|$this->COMPLETED);
-    }
-    function incomplete() {
-        $status = $this->get_status($this->spArgs('id'));
-        if($status === false)
-            $this->jumpTaskPage();
-        else 
-            $this->update_status($status&~$this->COMPLETED);
+            $this->update_status($this->COMPLETED);
     }
     function veri(){
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($status|$this->VERIFIED);
-    }
-    function unveri() {
-        $status = $this->get_status($this->spArgs('id'));
-        if($status === false)
-            $this->jumpTaskPage();
-        else 
-            $this->update_status($status&~$this->VERIFIED);
+            $this->update_status($this->VERIFIED);
     }
     function cc(){
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($status|$this->CODECOMPLETED);
-    }
-    function uncc() {
-        $status = $this->get_status($this->spArgs('id'));
-        if($status === false)
-            $this->jumpTaskPage();
-        else 
-            $this->update_status($status&~$this->CODECOMPLETED);
+            $this->update_status($this->CODECOMPLETE);
     }
     function working(){
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($status|$this->WORKING);
-    }
-    function unworking() {
-        $status = $this->get_status($this->spArgs('id'));
-        if($status === false)
-            $this->jumpTaskPage();
-        else 
-            $this->update_status($status&~$this->WORKING);
+            $this->update_status($this->WORKING);
     }
     function del() {
         $nid = $this->spArgs('id');
