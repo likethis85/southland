@@ -77,6 +77,7 @@ return array(
 'ProjectCreateTime' => '创建时间',
 'ProjectOperator' => '操作',
 'ProjectCreate' => '创建该项目',
+'ProjectAddUser' => '添加新成员',
 
 /* 任务相关 */
 'Task'  => '任务',

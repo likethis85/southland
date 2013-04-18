@@ -15,7 +15,8 @@ class projectModel extends spModel
         )
     );
     public function getProjects() {
-        foreach($this->findAll('status != 255') as $item)
+        $condition ='uid='.spClass('spSession')->getUser()->GetUserId().' AND status!=255';
+        foreach($this->findAll($condition) as $item)
             $items[$item['id']] = $item;
         return $items;
     }

@@ -3,8 +3,15 @@
         $("#Del").click(function(){
             return confirm('<{T w="Confirm?"}>'+$(this).html());
         });
+        
+        $("#PAU").click(function() {
+            $('#AddUserPage').modal();
+        });
     });
 </script>
+<div id="AddUserPage" style="display:none;">
+    <h3><{T w="ProjectAddUser"}></h3>
+</div>
 <div style="margin-left:36px;margin-top:16px;border-right:#c3daf9 1px solid;overflow:none;width:20%;float:left;">
 	<table>
 		<tr><td><h2><{T w="ProjectAuthor"}></h2></td></tr>
@@ -12,8 +19,9 @@
 		<tr><td><h2><{T w="ProjectCreateTime"}></h2></td></tr>
 		<tr><td><{$tProject.addtime}></td></tr>
 		<tr><td><h2><{T w="ProjectOperator"}></h2></td></tr>
-        <tr><td><div class="btn-capsule"><a id="Del" href="/project.php?c=main&a=del&id=<{$tCurrProj}>"><{T w="DeleteProject"}></a></div></td></tr>
-        <tr><td><div class="btn-capsule"><a href="/project.php?c=main&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
+        <tr><td><div class="btn-capsule"><a id="PAU" href="#"><{T w="ProjectAddUser"}></a></div></td></tr>
+        <tr><td><div class="btn-capsule"><a href="/project.php?&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
+        <tr><td><div class="btn-capsule"><a id="Del" href="/project.php?a=del&id=<{$tCurrProj}>"><{T w="DeleteProject"}></a></div></td></tr>
 	</table>
 </div>
 <div style="margin-top:16px;float:left;margin-left:12px;width:70%">
