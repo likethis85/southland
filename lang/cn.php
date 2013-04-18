@@ -11,6 +11,7 @@ return array(
 'Latest development build!'=>	'最新开发版本!',
 'Check out the latest project source code'=>	'查看最新项目源代码',
 /****************** back-end **********************/
+
 'Content Management System'=>	'内容管理系统',
 'edit'			=>	'编辑',
 'delete'		=>	'删除',
@@ -78,6 +79,9 @@ return array(
 'ProjectOperator' => '操作',
 'ProjectCreate' => '创建该项目',
 'ProjectAddUser' => '添加新成员',
+'Developer' => '开发',
+'QA' => '测试',
+'Observer' => '参与',
 
 /* 任务相关 */
 'Task'  => '任务',
