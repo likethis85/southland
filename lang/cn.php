@@ -79,6 +79,7 @@ return array(
 'ProjectOperator' => '操作',
 'ProjectCreate' => '创建该项目',
 'ProjectAddUser' => '添加新成员',
+'ProjectMemberAdd' => '添加成员',
 'Developer' => '开发',
 'QA' => '测试',
 'Observer' => '参与',

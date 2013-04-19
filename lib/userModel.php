@@ -51,6 +51,15 @@ class userModel extends spModel
 			return false;
 		}
 	}
+    public function getUserByEmail($email) {
+        if(empty($email))
+            return false;
+
+        $condition = array(
+            'email' => $email
+        );
+        return $this->find($condition);
+    }
 	/**
 	 * 无权限提示及跳转
 	 */

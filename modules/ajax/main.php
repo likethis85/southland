@@ -36,7 +36,10 @@ class main extends general
         exit;
     }
 
-    function pushimg() {    // upload image
+    /** @brief upload image 
+     *
+     **/
+    function pushimg() {
         $uid = spClass('spSession')->getUser()->getUserId();
         $dir = APP_PATH."/mass/$uid";
         __mkdirs($dir, 0777);
@@ -57,6 +60,36 @@ class main extends general
 
         }
         exit;
+    }
+
+    /** @brief Add user to the project 
+     *
+     */
+    function pau() {
+        $obj = spClass('userorgModel');
+        $sid = $this->spArgs('pid');
+        $uid = spClass('userModel')->getUserByEmail($this->spArgs('u'));
+        if(false === $uid)
+            return 'No user found';
+        $uid = $uid['uid'];
+        if(empty($sid)) return;
+        if(empty($uid)) return;
+        echo "$uid";exit;
+        $role = $this->spArgs('to');
+        if($role=='Developer') {
+            $role = $obj->role_dev_member;
+            $obj->AddDevMember($sid, $uid);
+        }
+        else if($role == 'QA') {
+            $role = $obj->role_qa_member;
+            $obj->AddQAMember($sid, $uid);
+        }
+        else if($role == 'Observer') {
+            $role = $obj->role_member;
+            $obj->AddProjectMember($sid, $uid);
+        }
+        else
+            return;
     }
 
 	function __destruct(){

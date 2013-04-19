@@ -16,6 +16,8 @@ class userorgModel extends spModel
 	var $role_project_manager = 3;
 	var $role_dev_manager = 4;
 	var $role_qa_manager = 5;
+    var $role_dev_member = 6;
+    var $role_qa_member = 7;
 	
 	// project related
 	public function getUsersByProject($pid) {
