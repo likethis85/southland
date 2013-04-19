@@ -87,22 +87,26 @@ class main extends general
         if(empty($uid)) return;
         $role = $this->spArgs('to');
         if($role=='Developer') {
-            $v = $obj->AddDevMember($sid, $uid);
-            if(false === $v)
+            if(false === $obj->AddDevMember($sid, $uid))
                 echo 'error';
             else {
-                echo spClass('Services_JSON')->encode($user);
+                $this->gpm();
             }
-            exit;
         }
         else if($role == 'QA') {
-            $obj->AddQAMember($sid, $uid);
+            if(false == $obj->AddQAMember($sid, $uid))
+                echo 'error';
+            else
+                $this->gpm();
         }
         else if($role == 'Observer') {
-            $obj->AddProjectMember($sid, $uid);
+            if(false === $obj->AddProjectMember($sid, $uid))
+                echo 'error';
+            else
+                $this->gpm();
         }
-        else
-            return;
+        
+        exit;
     }
 
 	function __destruct(){

@@ -1,4 +1,82 @@
 <script language="javascript" type="text/javascript">
+    var fillMember = function(data){
+        $('#Developer ul').empty();
+        $('#QA ul').empty();
+        $('#Observer ul').empty();
+        var members = new Array();
+        for(i=0;i<data.length;i++){
+            var member = null;
+            for(j=0;j<members.length;j++){
+                if(members[j].uid == data[i].uid) {
+                    member = members[j];
+                    break;
+                }   
+            }
+            
+            if(null==member) {
+                member = new Object;
+                member.uid = data[i].uid;
+                member.nick = data[i].nick;
+                member.role = new Array(/*'dev'*/new Array(),/*'qa'*/new Array(),/*'observer'*/new Array());
+                members.push(member);
+            }
+        }
+        $.each(data,function(i,item){
+            $.each(members,function(j,mbr){
+                if(mbr.uid==item.uid) {
+                    switch(item.role) {
+                    case '1':
+                    case '4':
+                    case '6':
+                        mbr.role[0].push(item.role);
+                        break;
+                    case '2':
+                    case '5':
+                    case '7':
+                        mbr.role[1].push(item.role);
+                        break;
+                    default:
+                        mbr.role[2].push(item.role);
+                        break;
+                    }
+                    mbr.role.push(item.role);
+                }
+            });
+        });
+        
+        $.each(members,function(idx,item){
+            $.each(item.role,function(i,role){
+                if(role.length==0)
+                    return;
+                    
+                var elem = "<li>"+item.nick;
+                $.each(role,function(j,r){
+                    switch(r) {
+                    case '1':
+                    case '2':
+                        elem = elem+'[owner]';
+                        break;
+                    case '4':
+                    case '5':
+                        elem = elem+'[manager]';
+                        break;
+                    case '6':
+                    case '7':
+                        elem = elem+'[member]';
+                        break;
+                    }
+                });
+                elem = elem+"</li>";
+                
+                if(i==0)
+                    $('#Developer ul').append(elem);
+                else if(i==1)
+                    $('#QA ul').append(elem);
+                else if(i==2)
+                    $('#Observer ul').append(elem);
+            });
+        });
+    }
     $(document).ready(function(){
         $("#Del").click(function(){
             return confirm('<{T w="Confirm?"}>'+$(this).html());
@@ -6,82 +84,7 @@
         
         $("#btn-PAU").click(function() {
             $.getJSON('ajax.php?a=gpm',function(data){
-                $('#Developer ul').empty();
-                $('#QA ul').empty();
-                $('#Observer ul').empty();
-                var members = new Array();
-                for(i=0;i<data.length;i++){
-                    var member = null;
-                    for(j=0;j<members.length;j++){
-                        if(members[j].uid == data[i].uid) {
-                            member = members[j];
-                            break;
-                        }   
-                    }
-                    
-                    if(null==member) {
-                        member = new Object;
-                        member.uid = data[i].uid;
-                        member.nick = data[i].nick;
-                        member.role = new Array(/*'dev'*/new Array(),/*'qa'*/new Array(),/*'observer'*/new Array());
-                        members.push(member);
-                    }
-                }
-                $.each(data,function(i,item){
-                    $.each(members,function(j,mbr){
-                        if(mbr.uid==item.uid) {
-                            switch(item.role) {
-                            case '1':
-                            case '4':
-                            case '6':
-                                mbr.role[0].push(item.role);
-                                break;
-                            case '2':
-                            case '5':
-                            case '7':
-                                mbr.role[1].push(item.role);
-                                break;
-                            default:
-                                mbr.role[2].push(item.role);
-                                break;
-                            }
-                            mbr.role.push(item.role);
-                        }
-                    });
-                });
-                
-                $.each(members,function(idx,item){
-                    $.each(item.role,function(i,role){
-                        if(role.length==0)
-                            return;
-                            
-                        var elem = "<li>"+item.nick;
-                        $.each(role,function(j,r){
-                            switch(r) {
-                            case '1':
-                            case '2':
-                                elem = elem+'[owner]';
-                                break;
-                            case '4':
-                            case '5':
-                                elem = elem+'[manager]';
-                                break;
-                            case '6':
-                            case '7':
-                                elem = elem+'[member]';
-                                break;
-                            }
-                        });
-                        elem = elem+"</li>";
-                        
-                        if(i==0)
-                            $('#Developer ul').append(elem);
-                        else if(i==1)
-                            $('#QA ul').append(elem);
-                        else if(i==2)
-                            $('#Observer ul').append(elem);
-                    });
-                });
+                fillMember(data);
                 $('#AddUserPage').modal();
             });
         });
@@ -97,9 +100,8 @@
 
         $("#PAU").click(function(){
             var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to="+$("a.tab.active").attr('title')+"&u="+escape($("#pauemail").attr('value'));
-            alert(url);
-            $.get(url,function(data) {
-                alert(data);
+            $.getJSON(url,function(data) {
+                fillMember(data);
             });
         });
     });
