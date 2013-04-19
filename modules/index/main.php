@@ -92,7 +92,8 @@ class main extends general
 	}
 	function _project() {
 		$objProj = spClass('projectModel');
-		$this->tProject = $objProj->getCurrentInfo();	
+		$this->tProject = $objProj->getCurrentInfo();
+        $this->tMembers = $objProj->getProjectMembers();
 	}
 	function _forum(){
 		$objForum = spClass("forumModel");

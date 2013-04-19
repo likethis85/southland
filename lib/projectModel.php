@@ -7,13 +7,14 @@ class projectModel extends spModel
     var $linker = null;
 	
     public function getProjects() {
-        $condition ='uid='.spClass('spSession')->getUser()->GetUserId().' AND status!=255';
+        $uid = spClass('spSession')->getUser()->GetUserId();
+        $condition ="uid=$uid AND status!=255";
         foreach($this->findAll($condition) as $item)
             $items[$item['id']] = $item;
         return $items;
     }
-	public function getCurrentInfo(){
-	    var $linker = array(
+	public function getCurrentInfo() {
+	    $linker = array(
             array (
                 'type' => 'hasone',
                 'map' => 'uid',
@@ -28,18 +29,22 @@ class projectModel extends spModel
         if($info === false) return array();
         else return $info;
     }
-    public function getProjectMembers($pid) {
-        var $linker = array(
+    public function getProjectMembers() {
+        $linker = array(
             array (
                 'type' => 'hasmany',
                 'map' => 'uid',
                 'mapkey' => 'user',
-                'fclass' => 'userModel',
-                'fkey' => 'uid',
+                'fclass' => 'userorgModel',
+                'fkey' => 'sid',
+                'condition' => 'scope=1',
                 'enabled' => 'true'
             )
         );
         $this->linker = $linker;
+        $member = $this->spLinker()->find(array('id'=>spClass('spSession')->getUser()->getCurrentProject()));
+        if($member === false) return array();
+        else return $member;
     }
     public function deleteProject($pid) {
         $this->update(array('id' => $pid), array('status' => 255));
