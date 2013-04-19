@@ -20,8 +20,19 @@ class userorgModel extends spModel
     var $role_qa_member = 7;
 	
 	// project related
-	public function getUsersByProject($pid) {
-	    return $this->find(array('scope' => $scope_project, 'sid' => $pid));
+	public function getUsersByProject($pid, $withuser) {
+	    if(true === $withuser) {
+	        $sql = "select a.role,b.nick,b.uid from sc_userorg as a,sc_user as b where a.uid=b.uid and a.sid=$pid and a.scope=".$this->scope_project;
+	        return $this->findSql($sql);
+	    } else {
+	        return $this->find(array('scope' => $scope_project, 'sid' => $pid));
+	    }
+	}
+	public function addDevMember($pid,$uid) {
+	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
+	}
+	public function addQAMember($pid,$uid) {
+	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_member));
 	}
 	public function addProjectMember($pid, $uid) {
 	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_member));

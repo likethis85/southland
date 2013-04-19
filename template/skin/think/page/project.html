@@ -5,17 +5,91 @@
         });
         
         $("#btn-PAU").click(function() {
-            $('#AddUserPage').modal();
+            $.getJSON('ajax.php?a=gpm',function(data){
+                $('#Developer ul').empty();
+                $('#QA ul').empty();
+                $('#Observer ul').empty();
+                var members = new Array();
+                for(i=0;i<data.length;i++){
+                    var member = null;
+                    for(j=0;j<members.length;j++){
+                        if(members[j].uid == data[i].uid) {
+                            member = members[j];
+                            break;
+                        }   
+                    }
+                    
+                    if(null==member) {
+                        member = new Object;
+                        member.uid = data[i].uid;
+                        member.nick = data[i].nick;
+                        member.role = new Array(/*'dev'*/new Array(),/*'qa'*/new Array(),/*'observer'*/new Array());
+                        members.push(member);
+                    }
+                }
+                $.each(data,function(i,item){
+                    $.each(members,function(j,mbr){
+                        if(mbr.uid==item.uid) {
+                            switch(item.role) {
+                            case '1':
+                            case '4':
+                            case '6':
+                                mbr.role[0].push(item.role);
+                                break;
+                            case '2':
+                            case '5':
+                            case '7':
+                                mbr.role[1].push(item.role);
+                                break;
+                            default:
+                                mbr.role[2].push(item.role);
+                                break;
+                            }
+                            mbr.role.push(item.role);
+                        }
+                    });
+                });
+                
+                $.each(members,function(idx,item){
+                    $.each(item.role,function(i,role){
+                        if(role.length==0)
+                            return;
+                            
+                        var elem = "<li>"+item.nick;
+                        $.each(role,function(j,r){
+                            switch(r) {
+                            case '1':
+                            case '2':
+                                elem = elem+'[owner]';
+                                break;
+                            case '4':
+                            case '5':
+                                elem = elem+'[manager]';
+                                break;
+                            case '6':
+                            case '7':
+                                elem = elem+'[member]';
+                                break;
+                            }
+                        });
+                        elem = elem+"</li>";
+                        
+                        if(i==0)
+                            $('#Developer ul').append(elem);
+                        else if(i==1)
+                            $('#QA ul').append(elem);
+                        else if(i==2)
+                            $('#Observer ul').append(elem);
+                    });
+                });
+                $('#AddUserPage').modal();
+            });
         });
         
         $("a.tab").click(function () {
-			// switch all tabs off
 			$(".active").removeClass("active");
-			// switch this tab on
 			$(this).addClass("active");
-			// slide all content up
 			$(".tab_content").slideUp();
-			// slide this content up
 			var content_show = $(this).attr("title");
 			$("#"+content_show).slideDown();
 		  
@@ -32,7 +106,15 @@
 </script>
 <div id="AddUserPage" style="display:none;">
     <h3><{T w="ProjectAddUser"}></h3>
-    <table><tr><td>Email:</td><td><input id="pauemail" type="text" size=40></td><td><div id="PAU" style="margin-left:8px;border:1px solid #494e52;height:22px;padding-left:3px;padding-right:3px;cursor:pointer;" align="center"><{T w='ProjectMemberAdd'}></div></td></tr></table>
+    <table>
+        <tr>
+            <td>Email:</td>
+            <td><input id="pauemail" type="text" size=40></td>
+            <td>
+                <div id="PAU" style="margin-left:8px;border:1px solid #494e52;height:22px;padding-left:3px;padding-right:3px;cursor:pointer;" align="center"><{T w='ProjectMemberAdd'}></div>
+            </td>
+        </tr>
+    </table>
     <div id="tabbed_box_1" class="tabbed_box">
         <div class="tabbed_area">
             <ul class="tabs">
@@ -40,29 +122,16 @@
                 <li><a href="#" title="QA" class="tab"><{T w='QA'}></a></li>
                 <li><a href="#" title="Observer" class="tab"><{T w='Observer'}></a></li>
             </ul>
-            <div id="content_1" class="tab_content">
+            <div id="Developer" class="tab_content">
             	<ul>
-                	<{foreach item=item from=$tMembers}>
-                	
-                	<{/foreach}>
     			</ul>
             </div>
-            <div id="content_2" class="tab_content">
+            <div id="QA" class="tab_content">
             	<ul>
-                	<li><a href="">December 2008 <small>6 Posts</small></a></li>
-                	<li><a href="">November 2008 <small>4 Posts</small></a></li>
-                	<li><a href="">October 2008 <small>22 Posts</small></a></li>
-                	<li><a href="">September 2008 <small>12 Posts</small></a></li>
-                	<li><a href="">August 2008 <small>3 Posts</small></a></li>
-                	<li><a href="">July 2008 <small>1 Posts</small></a></li>
     			</ul>
             </div>
-            <div id="content_3" class="tab_content">
+            <div id="Observer" class="tab_content">
             	<ul>
-                	<li><a href="">Home</a></li>
-                	<li><a href="">About</a></li>
-                	<li><a href="">Contribute</a></li>
-                	<li><a href="">Contact</a></li>
     			</ul>
             </div>
         </div>

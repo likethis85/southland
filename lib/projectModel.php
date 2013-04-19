@@ -30,21 +30,8 @@ class projectModel extends spModel
         else return $info;
     }
     public function getProjectMembers() {
-        $linker = array(
-            array (
-                'type' => 'hasmany',
-                'map' => 'uid',
-                'mapkey' => 'user',
-                'fclass' => 'userorgModel',
-                'fkey' => 'sid',
-                'condition' => 'scope=1',
-                'enabled' => 'true'
-            )
-        );
-        $this->linker = $linker;
-        $member = $this->spLinker()->find(array('id'=>spClass('spSession')->getUser()->getCurrentProject()));
-        if($member === false) return array();
-        else return $member;
+        $members = spClass('userorgModel')->getUsersByProject(spClass('spSession')->getUser()->getCurrentProject(), true);
+        return $members;
     }
     public function deleteProject($pid) {
         $this->update(array('id' => $pid), array('status' => 255));
