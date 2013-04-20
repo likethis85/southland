@@ -8,8 +8,10 @@ class projectModel extends spModel
 	
     public function getProjects() {
         $uid = spClass('spSession')->getUser()->GetUserId();
-        $condition ="uid=$uid AND status!=255";
-        foreach($this->findAll($condition) as $item)
+        $projects = spClass('userorgModel')->getProjectsByUser($uid);
+        if(false === $projects) 
+            return array();
+        foreach($projects as $item)
             $items[$item['id']] = $item;
         return $items;
     }

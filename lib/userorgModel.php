@@ -28,6 +28,10 @@ class userorgModel extends spModel
 	        return $this->find(array('scope' => $scope_project, 'sid' => $pid));
 	    }
 	}
+	public function getProjectsByUser($uid) {
+	    $sql = "select a.* from sc_project as a ,sc_userorg as b where a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
+	    return $this->findSql($sql);
+	}
 	public function addDevMember($pid,$uid) {
 	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
 	}
