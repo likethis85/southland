@@ -1,0 +1,14 @@
+<{include file=skin/$skin/header.html}>
+<center>
+<div>
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function(){
+            setInterval(function(){
+                location.href="<{$tRefUrl}>";
+            }, 5000);
+        });
+    </script>
+    <h1><{$tMsg}></h1>
+</div>
+</center>
+<{include file=skin/$skin/footer.html}>
