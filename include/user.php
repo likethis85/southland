@@ -1,7 +1,6 @@
 <?php
 if (!defined('SOUTHLAND')) { exit(1);}
-import ('general.php');
-
+import('general');
 /**
  * 用户管理控制器
  * @author Harrie
@@ -170,24 +169,27 @@ class user extends general
 	
 	// 用户注册
 	public function signon(){
-        $uname=$this->spArgs('uname');
-        $upass=$this->spArgs('upass');
-        $email=$this->spArgs('email');
-        if(empty($uname)||empty($upass)||empty($email)) {
-            $this->display("user/signon.html");
-        } else {
-            $data = array(
-                'uname' => $uname,
-                'upass' => $upass,
-                'email' => $email,
-                'nick'  => $this->spArgs('nick'),
-                'enabled' => 1,
-            );
-            if(spClass("userModel")->create($data)==false) {
-                $this->tErrorMsg = 'Failed for user name or email duplicated';
-                $this->display("user/signon.html");
-            }else {
-                $this->login();
+	    if($this->spArgs('submit') != 1) {
+	        $this->display('user/signon.html');
+	    } else {
+            $uname=$this->spArgs('uname');
+            $upass=$this->spArgs('upass');
+            if(!preg_match( '/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i', $uname )){
+                spClass('keeper')->speak(T('Error user name should be a valid email').": $uname");
+            } else {
+                $data = array(
+                    'uname' => $uname,
+                    'upass' => $upass,
+                    'email' => $uname,
+                    'nick'  => $this->spArgs('nick'),
+                    'enabled' => 1,
+                );
+                if(spClass("userModel")->create($data)==false) {
+                    $this->tErrorMsg = 'Failed for user name or email duplicated';
+                    $this->display("user/signon.html");
+                }else {
+                    $this->login();
+                }
             }
         }
 	}
