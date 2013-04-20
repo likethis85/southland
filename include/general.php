@@ -54,16 +54,8 @@ class general extends spController
 		$this->tWorkspace = WORKSPACE;
 		$this->tAction = $__action;
 		$this->tUser = $spSess->getUser()->getUserInfo();
-        $this->tProjects = $spSess->getUser()->getProjects();
         $this->tCurrProj = $spSess->getUser()->getCurrentProject();
-        if(empty($this->tProjects[$this->tCurrProj]))
-            $this->tCurrProj = 0;
-        if($this->tCurrProj===0 && current($this->tProjects)) {
-            $prj = current($this->tProjects);
-            $this->tCurrProj = $prj['id'];
-            $spSess->getUser()->setCurrentProject($this->tCurrProj);
-        }
-        $this->tCaption = $this->tProjects[$this->tCurrProj]['title'];
+        $this->tProject = spClass('projectModel')->getCurrentInfo();
 	}
 	
 	

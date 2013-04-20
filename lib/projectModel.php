@@ -15,6 +15,16 @@ class projectModel extends spModel
             $items[$item['id']] = $item;
         return $items;
     }
+    /** @brief detect does current user is permit to view the project
+     *
+     */
+    public function allow($pid) {
+        if(empty($pid))
+            return false;
+            
+        $projects = $this->getProjects();
+        return !empty($projects["$pid"]);
+    }
 	public function getCurrentInfo() {
 	    $linker = array(
             array (

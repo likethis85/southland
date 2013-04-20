@@ -63,7 +63,7 @@
                 </div>
                 
                 <div style="clear:both;color:white;margin-left:60px;padding-top:22px;">
-                    <h1><{$tCaption}></h1>
+                    <h1><{$tProject.title}></h1>
                 </div>
             </div>
             <div style="position:absolute;top:132px;width:100%;height:32px;overflow:hidden;">
@@ -73,27 +73,9 @@
                         <{if !empty($tCurrProj) }>
                             <{foreach item=item name=nav from=$tNavigation}>
                                 <{if $item.enabled}>
-                                    <li <{if $tNid eq $item.nid}>class="active_nav"<{/if}>><a href="index.php?c=main&a=page&nid=<{$item.nid}>" class="parent"><span><{T w=$item.name}></span></a></li>
+                                    <li <{if $tNid eq $item.nid}>class="active_nav"<{/if}>><a href="index.php?a=page&nid=<{$item.nid}>&pid=<{$tProject.id}>" class="parent"><span><{T w=$item.name}></span></a></li>
                                 <{/if}>
                             <{/foreach}>
-                        <{/if}>
-
-                        <{if count($tProjects) eq 0}>
-                            <li><a href="/project.php?c=main&a=create"><{T w="CreateNewProject"}></a></li>
-                        <{else}>
-                            <li style="margin-right:0px;padding-right:2px;"><{T w='MyProject'}>:</li>
-                            <li>
-                                <select id="project">
-                                    <{foreach item=item from=$tProjects}>
-                                    <{if $tCurrProj eq $item.id}>
-                                    <option value="/index.php?c=main&a=project&id=<{$item.id}>" selected><{$item.title}></option>											
-                                    <{else}>
-                                    <option value="/index.php?c=main&a=project&id=<{$item.id}>"><{$item.title}></option>											
-                                    <{/if}>
-                                    <{/foreach}>
-                                    <option value="/project.php?c=main&a=create" <{if $tCurrProj eq 0}>selected<{/if}> ><{T w="CreateNewProject"}>...</option>
-                                </select>
-                            </li>
                         <{/if}>
                     <{/if}>
 				</ul>

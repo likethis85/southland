@@ -11,11 +11,9 @@ class main extends general
 	}
 	
 	function index(){ // 这里是首页
-		$this->contents = "主体模块首页内容";
-		$this->index = 1;
-		
-		$objNews = spClass("newsModel");
-		$this->tHomeNews = $objNews->getList(4);
+	    if(spClass('spSession')->getUser()->is_user()) {
+		    $this->tProjects = spClass('projectModel')->getProjects();
+		}
 		$this->display("index.html");
 	}
 	
@@ -38,74 +36,32 @@ class main extends general
 		}
 		$this->display("page.html");
 	}
-	
 	function project() {// 选择项目
-        $nid = $this->spArgs('id');
+        $nid = $this->spArgs('pid');
         $this->setUsingProject($nid);
         $this->jumpProjectPage();
 	}
-	// module news
-	function _news(){
-		$intNid = $this->spArgs("nid");
-		$intNewsid = $this->spArgs("news",0);
-		if ($intNewsid!=0){
-			$objNews = spClass("newsModel");
-			$this->tNews = $objNews->getDetail($intNewsid);
-			$this->moduleaction='detail';
-			// log
-			$this->logModuleAction = 'detail';
-			$this->logModuleXid = $intNewsid;
-		}else{
-			$objNews = spClass("newsModel");
-			$this->tNews = $objNews->getList();
-			// log
-			$this->logModuleAction = 'list';
-			$this->logModuleXid = $intNewsid;
-		}
-	}
-
-	function _order(){
-		$submitsoporder = $this->spArgs('submitsoporder');
-		// log
-		$this->logModuleAction = 'dispaly';
-		$this->logModuleXid = 0;
-		
-		if($submitsoporder == 1){
-			$data = array(
-				'name'		=>	$this->spArgs("name"),
-				'email'	=>	$this->spArgs("email"),
-				'tel'	=>	$this->spArgs("tel"),
-				'mealdate'	=>	$this->spArgs("mealdate"),
-				'timearrive'	=>	$this->spArgs("timearrive"),
-				'encountertype'	=>	$this->spArgs("encountertype"),
-				'mealorder'	=>	$this->spArgs("mealorder"),
-				'extranotes'	=> $this->spArgs('extranotes'),
-			);
-			
-			$objOrderform = spClass("orderformModel");
-			$objOrderform->create($data);
-			$this->moduleaction = 'submit';
-			// log
-			$this->logModuleAction = 'submit';
-			$this->logModuleXid = $intNewsid;
-		}
-	}
 	function _project() {
-		$objProj = spClass('projectModel');
-		$this->tProject = $objProj->getCurrentInfo();
+		$pid = $this->spArgs('pid');
+		if(!empty($pid) && $pid!=$this->tCurrProj && spClass('projectModel')->allow($pid)) {
+		    spClass('spSession')->getUser()->setCurrentProject($pid);
+		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
+		    $this->tProject = spClass('projectModel')->getCurrentInfo();
+		}
 	}
 	function _forum(){
-		$objForum = spClass("forumModel");
-		$this->tSubjects = $objForum->getTopics();
+	    $this->_project();
+    	$objForum = spClass("forumModel");
+        $this->tSubjects = $objForum->getTopics();
 	}
 
     function _task() {
+        $this->_project();
         $objTask = spClass('taskModel');
         $this->tTasks = $objTask->getTasks();
-        $this->tCurrTask = $this->spArgs('id');
-        $this->tComments = spClass('commentModel')->getTaskComments($this->tCurrTask);
     }
     function _issue() {
+        $this->_project();
         $this->tIssues = spClass('issueModel')->getIssues();
     }
 	public function __destruct(){
