@@ -29,16 +29,16 @@ class userorgModel extends spModel
 	    }
 	}
 	public function addDevMember($pid,$uid) {
-	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
+	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
 	}
 	public function addQAMember($pid,$uid) {
-	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_member));
+	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_member));
 	}
 	public function addProjectMember($pid, $uid) {
-	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_member));
+	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_member));
 	}
 	public function addProjectManager($pid, $uid) {
-	    $this->create(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_manager));
+	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_manager));
 	}
 	public function removeProject($pid) {
 	    return $this->delete(array('sid' => $pid, 'scope' => $this->scope_project));

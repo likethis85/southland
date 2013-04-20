@@ -54,15 +54,15 @@
                     switch(r) {
                     case '1':
                     case '2':
-                        elem = elem+'[owner]';
+                        elem = elem+'<img src="<{$skinpath}>/img/owner.png">';
                         break;
                     case '4':
                     case '5':
-                        elem = elem+'[manager]';
+                        elem = elem+'<img src="<{$skinpath}>/img/manager.png">';
                         break;
                     case '6':
                     case '7':
-                        elem = elem+'[member]';
+                        elem = elem+'<img src="<{$skinpath}>/img/member.png">';
                         break;
                     }
                 });
@@ -84,7 +84,8 @@
         
         $("#btn-PAU").click(function() {
             $.getJSON('ajax.php?a=gpm',function(data){
-                fillMember(data);
+                if(data.error == 0)
+                    fillMember(data.data);
                 $('#AddUserPage').modal();
             });
         });
@@ -101,7 +102,10 @@
         $("#PAU").click(function(){
             var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to="+$("a.tab.active").attr('title')+"&u="+escape($("#pauemail").attr('value'));
             $.getJSON(url,function(data) {
-                fillMember(data);
+                if(data.error == 0)
+                    fillMember(data.data);
+                else
+                    alert(data.msg);
             });
         });
     });

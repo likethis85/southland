@@ -1,9 +1,25 @@
 <?php
 if (!defined('SOUTHLAND')) { exit(1);}
+
+class AjaxErr {
+    public $ERROR_FAIL = -1;
+    public $ERROR_OK = 0;
+}
+class spAjaxMsg {
+    var $error = null;
+    var $msg = null;
+    var $data = null;
+}
 class main extends general
 {
+    var $constAjaxErr;
+    var $ajaxResult;
+
 	function __construct(){ // 公用
 		parent::__construct(); // 这是必须的
+		$this->constAjaxErr = new AjaxErr();
+		$this->ajaxResult = new spAjaxMsg();
+		$this->ajaxResult->error = $this->constAjaxErr->ERROR_OK;
 	}
 
     function utp() { // update_task_priority
@@ -67,7 +83,14 @@ class main extends general
      */
     function gpm() {
         $members = spClass('projectModel')->getProjectMembers();
-        echo spClass('Services_JSON')->encode($members);
+        if(false == $members) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error DB operation failed'); 
+        } else {
+            $this->ajaxResult->data = $members;
+        }
+        
+        echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
     }
     /** @brief Add user to the project 
@@ -78,7 +101,9 @@ class main extends general
         $sid = $this->spArgs('pid');
         $user = spClass('userModel')->getUserByEmail($this->spArgs('u'));
         if(false === $user) {
-            echo 'error';
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error no this user');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
             exit;
         }
         
@@ -87,9 +112,11 @@ class main extends general
         if(empty($uid)) return;
         $role = $this->spArgs('to');
         if($role=='Developer') {
-            if(false === $obj->AddDevMember($sid, $uid))
-                echo 'error';
-            else {
+            if(false === $obj->AddDevMember($sid, $uid)) {
+                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+                $this->ajaxResult->msg = T('Error DB operation failed');
+                echo spClass('Services_JSON')->encode($this->ajaxResult);
+            } else {
                 $this->gpm();
             }
         }

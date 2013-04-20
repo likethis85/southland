@@ -12,6 +12,11 @@ return array(
 'Check out the latest project source code'=>	'查看最新项目源代码',
 /****************** back-end **********************/
 
+/****************** 错误码 **********************/
+'Error DB operation failed' => '操作数据库失败',
+'Error no this user' => '该用户不存在',
+/***********************************************/
+
 'Content Management System'=>	'内容管理系统',
 'edit'			=>	'编辑',
 'delete'		=>	'删除',

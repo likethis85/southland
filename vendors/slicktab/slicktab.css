@@ -59,15 +59,7 @@ ul.tabs li a.active {
     padding:3px;
 	list-style:none;
 }
-.tab_content ul li:last-child {
-	border-bottom:none;
-}
-.tab_content ul li a {
-	text-decoration:none;
-}
-.tab_content ul li a small {
-	font-size:9px;
-	text-transform:uppercase;
-	font-family:Verdana, Arial, Helvetica, sans-serif;
-	position:relative;
+.tab_content ul li img {
+    margin-left:6px;
+    margin-top:3px;
 }
