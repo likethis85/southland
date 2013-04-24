@@ -61,11 +61,17 @@
                         <a href="/index.php?c=user&a=logout">[<{T w='Logout'}>]</a>
                     <{/if}>
                 </div>
-                
-                <div style="clear:both;color:white;margin-left:60px;padding-top:22px;">
-                    <h1><{$tProject.title}></h1>
-                </div>
+                <{if $tUser.acl!="ANONYMOUS"}>
+                <div style="clear:both;position:relative;float:right;margin-top:32px;margin-right:32px;">
+                    <a href="/project.php?a=create" class="btn-rounded" ><{T w='CreateNewProject'}></a>
+                </div>   
+                <{/if}>
             </div>
+
+            <div style="clear:both;color:white;margin-left:60px;padding-top:22px;">
+                <h1><{$tProject.title}></h1>
+            </div>
+
             <div style="position:absolute;top:132px;width:100%;height:32px;overflow:hidden;">
                 <ul class="navigator">
                     <a href="/"><li><{T w="FirstPage"}></li></a>

@@ -1,7 +1,12 @@
 <div style="clear:both;margin-left:40px;margin-top:32px;">
     <script language="javascript" type="text/javascript">
         $().ready(function(){
-            $(".operator").hide();
+            var hm = new HoverMenu('topicScore');
+            $("a[name='DelTopic']").each(function(){
+                $(this).click(function(){
+                    return confirm('<{T w="Confirm?"}>'+$(this).text());
+                });
+            });
         });
     </script>
     <div style="margin-top:16px;height:16px;margin-bottom:16px;">
@@ -13,17 +18,32 @@
         <div style="clear:both;"></div>
     </div>
     
+    <table>
     <{foreach item=item from=$tSubjects}>
-    <div>
-        <div class="topic-link"  style="float:left;margin-bottom:8px;">
-            <a href="forum.php?a=view&nid=<{$item.id}>"><{$item.subject}></a>
-            <a class="operator" title="<{T w='EditTopic'}>" href="/forum.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16></a>
-            <a class="operator" title="<{T w='DelTopic'}>" href="/forum.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16></a>
-        </div>
-    </div>
-    <div style="clear:both;"></div>
+    <tr>
+        <td>
+            <ul id="topicScore" class="hm_nav">
+                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/topic.png" width=16 height=16></a>
+                <ul class="hm_sub">
+                   <li>
+                        <a href="/forum.php?a=update&id=<{$item.id}>">
+                        <img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16><{T w='EditTopic'}>
+                        </a>
+                   </li>
+                   <li>
+                        <a name='DelTopic' href="/forum.php?a=del&id=<{$item.id}>">
+                        <img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16><{T w='DelTopic'}>
+                        </a>
+                   </li>
+                </ul>
+               </li>
+            </ul>
+        </td>
+        <td><a href="forum.php?a=view&nid=<{$item.id}>"><{$item.subject}></a></td>
+    </tr>
     <{/foreach}>
-    
+    </table>
+
     <script type="text/javascript">
         ($("div.topic-link")).each(function() {
             $(this).hover(function() {

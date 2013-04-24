@@ -11,16 +11,15 @@ way to fit your requirements.
 function HoverMenu(ele_name) {
 	var cssRule;
 	var newSelector;
-	for (var i = 0; i < document.styleSheets.length; i++)
-		for (var x = 0; x < document.styleSheets[i].rules.length ; x++)
-			{
+	for (var i = 0; i<document.styleSheets.length; i++) {
+		for (var x = 0; document.styleSheets[i].rules!=null &&  x<document.styleSheets[i].rules.length ; x++) {
 			cssRule = document.styleSheets[i].rules[x];
-			if (cssRule.selectorText.indexOf("LI:hover") != -1)
-			{
+			if (cssRule.selectorText.indexOf("LI:hover") != -1) {
 				 newSelector = cssRule.selectorText.replace(/LI:hover/gi, "LI.iehover");
 				document.styleSheets[i].addRule(newSelector , cssRule.style.cssText);
 			}
 		}
+    }
 	var getElm = document.getElementById(ele_name).getElementsByTagName("LI");
 	for (var i=0; i<getElm.length; i++) {
 		getElm[i].onmouseover=function() {
