@@ -35,14 +35,7 @@ class general extends spController
 	 */
 	function __construct(){ // 公用
 		parent::__construct(); // 这是必须的
-		// get navigation list
-		$objNavigation = spClass("navigationModel");
-		$this->tNavigation = $objNavigation->navigationTree(1);
-		$this->tBottomNavigation = $objNavigation->navigationTree(2);
 
-		// get settings
-		$objSettings = spClass("settingsModel");
-		$this->tSettings = $objSettings->itemList();
 		$this->setLang('cn');
 		$this->skin = __SKIN_NAME;
 		$this->skinpath = 'template/skin/'.$this->skin;
@@ -55,6 +48,17 @@ class general extends spController
 		$this->tAction = $__action;
 		$this->tUser = $spSess->getUser()->getUserInfo();
         $this->tCurrProj = $spSess->getUser()->getCurrentProject();
+        $tCurrProj = $this->tCurrProj;
+        if(empty($tCurrProj))
+            return;
+        $this->tNavigation = array(
+            array('nid' => 1, 'enabled' => true, 'name' =>'ProjectDesc', 'module' => 'project'),
+            array('nid' => 2, 'enabled' => true, 'name' =>'Task', 'module' => 'task'),
+            array('nid' => 3, 'enabled' => true, 'name' =>'Topic', 'module' => 'forum'),
+            array('nid' => 4, 'enabled' => true, 'name' =>'BugTracker', 'module' => 'issue'),
+            //array('nid' => 5, 'enabled' => true, 'name' =>'Wiki', 'module' => 'wiki'),
+            //array('nid' => 6, 'enabled' => true, 'name' =>'Source', 'module' => 'source'),
+        );
         $this->tProject = spClass('projectModel')->getCurrentInfo();
 	}
 	
@@ -113,6 +117,9 @@ class general extends spController
     protected function navi($url) {
         header('location:'.'http://'.$_SERVER["HTTP_HOST"].$url);
         exit;
+    }
+    protected function jumpFirstPage() {
+        $this->navi('/index.php');
     }
     /** @brief 跳到项目介绍页
      *

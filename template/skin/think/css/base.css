@@ -58,6 +58,7 @@ div.login_bar {
     float:right;
     margin-right:32px;
     color:white;
+    font-family: Tahoma, Geneva, sans-serif;
 }
 div.login_bar a:link,div.login_bar a:visited,div.login_bar a:hover {
     text-decoration: none;

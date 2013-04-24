@@ -18,27 +18,19 @@ class main extends general
 	}
 	
 	function page(){ // 其他内容
-		$intNid = $this->spArgs("nid");
-		$this->logNid = $intNid;
-		$objNavigation = spClass("navigationModel");
-		$arrNavigationDetail = $objNavigation->navigationDetail($intNid);
-		$this->tNavigationDetail = $arrNavigationDetail;
-		$this->tNid = $intNid;
-		
-		// 模块的模版载入
-		if($arrNavigationDetail['module']!=0){
-			$objModule = spClass("moduleModel");
-			$arrModule = $objModule->find(array('mid'=>$arrNavigationDetail['module']));
-			$this->tModule = $arrModule['module'];
-			eval('$this->_'.$arrModule['module'].'();');
-			// log
-			$this->logModule = $arrNavigationDetail['module'];
-		}
-		$this->display("page.html");
+	    $nid = $this->spArgs('nid');
+	    $module = $this->tNavigation[$nid-1];
+	    if(empty($module)) {
+	        $this->jumpFirstPage();
+	    } else {
+    		$this->tNid = $this->spArgs("nid");
+    		$this->tModule = $this->tNavigation[$this->tNid-1]['module'];
+    		eval('$this->_'.$this->tModule.'();');
+    		$this->display("page.html");
+    	}
 	}
 	function project() {// 选择项目
-        $nid = $this->spArgs('pid');
-        $this->setUsingProject($nid);
+        $this->_project();
         $this->jumpProjectPage();
 	}
 	function _project() {

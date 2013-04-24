@@ -64,7 +64,7 @@ return array(
 'Top'			=>	'顶部',
 'Bottom'		=>	'底部',
 'FirstPage' => '首页',
-'Topic'		=> '文库',
+'Topic'		=> '讨论组',
 'Wiki'	 => '维基',
 'Source' => '源码',
 'BugTracker' => '缺陷跟踪',
