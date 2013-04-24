@@ -2,6 +2,11 @@
     <script language="javascript" type="text/javascript">
         $().ready(function(){
             var hm = new HoverMenu('taskstatus');
+            $("a[name='DelTask']").each(function(){
+                $(this).click(function(){
+                    return confirm('<{T w="Confirm?"}>'+$(this).text());
+                });
+            });
         });
     </script>
     <div style="margin-top:16px;height:16px;margin-bottom:16px;">
@@ -36,7 +41,7 @@
                    <li><a href="/task.php?a=pending&id=<{$item.id}>"><img src="<{$skinpath}>/img/pending.png"width=16 height=16><{T w='TaskPending'}></a></li>
                    <li><a href="/issue.php?a=add&tid=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/bug.png" width=16 height=16><{T w='IssueReport'}></a></li>
                    <li><a href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16><{T w='EditTask'}></a></li>
-                   <li><a href="/task.php?a=del&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16><{T w='DelTask'}></a></li>
+                   <li><a name="DelTask" href="/task.php?a=del&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16><{T w='DelTask'}></a></li>
                 </ul>
                </li>
             </ul>
