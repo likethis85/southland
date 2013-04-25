@@ -29,7 +29,7 @@ class userorgModel extends spModel
 	    }
 	}
 	public function getProjectsByUser($uid) {
-	    $sql = "select a.* from sc_project as a ,sc_userorg as b where a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
+	    $sql = "select a.* from sc_project as a ,sc_userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
 	    return $this->findSql($sql);
 	}
 	public function addDevMember($pid,$uid) {

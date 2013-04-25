@@ -50,6 +50,8 @@ class main extends general
 
     public function del() {
         spClass('projectModel')->deleteProject($this->spArgs('id'));
-        $this->jumpProjectPage();
+        spClass('spSession')->getUser()->setCurrentProject(0);
+		$this->tCurrProj = 0;
+        $this->jumpFirstPage();
     }
 }

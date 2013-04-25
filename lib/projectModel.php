@@ -46,6 +46,6 @@ class projectModel extends spModel
         return $members;
     }
     public function deleteProject($pid) {
-        $this->update(array('id' => $pid), array('status' => 255));
+        $this->update(array('id' => $pid), array('droptime' => null));
     }
 }
