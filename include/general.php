@@ -49,8 +49,6 @@ class general extends spController
 		$this->tUser = $spSess->getUser()->getUserInfo();
         $this->tCurrProj = $spSess->getUser()->getCurrentProject();
         $tCurrProj = $this->tCurrProj;
-        if(empty($tCurrProj))
-            return;
         $this->tNavigation = array(
             array('nid' => 1, 'enabled' => true, 'name' =>'ProjectDesc', 'module' => 'project'),
             array('nid' => 2, 'enabled' => true, 'name' =>'Task', 'module' => 'task'),
@@ -131,7 +129,7 @@ class general extends spController
      *
      */
     protected function jumpTaskPage() {
-        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[1]['nid']);
+        $this->navi('/index.php?a=page&nid='.$this->tNavigation[1]['nid']);
     }
     /** @brief 跳到项目话题页
      *
