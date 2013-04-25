@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>用Python写个翻译工具 - CleverDeng时光 - 记录、分享...... - ITeye技术网站</title>
+    <script src="http://www.iteye.com/javascripts/application.js?1358214518" type="text/javascript"></script>
+    <link href="http://www.iteye.com/javascripts/syntaxhighlighter/SyntaxHighlighter.css?1348819953" media="screen" rel="stylesheet" type="text/css" />
+    <script src="http://www.iteye.com/javascripts/syntaxhighlighter/shCoreCommon.js?1325907333" type="text/javascript"></script>
+  </head>
+  <body>
+
+<pre class="cpp" name="code">
+void vc_conf_t::notify_user_join_failure(roster_info_sp user, result_t result, std::string desc)
+{
+    NFUNC("notify_user_join_failuer");
+
+    if(!m_is_top) return;
+
+    bool local = (server_id_part(user->get_user_id())) == (server_id_part(m_id));
+    if(local)
+    {
+        {
+            if(iter->request->get_type() != type_conf_join_req)
+                continue;
+
+            conf_join_req::sp_t req = S_CAST(conf_join_req*, iter->request.get());
+            if(req->m_roster_info->get_user_id() != user->get_user_id())
+                continue;
+
+            response_user_join(*iter, result, desc.c_str());
+            m_waiting_responses.erase(iter);
+            return;
+        }
+    }
+    else
+    {
+        ASSERT(false);
+        // distributed meeting logic, no implement yet
+    }
+}
+</pre>
+<pre class="python" name="code">import urllib
+import codecs
+from BeautifulSoup import BeautifulSoup
+from sys import argv
+import re,time
+
+class Translate:
+    def Start(self):
+        self._get_html_sourse()
+        self._get_content("enc")
+        self._remove_tag()
+        self.print_result()
+
+    def _get_html_sourse(self):
+        word=argv[1] if len(argv)&gt;1 else ''
+        url="http://dict.baidu.com/s?wd=%s&amp;tn=dict" %  word
+        self.htmlsourse=unicode(urllib.urlopen(url).read(),"gb2312","ignore").encode("utf-8","ignore")
+
+    def _get_content(self,div_id):
+        soup=BeautifulSoup("".join(self.htmlsourse))
+        self.data=str(soup.find("div",{"id":div_id}))
+
+    def _remove_tag(self):
+        soup=BeautifulSoup(self.data)
+        self.outtext=''.join([element  for element in soup.recursiveChildGenerator() if isinstance(element,unicode)])
+
+    def print_result(self):
+        for item in range(1,10):
+            self.outtext=self.outtext.replace(str(item),"\n%s" % str(item))
+        self.outtext=self.outtext.replace("  ","\n")
+        print self.outtext
+
+if __name__=="__main__":
+     Translate().Start()</pre>
+  
+<script type="text/javascript">
+  dp.SyntaxHighlighter.HighlightAll('code', true, true);
+</script>
+
+  </body>
+</html>
+
