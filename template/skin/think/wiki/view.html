@@ -1,0 +1,11 @@
+<{include file=skin/$skin/header.html}>
+<script type="text/javascript">
+    $(document).ready(function(){
+        CKEDITOR.disableAutoInline = true;
+        var editor = CKEDITOR.inline(document.getElementById( 'editable' ), {customConfig:'config-reply.js'});
+    });
+</script>
+<div id="editable" contenteditable="true" style="margin-left:32px;margin-top:22px;width:600px;">
+    it's the wiki
+</div>
+<{include file=skin/$skin/footer.html}>

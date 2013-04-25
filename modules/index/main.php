@@ -31,7 +31,7 @@ class main extends general
 	}
 	function project() {// 选择项目
         $this->_project();
-        $this->jumpProjectPage();
+        $this->jumpTaskPage();
 	}
 	function _project() {
 		$pid = $this->spArgs('pid');
@@ -55,6 +55,8 @@ class main extends general
     function _issue() {
         $this->_project();
         $this->tIssues = spClass('issueModel')->getIssues();
+    }
+    function _wiki() {
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的

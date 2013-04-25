@@ -8,7 +8,7 @@ CKEDITOR.editorConfig = function( config ) {
 	// config.language = 'fr';
     // config.uiColor = '#AADC6E';
 
-    config.skin='kama';
+    //config.skin='kama';
     config.resize_enabled=false;
     config.removePlugins='elementspath';
     config.toolbar=

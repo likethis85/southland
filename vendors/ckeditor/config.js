@@ -54,7 +54,7 @@ CKEDITOR.editorConfig = function( config ) {
 
     config.extraPlugins = 'myAddImage';
 
-    config.skin='kama';
+    //config.skin='kama';
     config.resize_enabled=false;
     config.removePlugins='elementspath';
     config.toolbar= 'Basic';

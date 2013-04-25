@@ -56,7 +56,7 @@ class general extends spController
             array('nid' => 2, 'enabled' => true, 'name' =>'Task', 'module' => 'task'),
             array('nid' => 3, 'enabled' => true, 'name' =>'Topic', 'module' => 'forum'),
             array('nid' => 4, 'enabled' => true, 'name' =>'BugTracker', 'module' => 'issue'),
-            //array('nid' => 5, 'enabled' => true, 'name' =>'Wiki', 'module' => 'wiki'),
+            array('nid' => 5, 'enabled' => true, 'name' =>'Wiki', 'module' => 'wiki'),
             //array('nid' => 6, 'enabled' => true, 'name' =>'Source', 'module' => 'source'),
         );
         $this->tProject = spClass('projectModel')->getCurrentInfo();
@@ -133,24 +133,24 @@ class general extends spController
     protected function jumpTaskPage() {
         $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[1]['nid']);
     }
-    /** @brief 跳到项目术语页
-     *
-     */
-    protected function jumpWikiPage() {
-        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[2]['nid']);
-    }
     /** @brief 跳到项目话题页
      *
      */
     protected function jumpTopicPage() {
-        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[3]['nid']);
+        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[2]['nid']);
     }
     /** @brief 跳到项目问题页
      *
      */
     protected function jumpIssuePage() {
-        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[4]['nid']);
+        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[3]['nid']);
         exit(1);
+    }
+    /** @brief 跳到项目术语页
+     *
+     */
+    protected function jumpWikiPage() {
+        $this->navi('/index.php?c=main&a=page&nid='.$this->tNavigation[4]['nid']);
     }
     /** @brief 跳到项目源码页
      *

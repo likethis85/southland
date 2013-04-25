@@ -65,11 +65,11 @@ return array(
 'Bottom'		=>	'底部',
 'FirstPage' => '首页',
 'Topic'		=> '讨论组',
-'Wiki'	 => '维基',
-'Source' => '源码',
-'BugTracker' => '缺陷跟踪',
-'Download' => '下载',
-'Manage' => '管理',
+'Wiki'	    => '维基',
+'Source'    => '源码',
+'BugTracker'=> '缺陷跟踪',
+'Download'  => '下载',
+'Manage'    => '管理',
 
 /* 项目相关 */
 'MyProject' => '我的项目',
@@ -131,35 +131,8 @@ return array(
 'IssueDate'=>     '发布日期',
 'IssueReport' =>  '报Bug',
 
-/* Content */
-'Content'		=>	'内容',
-'Navigation item'=>	'导航',
-'preview'		=>	'预览',
-
-/* Modules */
-/* News */
-'Modules'		=>	'模块',
-'News'			=>	'新闻',
-'Orders'		=>	'订单',
-'Date time'		=>	'日期',
-'Action'		=>	'操作',
-'Add News'		=>	'添加新闻',
-'Edit News'		=>	'编辑新闻',
-'Add news'		=>	'添加新闻',
-'Edit news'		=>	'编辑新闻',
-'Delete news'	=>	'删除新闻',
-'Publish date'	=>	'发表时间',
-/* Orders */
-'Name'			=>	'名称',
-'Email'			=>	'电子邮件',
-'Contact Number'=>	'联系电话',
-'Edit Order'	=>	'编辑订单',
-'Delete order'	=>	'删除订单',
-'Contact number'=>	'联系电话',
-'Date of meal'	=>	'用餐时间',
-'Time of arrival'=>	'到达时间',
-/* Focus Pictures */
-'Focus Pictures'=>	'首页焦点图',
+/* Wiki */
+'Publish New Wiki'  => '发布新词条',
 
 /* Users */
 'Signon'        =>  '注册',
@@ -190,22 +163,6 @@ return array(
 'Zip/Postal Code'=>	'邮政编码',
 'Telephone'		=>	'电话',
 'User group'	=>	'用户组',
-/* Settings */
-'Settings'		=>	'全局设置',
-'Setting Key'	=>	'设置名称',
-'Setting Value'	=>	'设置的值',
-'Setting Type'	=>	'设置类型',
-'String'		=>	'字符串',
-'Array'			=>	'数组',
-'Permission denied!'=>	'没有权限',
-'You are now signed out.'=>	'你已经退出登录',
-'Welcome, the administrator'=>	'欢迎，管理员',
-'Welcome, Dear Member' => '欢迎,网站用户',
-'Login'			=>	'登录',
-'Failed for user name or email duplicated' => '注册的用户名或者Email已存在',
-
-/* Sidebar */
-'Recent Pageview'=>	'最新页面访问',
 
 /*常规*/
 'Welcome'       =>  '欢迎',
