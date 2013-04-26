@@ -2,12 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>用Python写个翻译工具 - CleverDeng时光 - 记录、分享...... - ITeye技术网站</title>
-    <script src="http://www.iteye.com/javascripts/application.js?1358214518" type="text/javascript"></script>
-    <link href="http://www.iteye.com/javascripts/syntaxhighlighter/SyntaxHighlighter.css?1348819953" media="screen" rel="stylesheet" type="text/css" />
-    <script src="http://www.iteye.com/javascripts/syntaxhighlighter/shCoreCommon.js?1325907333" type="text/javascript"></script>
+    <script src="/vendors/codeformatter/application.js" type="text/javascript"></script>
+    <link href="/vendors/codeformatter/SyntaxHighlighter.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/vendors/codeformatter/shCoreCommon.js" type="text/javascript"></script>
+    <script src="/vendors/ckeditor/ckeditor.js" type="text/javascript"></script>
   </head>
   <body>
 
+<div id="editable">
 <pre class="cpp" name="code">
 void vc_conf_t::notify_user_join_failure(roster_info_sp user, result_t result, std::string desc)
 {
@@ -38,6 +40,7 @@ void vc_conf_t::notify_user_join_failure(roster_info_sp user, result_t result, s
     }
 }
 </pre>
+</div>
 <pre class="python" name="code">import urllib
 import codecs
 from BeautifulSoup import BeautifulSoup
@@ -75,6 +78,9 @@ if __name__=="__main__":
   
 <script type="text/javascript">
   dp.SyntaxHighlighter.HighlightAll('code', true, true);
+
+    //CKEDITOR.disableAutoInline = true;
+    //CKEDITOR.inline(document.getElementById( 'editable' ));
 </script>
 
   </body>

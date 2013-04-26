@@ -52,7 +52,7 @@ CKEDITOR.editorConfig = function( config ) {
         urlObj.fireEvent("onchange"); //触发url文本框的onchange事件，以便预览图片
     }
 
-    config.extraPlugins = 'myAddImage';
+    config.extraPlugins = 'myAddImage,myCode';
 
     //config.skin='kama';
     config.resize_enabled=false;
@@ -81,7 +81,7 @@ CKEDITOR.editorConfig = function( config ) {
             ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
             ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
             ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-            ['AddImage','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+            ['AddImage','AddCode', 'Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
             ['Font','FontSize','TextColor','BGColor']
         ];
 };

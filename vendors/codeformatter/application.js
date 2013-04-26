@@ -6159,7 +6159,7 @@ Tooltip.prototype = {
       borderColor: '#666', // Default border color
       textColor: '', // Default text color (use CSS value)
       textShadowColor: '', // Default text shadow color (use CSS value)
-      maxWidth: 250,    // Default tooltip width
+      maxWidth: 250,	// Default tooltip width
       align: "left", // Default align
       delay: 250, // Default delay before tooltip appears in ms
       mouseFollow: false, // Tooltips follows the mouse moving
@@ -6272,16 +6272,19 @@ Tooltip.prototype = {
 
 var ValidationDefaultOptions = function(){};
 ValidationDefaultOptions.prototype = {
-  onSubmit : true, //閺勵垰鎯侀惄鎴濇儔form閻ㄥ墕ubmit娴滃娆?  stopOnFirst : false, //鐞涖劌宕熸宀冪槈閺冭泛浠犻悾娆忔躬缁楊兛绔存稉顏堢崣鐠囦胶娈戦崷鐗堟煙,娑撳秶鎴风紒顓㈢崣鐠囦椒绗呴崢锟?  immediate : true, //閺勵垰鎯佺€圭偞妞傚Λ鈧弻銉︽殶閹诡喚娈戦崥鍫熺《閹拷
-  focusOnError : true, //閺勵垰鎯侀崙娲晩閺冭泛鐨㈤崗澶嬬垼閹稿洭鎷＄粔璇插煂閸戞椽鏁婇惃鍕翻閸忋儲顢嬫稉锟?  useTitles : false, //閺勵垰鎯佹担璺ㄦ暏input閻ㄥ墖itle鐏炵偞鈧傜稊娑撳搫鍤柨娆愭閻ㄥ嫭褰佺粈杞颁繆閹拷
-  onFormValidate : function(result, form) {},//Form妤犲矁鐦夐弮鍓佹畱閸ョ偠鐨熼崙鑺ユ殶
-  onElementValidate : function(result, elm) {} //閺屾劒閲渋nput妤犲矁鐦夐弮鍓佹畱閸ョ偠鐨熼崙鑺ユ殶
+  onSubmit : true, //是否监听form的submit事件
+  stopOnFirst : false, //表单验证时停留在第一个验证的地方,不继续验证下去
+  immediate : true, //是否实时检查数据的合法性
+  focusOnError : true, //是否出错时将光标指针移到出错的输入框上
+  useTitles : false, //是否使用input的title属性作为出错时的提示信息
+  onFormValidate : function(result, form) {},//Form验证时的回调函数
+  onElementValidate : function(result, elm) {} //某个input验证时的回调函数
 };
 
 var ValidatorDefaultOptions = function(){};
 ValidatorDefaultOptions.prototype = {
-  ignoreEmptyValue : true, //閺勵垰鎯佽箛鐣屾殣缁屽搫鈧拷
-  depends : [] //閻╃鍙ф笟婵婄妞わ拷
+  ignoreEmptyValue : true, //是否忽略空值
+  depends : [] //相关依赖项
 };
  
 Validator = Class.create();
@@ -6310,11 +6313,12 @@ ValidationUtils = {
     ValidationUtils.assert(args.constructor == Array,"ValidationUtils.format() arguement 'args' must is Array");
     var result = str;
     for (var i = 0; i < args.length; i++){
-      result = result.replace(/%s/, args[i]);   
+      result = result.replace(/%s/, args[i]);	
     }
     return result;
   },
-  // 闁俺绻僣lassname娴肩娀鈧帞娈戦崣鍌涙殶韫囧懘銆忛柅姘崇箖'-'閸掑棝娈ч崥鍕嚋閸欏倹鏆?  // 鏉╂柨娲栭崐鐓庡瘶閸氼偂绔存稉顏勫棘閺佺殜ingleArgument,娓氾拷:validate-pattern-/[a-c]/gi,singleArgument閸婇棿璐?[a-c]/gi
+  // 通过classname传递的参数必须通过'-'分隔各个参数
+  // 返回值包含一个参数singleArgument,例:validate-pattern-/[a-c]/gi,singleArgument值为/[a-c]/gi
   getArgumentsByClassName : function(prefix,className) {
     if(!className || !prefix)
       return [];
@@ -6353,11 +6357,11 @@ ValidationUtils = {
     var year = v.substr(dateFormat.indexOf(YEAR),4);
     var month = v.substr(dateFormat.indexOf(MONTH),2);
     var day = v.substr(dateFormat.indexOf(DAY),2);
-        
+		
     var d = new Date(ValidationUtils.format('%s/%s/%s',[year,month,day]));
     return ( parseInt(month, 10) == (1+d.getMonth()) ) && 
       (parseInt(day, 10) == d.getDate()) && 
-      (parseInt(year, 10) == d.getFullYear() );     
+      (parseInt(year, 10) == d.getFullYear() );		
   },
   getLanguage : function() {
     var lang = null;
@@ -6378,45 +6382,45 @@ ValidationUtils = {
 };
 
 Validator.messages = {
-  'validation-failed' : '妤犲矁鐦夋径杈Е.',
-  'required' : '鐠囧嘲锝為崘娆忊偓锟?',
-  'validate-number' : '鐠囧嘲锝為崘娆愭箒閺佸牏娈戦弫鏉跨摟.',
-  'validate-digits' : '鐠囧嘲锝為崘娆愭殶鐎涳拷.',
-  'validate-alpha' : '鐠囧嘲锝為崘娆掑閺傚洤鐡уВ锟?',
-  'validate-alphanum' : '鐠囧嘲锝為崘娆掑閺傚洤鐡уВ宥嗗灗閺勵垱鏆熺€涳拷,閸忚泛鐣犵€涙顑侀弰顖欑瑝閸忎浇顔忛惃锟?',
-  'validate-email' : '鐠囧嘲锝為崘娆愭箒閺佸牏娈戦柇顔绘閸︽澘娼?閸欘亣鍏樻担璺ㄦ暏a-z A-Z 0-9 _ . -\',婵★拷 username@example.com閵嗭拷 ',
-  'validate-url' : '鐠囧嘲锝為崘娆愭箒閺佸牏娈慤RL閸︽澘娼?',
+  'validation-failed' : '验证失败.',
+  'required' : '请填写值.',
+  'validate-number' : '请填写有效的数字.',
+  'validate-digits' : '请填写数字.',
+  'validate-alpha' : '请填写英文字母.',
+  'validate-alphanum' : '请填写英文字母或是数字,其它字符是不允许的.',
+  'validate-email' : '请填写有效的邮件地址,只能使用a-z A-Z 0-9 _ . -\',如 username@example.com。 ',
+  'validate-url' : '请填写有效的URL地址.',
   'validate-currency-dollar' : 'Please enter a valid $ amount. For example $100.00 .',
-  'validate-one-required' : '閸︺劋绗傞棃銏も偓澶愩€嶉懛鍐茬毌闁瀚ㄦ稉鈧稉锟?',
-  'validate-integer' : '鐠囧嘲锝為崘娆愵劀绾喚娈戦弫瀛樻殶',
-  'validate-pattern' : '婵夘偄鍟撻惃鍕偓闂寸瑝閸栧綊鍘?,
-  'validate-ip' : '鐠囧嘲锝為崘娆愵劀绾喚娈慖P閸︽澘娼?,
-  'min-value' : '閺堚偓鐏忓繐鈧棿璐?s',
-  'max-value' : '閺堚偓婢堆冣偓闂磋礋%s',
-  'min-length' : '閺堚偓鐏忓繘鏆辨惔锔胯礋%s,瑜版挸澧犻梹鍨娑擄拷%s.',
-  'max-length' : '閺堚偓婢堆囨毐鎼达缚璐?s,瑜版挸澧犻梹鍨娑擄拷%s.',
-  'int-range' : '婵夘偄鍟撻崐鐓庣安鐠囥儰璐?%s 閼凤拷 %s 閻ㄥ嫭鏆ｉ弫锟?,
-  'float-range' : '婵夘偄鍟撻崐鐓庣安鐠囥儰璐?%s 閼凤拷 %s 閻ㄥ嫭鏆熺€涳拷',
-  'length-range' : '婵夘偄鍟撻崐鑲╂畱闂€鍨鎼存棁顕氶崷锟?%s 閼凤拷 %s 娑斿妫?瑜版挸澧犻梹鍨娑擄拷%s',
-  'equals' : '娑撱倖顐兼繅顐㈠晸娑撳秳绔撮懛锟?鐠囩兘鍣搁弬鏉匡綖閸愶拷',
-  'less-than' : '鐠囧嘲锝為崘娆忕毈娴滃骸澧犻棃銏㈡畱閸婏拷',
-  'great-than' : '鐠囧嘲锝為崘娆忋亣娴滃骸澧犻棃銏㈡畱閸婏拷',
-  'validate-date' : '鐠囧嘲锝為崘娆愭箒閺佸牏娈戦弮銉︽埂,閺嶇厧绱℃稉锟?%s. 娓氬顩?%s.',
+  'validate-one-required' : '在上面选项至少选择一个.',
+  'validate-integer' : '请填写正确的整数',
+  'validate-pattern' : '填写的值不匹配',
+  'validate-ip' : '请填写正确的IP地址',
+  'min-value' : '最小值为%s',
+  'max-value' : '最大值为%s',
+  'min-length' : '最小长度为%s,当前长度为%s.',
+  'max-length' : '最大长度为%s,当前长度为%s.',
+  'int-range' : '填写值应该为 %s 至 %s 的整数',
+  'float-range' : '填写值应该为 %s 至 %s 的数字',
+  'length-range' : '填写值的长度应该在 %s 至 %s 之间,当前长度为%s',
+  'equals' : '两次填写不一致,请重新填写',
+  'less-than' : '请填写小于前面的值',
+  'great-than' : '请填写大于前面的值',
+  'validate-date' : '请填写有效的日期,格式为 %s. 例如:%s.',
   'validate-file' : function(v,elm,args,metadata) {
-    return ValidationUtils.format("閺傚洣娆㈢猾璇茬€锋惔鏃囶嚉娑撶%s]閸忔湹鑵戞稊瀣╃",[args.join(',')]);
+    return ValidationUtils.format("文件类型应该为[%s]其中之一",[args.join(',')]);
   },
-  'validate-id-number' : '鐠囧嘲锝為崘娆忔値濞夋洜娈戦煬顐″敜鐠囦礁褰块惍锟?,
-  'validate-chinese' : '鐠囧嘲锝為崘娆庤厬閺傦拷',
-  'validate-phone' : '鐠囧嘲锝為崘娆愵劀绾喚娈戦悽浣冪樈閸欓鐖?婵★拷:021-87654321,瑜版挸澧犻梹鍨娑擄拷%s.',
-  'validate-mobile-phone' : '鐠囧嘲锝為崘娆愵劀绾喚娈戦幍瀣簚閸欓鐖?瑜版挸澧犻梹鍨娑擄拷%s.',
-  'validate-zip' : '鐠囧嘲锝為崘娆愭箒閺佸牏娈戦柇顔芥杺缂傛牜鐖?,
-  'validate-qq' : '鐠囧嘲锝為崘娆愭箒閺佸牏娈慟Q閸欓鐖?',
-  'validate-richeditor' : '鐠囧嘲锝為崘娆忊偓锟?',
-  'validate-combobox' : '鐠囧嘲锝為崘娆忊偓鍏煎灗闁褰囬崜宥夋桨閻ㄥ嫰鈧銆?',
-  'max-tag' : '鐠囧嘲锝為崘锟?-%s娑撶寘ag.'
+  'validate-id-number' : '请填写合法的身份证号码',
+  'validate-chinese' : '请填写中文',
+  'validate-phone' : '请填写正确的电话号码,如:021-87654321,当前长度为%s.',
+  'validate-mobile-phone' : '请填写正确的手机号码,当前长度为%s.',
+  'validate-zip' : '请填写有效的邮政编码',
+  'validate-qq' : '请填写有效的QQ号码.',
+  'validate-richeditor' : '请填写值.',
+  'validate-combobox' : '请填写值或选取前面的选项.',
+  'max-tag' : '请填写1-%s个Tag.'
 };
 
-Validator.bad_words=[/fuck/i,/shit/i,/QQ缂囷拷/i,/MSN缂囷拷/i,/濮癸拷(閸旓篃閺侊拷)/,/(鐠虹崋鐟侊拷)濮癸拷/,/閹儲鈧殏閹存垵绶㈤幀顨傜槐褎鈧儱顕板Ч锟?,/閸︺劎鍤庣粵锟?,/閺侊拷(閸涚荡閹存啋閹殏閺侊拷)/,/閹拷(!|閿涳拷)/,/(妤傛ɑ澧渱妤傛ü姹墊婢堆嗘|婢堆傜泛|鏉堝彞姹墊閸撳秷绶韫囶偅娼祙濞屸剝婀佹禍锟?(閹稿洨鍋鐟欙絿鐡焲鐢喖绻東鐢喖搴渱閹稿洦鏆€|鐠ф劖鏆€|閹绘劗鍋娑撳秴鎮电挧鎰殌|閸掓澘鎽?/,/(閹存垶妲竱鐢喖搴?(閺傜増澧渱鐏忓繐绱祙閼挎粓绗?/,/鐢喖搴滆箛锟?, /娑撳洤鍨庨悘顐ｂ偓锟?, /閹存垿銆妡妞ゆ湹绗傞崢绮呮總鍊熷垱鐟曚線銆妡鐢噣銆妡閻婀呴崗鍧炬い鏈电娑擄拷/,/閺堬拷*濞屸剝婀佹禍锟?閸ョ偟鐡焲鐢喖绻東閸忚櫕鏁瀨閻儵浜鹃崯濡￠崶鐐差槻)/,/閺佹瑤瀵寍鐟佸寭|鐟侊拷13/,/閸忚櫕鏁?ing|娑擄拷)/i,/閺€鎯版閸忥拷/,/閸忓牊鏁归挊锟?,/閺€鎯版娴滐拷/,/閸ュ彞鍔熼崗鑹颁捍娴ｆ粏鈧拷/,/鐠嬨垼闃垮Δ闂村瘜/,/娴肩姵娅ら幘顓烆吂/,/FineReport/i];
+Validator.bad_words=[/fuck/i,/shit/i,/QQ群/i,/MSN群/i,/求(助|救)/,/(跪|裸)求/,/急急|我很急|紧急寻求/,/在线等/,/救(命|我|急|救)/,/急(!|！)/,/(高手|高人|大虾|大侠|达人|前辈|快来|没有人)(指点|解答|帮忙|帮帮|指教|赐教|提点|不吝赐教|到哪)/,/(我是|帮帮)(新手|小弟|菜鸟)/,/帮帮忙/, /万分火急/, /我顶|顶上去|好贴要顶|帮顶|看看先|顶一下/,/有*没有人(回答|帮忙|关注|知道啊|回复)/,/教主|装B|装13/,/关注(ing|中)/i,/收藏先/,/先收藏/,/收藏了/,/图书兼职作者/,/谢谢楼主/,/传智播客/,/FineReport/i];
 
 Validator.prototype = {
   initialize : function(className, test, options) {
@@ -6551,7 +6555,7 @@ Object.extend(Validation, {
   showErrorMsgByValidator : function(name,elm,useTitle) {
     Validation.showErrorMsg(name,elm,Validation.get(name).error(ValidationUtils.getInputValue(elm),elm,useTitle));
   },
-  hideErrorMsg : function(name,elm) {       
+  hideErrorMsg : function(name,elm) {		
     if(elm.tooltip) {
       elm.tooltip.stop();
       elm.tooltip = false;            
@@ -6628,9 +6632,9 @@ Validation.addAllThese([
         return $F(elm);
       });
     },{ignoreEmptyValue : false}],
-            
-  ['validate-digits',/^[\d]+$/],        
-  ['validate-alphanum',/^[a-zA-Z0-9]+$/],       
+			
+  ['validate-digits',/^[\d]+$/],		
+  ['validate-alphanum',/^[a-zA-Z0-9]+$/],		
   ['validate-alpha',/^[a-zA-Z]+$/],
 
   ['validate-email',/^[\w.+-]+@(?:[-a-z0-9]+\.)+[a-z]{2,4}$/i],
@@ -6746,7 +6750,7 @@ Validation.addAllThese([
         asynchronous : false,
         method : "post"
       });
-        
+		
       var responseText = request.transport.responseText;
       if("" == responseText.strip()) return true;
       metadata._error = responseText;
@@ -6760,10 +6764,11 @@ Validation.addAllThese([
       var dateFormat = args.singleArgument || 'yyyy-MM-dd';
       metadata._error = ValidationUtils.format(Validator.messages[metadata.className],[dateFormat,dateFormat.replace('yyyy','2006').replace('MM','03').replace('dd','12')]);
       return ValidationUtils.isDate(v,dateFormat);
-    }], 
+    }],	
   ['validate-integer',/^[-+]?[1-9]\d*$|^0$/],
   ['validate-ip',/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/],
-  //娑擃厼娴楅惄绋垮彠妤犲矁鐦夊鈧慨锟?  ['validate-id-number',function(v,elm,args,metadata) {
+  //中国相关验证开始
+  ['validate-id-number',function(v,elm,args,metadata) {
       if(!(/^\d{17}(\d|x)$/i.test(v) || /^\d{15}$/i.test(v))) return false;
       var provinceCode = parseInt(v.substr(0,2));
       if((provinceCode < 11) || (provinceCode > 91)) return false;
@@ -6784,23 +6789,23 @@ Validation.addAllThese([
   ['validate-mobile-phone',/(^0?[1][35][0-9]{9}$)/],
   ['validate-zip',/^[1-9]\d{5}$/],
   ['validate-qq',/^[1-9]\d{4,8}$/],
-    
+	
   //javaeye added
   ['validate-richeditor', function(v, elm) {
       if(editor.mode == "rich") {
-        v = tinyMCE.activeEditor.getContent().stripTags().replace(/&nbsp;/g,' ');   
+        v = tinyMCE.activeEditor.getContent().stripTags().replace(/&nbsp;/g,' ');	
       }
-      return !((v == null) || (v.length == 0) || /^[\s|\u3000]+$/.test(v));         
+      return !((v == null) || (v.length == 0) || /^[\s|\u3000]+$/.test(v));			
     },{ignoreEmptyValue:false}],
-    
+	
   ['bad-words', function(v) {
       for (var i=0; i < Validator.bad_words.length; i++) {
         var m = v.match(Validator.bad_words[i]);
         if (m) {
-          alert("ITeye閸欐垼鍒涢幓鎰仛\n\nITeye缂冩垹鐝稉宥呭帒鐠佸憡鍋嶆担璺ㄦ暏 \"" + m[0] + "\" 鏉╂瑦鐗遍惃鍕槤濮瑰洤褰傜拹杈剧磼\n\n閹劌绶㈤崣顖濆厴鏉╂繂寮芥禍鍡欑秹缁旀瑨顫夐崚娆欑礉鐠囪渹绮╃紒鍡涙鐠囪鑻熼柆闈涚暓缂冩垹鐝憴鍕灟閿涘苯鎯侀崚娆忕殺鐞氼偅澧搁崚鍡楀灩鐠愭番鈧繐n\n");
+          alert("ITeye发贴提示\n\nITeye网站不允许您使用 \"" + m[0] + "\" 这样的词汇发贴！\n\n您很可能违反了网站规则，请仔细阅读并遵守网站规则，否则将被扣分删贴。\n\n");
           return false;
         }}
-      return true;      
+      return true;		
     }],
   ['validate-combobox', function(v, elm, args) {
       var v = $F(args[0]);
@@ -6812,7 +6817,7 @@ Validation.addAllThese([
    * Example: max-tag-3
    */
   ['max-tag', function(v, elm, args){
-    return v.replace(/^\s+|\s+$/g, '').split(/,\s*|閿涘s*/).length <= parseInt(args[0]);
+    return v.replace(/^\s+|\s+$/g, '').split(/,\s*|，\s*/).length <= parseInt(args[0]);
   }]
 ]);
 String.prototype.trim = function() {return this.replace(/^\s+|\s+$/g, '');};
@@ -6824,11 +6829,11 @@ function multiple_upload_attachment(ele, max_size) {
   if (multiple_upload_attachment_counter >= max_size) ele.disabled = true;
 }
 
-var attachment_template = new Template('<table><tr><th>閺傚洣娆?</th><td><span>#{filename}</span><span class="more"><a href="#" class="delete">閸掔娀娅?/a></span><div class="clear"></div></td></tr><tr><th>閹诲繗鍫?</th><td><textarea name="attachments[][remark]" cols="" rows=""></textarea></td></tr></table>');
+var attachment_template = new Template('<table><tr><th>文件:</th><td><span>#{filename}</span><span class="more"><a href="#" class="delete">删除</a></span><div class="clear"></div></td></tr><tr><th>描述:</th><td><textarea name="attachments[][remark]" cols="" rows=""></textarea></td></tr></table>');
 
 function addAttachmentDiv(ele, max_size) {
   if (!$A(['jpg','jpeg','bmp','png','gif','rar','zip', 'tar', 'gz', 'jar', 'war', 'bz2', '7z']).any(function(extName){return new RegExp('\\.'+extName+'$','i').test(ele.value);})){
-    alert("婵″倹鐏夐幃銊ょ瑐娴肩姴娴橀悧鍥风礉鐠囪渹绗傛导鐕G閵嗕竻MP閵嗕赋NG閹存牞鈧尀IF閺嶇厧绱￠惃鍕禈閻楀槹n婵″倹鐏夐幃銊ょ瑐娴肩娀妾禒璁圭礉鐠囧嘲鍘涢崢瀣級閸愬秳绗傛导锟?);
+    alert("如果您上传图片，请上传JPG、BMP、PNG或者GIF格式的图片\n如果您上传附件，请先压缩再上传");
       return false;
   }
 
@@ -6865,7 +6870,7 @@ function multiple_upload_picture(ele, max_size, tags) {
 
 function addPictureDiv(ele, max_size, tags) {
   if (!$A(['jpg','jpeg','bmp','png','gif']).any(function(extName){return new RegExp('\\.'+extName+'$','i').test(ele.value);})){
-    alert("閹劋绗傛导鐘垫畱閸ュ墽澧栭弽鐓庣础娑撳秵鏁幐渚婄礉鐠囬攱鍋嶆稉濠佺炊JPG閵嗕竻MP閵嗕赋NG閹存牞鈧尀IF閺嶇厧绱￠惃鍕禈閻楋拷");
+    alert("您上传的图片格式不支持，请您上传JPG、BMP、PNG或者GIF格式的图片");
     return false;
   }
   
@@ -6875,12 +6880,12 @@ function addPictureDiv(ele, max_size, tags) {
   try {file_name = ele.value.match(/(.*)[\/\\]([^\/\\]+)\.\w+$/)[2];} catch(e) {} 
   var tag_select = "";
   if(tags.length > 0) {
-    var tag_select = "<select onchange='Element.previous($(this)).value = this.value;'><option value=''>闁瀚ㄥ鍙夋箒閺嶅洨顒?/option>";
+    var tag_select = "<select onchange='Element.previous($(this)).value = this.value;'><option value=''>选择已有标签</option>";
     for (var i = 0; i < tags.length; i++)
       tag_select += "<option value='" + tags[i] + "'>" + tags[i] + "</option>";
     tag_select += "</select>";
   }
-  var div = new Element("div").update("<ul><li>閺傚洣娆? " + ele.value + " <a href='#' onclick='removePictureDiv(this, \"" + ele.id + "\");return false;'>閸掔娀娅?/a></li><li>閸氬秶袨: <input type='text' name='pictures[][name]' value='" + file_name + "' size='50' class='text'/></li><li>閹诲繗鍫? <textarea name='pictures[][description]' style='width:400px;height:80px;'></textarea></li></ul>");
+  var div = new Element("div").update("<ul><li>文件: " + ele.value + " <a href='#' onclick='removePictureDiv(this, \"" + ele.id + "\");return false;'>删除</a></li><li>名称: <input type='text' name='pictures[][name]' value='" + file_name + "' size='50' class='text'/></li><li>描述: <textarea name='pictures[][description]' style='width:400px;height:80px;'></textarea></li></ul>");
   var new_input = new Element("input", {type: "file", name: ele.name, id: ele.id, disabled: multiple_upload_picture_counter >= max_size});
   
   Event.observe(new_input, 'change', function() {
@@ -6935,7 +6940,7 @@ function fix_image_size(images, maxW) {
         var h = img.height;
         if (w > maxW) {
           var f = 1-((w - maxW) / w);
-          img.title = "閻愮懓鍤弻銉ф箙閸樼喎顫愭径褍鐨崶鍓у";
+          img.title = "点击查看原始大小图片";
           img.addClassName("magplus");
           img.onclick = function() {window.open(this.src);};
           img.width = w * f;
@@ -6962,13 +6967,13 @@ function highlight_suggested_tags(tags) {
 }
 
 function extract_tag_list(value) {
-    var tags = value.trim().split(/,\s*|閿涘s*/).without('');
+    var tags = value.trim().split(/,\s*|，\s*/).without('');
     highlight_suggested_tags(tags);
     tag_list = tags.map(function(tag) { 
         return "<span>" + tag + "</span>";
     }).join('');
     if (!tag_list.empty()) {
-        tag_list = '瑜版挸澧犻弽鍥╊劮閿涳拷' + tag_list;
+        tag_list = '当前标签：' + tag_list;
     }
     if ($("current_tags_panel") !== null) {
         $("current_tags_panel").update(tag_list);
@@ -6991,7 +6996,7 @@ function trigger_suggested_tag() {
   var current_value = tag_list_input.value.trim();
   if (this.hasClassName('added')) {
     var tag_regex = new RegExp('^' + this.text + '$', 'i')
-    tag_list_input.value = current_value.split(/,\s*|閿涘s*/).findAll(function(tag){
+    tag_list_input.value = current_value.split(/,\s*|，\s*/).findAll(function(tag){
       tag = tag.trim();
       if (tag !== '' && !tag_regex.match(tag)) {
         return true;
@@ -7117,7 +7122,7 @@ document.observe("dom:loaded",function(){
       event.stop();
     } else if (el = event.findElement('#my_resume .control .edit')){
       if($('profile_invalid_flag') && !(/myresume\/edit$/.test(el['href']))){
-        alert("娑擃亙姹夌挧鍕灐娑撳秴鐣弫锟?鐠囧嘲鍘涚€瑰苯鏉芥稉顏冩眽鐠у嫭鏋?);
+        alert("个人资料不完整,请先完善个人资料");
       }else{
         new Ajax.Request(el['href'], {
           method: 'get',
@@ -7128,7 +7133,7 @@ document.observe("dom:loaded",function(){
       }
       event.stop();
     } else if (el = event.findElement('.work_exp > .del_work a.del')){
-      if(confirm("绾喖鐣剧憰浣稿灩闂勩倛顕氬銉ょ稊缂佸繘鐛欓崥妤嬬吹")){
+      if(confirm("确定要删除该工作经验吗？")){
         if(/\#$/.test(el['href'])){
           el.up('.work_exp').remove();
         } else {
@@ -7142,7 +7147,7 @@ document.observe("dom:loaded",function(){
       }
       event.stop();
     } else if(el = event.findElement('.project_exp > .del_project a.del')) {
-      if(confirm("绾喖鐣剧憰浣稿灩闂勩倛顕氭い鍦窗缂佸繘鐛欓崥妤嬬吹")){
+      if(confirm("确定要删除该项目经验吗？")){
         if(/\#$/.test(el['href'])){
           el.up('.project_exp').remove();
         } else {
@@ -7156,7 +7161,7 @@ document.observe("dom:loaded",function(){
       }
       event.stop();
     } else if(el = event.findElement('.edu_exp a.del')){
-      if(confirm("绾喖鐣剧憰浣稿灩闂勩倕鎮ч敍锟?)){
+      if(confirm("确定要删除吗？")){
         if(/\#$/.test(el['href'])){
           el.up('.edu_exp').remove();
         } else {
@@ -7170,7 +7175,7 @@ document.observe("dom:loaded",function(){
       }
       event.stop();
     } else if (el = event.findElement('.skills a.del')){
-      if(confirm("绾喖鐣剧憰浣稿灩闂勩倛顕氶幎鈧懗钘夋偋閿涳拷")){
+      if(confirm("确定要删除该技能吗？")){
         if(/\#$/.test(el['href'])){
           el.up('li').remove();
         } else {
@@ -7191,7 +7196,7 @@ document.observe("dom:loaded",function(){
       }
       event.stop();
     } else if (el = event.findElement('.languages a.del')) {
-      if (confirm("绾喖鐣剧憰浣稿灩闂勩倛顕氱拠顓狀潚閸氾拷?")) { 
+      if (confirm("确定要删除该语种吗?")) { 
         if(/\#$/.test(el['href'])){
           el.up('li').remove();
         }else{
@@ -7246,7 +7251,7 @@ document.observe("dom:loaded",function(){
     if(select = event.findElement('#my_resume .skills .title .skill_option_one')){
       var two_elem = select.next();
       var skill_title = '';
-      if('閹靛濮╁ǎ璇插' == select['value']){
+      if('手动添加' == select['value']){
         two_elem.replace('<input class="skill_option_two" name="skill_option_two" style="width:80px;" type="text">');
       }else{
         if(two_elem.nodeName.toUpperCase() == "SELECT"){
@@ -7271,7 +7276,7 @@ document.observe("dom:loaded",function(){
         select_elem['name'] = 'resume[languages]['+ select['value'] +'][]';
       });
     }else if(select = (event.findElement('#my_resume .work_exp select.company_industry') || event.findElement('#company_industry_search'))){
-      if(select['value'] == '閸忚泛鐣?){
+      if(select['value'] == '其它'){
          var elem_str = "<input type='text' class='input_1 required' style='margin-left: 10px;' name='" + select['name'] + "' />"
          if(select['id'] == 'company_industry_search'){elem_str = "<input type='text' class='text' style='margin-left: 10px;' name='" + select['name'] + "' />"}
          select.insert({'after': elem_str});
@@ -7284,7 +7289,7 @@ document.observe("dom:loaded",function(){
         }
       }
     }else if(select = event.findElement('#skills_search')){
-      if(select['value'] == '閸忚泛鐣?){
+      if(select['value'] == '其它'){
         select.insert({'after': "<input type='text' class='text' style='margin-left:10px;' name='"+ select['name'] +"' />"})
         select['name'] = '';
       }else{
@@ -7319,7 +7324,7 @@ function del_vote_option(vote_option){
   var tr2 = tr1.next();
   var vote_option_url = vote_option.getAttribute('url');
   if(vote_option_url){
-    if(confirm('閹卞海鏁?婵″倹濮囩粊銊┾偓澶愩€嶆稉瀣箒瀵板牆顦块幎鏇犮偍,娴兼艾鍨归梽銈呭従閹碘偓閺堝濮囩粊锟?閼板苯顤冮崝鐘虫箛閸斺€虫珤閸樺濮?)){
+    if(confirm('慎用,如投票选项下有很多投票,会删除其所有投票,而增加服务器压力')){
     new Ajax.Request(vote_option_url, {
         method: 'delete',
         onSuccess: function(transport){ tr1.remove(); tr2.remove();}
@@ -7487,100 +7492,100 @@ Ajax.JSONResponse = Class.create({
     var Render = {
       summary_names : function(names) {
         if (names.length > 3) {
-          return new Template('#{names}閸滃苯褰熸径锟?{other}娴滐拷').evaluate({
-            'names' : names.clone().splice(0,3).join('閿涳拷'), 'other' : names.length - 3
+          return new Template('#{names}和另外#{other}人').evaluate({
+            'names' : names.clone().splice(0,3).join('，'), 'other' : names.length - 3
           });
         } else {
-          return names.join('閿涳拷');
+          return names.join('，');
         }
       },
 
       template_blog_comment : function(notification) {
-        this.render_comments_common_template(notification, 'blog', '閸ョ偛顦叉禍鍡樺亶閻ㄥ嫬宕ョ€广垺鏋冪粩锟?);
+        this.render_comments_common_template(notification, 'blog', '回复了您的博客文章');
       },
 
       template_blog_comment_other : function(notification) {
-        this.render_comments_common_template(notification, 'blog', '閸ョ偛顦叉禍鍡樺亶閸ョ偛顦叉潻鍥╂畱閸楁艾顓归弬鍥╃彿');
+        this.render_comments_common_template(notification, 'blog', '回复了您回复过的博客文章');
       },
 
       template_topic_post : function(notification) {
-        this.render_comments_common_template(notification, 'topic', '閸ョ偛顦叉禍鍡樺亶閻ㄥ嫯顔戦崸娑楀瘜妫帮拷', 'posts');
+        this.render_comments_common_template(notification, 'topic', '回复了您的论坛主题', 'posts');
       },
 
       template_topic_post_other : function(notification) {
-        this.render_comments_common_template(notification, 'topic', '閸ョ偛顦叉禍鍡樺亶閸ョ偛顦叉潻鍥╂畱鐠佸搫娼ф稉濠氼暯', 'posts');
+        this.render_comments_common_template(notification, 'topic', '回复了您回复过的论坛主题', 'posts');
       },
 
       template_group_topic_post : function(notification) {
-        this.render_comments_common_template(notification, 'topic', '閸ョ偛顦叉禍鍡樺亶閻ㄥ嫮鍏㈢紒鍕瘜妫帮拷', 'posts');
+        this.render_comments_common_template(notification, 'topic', '回复了您的群组主题', 'posts');
       },
 
       template_group_topic_post_other : function(notification) {
-        this.render_comments_common_template(notification, 'topic', '閸ョ偛顦叉禍鍡樺亶閸ョ偛顦叉潻鍥╂畱缂囥倗绮嶆稉濠氼暯', 'posts');
+        this.render_comments_common_template(notification, 'topic', '回复了您回复过的群组主题', 'posts');
       },
 
       template_news_comment: function(notification) {
-        this.render_comments_common_template(notification, 'news', '鐠囧嫯顔戞禍鍡樺亶閻ㄥ嫯绁拋顖涙瀮缁旓拷');
+        this.render_comments_common_template(notification, 'news', '评论了您的资讯文章');
       },
 
       template_news_comment_other: function(notification) {
-        this.render_comments_common_template(notification, 'news', '鐠囧嫯顔戞禍鍡樺亶鐠囧嫯顔戞潻鍥╂畱鐠у嫯顔嗛弬鍥╃彿');
+        this.render_comments_common_template(notification, 'news', '评论了您评论过的资讯文章');
       },
 
       template_essence_comment: function(notification) {
-        this.render_comments_common_template(notification, 'essence', '鐠囧嫯顔戞禍鍡樺亶閻ㄥ嫮绨块崡搴㈡瀮缁旓拷');
+        this.render_comments_common_template(notification, 'essence', '评论了您的精华文章');
       },
 
       template_essence_comment_other: function(notification) {
-        this.render_comments_common_template(notification, 'essence', '鐠囧嫯顔戞禍鍡樺亶鐠囧嫯顔戞潻鍥╂畱缁儳宕曢弬鍥╃彿');
+        this.render_comments_common_template(notification, 'essence', '评论了您评论过的精华文章');
       },
 
       template_problem_solution: function(notification) {
-        this.render_comments_common_template(notification, 'problem', '閸ョ偟鐡熸禍鍡樺亶閻ㄥ嫰妫舵０锟?, 'solutions');
+        this.render_comments_common_template(notification, 'problem', '回答了您的问题', 'solutions');
       },
 
       template_problem_solution_other: function(notification) {
-        this.render_comments_common_template(notification, 'problem', '閸ョ偟鐡熸禍鍡樺亶閸ョ偟鐡熸潻鍥╂畱闂傤噣顣?, 'solutions');
+        this.render_comments_common_template(notification, 'problem', '回答了您回答过的问题', 'solutions');
       },
 
       template_problem_solution_follow: function(notification) {
-        this.render_comments_common_template(notification, 'problem', '閸ョ偟鐡熸禍鍡樺亶閸忚櫕鏁為惃鍕６妫帮拷', 'solutions');
+        this.render_comments_common_template(notification, 'problem', '回答了您关注的问题', 'solutions');
       },
 
       template_problem_comment: function(notification) {
-        this.render_comments_common_template(notification, 'problem', '鐠囧嫯顔戞禍鍡樺亶閻ㄥ嫰妫舵０锟?, 'comments');
+        this.render_comments_common_template(notification, 'problem', '评论了您的问题', 'comments');
       },
 
       template_problem_comment_follow: function(notification) {
-        this.render_comments_common_template(notification, 'problem', '鐠囧嫯顔戞禍鍡樺亶閸忚櫕鏁為惃鍕６妫帮拷', 'comments');
+        this.render_comments_common_template(notification, 'problem', '评论了您关注的问题', 'comments');
       },
 
       template_problem_follow: function(notification) {
-        this.render_comments_common_template(notification, 'problem', '閸忚櫕鏁炴禍鍡樺亶閻ㄥ嫰妫舵０锟?, 'follows');
+        this.render_comments_common_template(notification, 'problem', '关注了您的问题', 'follows');
       },
 
       template_solution_comment: function(notification) {
-        this.render_comments_common_template(notification, 'solution', '鐠囧嫯顔戞禍鍡樺亶閻ㄥ嫬娲栫粵锟?, 'comments');
+        this.render_comments_common_template(notification, 'solution', '评论了您的回答', 'comments');
       },
 
       template_event_comment: function(notification) {
-        this.render_comments_common_template(notification, 'event', '鐠囧嫯顔戞禍鍡樺亶閻ㄥ嫭妞块崝锟?, 'comments');
+        this.render_comments_common_template(notification, 'event', '评论了您的活动', 'comments');
       },
 
       template_event_comment_other: function(notification) {
-        this.render_comments_common_template(notification, 'event', '鐠囧嫯顔戞禍鍡樺亶鐠囧嫯顔戞潻鍥╂畱濞茶濮?, 'comments');
+        this.render_comments_common_template(notification, 'event', '评论了您评论过的活动', 'comments');
       },
 
       template_event_comment_member: function(notification) {
-        this.render_comments_common_template(notification, 'event', '鐠囧嫯顔戞禍鍡樺亶閸欏倷绗岄惃鍕た閸旓拷', 'comments');
+        this.render_comments_common_template(notification, 'event', '评论了您参与的活动', 'comments');
       },
 
       template_page_comment: function(notification) {
-        this.render_comments_common_template(notification, 'page', '鐠囧嫯顔戞禍鍡樺亶閻ㄥ嫮鐓＄拠鍡楃氨', 'comments');
+        this.render_comments_common_template(notification, 'page', '评论了您的知识库', 'comments');
       },
 
       template_page_comment_other: function(notification) {
-        this.render_comments_common_template(notification, 'page', '鐠囧嫯顔戞禍鍡樺亶鐠囧嫯顔戞潻鍥╂畱閻儴鐦戞惔锟?, 'comments');
+        this.render_comments_common_template(notification, 'page', '评论了您评论过的知识库', 'comments');
       },
 
       render_comments_common_template : function(notification, subject, title, comments) {
@@ -7594,20 +7599,20 @@ Ajax.JSONResponse = Class.create({
         var detail_items = new Element('div', {'class' : 'detail_items'});
         notification[comments].each(function(comment, index) {
           if (index > 2) {
-            var template = new Template('<div class="notification_detail_item clearfix" style="display:none;"><span class="left"><a href="#{user_url}" target="_blank">#{user_name}</a>閿涳拷#{body} </span><span class="time">#{time}</span></div>')
+            var template = new Template('<div class="notification_detail_item clearfix" style="display:none;"><span class="left"><a href="#{user_url}" target="_blank">#{user_name}</a>：#{body} </span><span class="time">#{time}</span></div>')
           } else {
-            var template = new Template('<div class="notification_detail_item clearfix"><span class="left"><a href="#{user_url}" target="_blank">#{user_name}</a>閿涳拷#{body}</span> <span class="time">#{time}</span></div>')
+            var template = new Template('<div class="notification_detail_item clearfix"><span class="left"><a href="#{user_url}" target="_blank">#{user_name}</a>：#{body}</span> <span class="time">#{time}</span></div>')
           }
           detail_items.insert(template.evaluate({
             user_url : comment.user.url, user_name : comment.user.name, body : comment.body, time : comment.created_at
           }));
           if (comment.url) {
-            var comment_link = ' <a target="_blank" href="' + comment.url + '">閺屻儳婀?/a>';
+            var comment_link = ' <a target="_blank" href="' + comment.url + '">查看</a>';
             detail_items.select(":last-child .left")[0].insert(comment_link);
           }
           if (index === 2 && notification[comments].length > 3) {
             var actions = new Element('div', {'class' : 'notification_detail_item clearfix'});
-            var show_all = new Element('a', {'class': 'show_all'}).update('閺屻儳婀呴崣锕€顦?+ (notification[comments].length - 3) + '閺夛拷' );
+            var show_all = new Element('a', {'class': 'show_all'}).update('查看另外'+ (notification[comments].length - 3) + '条' );
             show_all.observe('click', function(ev) {
               this.up().siblings().each(Element.show);
               this.up().hide();
@@ -7622,7 +7627,7 @@ Ajax.JSONResponse = Class.create({
 
       template_subscription: function(notification) {
         var names = notification.subscribers.map(function(subscriber) {return subscriber.name;}).uniq();
-        var summary = new Template('#{names}閸忚櫕鏁炴禍鍡樺亶').evaluate({
+        var summary = new Template('#{names}关注了您').evaluate({
           names : this.summary_names(names)
         });
 
@@ -7755,8 +7760,8 @@ Ajax.JSONResponse = Class.create({
 
     function init_detail_paginate() {
       var paginate = new Element('span', {'class' : 'paginate'});
-      var prev = new Element('a', {id : 'prev_button'}).update('閳ワ拷 娑撳﹣绔撮弶锟?);
-      var next = new Element('a', {id : 'next_button'}).update('娑撳绔撮弶锟?閳ワ拷');
+      var prev = new Element('a', {id : 'prev_button'}).update('‹ 上一条');
+      var next = new Element('a', {id : 'next_button'}).update('下一条 ›');
       next.observe('click', function(ev) {
         if (!this.hasClassName('disable')){
           next_detail();
@@ -7847,12 +7852,12 @@ Ajax.JSONResponse = Class.create({
     function init_notification_menu() {
       notifications_menu = new Element('div', {'id': 'notifications_menu'});
       notifications_summary = new Element('div', {'id': 'notifications_summary'});
-      notifications_summary.update('<div class="menu_title clearfix"><span class="title">閹绘劙鍟?/span><span class="all"><a href="http://my.iteye.com/notifications">閺屻儳婀呴幍鈧張锟?绂?/a></span></div>');
+      notifications_summary.update('<div class="menu_title clearfix"><span class="title">提醒</span><span class="all"><a href="http://my.iteye.com/notifications">查看所有 »</a></span></div>');
       notifications_menu.insert(notifications_summary);
 
       notifications_detail = new Element('div', {'id': 'notifications_detail'});
       var detail_menu_title = new Element('div', {'class' : 'menu_title clearfix'});
-      var return_button = new Element('span', {'class' : 'return left'}).update('鑺?鏉╂柨娲栭柅姘辩叀閸掓銆?);
+      var return_button = new Element('span', {'class' : 'return left'}).update('« 返回通知列表');
       detail_menu_title.insert(return_button).insert(init_detail_paginate());
 
       return_button.observe('click', function(ev) {
@@ -7914,7 +7919,7 @@ Ajax.JSONResponse = Class.create({
           };
         });
       } else {
-        notifications_summary.insert('<div class="notification_summary">瑜版挸澧犲▽鈩冩箒閹绘劙鍟嬫穱鈩冧紖</div>');
+        notifications_summary.insert('<div class="notification_summary">当前没有提醒信息</div>');
       }
     }
 
@@ -7922,9 +7927,9 @@ Ajax.JSONResponse = Class.create({
       unread_count = count;
       notifications_count.update(unread_count);
       if (count > 0) {
-        notifications_count.addClassName('new_notice').writeAttribute('title', '閺堬拷' + count + '閺夆剝婀拠缁樼Х閹拷');
+        notifications_count.addClassName('new_notice').writeAttribute('title', '有' + count + '条未读消息');
       } else {
-        notifications_count.removeClassName('new_notice').writeAttribute('title', '濞屸剝婀侀張顏囶嚢濞戝牊浼?);
+        notifications_count.removeClassName('new_notice').writeAttribute('title', '没有未读消息');
       }
     }
 
@@ -7939,7 +7944,7 @@ Ajax.JSONResponse = Class.create({
     }
 
     function update_notifications() {
-      var loading = new Element('div', {id : 'notifications_loading'}).update('鏉炶棄鍙嗘稉锟?..');
+      var loading = new Element('div', {id : 'notifications_loading'}).update('载入中...');
       notifications_menu.insert({top: loading});
       new Ajax.Request('/notifications.json', {
         method: "get",
@@ -8143,7 +8148,9 @@ document.observe("dom:loaded", function() {(function() {
         var notice_action = new NoticeAction(this);
         notice_action.show(params);
       },
-      //濡偓濞村缍嬮崜宥嗘Ц閸氾附婀佺仦鍌氭躬閺勫墽銇氭稉锟?娴犮儳鈥樼€规碍妲搁崥锕佺箥鐞涘畱lean閸滃how娴犺濮?      //鏉╂柨娲杅alse鐞涖劎銇氶張澶夋崲閸斅ょ箻鐞涘奔鑵?娑撳秵绔婚悶鍡楁嫲閺勫墽銇?      //this._is_show鐞涖劎銇氶弰顖氭儊閺勫墽銇氶弬鎵畱鐏烇拷
+      //检测当前是否有层在显示中,以确定是否运行clean和show任务
+      //返回false表示有任务进行中,不清理和显示
+      //this._is_show表示是否显示新的层
       _check: function() {
         this._is_show = false;
         var action_type = this._event_element.readAttribute('data_action_type');
@@ -8153,10 +8160,11 @@ document.observe("dom:loaded", function() {(function() {
         case 'dropdown':
           var dropdown_status = this.get_dropdown_status();
           var dropdown_current = this.get_dropdown_current();
-          if (dropdown_status == undefined) { //瑜版挸澧犲▽鈩冩箒娑撳濯虹仦锟?            this._is_show = true;
-          } else if (dropdown_status == 'showed' && dropdown_current.event_element() != this._event_element) { //瑜版挸澧犻張澶夌瑓閹峰鐪?娴ｅ棝娓剁憰浣规▔缁€鐑樻煀閻ㄥ嫪绗呴幏澶婄湴
+          if (dropdown_status == undefined) { //当前没有下拉层
             this._is_show = true;
-          } else if (dropdown_status == 'showing') { //閺堝鎹㈤崝陇绻樼悰灞艰厬
+          } else if (dropdown_status == 'showed' && dropdown_current.event_element() != this._event_element) { //当前有下拉层,但需要显示新的下拉层
+            this._is_show = true;
+          } else if (dropdown_status == 'showing') { //有任务进行中
             return false;
           }
           break;
@@ -8243,7 +8251,7 @@ document.observe("dom:loaded", function() {(function() {
             this._event_element.up(2).addClassName('action_bg');
             var img_elem = this._event_element.down();
             this._event_element.update(img_elem);
-            this._event_element.appendChild(document.createTextNode('閺€鎯版崳鐠囧嫯顔?));
+            this._event_element.appendChild(document.createTextNode('收起评论'));
 
             this._event_element.up(2).insert({
               after: transport.responseText
@@ -8260,8 +8268,8 @@ document.observe("dom:loaded", function() {(function() {
         var comments_count = this._event_element.readAttribute('data_comments_count');
         comments_count = Number(comments_count);
         var comments_count_text;
-        if (comments_count > 0) comments_count_text = document.createTextNode(comments_count + '閺壜ょ槑鐠侊拷');
-        else comments_count_text = document.createTextNode('濞ｈ濮炵拠鍕啈');
+        if (comments_count > 0) comments_count_text = document.createTextNode(comments_count + '条评论');
+        else comments_count_text = document.createTextNode('添加评论');
         this._event_element.appendChild(comments_count_text);
         this._event_element.up(2).next().remove();
         this._ask_page_action.set_dropdown_status(undefined);

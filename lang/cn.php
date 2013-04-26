@@ -113,10 +113,10 @@ return array(
 'TaskFeature' => '新功能',
 
 /* 话题相关 */
-'Publish New Topic' => '发布新文章',
-'DelTopic' => '删除该文章',
-'EditTopic' => '编辑该文章',
-'UpdateTopic' => '更新该文章',
+'Publish New Topic' => '发布新话题',
+'DelTopic' => '删除话题',
+'EditTopic' => '编辑话题',
+'UpdateTopic' => '更新话题',
 
 /* 问题相关 */
 'NewIssues' =>  '创建新问题',
