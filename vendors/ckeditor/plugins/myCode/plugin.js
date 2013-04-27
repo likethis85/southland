@@ -32,7 +32,14 @@ CKEDITOR.plugins.add( 'myCode', {
                     }
                 ],
                 onOk : function(){
-                    this. divELM = editor.document.createElement( 'div' );
+                    cb = this.getContentElement('addCode', 'codeblock').getValue();
+                    ct = this.getContentElement('addCode', 'codetype').getValue();
+                    ELM_div = '<div style="clear:both;border:1px solid green;background:AliceBlue;"><pre class="'+
+                                ct+
+                               '" name="code">'+
+                                cb+
+                               '</pre></div>';
+                    editor.insertHtml(ELM_div, 'unfiltered_html');
                 }
             };
         });
