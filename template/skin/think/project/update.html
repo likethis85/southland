@@ -20,13 +20,13 @@
     	<div style="margin-left:26px;">
     		<div style="margin-bottom:8px">
     		    <label style="margin-right:12px;" for="subject"><{T w='ProjectTitle'}></label>
-    		    <input name="title" id="title" type="text" value="<{$tProjects[$tCurrProj].title}>" style="width:490px"/>
+    		    <input name="title" id="title" type="text" value="<{$tProject.title}>" style="width:490px"/>
     		</div>
     		<div>
     		    <label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label>
-    			<textarea id="projDesc" name="projDesc"><{$tProjects[$tCurrProj].description}></textarea>
+    			<textarea id="projDesc" name="projDesc"><{$tProject.description}></textarea>
     			<input type="submit" class="btn-rounded" value="<{T w='UpdateProject}>" />
-    			<input name="submitupdate" type="hidden" id="submitupdate" value="1" />
+    			<input name="submit" type="hidden" id="submit" value="1" />
     		</div>
     	</div>
     	</form>

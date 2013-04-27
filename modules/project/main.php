@@ -8,43 +8,37 @@ class main extends general
 		    $this->setUsingProject(0);
 			$this->display(WORKSPACE.'/create.html');
 		} else {
-			$objModel = spClass('projectModel');
 			$data = array(
 				'uid' => spClass('spSession')->getUser()->getUserId(),
 				'title' => $this->spArgs('title'),
 				'description'=> $this->spArgs('projDesc')
 			);
-			$nid = $objModel->create($data);
-			if($nid !== false) {
-				if(is_array($nid))
-					$nid = $nid['id'];
-				spClass('userorgModel')->addProjectManager($nid, $data['uid']);
-				$this->setUsingProject($nid);
-				$this->jumpProjectPage();
-			}
+            $nid = spClass('projectModel')->create($data);
+            if($nid === false)
+                spClass('keeper')->speak(T('Error DB operation failed'), '/index.php');
+            else {
+                spClass('spSession')->getUser()->setCurrentProject($nid);
+                spClass('userorgModel')->addProjectCreator($nid,spClass('spSession')->getUser()->getUserId());
+               $this->jumpProjectPage();
+            }
 		}
 	}
 
     public function update() {
-		$update = $this->spArgs('submitupdate'); 
+		$update = $this->spArgs('submit'); 
 		if(empty($update)) {
 			$this->display(WORKSPACE.'/update.html');
 		} else {
 			$objModel = spClass('projectModel');
             $condition = array(
-				'id' => $this->spArgs('id'),
+				'id' => $this->tCurrProj
             );
 			$data = array(
 				'title' => $this->spArgs('title'),
 				'description'=> $this->spArgs('projDesc')
 			);
 			$nid = $objModel->update($condition, $data);
-			if($nid !== false) {
-				if(is_array($nid))
-					$nid = $nid['id'];
-				$this->SetUsingProject($nid);
-				$this->jumpProjectPage();
-			}
+            $this->jumpProjectPage();
 		}
     }
 

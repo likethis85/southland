@@ -18,8 +18,12 @@ class userorgModel extends spModel
 	var $role_qa_manager = 5;
     var $role_dev_member = 6;
     var $role_qa_member = 7;
-	
+    var $role_project_creator = 8;
+
 	// project related
+    public function addProjectCreator($pid,$uid) {
+        $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_creator));
+    }
 	public function getUsersByProject($pid, $withuser) {
 	    if(true === $withuser) {
 	        $sql = "select a.role,b.nick,b.uid from sc_userorg as a,sc_user as b where a.uid=b.uid and a.sid=$pid and a.scope=".$this->scope_project;

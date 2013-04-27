@@ -13,8 +13,8 @@ class keeper extends general {
         parent::__construct(); // 这是必须的
     }
     
-    public function speak($msg) {
-        $this->tRefUrl = $_SERVER['HTTP_REFERER'];
+     public function speak($msg, $forward=$_SERVER['HTTP_REFERER']) {
+        $this->tRefUrl = $forward;
         $this->tMsg = $msg;
         $this->Display('keeper.html');
         exit;
