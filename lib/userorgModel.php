@@ -26,14 +26,16 @@ class userorgModel extends spModel
     }
 	public function getUsersByProject($pid, $withuser) {
 	    if(true === $withuser) {
-	        $sql = "select a.role,b.nick,b.uid from sc_userorg as a,sc_user as b where a.uid=b.uid and a.sid=$pid and a.scope=".$this->scope_project;
+            $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	        $sql = "select a.role,b.nick,b.uid from ".$prefix."userorg as a,".$prefix."user as b where a.uid=b.uid and a.sid=$pid and a.scope=".$this->scope_project;
 	        return $this->findSql($sql);
 	    } else {
 	        return $this->find(array('scope' => $scope_project, 'sid' => $pid));
 	    }
 	}
 	public function getProjectsByUser($uid) {
-	    $sql = "select a.* from sc_project as a ,sc_userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $sql = "select a.* from ".$prefix."project as a ,".$prefix."userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
 	    return $this->findSql($sql);
 	}
 	public function addDevMember($pid,$uid) {

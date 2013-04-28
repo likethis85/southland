@@ -1,56 +1,18 @@
 <div style="clear:both;margin-left:40px;margin-top:32px;">
-    <script language="javascript" type="text/javascript">
-        $().ready(function(){
-            var hm = new HoverMenu('topicScore');
-            $("a[name='DelWiki']").each(function(){
-                $(this).click(function(){
-                    return confirm('<{T w="Confirm?"}>'+$(this).text());
-                });
-            });
-        });
-    </script>
     <div style="margin-top:16px;height:16px;margin-bottom:16px;">
         <table align="left" cellpadding="0" cellspacing="0">
             <tr>
-                <td><a class="btn-capsule" href="forum.php?c=main&a=publish"><{T w="Publish New Wiki"}></a></td>
+                <td><a class="btn-capsule" href="wiki.php?a=publish"><{T w="Publish New Wiki"}></a></td>
             </tr>
         </table>
         <div style="clear:both;"></div>
     </div>
     
     <table>
-    <{foreach item=item from=$tSubjects}>
+    <{foreach item=item from=$tWikis}>
     <tr>
-        <td>
-            <ul id="topicScore" class="hm_nav">
-                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/topic.png" width=16 height=16></a>
-                <ul class="hm_sub">
-                   <li>
-                        <a href="/forum.php?a=update&id=<{$item.id}>">
-                        <img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16><{T w='EditTopic'}>
-                        </a>
-                   </li>
-                   <li>
-                        <a name='DelWiki' href="/forum.php?a=del&id=<{$item.id}>">
-                        <img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16><{T w='DelWiki'}>
-                        </a>
-                   </li>
-                </ul>
-               </li>
-            </ul>
-        </td>
-        <td><a href="forum.php?a=view&nid=<{$item.id}>"><{$item.subject}></a></td>
+        <td><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></td>
     </tr>
     <{/foreach}>
     </table>
-
-    <script type="text/javascript">
-        ($("div.topic-link")).each(function() {
-            $(this).hover(function() {
-                $(this).children(".operator").show();
-            },function() {
-                $(this).children(".operator").hide();
-            });
-        });
-    </script>
 </div>

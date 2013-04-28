@@ -133,6 +133,10 @@ return array(
 
 /* Wiki */
 'Publish New Wiki'  => '发布新词条',
+'WikiSubject'       => '词条',
+'Keyword'           => '关键字',
+'WikiContent'       => '内容',
+'CreateNewWiki'     => '发布词条',
 
 /* Users */
 'Signon'        =>  '注册',

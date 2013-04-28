@@ -8,28 +8,19 @@ class main extends general
 	
 	function publish()
 	{
-		$submittopic = $this->spArgs("submittopic");
-		if($submittopic == 1)
-		{
-			$data = array(
-			    'prj' => spClass('spSession')->getUser()->getCurrentProject(),
-			    'author' => spClass('spSession')->getUser()->getUserId(),
-				'subject'=>$this->spArgs('subject'),
-				'content'=>$this->spArgs('Artical')
-			);
-			$objMod = spClass('forumModel');
-			$objMod->create($data);
-			$this->jumpTopicPage();
-		}
-		else
-		{
-			$this->display("forum/publish.html");
-		}
+		$submit = $this->spArgs("submit");
+		if( $submit == 1 ){
+            $keywords = split(',',$this->spArgs('kwd'));
+            spClass('wikiModel')->CreateWiki($this->spArgs('subject'), $this->spArgs('WikiContent'), $keywords);
+            $this->jumpWikiPage();
+        } else {
+            $this->display('wiki/add.html');
+        }
 	}
     function update()
 	{
-		$submittopic = $this->spArgs("submit");
-		if($submittopic == 1)
+		$submit = $this->spArgs("submit");
+		if($submit == 1)
 		{
             $condition = array(
                 'id' => $this->spArgs('id')
@@ -38,35 +29,19 @@ class main extends general
 				'subject'=>$this->spArgs('subject'),
 				'content'=>$this->spArgs('Artical')
 			);
-			$objMod = spClass('forumModel');
-			$objMod->update($condition, $data);
-			$this->jumpTopicPage();
+			spClass('forumModel')->update($condition, $data);
+			$this->jumpWikiPage();
 		}
 		else
 		{
             $condition = array(
                 'id' => $this->spArgs('id')
             );
-            $this->tTopic = spClass('forumModel')->find($condition);
-			$this->display("forum/update.html");
+            $this->tWiki = spClass('wikiModel')->find($condition);
+			$this->display("wiki/update.html");
 		}
 	}
     function del() {
-        $id = $this->spArgs('id');
-        if(empty($id))
-            return;
-
-        $condition = array(
-            'id' => $id
-        );
-        spClass('forumModel')->delete($condition);
-
-        $condition = array(
-            'owner' => 'forum',
-            'rid' => $id
-        );
-        spClass('commentModel')->delete($condition);
-        $this->jumpTopicPage();
     }
 
 	function view()
@@ -74,35 +49,6 @@ class main extends general
 		$this->display("wiki/view.html");
 	}
 
-    function cmt() {
-        $id = $this->spArgs('id');
-        if(empty($id)) return;
-        $comment = $this->spArgs('reply');
-        if(empty($comment)) return;
-
-        $sess = spClass('spSession');
-        $data = array(
-                'uid' => $sess->getUser()->getUserId(),
-                'prj' => $sess->getUser()->getCurrentProject(),
-                'owner' => 'forum',
-                'rid' => $id,
-                'content' => $comment
-                );
-        spClass('commentModel')->create($data);
-
-        $nid = 0;
-        foreach($this->tNavigation as $nav) {
-            if($nav['name'] == 'Topic'){
-                $nid = $nav['nid'];
-                break;
-            }
-        }
-        if(empty($nid)) {
-            $this->jumpTopicPage();
-        } else {
-            $this->navi("/forum.php?a=view&nid=$id");
-        }
-    }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}

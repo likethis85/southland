@@ -1,18 +1,15 @@
 <{include file=skin/$skin/header.html}>
     <div style="clear:both;margin-left:32px;margin-top:32px;">
         <script type="text/javascript">
+        jQuery.extend(jQuery.validator.messages, {
+            required:"<span style=\"color:red\">*</span>"
+        });
         $(document).ready(function(){
             CKEDITOR.replace("TaskDesc");
             $("#form").validate({
                 rules:{
                     subject:{required:true}
-                },
-                messages:{
-                    subject:"<{T w='cannot be empty'}>"
                 }
-            });
-            $("#project").change(function(){
-                location.href = "/index.php?c=main&a=project&id="+$("#project").val();
             });
         });
         </script>

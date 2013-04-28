@@ -57,6 +57,8 @@ class main extends general
         $this->tIssues = spClass('issueModel')->getIssues();
     }
     function _wiki() {
+        $this->_project();
+        $this->tWikis = spClass('wikiModel')->getWikis();
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的

@@ -2,16 +2,10 @@
 	<script language="javascript" type="text/javascript">
 	$(document).ready(function(){
         CKEDITOR.replace("projDesc");
-		$("#project").change(function(){
-			location.href = $("#project").val();
-		});
         $("#form").validate({
             rules:{
                 title: {required:true}
             }
-        });
-        $("#project").change(function(){
-            location.href = "/index.php?c=main&a=project&id="+$("#project").val();
         });
 	});
 	</script>
