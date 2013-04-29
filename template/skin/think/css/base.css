@@ -92,3 +92,8 @@ ul.navigator li {
 ul.navigator li.active_nav {
     background:#C00;
 }
+div.box_page {
+    margin-top:16px;
+    height:16px;
+    margin-bottom:16px;
+}

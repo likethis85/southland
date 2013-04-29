@@ -8,11 +8,14 @@
 <div style="margin-left:32px;margin-top:22px;width:600px;">
     <div style="border-bottom:2px solid #e0e0e0;">
         <h1 class="title"><{$tWiki.wiki.subject}></h1>
-        <table><tr><td><{T w='Keyword'}>
-            <{foreach item=item from=$tWiki.keywords}>
-            <td class="keyword"><a href="/wiki.php?a=search&t=<{$item.kwd}>"><{$item.kwd}></a></td>
-            <{/foreach}>
-        </tr></table>
+        <table>
+            <tr>
+                <td><{T w='Keyword'}></td>
+                <{foreach item=item from=$tWiki.keywords}>
+                <td class="keyword"><a href="/wiki.php?a=search&t=<{$item.kwd}>"><{$item.kwd}></a></td>
+                <{/foreach}>
+            </tr>
+        </table>
     </div>
     <div>
         <{$tWiki.wiki.content}>
