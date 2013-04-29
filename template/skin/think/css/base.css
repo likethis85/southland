@@ -38,6 +38,16 @@ a:hover {
     -moz-border-radius: 10px;
     -khtml-border-radius: 10px;
 }
+.keyword {
+    background: #ACD6FF;
+    text-decoration: none;
+    margin: 0 10px 0 10px;
+    padding: 1px 10px;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -khtml-border-radius: 20px;
+}
 .btn-rounded a:link,
 .btn-rounded a:visited,
 .btn-rounded a:hover,

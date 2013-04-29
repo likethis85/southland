@@ -46,6 +46,7 @@ class main extends general
 
 	function view()
 	{
+	    $this->tWiki = spClass('wikiModel')->getWikiDetail($this->spArgs('id'));
 		$this->display("wiki/view.html");
 	}
 

@@ -21,4 +21,11 @@ class keywordsModel extends spModel
 
         return $this->Create($data);
     }
+    
+    public function findForWiki($wid) {
+        return $this->findAll(array(
+                        'scope' => $this->scope_wiki,
+                        'sid ' => $wid)
+                        );
+    }
 }

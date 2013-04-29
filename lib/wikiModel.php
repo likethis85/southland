@@ -21,8 +21,8 @@ class wikiModel extends spModel
         if(false === $wid)
             return false;
 
-        while($kwd = each($kwds)){
-            spClass('keywordsModel')->CreateForWiki($wid, $kwds);
+        foreach($kwds as $kwd){
+            spClass('keywordsModel')->CreateForWiki($wid, $kwd);
         }
 
         return $wid;
@@ -30,5 +30,11 @@ class wikiModel extends spModel
 
     public function getWikis() {
         return $this->findAll(array('prj' => spClass('spSession')->getUser()->getCurrentProject()));
+    }
+    
+    public function getWikiDetail($wid) {
+        $wiki = $this->find(array('id' => $wid));
+        $kwds = spClass('keywordsModel')->findForWiki($wid);
+        return array('wiki' => $wiki, 'keywords' => $kwds);
     }
 }

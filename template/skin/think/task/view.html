@@ -20,7 +20,9 @@
     <table id="box" cellpadding="5" cellspacing="0">
         <tr>
             <td id="content" valign="top">
-                <h1 class="title"><{$tTask.subject}></h1>
+                <div style="border-bottom:2px solid #E0E0E0;">
+                    <h1 class="title"><{$tTask.subject}></h1>
+                </div>
                 <div>
                     <{$tTask.detail}>
                     <div align=right><a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded"><{T w='IssueReport'}></a></div>
@@ -31,7 +33,7 @@
             <td>
                 <div>
                     <{foreach item=item from=$tComments}>
-                    <div style="border-top:solid grey 1px;">
+                    <div style="border-top:solid #E0E0E0 1px;">
                         <div><{$item.content}></div>
                         <div style="text-align:right;"><{$item.addtime}>&nbsp;--&nbsp;<{$item.user.nick}></div>
                     </div>

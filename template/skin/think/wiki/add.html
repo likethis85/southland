@@ -5,7 +5,10 @@
             required:"<span style=\"color:red\">*</span>"
         });
         $(document).ready(function(){
-            CKEDITOR.replace("WikiContent");
+            var editor = CKEDITOR.replace("WikiContent");
+            $('.btn-rounded').click(function(){
+                editor.updateElement();
+            });
             $("#form").validate({
                 rules:{
                     subject:{required:true},
