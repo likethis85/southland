@@ -21,7 +21,7 @@ class issueModel extends spModel
             $condition=array(
                 'prj' => "$projId",
             );
-            return $this->spLinker()->findAll($condition);
+            return $this->findAll($condition);
         } else {
             return array();
         }

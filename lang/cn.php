@@ -130,6 +130,7 @@ return array(
 'IssueOwner'=> '指派给',
 'IssueDate'=>     '发布日期',
 'IssueReport' =>  '报Bug',
+'IssueOperator' => '操作',
 
 /* Wiki */
 'Publish New Wiki'  => '发布新词条',

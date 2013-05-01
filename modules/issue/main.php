@@ -26,7 +26,12 @@ class main extends general
                 'detail'   => $this->spArgs('IssueDesc'),
                 'category' => $this->spArgs('IssueCat')
 			);
-			spClass('issueModel')->create($data);
+			$iid = spClass('issueModel')->create($data);
+			if($iid !== false) {
+			    spClass('userorgModel')->addIssueReporter($iid, spClass('spSession')->getUser()->getUserId());
+			    spClass('userorgModel')->addIssueAssigner($iid, spClass('spSession')->getUser()->getUserId());
+			    spClass('userorgModel')->addIssueOwner($iid, spClass('spSession')->getUser()->getUserId());
+			}
 			$this->jumpIssuePage();
 		} else {
 		    $tid = $this->spArgs('tid');

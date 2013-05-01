@@ -25,12 +25,13 @@ class main extends general
 	    } else {
     		$this->tNid = $this->spArgs("nid");
     		$this->tModule = $this->tNavigation[$this->tNid-1]['module'];
+    		$this->_project();
     		eval('$this->_'.$this->tModule.'();');
     		$this->display("page.html");
     	}
 	}
 	function project() {// 选择项目
-        $this->_project();
+	    $this->_project();
         $this->jumpTaskPage();
 	}
 	function _project() {
@@ -42,22 +43,41 @@ class main extends general
 		}
 	}
 	function _forum(){
-	    $this->_project();
     	$objForum = spClass("forumModel");
         $this->tSubjects = $objForum->getTopics();
 	}
 
     function _task() {
-        $this->_project();
         $objTask = spClass('taskModel');
         $this->tTasks = $objTask->getTasks();
     }
     function _issue() {
-        $this->_project();
+        $uom = spClass('userorgModel');
+        $owners = $uom->getIssueUsers();
         $this->tIssues = spClass('issueModel')->getIssues();
+        $issues = $this->tIssues;
+        foreach($issues as &$issue){
+            foreach($owners as $member){
+                if($member['role']==$uom->role_bug_reporter)
+                    $issue['reporter'] = $member;
+                else if($member['role']==$uom->role_bug_assigner)
+                    $issue['assigner'] = $member;
+                else if($member['role']==$uom->role_bug_owner)
+                    $issue['owner'] = $member;
+            }
+        }
+        $this->tIssues = $issues;
+        unset($issues);
+        
+        $tMembers = array();
+        $members = $uom->getUsersByProject();
+        foreach($members as $member){
+            $tMembers[$member['uid']] = $member;
+        }
+        $this->tMembers = $tMembers;
+        unset($tMembers);
     }
     function _wiki() {
-        $this->_project();
         $this->tWikis = spClass('wikiModel')->getWikis();
     }
 	public function __destruct(){

@@ -10,28 +10,28 @@ class userorgModel extends spModel
 	var $scope_task = 2;
 	var $scope_issue = 3;
 	
-	var $role_member = 0;
-	var $role_dev_owner = 1;
-	var $role_qa_owner = 2;
-	var $role_project_manager = 3;
-	var $role_dev_manager = 4;
-	var $role_qa_manager = 5;
-    var $role_dev_member = 6;
-    var $role_qa_member = 7;
-    var $role_project_creator = 8;
+	var $role_member            = 0;
+	var $role_dev_owner         = 1;
+	var $role_qa_owner          = 2;
+	var $role_project_manager   = 3;
+	var $role_dev_manager       = 4;
+	var $role_qa_manager        = 5;
+    var $role_dev_member        = 6;
+    var $role_qa_member         = 7;
+    var $role_project_creator   = 8;
+    var $role_bug_owner         = 9;
+    var $role_bug_reporter      = 10;
+    var $role_bug_assigner      = 11;
 
 	// project related
     public function addProjectCreator($pid,$uid) {
         $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_creator));
     }
-	public function getUsersByProject($pid, $withuser) {
-	    if(true === $withuser) {
-            $prefix = $GLOBALS['G_SP']['db']['prefix'];
-	        $sql = "select a.role,b.nick,b.uid from ".$prefix."userorg as a,".$prefix."user as b where a.uid=b.uid and a.sid=$pid and a.scope=".$this->scope_project;
-	        return $this->findSql($sql);
-	    } else {
-	        return $this->find(array('scope' => $scope_project, 'sid' => $pid));
-	    }
+	public function getUsersByProject() {
+	    $pid = spClass('spSession')->getUser()->getCurrentProject();
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        $sql = "select a.role,b.nick,b.uid from ".$prefix."userorg as a,".$prefix."user as b where a.uid=b.uid and a.pid=$pid";
+        return $this->findSql($sql);
 	}
 	public function getProjectsByUser($uid) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
@@ -54,7 +54,7 @@ class userorgModel extends spModel
 	    return $this->delete(array('sid' => $pid, 'scope' => $this->scope_project));
 	}
 	
-	// task project
+	// task related
 	public function getUsersByTask($tid) {
 	    return $this->find(array('scope' => $scope_task, 'sid' => $tid));
 	}
@@ -65,4 +65,44 @@ class userorgModel extends spModel
 	    return $this->delete(array('sid' => $tid, 'scope' => $this->scope_task));
 	}
 	
+	// issue related
+	/** @brief retreive all uses issue related
+	 *
+	 */
+	public function getIssueUsers(){
+	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
+    	$role_bug_owner         = 9;
+        $role_bug_reporter      = 10;
+        $role_bug_assigner      = 11;
+	    $pid = spClass('spSession')->getUser()->getCurrentProject();
+	    $sql = "select a.role,b.nick,b.uid from $prefix"."userorg as a,$prefix"."user as b where a.pid=$pid and".
+	            " scope=".$this->scope_issue.
+	            " and a.role in($role_bug_owner,$role_bug_reporter,$role_bug_assigner)".
+	            " and a.uid=b.uid";
+	    return $this->findSql($sql);
+	}
+	public function addIssueReporter($iid,$uid){
+	    $this->create(array('uid' => $uid,
+	                        'pid' => spClass('spSession')->getUser()->getCurrentProject(),
+                    	    'sid' => $iid, 
+                    	    'scope' => $this->scope_issue, 
+                    	    'role' => $this->role_bug_reporter)
+                    	    );
+	}
+	public function addIssueAssigner($iid,$uid){
+	    $this->create(array('uid' => $uid, 
+                    	    'pid' => spClass('spSession')->getUser()->getCurrentProject(),
+                    	    'sid' => $iid, 
+                    	    'scope' => $this->scope_issue, 
+                    	    'role' => $this->role_bug_assigner)
+                            );
+	}
+	public function addIssueOwner($iid,$uid){
+	    $this->create(array('uid' => $uid, 
+                    	    'pid' => spClass('spSession')->getUser()->getCurrentProject(),
+                    	    'sid' => $iid, 
+                    	    'scope' => $this->scope_issue, 
+                    	    'role' => $this->role_bug_owner)
+                    	    );
+	}
 }

@@ -6,8 +6,7 @@ class main extends general
 		parent::__construct(); // 这是必须的
 	}
 	
-	function publish()
-	{
+	function publish() {
 		$submit = $this->spArgs("submit");
 		if( $submit == 1 ){
             $keywords = split(',',$this->spArgs('kwd'));
@@ -17,8 +16,7 @@ class main extends general
             $this->display('wiki/add.html');
         }
 	}
-    function update()
-	{
+    function update() {
 		$submit = $this->spArgs("submit");
 		if($submit == 1)
 		{
@@ -43,13 +41,13 @@ class main extends general
 	}
     function del() {
     }
-
-	function view()
-	{
+	function view() {
 	    $this->tWiki = spClass('wikiModel')->getWikiDetail($this->spArgs('id'));
 		$this->display("wiki/view.html");
 	}
-
+    function search(){
+        
+    }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}
