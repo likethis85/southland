@@ -22,7 +22,10 @@ class main extends general
 		$this->ajaxResult->error = $this->constAjaxErr->ERROR_OK;
 	}
 
-    function utp() { // update_task_priority
+    /** @brief update task priority
+     *
+     */
+    function utp() {
         $id = $this->spArgs('id');
         $val = $this->spArgs('val');
         if(is_null($id)) exit;
@@ -37,7 +40,10 @@ class main extends general
         exit;
     }
 	
-    function uts() { // update_task_priority
+    /** @brief update task status
+     *
+     */
+    function uts() { 
         $id = $this->spArgs('id');
         $val = $this->spArgs('val');
         if(is_null($id)) exit;
@@ -134,6 +140,20 @@ class main extends general
         }
         
         exit;
+    }
+
+    /** @brief update issue status
+     *
+     */
+    function uis() {
+        $iid = $this->spArgs('id');
+        $status = $this->spArgs('to');
+        if(empty($iid) || empty($status)){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Invalid Parameters');
+        } else {
+        }
+            
     }
 
 	function __destruct(){

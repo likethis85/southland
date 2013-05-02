@@ -16,6 +16,7 @@ return array(
 'Error DB operation failed' => '操作数据库失败',
 'Error no this user' => '该用户不存在',
 'Error user name should be a valid email' => '不是有效的Email',
+'Error Invalid Parameters'  => '输入参数无效',
 /***********************************************/
 
 'Content Management System'=>	'内容管理系统',
