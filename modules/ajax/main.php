@@ -146,14 +146,19 @@ class main extends general
      *
      */
     function uis() {
+        $obj = spClass('issueModel');
         $iid = $this->spArgs('id');
-        $status = $this->spArgs('to');
+        $status = $obj->str2status($this->spArgs('to'));
         if(empty($iid) || empty($status)){
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
             $this->ajaxResult->msg = T('Error Invalid Parameters');
         } else {
+            $this->ajaxResult->error = $obj->updateStatus($iid, $status)===false ? $this->constAjaxErr->ERROR_FAIL:$this->constAjaxErr->ERROR_OK;
+            if($this->ajaxResult->error===$this->constAjaxErr->ERROR_FAIL)
+                $this->ajaxResult->msg = T('Error DB operation failed');
         }
-            
+        echo spClass('Services_JSON')->encode($this->ajaxResult);
+        exit;    
     }
 
 	function __destruct(){

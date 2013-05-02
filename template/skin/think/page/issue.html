@@ -7,8 +7,15 @@
         });
 
         $("input[name='fixed']").click(function(){
-            if($(this).is(":checked"))
-                location.href='/issue.php?a=fixed&id='+$(this).attr('id');
+            if($(this).is(":checked")) {
+                url = '/ajax.php?a=uis&to=fixed&id='+$(this).attr('id');
+                $.getJSON(url,function(data) {
+                    if(data.error != 0) {
+                        alert(data.msg);
+                        $(this).attr('checked',false);
+                    }
+                });
+            }
         });
     });
     </script>
@@ -34,7 +41,7 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
-                <td><input type="checkbox" name="fixed" id="<{$itemI.id}>"/></td>
+                <td><input type="checkbox" name="fixed" id="<{$itemI.id}>" <{if itemI.status==1}>checked<{/if}> /></td>
                 <td><{$itemI.brief}></td>
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>

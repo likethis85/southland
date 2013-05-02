@@ -15,6 +15,9 @@ class issueModel extends spModel
             'enabled' => 'true'
         )
     );
+    /** @brief retrieve issues belongs to current project
+     *
+     */
     public function getIssues() {
         $projId = spClass('spSession')->getUser()->getCurrentProject();
         if(!empty($projId)) {
@@ -25,5 +28,28 @@ class issueModel extends spModel
         } else {
             return array();
         }
+    }
+    /** @brief update status of the issue 
+     *
+     */
+    public function updateStatus($iid, $status){
+        if(empty($iid) || empty($status))
+            return false;
+            
+        return $this->update(array('id' => $iid, 'status' => $status));
+    }
+    /** @brief convert string to status
+     *
+     */
+    public function str2status($str){
+        $status = array(
+            'pending'   => 0,
+            'working'   => 1,
+            'fixed'     => 2,
+            'verified'  => 3,
+            'closed'    => 4
+        );
+        
+        return $status[$str];
     }
 }
