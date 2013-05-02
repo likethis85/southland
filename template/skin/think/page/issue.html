@@ -5,6 +5,11 @@
             "bJQueryUI":true,
             "sPaginationType":"full_numbers"
         });
+
+        $("input[name='fixed']").click(function(){
+            if($(this).is(":checked"))
+                location.href='/issue.php?a=fixed&id='+$(this).attr('id');
+        });
     });
     </script>
     <div class="box_page">
@@ -29,7 +34,7 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
-                <td><input type="checkbox" /></td>
+                <td><input type="checkbox" name="fixed" id="<{$itemI.id}>"/></td>
                 <td><{$itemI.brief}></td>
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>
