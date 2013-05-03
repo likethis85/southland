@@ -30,7 +30,18 @@ class userorgModel extends spModel
 	public function getUsersByProject() {
 	    $pid = spClass('spSession')->getUser()->getCurrentProject();
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select a.role,b.nick,b.uid from ".$prefix."userorg as a,".$prefix."user as b where a.uid=b.uid and a.pid=$pid";
+        
+        $role_member            = 0;    
+        $role_dev_owner         = 1;    
+        $role_qa_owner          = 2;    
+        $role_project_manager   = 3;    
+        $role_dev_manager       = 4;    
+        $role_qa_manager        = 5;    
+        $role_dev_member        = 6;    
+        $role_qa_member         = 7;    
+        $role_project_creator   = 8;      
+
+        $sql = "select a.role,b.nick,b.uid from $prefix"."userorg as a,$prefix"."user as b where a.uid=b.uid and a.pid=$pid and a.role<9";
         return $this->findSql($sql);
 	}
 	public function getProjectsByUser($uid) {

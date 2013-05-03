@@ -39,8 +39,11 @@ class main extends general
 		if(!empty($pid) && $pid!=$this->tCurrProj && spClass('projectModel')->allow($pid)) {
 		    spClass('spSession')->getUser()->setCurrentProject($pid);
 		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
-		    $this->tProject = spClass('projectModel')->getCurrentInfo();
+		    $this->tProject  = spClass('projectModel')->getCurrentInfo();
 		}
+		
+		if($this->tNid==1)
+		    $this->tMembers  = spClass('projectModel')->getProjectMembers();
 	}
 	function _forum(){
     	$objForum = spClass("forumModel");

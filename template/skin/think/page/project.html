@@ -25,25 +25,24 @@
             $.each(members,function(j,mbr){
                 if(mbr.uid==item.uid) {
                     switch(item.role) {
-                    case '1':
-                    case '4':
-                    case '6':
+                    case 1:
+                    case 4:
+                    case 6:
                         mbr.role[0].push(item.role);
                         break;
-                    case '2':
-                    case '5':
-                    case '7':
+                    case 2:
+                    case 5:
+                    case 7:
                         mbr.role[1].push(item.role);
                         break;
                     default:
                         mbr.role[2].push(item.role);
                         break;
                     }
-                    mbr.role.push(item.role);
                 }
             });
         });
-        
+
         $.each(members,function(idx,item){
             $.each(item.role,function(i,role){
                 if(role.length==0)
@@ -67,7 +66,7 @@
                     }
                 });
                 elem = elem+"</li>";
-                
+
                 if(i==0)
                     $('#Developer ul').append(elem);
                 else if(i==1)
@@ -77,37 +76,17 @@
             });
         });
     }
+    
     $(document).ready(function(){
         $("#Del").click(function(){
             return confirm('<{T w="Confirm?"}>'+$(this).html());
         });
         
-        $("#btn-PAU").click(function() {
-            $.getJSON('ajax.php?a=gpm',function(data){
-                if(data.error == 0)
-                    fillMember(data.data);
-                $('#AddUserPage').modal();
-            });
-        });
-        
-        $("a.tab").click(function () {
-			$(".active").removeClass("active");
-			$(this).addClass("active");
-			$(".tab_content").slideUp();
-			var content_show = $(this).attr("title");
-			$("#"+content_show).slideDown();
-		  
-		});
-
-        $("#PAU").click(function(){
-            var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to="+$("a.tab.active").attr('title')+"&u="+escape($("#pauemail").attr('value'));
-            $.getJSON(url,function(data) {
-                if(data.error == 0)
-                    fillMember(data.data);
-                else
-                    alert(data.msg);
-            });
-        });
+        fillMember([
+            <{foreach item=item from=$tMembers}>
+            {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
+            <{/foreach}>
+        ]);
     });
 </script>
 <div id="AddUserPage" style="display:none;">
@@ -121,27 +100,6 @@
             </td>
         </tr>
     </table>
-    <div id="tabbed_box_1" class="tabbed_box">
-        <div class="tabbed_area">
-            <ul class="tabs">
-                <li><a href="#" title="Developer" class="tab active"><{T w='Developer'}></a></li>
-                <li><a href="#" title="QA" class="tab"><{T w='QA'}></a></li>
-                <li><a href="#" title="Observer" class="tab"><{T w='Observer'}></a></li>
-            </ul>
-            <div id="Developer" class="tab_content">
-            	<ul>
-    			</ul>
-            </div>
-            <div id="QA" class="tab_content">
-            	<ul>
-    			</ul>
-            </div>
-            <div id="Observer" class="tab_content">
-            	<ul>
-    			</ul>
-            </div>
-        </div>
-    </div>
 </div>
 <div style="margin-left:36px;margin-top:16px;border-right:#c3daf9 1px solid;overflow:none;width:20%;float:left;">
 	<table>
@@ -156,5 +114,19 @@
 	</table>
 </div>
 <div style="margin-top:16px;float:left;margin-left:12px;width:70%">
-	<{$tProject.description}>	
+    <div style="min-height:180px;">
+	    <{$tProject.description}>
+    </div>
+	<table width=100% border=1>
+	    <thead>
+	       <th style="background-color:#333366;">Developer</th>
+	       <th style="background-color:#669966;">QA</th>
+	       <th style="background-color:#ADD8E6;">Observer</th>
+	    </thead>
+	    <tbody>
+            <td><div id="Developer"><ul style="float:left;list-style:none;"></ul></div></td>
+            <td><div id="QA"><ul style="float:left;list-style:none;"></ul></div></td>
+            <td><div id="Observer"><ul style="float:left;list-style:none;"></ul></div></td>
+        </tbody>
+	</table>
 </div>

@@ -52,7 +52,6 @@ ul.tabs li a.active {
 	background-repeat:repeat-x;	 
 	background-position:bottom;	
 }
-#Observer, #QA { display:none; }
 
 .tab_content ul {
     margin:0;

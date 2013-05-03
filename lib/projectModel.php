@@ -42,7 +42,7 @@ class projectModel extends spModel
         else return $info;
     }
     public function getProjectMembers() {
-        $members = spClass('userorgModel')->getUsersByProject(spClass('spSession')->getUser()->getCurrentProject(), true);
+        $members = spClass('userorgModel')->getUsersByProject();
         return $members;
     }
     public function deleteProject($pid) {
