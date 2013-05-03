@@ -31,6 +31,32 @@ class commentModel extends spModel
         return $this->spLinker()->findAll($condition);
     }
 
+    public function getIssueComments($iid) {
+
+        $this->linker = array(
+            array(
+                'type' => 'hasone',
+                'map'  => 'user',
+                'mapkey' => 'uid',
+                'fclass' => 'userModel',
+                'fkey'   => 'uid',
+                'enabled' => 'true'
+            )
+        );
+
+        if(empty($tid))
+            return array();
+        $condition = array(
+            'owner' => 'issue',
+            'rid' => $iid
+        );
+        $fields = array(
+            'content',
+            'addtime'
+        );
+        return $this->spLinker()->findAll($condition);
+    }
+
     public function getForumComments($tid) {
 
         $this->linker = array(

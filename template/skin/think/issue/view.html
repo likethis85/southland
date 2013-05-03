@@ -1,14 +1,12 @@
 <{include file=skin/$skin/header.html}>
 <script type="text/javascript">
-    $(document).ready(function(){
+    $.ready(function(){
         CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
         $("#form").validate({
             rules:{
                 dsrte_text: {required:true}
             }
         });
-        $("#project").change(function(){
-            location.href = "/index.php?c=main&a=project&id="+$("#project").val();
         });
         $(".btn-rounded").hover(
             function(){ $(this).css('color','red');}, 
@@ -16,13 +14,13 @@
         );
 });
 </script>
-<div style="margin-left:32px;margin-top:22px;width:600px;">
+<div class="box_page">
     <table id="box" cellpadding="5" cellspacing="0">
         <tr>
             <td id="content" valign="top">
-                <h1 class="title"><{$tTask.subject}></h1>
+                <h1 class="title"><{$tIssue.brief}></h1>
                 <div>
-                    <{$tTask.detail}>
+                    <{$tIssue.detail}>
                     <div align=right><input type="button" class="btn-rounded" value=<{T w='IssueReport'}> /></div>
                 </div>
             </td> 
