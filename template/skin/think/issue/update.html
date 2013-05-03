@@ -2,13 +2,13 @@
 <script type="text/javascript">
 $(document).ready(function(){
     CKEDITOR.replace("TaskDesc");
+    jQuery.extend(jQuery.validator.messages, {
+        required:"<span style=\"color:red\">*</span>"
+    });
 	$("#form").validate({
 		rules:{
 			subject: {required:true}
 		}
-	});
-	$("#project").change(function(){
-		location.href = "/index.php?c=main&a=project&id="+$("#project").val();
 	});
 });
 </script>

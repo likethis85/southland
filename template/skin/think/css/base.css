@@ -103,3 +103,9 @@ div.box_page {
     margin-top:32px;
     width:800px;
 }
+div.comment {
+    border-top:solid grey 1px;
+}
+div.comment div.profile {
+    text-align:right;
+}

@@ -1,15 +1,17 @@
 <{include file=skin/$skin/header.html}>
 <script type="text/javascript">
     $(document).ready(function(){
+        jQuery.extend(jQuery.validator.messages, {
+            required:"<span style=\"color:red\">*</span>"
+        });
+        
         CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
         $("#form").validate({
             rules:{
                 dsrte_text: {required:true}
             }
         });
-        $("#project").change(function(){
-            location.href = "/index.php?c=main&a=project&id="+$("#project").val();
-        });
+
         $(".btn-rounded").hover(
             function(){ $(this).css('color','red');}, 
             function(){ $(this).css('color','white');}

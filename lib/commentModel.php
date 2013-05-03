@@ -44,7 +44,7 @@ class commentModel extends spModel
             )
         );
 
-        if(empty($tid))
+        if(empty($iid))
             return array();
         $condition = array(
             'owner' => 'issue',
