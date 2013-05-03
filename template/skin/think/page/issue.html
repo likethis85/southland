@@ -41,7 +41,7 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
-                <td><input type="checkbox" name="fixed" id="<{$itemI.id}>" <{if itemI.status==1}>checked<{/if}> /></td>
+                <td><input type="checkbox" name="fixed" id="<{$itemI.id}>" <{if $itemI.status==2}>checked<{else}>unchecked<{/if}> /></td>
                 <td><{$itemI.brief}></td>
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>

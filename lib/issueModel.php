@@ -36,7 +36,7 @@ class issueModel extends spModel
         if(empty($iid) || empty($status))
             return false;
             
-        return $this->update(array('id' => $iid, 'status' => $status));
+        return $this->update(array('id' => $iid), array('status' => $status));
     }
     /** @brief convert string to status
      *
