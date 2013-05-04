@@ -6,6 +6,10 @@ body {
 img {
 	border:0;
 }
+ul {
+    margin:0;
+    padding:3px;
+}
 a:link {
     text-decoration: none;
     color: #666666;
