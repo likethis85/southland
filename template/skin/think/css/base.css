@@ -8,7 +8,6 @@ img {
 }
 ul {
     margin:0;
-    padding:3px;
 }
 a:link {
     text-decoration: none;
@@ -80,13 +79,13 @@ div.login_bar a:link,div.login_bar a:visited,div.login_bar a:hover {
 }
 ul.navigator {
     position:absolute;
-    top:-6px;
+    top:6px;
     *top:6px;
     line-height:32px;
 }
 ul.navigator li {
     float:left;
-    background:white;
+    background:lightblue;
     list-style:none;
     margin-right:6px;
     padding-left:10px;
@@ -94,7 +93,7 @@ ul.navigator li {
     line-height:32px;
 }
 ul.navigator li.active_nav {
-    background:#C00;
+    background:white;
 }
 div.page_op {
     margin-top:16px;

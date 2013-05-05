@@ -11,6 +11,7 @@ class main extends general
 	}
 	
 	function index(){ // 这里是首页
+	    $this->tNid = 0;
 	    if(spClass('spSession')->getUser()->is_user()) {
 		    $this->tProjects = spClass('projectModel')->getProjects();
 		}
