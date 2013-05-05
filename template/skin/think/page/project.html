@@ -51,18 +51,20 @@
                 var elem = '<li class="puser"><table width="100%"><tr><td align="left" width="88"><img src="<{$skinpath}>/img/portrait.png"></td><td align="left"><table><tr><td align="left"><strong>'+item.nick+'</strong></td></tr><tr><td align="left">';
                 $.each(role,function(j,r){
                     switch(r) {
-                    case '1':
-                    case '2':
-                        elem += '<img src="<{$skinpath}>/img/owner.png">';
+                    case 1:
+                    case 2:
+                        elem += '<img src="<{$skinpath}>/img/owner.png" alt="owner">';
                         break;
-                    case '4':
-                    case '5':
-                        elem += '<img src="<{$skinpath}>/img/manager.png">';
+                    case 3:
+                    case 4:
+                    case 5:
+                        elem += '<img src="<{$skinpath}>/img/manager.png" alt="manager">';
                         break;
-                    case '6':
-                    case '7':
+                    case 6:
+                    case 7:
                     default:
-                        elem += '<img src="<{$skinpath}>/img/member.png">';
+                        if(i!=2)
+                            elem += '<img src="<{$skinpath}>/img/member.png" alt="member">';
                         break;
                     }
                 });
