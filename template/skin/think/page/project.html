@@ -48,7 +48,7 @@
                 if(role.length==0)
                     return;
                 
-                var elem = '<li><table width="100%"><tr><td><img src="<{$skinpath}>/img/portrait.png"></td><td><table><tr><td>'+item.nick+'</td></tr><tr><td>';
+                var elem = '<li class="puser"><table width="100%"><tr><td align="left" width="88"><img src="<{$skinpath}>/img/portrait.png"></td><td align="left"><table><tr><td align="left"><strong>'+item.nick+'</strong></td></tr><tr><td align="left">';
                 $.each(role,function(j,r){
                     switch(r) {
                     case '1':
@@ -124,9 +124,9 @@
 	       <th style="background-color:#ADD8E6;width:33%;"><{T w='Observer'}></th>
 	    </thead>
 	    <tbody>
-            <td><div class="puser" id="Developer"><ul style="float:left;list-style:none;"></ul></div></td>
-            <td><div class="puser" id="QA"><ul style="float:left;list-style:none;"></ul></div></td>
-            <td><div class="puser" id="Observer"><ul style="float:left;list-style:none;"></ul></div></td>
+            <td valign="top"><div id="Developer"><ul style="float:left;list-style:none;width:100%;"></ul></div></td>
+            <td valign="top"><div id="QA"><ul style="float:left;list-style:none;width:100%;"></ul></div></td>
+            <td valign="top"><div id="Observer"><ul style="float:left;list-style:none;width:100%;"></ul></div></td>
         </tbody>
 	</table>
 </div>

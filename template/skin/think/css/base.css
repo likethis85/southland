@@ -8,6 +8,7 @@ img {
 }
 ul {
     margin:0;
+    padding:0;
 }
 a:link {
     text-decoration: none;
@@ -108,4 +109,9 @@ div.box_page {
 }
 div.comment {
     border-top:solid grey 1px;
+}
+li.puser {
+    border:1px solid grey;
+    width:100%;
+    margin-bottom:2px;
 }
