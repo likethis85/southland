@@ -121,11 +121,15 @@ class user extends general
 	
 	// 显示用户登录框以及验证用户登录情况
 	public function login(){
-		import("spAcl.php"); // 引入Acl文件，使得可以生成加密的密码输入框
-		$userObj = spClass("userModel"); // 实例化userModel类
 		if( $uname = $this->spArgs("uname") ){ // 已经提交，这里开始进行登录验证
 			$upass = $this->spArgs("upass"); // 通过acl的upass获取提交的密码
-			
+		
+		    if(!spClass('spVerifyCode')->verify($this->spArgs('gcc'))) {
+    	        $this->jump(spUrl('user','login'));
+    	        return;
+	        }
+	    	
+	    	$userObj = spClass("userModel"); // 实例化userModel类
 			// 使用spVerifier进行第一次检查
 			$rows = array('uname' => $uname, 'upass' => $upass);
 			$results = $userObj->spVerifier($rows);

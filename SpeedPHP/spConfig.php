@@ -89,15 +89,12 @@ return array(
 					// 同时请注意，在使用语言文件并且文件中存在中文等时，请将文件设置成UTF8编码
 
     'ext' => array(
-        'spAcl' => array(
-            'prompt' => array('userModel', 'acljump')
-        ),
         'spVerifyCode' => array( //验证码扩展
             'width' => 60, //验证码宽度
             'height' => 20, //验证码高度
             'length' => 4, //验证码字符长度
             'bgcolor' => '#FFFFFF', //背景色
-            'noisenum' => 50, //图像噪点数量
+            'noisenum' => 88, //图像噪点数量
             'fontsize' => 22, //字体大小
             'fontfile' => 'font.ttf', //字体文件
             'format' => 'gif', //验证码输出图片格式

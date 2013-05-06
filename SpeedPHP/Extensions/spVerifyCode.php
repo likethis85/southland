@@ -3,30 +3,24 @@
  * SpeedPHP验证码生成类
  */
 class spVerifyCode {
-	public $width = 60; //宽度
-	public $height = 20; //高度
-	public $len = 4; //字符长度
-	public $backcolor = '#FFFFFF'; //背景色
-	public $bordercolor = null; //边框色
-	public $noisenum = NULL ; //杂点数量
-
-	public $textsize = 22; //字体大小
-	public $font = "font.ttf"; //自定义字体
-	public $format = 'png'; //输出图片格式
-	public $imagename;
+	protected $width = 60; //宽度
+	protected $height = 20; //高度
+	protected $len = 4; //字符长度
+	protected $backcolor = '#FFFFFF'; //背景色
+	protected $noisenum = 50 ; //杂点数量
+	protected $textsize = 22; //字体大小
+	protected $font = "font.ttf"; //自定义字体
+	protected $format = 'png'; //输出图片格式
+	protected $fond = 'font.ttf';
+	
+	protected $imagename;
 	protected $image;
 	protected $backcolorRGB;
 	protected $bordercolorRGB = NULL;
 	protected $size;
 	protected $sizestr2str;
-	public $vcode = NULL; //验证码内容(数字)
-
-	private $vc_session = NULL;
 
 	public function  __construct() {
-		$this->font = str_replace('\\', '/', dirname(__FILE__)).'/font.ttf';
-		$this->vc_session = &$_SESSION[$GLOBALS['G_SP']['sp_app_id']]['verifycode'];
-
 		$params = spExt('spVerifyCode');
 		if( !empty($params['width']) )$this->width = $params['width'];
 		if( !empty($params['height']) )$this->height = $params['height'];
@@ -39,19 +33,21 @@ class spVerifyCode {
 	}
 
 	public function display() {
-		$this->make_img();
-		$this->vc_session = $this->vcode;
+		spClass('spSession')->put('vcode', $this->make_img());
 		$this->show_img();
 		exit();
 	}
 
-	public function verify($var, $is_clear = TRUE) {
-		$result = FALSE;
-		if($var == $this->vc_session) {
-			$result = TRUE;
-		}
-		if($is_clear) $this->vc_session = '';
-		return $result;
+	public function verify($var) {
+	    if(empty($var))
+	        return false;
+	        
+		$text = spClass('spSession')->get('vcode');
+		if($var != $text)
+		    return false;
+		else {
+		    return true;
+	    }
 	}
 
 	public function show_img() {
@@ -84,9 +80,11 @@ class spVerifyCode {
 			$linecolor = imagecolorallocate($this->image, rand(0,255), rand(0,255), rand(0,255));
 			imageline($this->image, rand(0,30), rand(0,30), rand(30,80), rand(0,30), $linecolor);
 		}
+		
+		$text = '';
 		for($i=0; $i<$this->len; $i++) {
 			$randtext = rand(0, 9);  //验证码数字 0-9随机数
-			$this->vcode .= $randtext; //写入session的数字
+			$text .= $randtext; //写入session的数字
 			$textColor = imageColorAllocate($this->image, rand(50, 155), rand(50, 155), rand(50, 155)); //图片文字颜色
 			if (!isset($this->textsize) ) $this->textsize = rand(($this->size-$this->size/10), ($this->size + $this->size/10)); //如果未定义字体大小 则取随机大小
 			$location = $left + ($i*$this->size+$this->size/10);
@@ -98,6 +96,8 @@ class spVerifyCode {
 			$this->bordercolorRGB = $this->getcolor($this->bordercolor);
 			imageRectangle($this->image, 0, 0, $this->width-1, $this->height-1, $this->bordercolorRGB);
 		}
+		
+		return $text;
 	}
 
 	protected function getcolor($color) {

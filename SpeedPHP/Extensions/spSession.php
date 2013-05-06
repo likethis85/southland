@@ -15,8 +15,8 @@ class spSession {
             return $_SESSION['user'];
         }
 
-        /**
-         * 支持以path形式访问Session值
+        /** @brief 支持以path形式访问Session值
+         * 
          * @param string $key
          * @return mixed
          */
