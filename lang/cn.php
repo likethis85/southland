@@ -181,5 +181,5 @@ return array(
 'Publish'       =>  '发表',
 'Title'         =>  '标题',
 'Confirm?'      =>  '确定要',
-
+'Certification Code' => '验证码',
 );

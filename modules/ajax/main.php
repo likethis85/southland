@@ -161,6 +161,14 @@ class main extends general
         exit;    
     }
 
+    /** @brief generate certification code
+     *
+     */
+    function gcc() {
+        spClass('spVerifyCode')->display();
+        exit;
+    }
+
 	function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}

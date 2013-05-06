@@ -108,26 +108,7 @@ class spAcl
      *
      */
     public function maxcheck() {
-        GLOBAL $__controller, $__action;
-        
-        if(WORKSPACE=='admin'|| spClass('spSession')->getUser()->getAcl()=='ANONYMOUS') {
-            if(spClass('spAclModel')->check_white(spClass('spSession')->getUser()->getAcl(), $__controller, $__action) == TRUE)
-                return TRUE;
-            else {
-                if(WORKSPACE=='admin')
-                    header('location:'.'http://'.$_SERVER["HTTP_HOST"].'/admin.php?c=user&a=login');
-                else
-                    header('location:'.'http://'.$_SERVER["HTTP_HOST"]);
-                exit;
-            }
-        } else {
-            if(spClass('spAclModel')->check_black(spClass('spSession')->getUser()->getAcl(), $__controller, $__action) == TRUE)
-                return TRUE;
-            else {
-                header('location:'.'http://'.$_SERVER["HTTP_HOST"]);
-                exit;
-            }
-        } 
+        return TRUE;
     }
 	/**
 	 * 无权限提示跳转
