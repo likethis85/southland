@@ -8,7 +8,7 @@ class main extends general
 	
 	function publish()
 	{
-		$submittopic = $this->spArgs("submittopic");
+		$submittopic = $this->spArgs("submit");
 		if($submittopic == 1)
 		{
 			$data = array(

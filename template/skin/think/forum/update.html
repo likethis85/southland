@@ -2,14 +2,14 @@
 <div style="clear:both;margin-left:32px;padding-top:22px;width:600px;"> 
     <script type="text/javascript">
     $(document).ready(function(){
-        CKEDITOR.replace("Artical");
+        var editor = CKEDITOR.replace("Artical");
+        $('.btn-rounded').click(function(){
+            editor.updateElement();
+        });
     	$("#form").validate({
     		rules:{
     			subject: {required:true}
     		}
-    	});
-    	$("#project").change(function(){
-    		location.href = "/index.php?c=main&a=project&id="+$("#project").val();
     	});
     });
     </script>

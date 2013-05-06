@@ -5,10 +5,13 @@
             required:"<span style=\"color:red\">*</span>"
         });
         
-        CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
+        var editor = CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
+        $('#cmt').click(function(){
+            editor.updateElement();
+        });
         $("#form").validate({
             rules:{
-                dsrte_text: {required:true}
+                reply: {required:true}
             }
         });
 
@@ -44,7 +47,7 @@
                 <div style="width:600px;">
                     <form id="form" method="post" action="/task.php?a=cmt&id=<{$tTask.id}>">
                         <div style="margin-top:32px;">
-                            <input type="submit" class="btn-rounded" value=<{T w='Reply'}> />
+                            <input id="cmt" type="submit" class="btn-rounded" value=<{T w='Reply'}> />
                             <textarea class="ckeditor" id="reply" name="reply"></textarea>
                         </div>
                         <input name="submitreply" type="hidden" id="submitreply" value="1" />
