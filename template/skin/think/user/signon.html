@@ -9,9 +9,10 @@
             $("#form").validate({
                 rules:{
                     uname:{required:true,email:true},
-                    nick:{required:true},
-                    pass:{required:true},
-                    passc:{required:true,equalTo:"#pass"}
+                    nick: {required:true},
+                    pass: {required:true},
+                    passc:{required:true,equalTo:"#pass"},
+                    gcc:  {required:true}
                 },
                 submitHandler:function(form){
                     $("#upass").attr("value",$.md5($("#pass").attr("value")));
@@ -25,23 +26,23 @@
         <table width="400">
             <tr>
                 <td><label for="uname"><span class="fontwhite">E-mail'</span></label>
-                <td><input name="uname" id="uname" style="width:80 px" size="40" /></td>
+                <td><input name="uname" id="uname" size="40" /></td>
             </tr>
             <tr>
                 <td><label for="nick"><span class="fontwhite"><{T w='Nick'}></span></label>
-                <td><input name="nick" id="nick" style="width:80 px" size="40" /></td>
+                <td><input name="nick" id="nick" size="40" /></td>
             </tr>
             <tr>
                 <td><label for="pass" align="right" valign="top" class="fontwhite"><{T w='Password'}></td>
-                <td><input name="pass" type="password" id="pass" style="width:80 px" size="40"/></td>
+                <td><input name="pass" type="password" id="pass" size="40"/></td>
             </tr>
             <tr>
                 <td><label for="passc" align="right" valign="top" class="fontwhite"><{T w='Confirm password'}></td>
-                <td><input name="passc" type="password" id="passc" style="width:80 px" size="40"/></td>
+                <td><input name="passc" type="password" id="passc" size="40"/></td>
             </tr>
             <tr>
                 <td><label align="right" valign="top" class="fontwhite"><{T w='Certification Code'}></td>
-                <td><input name="gcc" style="width:80 px" size="40"/><div style="float:right;border:1px solid grey;margin-top:3px;"><img  src="/ajax.php?a=gcc" /></div></td>
+                <td><input name="gcc" size="40"/><div style="float:right;border:1px solid grey;margin-top:3px;"><img  src="/ajax.php?a=gcc" /></div></td>
             </tr>
             <tr>
                 <td></td>

@@ -181,6 +181,10 @@ class user extends general
             if(!preg_match( '/^([0-9A-Za-z\\-_\\.]+)@([0-9a-z]+\\.[a-z]{2,3}(\\.[a-z]{2})?)$/i', $uname )){
                 spClass('keeper')->speak(T('Error user name should be a valid email').": $uname");
             } else {
+                if(!spClass('spVerifyCode')->verify($this->spArgs('gcc'))) {
+        	        spClass('keeper')->speak(T('Error Invalid Certification Code'));
+        	        return;
+	            }
                 $data = array(
                     'uname' => $uname,
                     'upass' => $upass,

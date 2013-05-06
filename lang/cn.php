@@ -18,6 +18,7 @@ return array(
 'Error user name should be a valid email' => '不是有效的Email',
 'Error Invalid Parameters'  => '输入参数无效',
 'Error Operation not permit' => '不允许该操作',
+'Error Invalid Certification Code'  => '验证码错误',
 
 /***********************************************/
 
