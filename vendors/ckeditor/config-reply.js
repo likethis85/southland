@@ -13,7 +13,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.removePlugins='elementspath';
     config.toolbar=
         [
-             ['Bold','Italic','Underline'],
-             ['TextColor','BGColor']
+             ['Bold','Italic','Underline','TextColor','BGColor']
         ];
 };
