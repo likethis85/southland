@@ -49,6 +49,7 @@ class general extends spController
 		$this->tUser = $spSess->getUser()->getUserInfo();
         $this->tCurrProj = $spSess->getUser()->getCurrentProject();
         $tCurrProj = $this->tCurrProj;
+        $this->tProject = spClass('projectModel')->getCurrentInfo();
         $this->tNavigation = array(
             array('nid' => 1, 'enabled' => true, 'name' =>'ProjectDesc', 'module' => 'project'),
             array('nid' => 2, 'enabled' => true, 'name' =>'Task', 'module' => 'task'),
@@ -57,7 +58,7 @@ class general extends spController
             array('nid' => 5, 'enabled' => true, 'name' =>'Wiki', 'module' => 'wiki'),
             //array('nid' => 6, 'enabled' => true, 'name' =>'Source', 'module' => 'source'),
         );
-        $this->tProject = spClass('projectModel')->getCurrentInfo();
+        $this->tNid = $spSess->getUser()->getCurrentNid();
 	}
 	
 	

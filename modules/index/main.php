@@ -12,6 +12,7 @@ class main extends general
 	
 	function index(){ // 这里是首页
 	    $this->tNid = 0;
+        spClass('spSession')->getUser()->setCurrentNid($this->tNid);
 	    if(spClass('spSession')->getUser()->is_user()) {
 		    $this->tProjects = spClass('projectModel')->getProjects();
 		}
@@ -25,6 +26,7 @@ class main extends general
 	        $this->jumpFirstPage();
 	    } else {
     		$this->tNid = $this->spArgs("nid");
+            spClass('spSession')->getUser()->setCurrentNid($this->tNid);
     		$this->tModule = $this->tNavigation[$this->tNid-1]['module'];
     		$this->_project();
     		eval('$this->_'.$this->tModule.'();');

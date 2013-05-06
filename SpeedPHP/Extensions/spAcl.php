@@ -13,6 +13,7 @@ class spUser
 {
 	private $userInfo = null;
     private $usingProj = 0;
+    private $currNid = 0;
 
 	public function __construct() {
         $this->userInfo = array(
@@ -53,23 +54,17 @@ class spUser
 			return $this->userInfo['uid'];
 		}
 	}
+    public function setCurrentNid($nid) {
+        $this->currNid = $nid;
+    }
+    public function getCurrentNid() {
+        return $this->currNid;
+    }
 	public function setCurrentProject($pid) {
 	    $this->usingProj = $pid;
     }
     public function getCurrentProject() {
         return $this->usingProj;
-    }
-    public function getProjects() {
-        if($this->is_user()) {
-            $objProj = spClass("projectModel");
-            $Projects = $objProj->getProjects();
-            if(empty($Projects))
-                $Projects = array();
-             else
-                return $Projects;
-        } else {
-            return array();
-        }
     }
 }
 
