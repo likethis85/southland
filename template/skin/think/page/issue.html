@@ -17,30 +17,14 @@
                 $.getJSON(url,function(data) {
                     if(data.error != 0) {
                         alert(data.msg);
-                        $(this).attr('checked',false);
+                        this.iCheck('uncheck');
                     }
                 });
             } else {
                 alert("<{T w='Error Operation not permit'}>");
-                $(this).attr('checked',false);
+                $(this).iCheck('check');
             }
         });
-/*
-        $("input[name='fixed']").click(function(){
-            if($(this).is(":checked")) {
-                url = '/ajax.php?a=uis&to=fixed&id='+$(this).attr('id');
-                $.getJSON(url,function(data) {
-                    if(data.error != 0) {
-                        alert(data.msg);
-                        $(this).attr('checked',false);
-                    }
-                });
-            } else {
-                alert("<{T w='Error Operation not permit'}>");
-                $(this).attr('checked',true);
-            }
-        });
-*/
     });
     </script>
     <div class="page_op">
