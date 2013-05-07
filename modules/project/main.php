@@ -5,7 +5,6 @@ class main extends general
 	public function create() {
 		$create = $this->spArgs('submitcreate'); 
 		if(empty($create)) {
-		    $this->setUsingProject(0);
 			$this->display(WORKSPACE.'/create.html');
 		} else {
 			$data = array(

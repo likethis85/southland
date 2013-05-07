@@ -95,23 +95,6 @@ class general extends spController
     {
         parent::display('skin/'.$this->skin."/$tplname", $output);
     }
-    
-    /** @brief 设置当前活动项目
-     *
-     *  @param [in] $prjId 项目ID
-     */
-    protected function setUsingProject($prjId) {
-        $spSess = spClass('spSession');
-        $this->tProjects = $spSess->getUser()->getProjects();
-        $prj = current($this->tProjects) ? $this->tProjects[$prjId]:null;
-        if(empty($prj)) {
-            $spSess->getUser()->setCurrentProject(0);
-            $this->tCurrProj = 0;
-        } else {
-            $spSess->getUser()->setCurrentProject($prjId);
-            $this->tCurrProj = $prjId;
-        }
-    }
    
     protected function navi($url) {
         header('location:'.'http://'.$_SERVER["HTTP_HOST"].$url);
