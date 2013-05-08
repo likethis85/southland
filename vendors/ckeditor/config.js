@@ -76,12 +76,9 @@ CKEDITOR.editorConfig = function( config ) {
         ];
     config.toolbar_Basic = 
         [
-            ['Source'],
-            ['Cut','Copy','Paste'],
-            ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-            ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
-            ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+            ['Source','Cut','Copy','Paste','Bold','Italic','Underline','Strike','Subscript','Superscript'],
             ['AddImage','AddCode', 'Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
-            ['Font','FontSize','TextColor','BGColor']
+            ['NumberedList','BulletedList','Outdent','Indent','Blockquote','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock',
+             'Font','FontSize','TextColor','BGColor']
         ];
 };

@@ -50,7 +50,7 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
-                <td><input type="checkbox" name="fixed" id="<{$itemI.id}>" <{if $itemI.status==2}>checked<{else}>unchecked<{/if}> /></td>
+                <td style="background:white;"><input type="checkbox" name="fixed" id="<{$itemI.id}>" <{if $itemI.status==2}>checked<{else}>unchecked<{/if}> /></td>
                 <td><a href="/issue.php?a=view&id=<{$itemI.id}>"><{$itemI.brief}></a></td>
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>

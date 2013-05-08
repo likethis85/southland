@@ -47,9 +47,9 @@
             </ul>
         </td>
         <td width=22>
-            <{if $item.priority eq 1}><span style="background:red;">&nbsp;&nbsp;&nbsp;</span><{/if}>
-            <{if $item.priority eq 2}><span style="background:#FC0;">&nbsp;&nbsp;&nbsp;</span><{/if}>
-            <{if $item.priority gt 2}><span style="background:gray;">&nbsp;&nbsp;&nbsp;</span><{/if}>
+            <{if $item.priority eq 1}><img src="<{$skinpath}>/img/1.gif"/><{/if}>
+            <{if $item.priority eq 2}><img src="<{$skinpath}>/img/2.gif"/><{/if}>
+            <{if $item.priority gt 2}><img src="<{$skinpath}>/img/3.gif"/><{/if}>
         </td>
         <td>
             <a href="/task.php?c=main&a=view&id=<{$item.id}>"><{$item.subject}></a>
