@@ -1,16 +1,6 @@
 <?php
 if (!defined('SOUTHLAND')) { exit(1);}
 return array(
-/****************** front-end **********************/
-'Search'		=>	'搜索',
-'Create website so simple'=>	'建站如此的简单',
-'Version'		=>	'版本信息',
-'Software size'	=>	'软件大小',
-'Last updated'	=>	'更新时间',
-'Download SpeedCMS now!'=>	'现在就下载SpeedCMS',
-'Latest development build!'=>	'最新开发版本!',
-'Check out the latest project source code'=>	'查看最新项目源代码',
-/****************** back-end **********************/
 
 /****************** 错误码 **********************/
 'Error DB operation failed' => '操作数据库失败',
@@ -20,61 +10,6 @@ return array(
 'Error Operation not permit' => '不允许该操作',
 'Error Invalid Certification Code'  => '验证码错误',
 
-/***********************************************/
-
-'Content Management System'=>	'内容管理系统',
-'edit'			=>	'编辑',
-'delete'		=>	'删除',
-'Submit'		=>	'提交',
-'Reset'			=>	'重置',
-'On'			=>	'开',
-'Off'			=>	'关',
-'Title'			=>	'标题',
-'Successfully added!'		=>	'成功添加',
-'Successfully edited!'		=>	'成功编辑',
-'delete this record?'=> '删除此条记录吗？',
-'Add'			=>	'添加',
-'Edit'			=>	'编辑',
-'Delete'		=>	'删除',
-'Add Content'		=>	'添加内容',
-'Edit Content'	=>	'编辑内容',
-'Delete Content'	=>	'删除内容',
-'BASIC INFORMATION'	=>	'基本信息',
-'The web was developed for self project management'=>	'开发该网站用于个人项目管理，细节完善中...',
-
-/* Dashboard*/
-'Dashboard'		=>	'控制面板',
-'Read Me'		=>	'关于SpeedCMS',
-
-/* Navigation */
-'Navigation'	=>	'导航',
-'To rearrange menu items, grab a drag-and-drop handle under the <em>Menu item</em> column and drag the items (or group of items) to a new location in the list. (Grab a handle by clicking and holding the mouse while hovering over a handle icon.) Remember that your changes will not be saved until you click the <em>Save configuration</em> button at the bottom of the page.'=>
-'要重新排列菜单项,按住菜单项前面的图标，拖动到相应的位置上。请记住，您所做的更改将不会被保存，直到您单击在页面底部的<em>保存配置</em>“按钮',
-'Add navigation'=>	'添加导航',
-'Edit navigation'=>	'编辑导航',
-'Top navigation'=>	'顶部导航',
-'Menu item'		=>	'菜单项',
-'Enabled'		=>	'启用',
-'Expanded'		=>	'展开',
-'Operations'	=>	'操作',
-'Save configuration'=>	'保存设置',
-'Bottom navigation'=>	'底部导航',
-'Other navigation'=>	'其他导航',
-'BASIC INFORMATION'=>	'基础信息',
-'Navigation name'=>		'导航名称',
-'OPTIONS'		=>	'选项',
-'Position'		=>	'位置',
-'None'			=>	'无',
-'Top'			=>	'顶部',
-'Bottom'		=>	'底部',
-'FirstPage' => '首页',
-'Topic'		=> '讨论组',
-'Wiki'	    => '维基',
-'Source'    => '源码',
-'BugTracker'=> '缺陷跟踪',
-'Download'  => '下载',
-'Manage'    => '管理',
-
 /* 项目相关 */
 'MyProject' => '我的项目',
 'CreateNewProject' => '创建新项目',
@@ -83,6 +18,7 @@ return array(
 'CreateNewTask' => '创建任务',
 'DeleteProject' => '删除项目',
 'EditProject' => '编辑项目',
+'CloseProject' => '关闭项目',
 'UpdateProject' => '更新该项目',
 'ProjectAuthor' => '创建人',
 'ProjectCreateTime' => '创建时间',

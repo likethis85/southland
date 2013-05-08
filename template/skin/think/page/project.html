@@ -84,6 +84,22 @@
             return confirm('<{T w="Confirm?"}>'+$(this).html());
         });
         
+        $("#btn-PAU").click(function() {
+            $('#AddUserPage').modal();
+        });
+        
+        $("#PAU").click(function(){
+            var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to="+
+                        $("a.tab.active").attr('title')+
+                        "&u="+escape($("#pauemail").attr('value'));
+            $.getJSON(url,function(data) {
+                if(data.error != 0) alert(data.msg);
+            });
+        });
+        
+        $("#Clo").click(function(){
+            $('#ClosePage').modal();
+        });
         fillMember([
             <{foreach item=item from=$tMembers}>
             {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
@@ -101,7 +117,19 @@
                 <div id="PAU" style="margin-left:8px;border:1px solid #494e52;height:22px;padding-left:3px;padding-right:3px;cursor:pointer;" align="center"><{T w='ProjectMemberAdd'}></div>
             </td>
         </tr>
+        <tr>
+            <td>Group:</td>
+            <td colspan=2>
+                <input type="radio" name="group" id="group-dev" checked/><label for="group-dev"><{T w='Developer'}></label>
+                <input type="radio" name="group" id="group-qa" /><label for="group-dev"><{T w='QA'}></label>
+                <input type="radio" name="group" id="group-mem" /><label for="group-dev"><{T w='Observer'}></label>
+            </td>
+        </tr>
     </table>
+</div>
+<div id="ClosePage" style="display:none;">
+    <h3><{T w="CloseProject"}></h3>
+    <textarea cols="80" rows="15"></textarea>
 </div>
 <div style="margin-left:36px;margin-top:16px;border-right:#c3daf9 1px solid;overflow:none;width:20%;float:left;">
 	<table>
@@ -113,6 +141,7 @@
         <tr><td><div class="btn-capsule"><a id="btn-PAU" href="#"><{T w="ProjectAddUser"}></a></div></td></tr>
         <tr><td><div class="btn-capsule"><a href="/project.php?&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
         <tr><td><div class="btn-capsule"><a id="Del" href="/project.php?a=del&id=<{$tCurrProj}>"><{T w="DeleteProject"}></a></div></td></tr>
+        <tr><td><div class="btn-capsule"><a id="Clo" href="#"><{T w="CloseProject"}></a></div></td></tr>
 	</table>
 </div>
 <div style="margin-top:16px;float:left;margin-left:12px;width:70%">
