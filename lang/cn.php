@@ -110,6 +110,10 @@ return array(
 'User group'	=>	'用户组',
 
 /*常规*/
+'FirstPage'     =>  '首页',
+'Topic'         =>  '讨论组',
+'BugTracker'    =>  '问题跟踪',
+'Wiki'          =>  '维基',
 'Welcome'       =>  '欢迎',
 'Low'           =>  '低',
 'Medium'        =>  '中',
