@@ -5,7 +5,7 @@ class projectModel extends spModel
 	var $pk = "id";					// 按ID排序
 	var $table = "project"; // 数据表的名称
     var $linker = null;
-	
+
     public function getProjects() {
         $uid = spClass('spSession')->getUser()->GetUserId();
         $projects = spClass('userorgModel')->getProjectsByUser($uid);
@@ -18,12 +18,24 @@ class projectModel extends spModel
     /** @brief detect does current user is permit to view the project
      *
      */
-    public function allow($pid) {
+    public function allow($pid, $uid) {
         if(empty($pid))
             return false;
-            
-        $projects = $this->getProjects();
-        return !empty($projects["$pid"]);
+
+        $proj = $this->find(array('id' => $pid));
+        if(empty($proj))
+            return false;
+
+        $allow_public = 1;
+        $allow_protected = 2;
+        $allow_private = 3;
+        if($proj['protection']==$this->allow_public)
+            return true;
+    
+        if(empty($uid))
+            return false;
+
+        return spClass('userorgModel')->isMemberOfProject($pid, $uid);
     }
 	public function getCurrentInfo() {
 	    $linker = array(
@@ -42,7 +54,7 @@ class projectModel extends spModel
         else return $info;
     }
     public function getProjectMembers() {
-        $members = spClass('userorgModel')->getUsersByProject();
+        $members = spClass('userorgModel')->getUsersByProject(spClass('spSession')->getUser()->getCurrentProject());
         return $members;
     }
     public function deleteProject($pid) {

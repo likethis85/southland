@@ -52,4 +52,26 @@ class issueModel extends spModel
         
         return $status[$str];
     }
+    /** @brief detect doe user has privalege to access the issue 
+     *
+     */
+    public function allow($iid, $uid) {
+        if(empty($iid))
+            return false;
+
+        $issue = $this->find(array('id' => $iid));
+        if(empty($issue))
+            return false;
+
+        $allow_public = 1;
+        $allow_protected = 2;
+        $allow_private = 3;
+        if($issue['protection']==$this->allow_public)
+            return true;
+
+        if(empty($uid))
+            return false;
+
+        return spClass('userorgModel')->isMemberOfIssue($iid, $uid);
+    }
 }

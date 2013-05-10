@@ -39,14 +39,15 @@ class main extends general
 	}
 	function _project() {
 		$pid = $this->spArgs('pid');
-		if(!empty($pid) && $pid!=$this->tCurrProj && spClass('projectModel')->allow($pid)) {
+        $uid = spClass('spSession')->getUser()->getUserId();
+		if(!empty($pid) && $pid!=$this->tCurrProj && spClass('projectModel')->allow($pid,$uid)) {
 		    spClass('spSession')->getUser()->setCurrentProject($pid);
 		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
 		    $this->tProject  = spClass('projectModel')->getCurrentInfo();
 		}
 		
 		if($this->tNid==1)
-		    $this->tMembers  = spClass('projectModel')->getProjectMembers();
+		    $this->tMembers = spClass('projectModel')->getProjectMembers();
 	}
 	function _forum(){
     	$objForum = spClass("forumModel");
@@ -59,7 +60,7 @@ class main extends general
     }
     function _issue() {
         $uom = spClass('userorgModel');
-        $owners = $uom->getIssueUsers();
+        $owners = $uom->getUsersByIssue(spClass('spSession')->getUser()->getCurrentProject());
         $this->tIssues = spClass('issueModel')->getIssues();
         $issues = $this->tIssues;
         foreach($issues as &$issue){
@@ -76,7 +77,7 @@ class main extends general
         unset($issues);
         
         $tMembers = array();
-        $members = $uom->getUsersByProject();
+        $members = $uom->getUsersByProject(spClass('spSession')->getUser()->getCurrentProject());
         foreach($members as $member){
             $tMembers[$member['uid']] = $member;
         }
