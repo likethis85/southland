@@ -3,7 +3,15 @@
     $(document).ready(function(){
         $('#issues').dataTable({
             "bJQueryUI":true,
-            "sPaginationType":"full_numbers"
+            "sPaginationType":"full_numbers",
+            "aoColumns" : [
+                {"sWidth": "32px","sClass": "center", "bSortable": false},
+                null,
+                null,
+                null,
+                null,
+                null
+            ]
         });
 
         $("input[name='fixed']").iCheck({
@@ -39,7 +47,7 @@
     <table id="issues" name="issues" class="display" width="100%">
         <thead>
             <tr>
-                <th><{T w="IssueOperator"}></th>
+                <th><{T w="IssueStatus"}></th>
                 <th><{T w="IssueTitle"}></th>
                 <th><{T w="IssueReporter"}></th>
                 <th><{T w="IssueAssigner"}></th>
@@ -55,11 +63,15 @@
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>
                 <td>
-                    <select>
-                    <{foreach item=itemM from=$tMembers}>
-                        <option value="<{$itemM.uid}>" <{if $itemM.uid==$itemI.owner.uid}>selected<{/if}>><{$itemM.nick}></option>
-                    <{/foreach}>
-                    </select>
+                    <{if $tDevOwner || $tQAOwner || ($tUser.uid == $itemI.owner.uid)}>
+                        <select>
+                        <{foreach item=itemM from=$tMembers}>
+                            <option value="<{$itemM.uid}>" <{if $itemM.uid==$itemI.owner.uid}>selected<{/if}>><{$itemM.nick}></option>
+                        <{/foreach}>
+                        </select>
+                    <{else}>
+                        <{$itemI.owner.nick}>
+                    <{/if}>
                 </td>
                 <td><{$itemI.addtime}></td>
             </tr>

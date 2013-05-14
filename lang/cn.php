@@ -59,12 +59,13 @@ return array(
 'UpdateTopic' => '更新话题',
 
 /* 问题相关 */
+'CreateNewIssue' => '报告该问题',
 'NewIssues' =>  '创建新问题',
 'IssueTitle'=>'问题简述',
 'IssuePriority' => '优先级',
+'IssueStatus'   => '状态',
 'IssueDesc' => '问题详细描述',
 'IssueRef'  => '关联任务',
-'CreateNewIssue' => '报告该问题',
 'IssueReporter'=> '发布人',
 'IssueAssigner'=> '指派人',
 'IssueOwner'=> '指派给',

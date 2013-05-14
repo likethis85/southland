@@ -71,7 +71,20 @@ class userorgModel extends spModel
         $rcd = $this->find(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project));
         return !empty($rcd);
     }
-	
+	public function getUserRole($pid,$uid) {
+        $roles = $this->findAll(array('uid' => $uid, 'pid' => $pid, 'scope' => $this->scope_project), null, 'role');
+        if(empty($roles))
+            return array();
+
+        $ur = array();
+        foreach($roles as $value) {
+            foreach($value as $role) {
+                $ur.array_push($ur, $role);
+            }
+        }
+
+        return $ur;
+    }
     /************************************************************************************************
 	 * task related
      ***********************************************************************************************/
