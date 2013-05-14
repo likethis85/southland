@@ -66,6 +66,12 @@ class spUser
     public function getCurrentProject() {
         return $this->usingProj;
     }
+    public function setRole($role) {
+        $this->userInfo['role'] = $role;
+    }
+    public function getRole() {
+        return $this->userInfo['role'];
+    }
 }
 
 

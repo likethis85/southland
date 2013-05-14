@@ -10,11 +10,8 @@ way to fit your requirements.
 =================================================================== */
 
 .hm_nav {padding:0;z-index:500;}
-.hm_nav li.hm_top {display:block; float:left;margin-top:-8px;}
+.hm_nav li.hm_top {display:block; float:left;}
 .hm_nav li a.hm_top_link {display:block; float:left; line-height:33px; color:#ccc; text-decoration:none; font-size:11px; font-weight:bold; cursor:pointer;}
-.hm_nav li a.hm_top_link span {float:left; display:block; background: url(three_0.gif) right top no-repeat;}
-.hm_nav li a.hm_top_link span.down {float:left; display:block; background: url(three_0a.gif) no-repeat right top;}
-
 
 /* Default list styling */
 

@@ -44,6 +44,26 @@ class main extends general
 		    spClass('spSession')->getUser()->setCurrentProject($pid);
 		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
 		    $this->tProject  = spClass('projectModel')->getCurrentInfo();
+		    
+		    $uom = spClass('userorgModel');
+		    $ur = array('Manager' => false, 'Dev' => false, 'QA' => false);
+            $roles = $uom->getUserRole($pid,$uid);
+            foreach($roles as $role) {
+                switch($role){
+                case $uom->role_project_manager:
+                    $ur['Manager'] = true;
+                    break;
+                case $uom->role_dev_owner:
+                case $uom->role_dev_manager:
+                    $ur['Dev'] = true;
+                    break;
+                case $uom->role_qa_owner:
+                case $uom->role_qa_manager:
+                    $ur['QA'] = true;
+                    break;
+                }
+            }
+            spClass('spSession')->getUser()->setRole($ur);
 		}
 		
 		if($this->tNid==1)
@@ -85,23 +105,6 @@ class main extends general
         }
         $this->tMembers = $tMembers;
         unset($tMembers);
-
-        $this->tDevOwner = false;
-        $this->tQAOwner = false;
-        $roles = $uom->getUserRole($pid,$uid);
-        foreach($roles as $role) {
-            switch($role){
-            case $uom->role_project_manager:
-            case $uom->role_dev_owner:
-            case $uom->role_dev_manager:
-                $this->tDevOwner = true;
-                break;
-            case $uom->role_qa_owner:
-            case $uom->role_qa_manager:
-                $this->tQAOwner = true;
-                break;
-            }
-        }
     }
     function _wiki() {
         $this->tWikis = spClass('wikiModel')->getWikis();

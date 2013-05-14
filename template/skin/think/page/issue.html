@@ -5,7 +5,8 @@
             "bJQueryUI":true,
             "sPaginationType":"full_numbers",
             "aoColumns" : [
-                {"sWidth": "32px","sClass": "center", "bSortable": false},
+                //{"sClass": "center", "bSortable": false},
+                {"bSortable": false},
                 null,
                 null,
                 null,
@@ -58,12 +59,43 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
-                <td style="background:white;"><input type="checkbox" name="fixed" id="<{$itemI.id}>" <{if $itemI.status==2}>checked<{else}>unchecked<{/if}> /></td>
+                <td>
+                    <ul class="hm_nav">
+                        <{if $item.status==1}>
+                        <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/open.png" width=16 height=16></a>
+                        <{elseif $item.status==2}>
+                        <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/fixed.png" width=16 height=16></a>
+                        <{else}>
+                        <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/open.png" width=16 height=16></a>
+                        <{/if}>
+                        <{if $tUser.role.Manager || ($tUser.uid == $itemI.owner.uid)}>
+                        <ul class="hm_sub">
+                            <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $itemI.owner.uid)}>
+                           <li><a href="#"><img src="<{$skinpath}>/img/open.png" width=16 height=16><{T w='IssueWorking'}></a></li>
+                           <{/if}>
+                           
+                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $itemI.owner.uid)}>
+                           <li><a href="#"><img src="<{$skinpath}>/img/fixed.png"width=16 height=16><{T w='IssueFixed'}></a></li>
+                           <{/if}>
+                           
+                           <{if $tUser.role.Manager || ($tUser.role.QA && $tUser.uid == $itemI.owner.uid)}>
+                           <li><a href="#"><img src="<{$skinpath}>/img/verified.png" width=16 height=16><{T w='IssueVerified'}></a></li>
+                           <{/if}>
+                           
+                           <{if $tUser.role.Manager}>
+                           <li><a href="#"><img src="<{$skinpath}>/img/completed.png"width=16 height=16><{T w='TaskComplete'}></a></li>
+                           <li><a href="#"><img src="<{$skinpath}>/img/pending.png"width=16 height=16><{T w='TaskPending'}></a></li>
+                           <{/if}>
+                        </ul>
+                        <{/if}>
+                       </li>
+                    </ul>
+                </td>
                 <td><a href="/issue.php?a=view&id=<{$itemI.id}>"><{$itemI.brief}></a></td>
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>
                 <td>
-                    <{if $tDevOwner || $tQAOwner || ($tUser.uid == $itemI.owner.uid)}>
+                    <{if $tUser.role.manager || ($tUser.uid == $itemI.owner.uid)}>
                         <select>
                         <{foreach item=itemM from=$tMembers}>
                             <option value="<{$itemM.uid}>" <{if $itemM.uid==$itemI.owner.uid}>selected<{/if}>><{$itemM.nick}></option>

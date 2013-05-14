@@ -47,7 +47,10 @@ class issueModel extends spModel
             'working'   => 1,
             'fixed'     => 2,
             'verified'  => 3,
-            'closed'    => 4
+            'closed'    => 4,
+            'duplicated'=> 5,
+            'knowissue' => 6,
+            'defer'     => 7
         );
         
         return $status[$str];
