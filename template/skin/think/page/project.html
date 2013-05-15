@@ -48,23 +48,25 @@
                 if(role.length==0)
                     return;
                 
-                var elem = '<li class="puser"><table width="100%"><tr><td align="left" width="88"><img src="<{$skinpath}>/img/portrait.png"></td><td align="left"><table><tr><td align="left"><strong>'+item.nick+'</strong></td></tr><tr><td align="left">';
+                var elem = '<li class="puser"><table width="100%"><tr><td align="left" width="88"><img src="<{$skinpath}>/img/portrait.jpg"></td><td align="left"><table><tr><td align="left"><strong>'+item.nick+'</strong></td></tr><tr><td align="left">';
                 $.each(role,function(j,r){
                     switch(r) {
                     case 1:
                     case 2:
-                        elem += '<img src="<{$skinpath}>/img/owner.png" alt="owner">';
+                        elem += '<img src="<{$skinpath}>/img/owner.jpg" alt="owner">';
                         break;
                     case 3:
                     case 4:
                     case 5:
-                        elem += '<img src="<{$skinpath}>/img/manager.png" alt="manager">';
+                        elem += '<img src="<{$skinpath}>/img/manager.jpg" alt="manager">';
                         break;
                     case 6:
                     case 7:
                     default:
-                        if(i!=2)
-                            elem += '<img src="<{$skinpath}>/img/member.png" alt="member">';
+                        if(i==0)
+                            elem += '<img src="<{$skinpath}>/img/dev.jpg" alt="member">';
+                        else if(i==1)
+                            elem += '<img src="<{$skinpath}>/img/qa.jpg" alt="member">';
                         break;
                     }
                 });
