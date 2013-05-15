@@ -39,4 +39,24 @@ class wikiModel extends spModel
             $kwds = array();
         return array('wiki' => $wiki, 'keywords' => $kwds);
     }
+
+    public function allow($wid, $uid) {
+        if(empty($wid))
+            return false;
+
+        $wiki = $this->find(array('id' => $wid));
+        if(empty($task))
+            return false;
+
+        $allow_public = 0;
+        $allow_protected = 1;
+        $allow_private = 2;
+        if($task['acl']==$allow_public)
+            return true;
+
+        if(empty($uid))
+            return false;
+
+        return spClass('userorgModel')->isMemberOfProject($tid, $uid);
+    }
 }

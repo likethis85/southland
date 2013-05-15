@@ -13,11 +13,6 @@ return array(
 	'sp_core_path' => SP_PATH.'/Core', // 框架MVC核心目录
 	'sp_drivers_path' => SP_PATH.'/Drivers', // 框架各类驱动文件目录
 	'sp_include_path' => array( SP_PATH.'/Extensions' ), // 框架扩展功能载入路径
-	'launch' => array(
-        'router_prefilter' => array(
-            array('spAcl','maxcheck') //路由前执行权限控制
-        )
-    ),
 	'auto_load_controller' => array('spArgs'), // 控制器自动加载的扩展类名
 	'auto_load_model' => array('spPager','spVerifier','spCache','spLinker'), // 模型自动加载的扩展类名
 	

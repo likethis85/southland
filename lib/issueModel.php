@@ -66,10 +66,10 @@ class issueModel extends spModel
         if(empty($issue))
             return false;
 
-        $allow_public = 1;
-        $allow_protected = 2;
-        $allow_private = 3;
-        if($issue['protection']==$this->allow_public)
+        $allow_public = 0;
+        $allow_protected = 1;
+        $allow_private = 2;
+        if($issue['acl']==$allow_public)
             return true;
 
         if(empty($uid))

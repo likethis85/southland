@@ -89,8 +89,8 @@
         });
         
         $("#PAU").click(function(){
-            var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to="+
-                        $("a.tab.active").attr('title')+
+            var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to=" +
+                        $('input[name="group"]:checked').val() +
                         "&u="+escape($("#pauemail").attr('value'));
             $.getJSON(url,function(data) {
                 if(data.error != 0) alert(data.msg);
@@ -120,9 +120,9 @@
         <tr>
             <td>Group:</td>
             <td colspan=2>
-                <input type="radio" name="group" id="group-dev" checked/><label for="group-dev"><{T w='Developer'}></label>
-                <input type="radio" name="group" id="group-qa" /><label for="group-dev"><{T w='QA'}></label>
-                <input type="radio" name="group" id="group-mem" /><label for="group-dev"><{T w='Observer'}></label>
+                <input type="radio" name="group" value="Developer" checked/><label for="group-dev"><{T w='Developer'}></label>
+                <input type="radio" name="group" value="QA" /><label for="group-dev"><{T w='QA'}></label>
+                <input type="radio" name="group" value="Observer" /><label for="group-dev"><{T w='Observer'}></label>
             </td>
         </tr>
     </table>

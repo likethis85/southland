@@ -26,10 +26,10 @@ class projectModel extends spModel
         if(empty($proj))
             return false;
 
-        $allow_public = 1;
-        $allow_protected = 2;
-        $allow_private = 3;
-        if($proj['protection']==$this->allow_public)
+        $allow_public = 0;
+        $allow_protected = 1;
+        $allow_private = 2;
+        if($proj['acl']==$allow_public)
             return true;
     
         if(empty($uid))

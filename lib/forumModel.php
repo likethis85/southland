@@ -20,10 +20,10 @@ class forumModel extends spModel
         if(empty($task))
             return false;
             
-        $allow_public = 1;
-        $allow_protected = 2;
-        $allow_private = 3;
-        if($task['protection']==$this->allow_public)
+        $allow_public = 0;
+        $allow_protected = 1;
+        $allow_private = 2;
+        if($task['acl']==$allow_public)
             return true;
 
         if(empty($uid))
