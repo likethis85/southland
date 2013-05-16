@@ -44,7 +44,6 @@ class main extends general
 		    spClass('spSession')->getUser()->setCurrentProject($pid);
 		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
 		    $this->tProject  = spClass('projectModel')->getCurrentInfo();
-		    
 		    $uom = spClass('userorgModel');
 		    $ur = array('Manager' => false, 'Dev' => false, 'QA' => false);
             $roles = $uom->getUserRole($pid,$uid);
@@ -66,8 +65,15 @@ class main extends general
             spClass('spSession')->getUser()->setRole($ur);
 		}
 		
-		if($this->tNid==1)
-		    $this->tMembers = spClass('projectModel')->getProjectMembers();
+		if($this->tNid==1) {
+            $this->tMembers = spClass('projectModel')->getProjectMembers();
+		    $tTimeline = array();
+            $timelines = spClass('timelineModel')->getProject($this->tCurrProj);
+            foreach($timelines as $timeline){
+                array_push($tTimeline, array('title' => $timeline['brief'], 'date' => getdate(strtotime($timeline['etime']))));
+            }
+            $this->tTimeline = $tTimeline;
+        }
 	}
 	function _forum(){
     	$objForum = spClass("forumModel");

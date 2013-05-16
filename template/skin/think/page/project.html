@@ -107,6 +107,27 @@
             {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
             <{/foreach}>
         ]);
+
+        var prj_timeline = new Chronoline(document.getElementById('ptl'),
+            [
+                <{foreach item=item from=$tTimeline}>
+                {dates: [new Date(<{$item.date.year}>, <{$item.date.mon}>, <{$item.date.mday}>)], title:"<{$item.title}>"},
+                <{/foreach}>
+            ],
+            {
+                visibleSpan: DAY_IN_MILLISECONDS * 91,
+                animated: true,
+                tooltips: true,
+                //defaultStartDate: new Date(2012, 3, 5),
+                //sections: sections2,
+                sectionLabelAttrs: {'fill': '#997e3d', 'font-weight': 'bold'},
+                labelInterval: isFifthDay,
+                hashInterval: isFifthDay,
+                scrollLeft: prevMonth,
+                scrollRight: nextMonth,
+                markToday: 'labelBox',
+                draggable: true
+            });
     });
 </script>
 <div id="AddUserPage" style="display:none;">
@@ -150,6 +171,7 @@
     <div style="min-height:296px;">
 	    <{$tProject.description}>
     </div>
+    <div id="ptl" class="timeline-tgt"></div>
 	<table width=100% border=1>
 	    <thead>
 	       <th style="background-color:#333366;width:33%;color:white;"><{T w='Developer'}></th>
