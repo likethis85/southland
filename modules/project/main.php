@@ -41,6 +41,24 @@ class main extends general
 		}
     }
 
+    /** @brief add event to timeline 
+     *
+     */
+    public function addEvent() {
+        $title = $this->spArgs('title');
+        $date = $this->spArgs('date');
+        $isdate = strtotime($date);
+        if(empty($title) || -1==$isdate || false==$isdate)
+            return;
+
+        $pid = $this->tCurrProj;
+        $uid = spClass('spSession')->getUser()->getUserId();
+        if(false == spClass('timelineModel')->createForProject($pid, $uid, $date, $title)) {
+            spClass('keeper')->speak(T('Error DB operation failed'));
+        } else {
+            $this->jumpProjectPage();
+        }
+    }
     public function del() {
         spClass('projectModel')->deleteProject($this->spArgs('id'));
         spClass('spSession')->getUser()->setCurrentProject(0);

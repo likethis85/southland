@@ -128,4 +128,5 @@ return array(
 'Title'         =>  '标题',
 'Confirm?'      =>  '确定要',
 'Certification Code' => '验证码',
+'Submit'        => '发送',
 );

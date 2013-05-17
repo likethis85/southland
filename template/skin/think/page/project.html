@@ -135,17 +135,19 @@
         $('#atm').click(function(){
             var bb = new BlackBox();
             bb.popup(
-                '<div style="width:470px;"><div id="close" style="float:right;margin-right:3px;background:red;width:18px;height:18px;"></div><h3><{T w="ProjectAddEvent"}></h3><table>' +
-                        '<tr><td><{T w="Title"}>:</td><td><input name="title" type="text" size=40></td><td>choose Date</td></tr>' +
+                '<form action="/project.php?a=addEvent" method="post"><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
+                        '<tr><td><{T w="Title"}>:</td><td><input name="title" type="text" size=40></td><td><input type="submit" class="btn-rounded" value=<{T w="Submit"}> /></td></tr>' +
                         '<tr><td colspan=3 id="jCalTarget"></td></tr>'+
-                '</table></div>',
+                '</table></div><input type="hidden" name="date" value=""/></form>',
                 function(content) {
                     content.find('#jCalTarget').jCal({
                         day:            new Date(),
                         days:           1,
                         showMonths:     2,
                         monthSelect:    false,
-                        monthSelect:    true
+                        callback:       function(day,days){
+                            content.find('input[name=date]').attr('value', ''+day.getFullYear()+'-'+(day.getMonth()+1)+'-'+day.getDate());
+                        }
                     });
                     content.find('#close').click(function(){
                         bb.boxClose();
