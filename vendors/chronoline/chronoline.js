@@ -100,7 +100,9 @@ function forwardWeek(date){
 }
 
 function Chronoline(domElement, events, options) {
-
+    if(events.length==0)
+        return;
+        
     var defaults = {
         defaultStartDate: null,  // the date furthest to the left on load. Defaults to today
         startDate: null,  // start of the timeline. Defaults to first event date

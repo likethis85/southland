@@ -48,8 +48,10 @@ class main extends general
         $title = $this->spArgs('title');
         $date = $this->spArgs('date');
         $isdate = strtotime($date);
-        if(empty($title) || -1==$isdate || false==$isdate)
+        if(empty($title) || -1==$isdate || false==$isdate) {
+            $this->jumpProjectPage();
             return;
+        }
 
         $pid = $this->tCurrProj;
         $uid = spClass('spSession')->getUser()->getUserId();

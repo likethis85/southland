@@ -26,25 +26,11 @@ a:hover {
     margin: 8px 8px;
     display: inline-block;
     position: relative;
-    -webkit-border-radius: 32px;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0 0 4px inset,rgba(0, 0, 0, 0.6) 0 2px 4px;
 }
 .lighter:hover {
-    -webkit-box-shadow: rgba(0, 0, 0, 0.6) 0 0 4px inset,#5695DB 0 0 32px 0;
-    border-color: #5695DB;
+    -webkit-box-shadow: rgba(10, 10, 10, 0.6) 0 0 4px 0,#5695DB 0 0 32px 0;
 }
-.lighter:hover::before {
-    content: "";
-    position: absolute;
-    background-color: white;
-    opacity: .1;
-    -webkit-border-radius: 32px;
-    background-image: -webkit-gradient(linear,0% 0,100% 100%,color-stop(0%,#FEFEFE),color-stop(50%,#C4C4C4),color-stop(51%,rgba(199, 199, 199,     0)),color-stop(100%,rgba(226, 226, 226, 0)));
-    background-image: -webkit-linear-gradient(left top,#FEFEFE 0,#C4C4C4 50%,rgba(199, 199, 199, 0) 51%,rgba(226, 226, 226, 0) 100%);
-    background-image: -moz-linear-gradient(left top,#FEFEFE 0,#C4C4C4 50%,rgba(199, 199, 199, 0) 51%,rgba(226, 226, 226, 0) 100%);
-    background-image: -o-linear-gradient(left top,#FEFEFE 0,#C4C4C4 50%,rgba(199, 199, 199, 0) 51%,rgba(226, 226, 226, 0) 100%);
-    background-image: linear-gradient(left top,#FEFEFE 0,#C4C4C4 50%,rgba(199, 199, 199, 0) 51%,rgba(226, 226, 226, 0) 100%);
-}
+
 .btn-rounded {
     padding: 4px 24px;
     background: #3FA156;
