@@ -10,7 +10,7 @@
 
 DAY_IN_MILLISECONDS = 86400000;
 
-var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
 requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function( callback, element){
     return window.setTimeout(function(){callback(+new Date());}, 1000 / 60);
@@ -106,8 +106,8 @@ function Chronoline(domElement, events, options) {
         startDate: null,  // start of the timeline. Defaults to first event date
         endDate: null,  // end of the timeline. Defauls to the last event date
 
-        visibleSpan: 2592000000,  // in milliseconds,
-        timelinePadding: 0, // in ms. Adds this much time to the front and back to get some space
+        visibleSpan: 2592000000,  // 30 day in milliseconds,
+        timelinePadding: 432000000, // 3 day in ms. Adds this much time to the front and back to get some space
 
         topMargin: 40,  // overhead space on the canvas. useful for additional content
         eventHeight: 5,  // how tall event events are
@@ -505,7 +505,7 @@ function Chronoline(domElement, events, options) {
             // special markers for today
             if(t.markToday && curMs == t.today.getTime()){
                 if(t.markToday == 'labelBox'){
-                    label.attr({'text': label.attr('text') + '\n' + formatDate(curDate, '%b').toUpperCase(),
+                    label.attr({'text': t.today.getUTCDate() + '\n' + formatDate(curDate, '%b').toUpperCase(),
                                 'font-size': t.fontAttrs['font-size'] + 2,
                                 'y': t.bottomHashY + t.fontAttrs['font-size'] + 5});
                     var bbox = label.getBBox();

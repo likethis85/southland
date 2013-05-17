@@ -29,6 +29,7 @@ return array(
 'Developer' => '开发',
 'QA' => '测试',
 'Observer' => '参与',
+'ProjectAddEvent' => '添加事件',
 
 /* 任务相关 */
 'Task'  => '任务',

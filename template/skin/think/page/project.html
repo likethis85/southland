@@ -102,23 +102,25 @@
         $("#Clo").click(function(){
             $('#ClosePage').modal();
         });
+
         fillMember([
             <{foreach item=item from=$tMembers}>
             {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
             <{/foreach}>
         ]);
 
-        var prj_timeline = new Chronoline(document.getElementById('ptl'),
+        var prj_timeline = new Chronoline(
+            document.getElementById('ptl'),
             [
                 <{foreach item=item from=$tTimeline}>
-                {dates: [new Date(<{$item.date.year}>, <{$item.date.mon}>, <{$item.date.mday}>)], title:"<{$item.title}>"},
+                {dates: [new Date("<{$item.date}>")], title:"<{$item.title}>"},
                 <{/foreach}>
             ],
             {
                 visibleSpan: DAY_IN_MILLISECONDS * 91,
                 animated: true,
                 tooltips: true,
-                //defaultStartDate: new Date(2012, 3, 5),
+                defaultStartDate: new Date(2013, 3, 5),
                 //sections: sections2,
                 sectionLabelAttrs: {'fill': '#997e3d', 'font-weight': 'bold'},
                 labelInterval: isFifthDay,
@@ -127,7 +129,30 @@
                 scrollRight: nextMonth,
                 markToday: 'labelBox',
                 draggable: true
-            });
+            }
+        );
+
+        $('#atm').click(function(){
+            var bb = new BlackBox();
+            bb.popup(
+                '<div style="width:470px;"><div id="close" style="float:right;margin-right:3px;background:red;width:18px;height:18px;"></div><h3><{T w="ProjectAddEvent"}></h3><table>' +
+                        '<tr><td><{T w="Title"}>:</td><td><input name="title" type="text" size=40></td><td>choose Date</td></tr>' +
+                        '<tr><td colspan=3 id="jCalTarget"></td></tr>'+
+                '</table></div>',
+                function(content) {
+                    content.find('#jCalTarget').jCal({
+                        day:            new Date(),
+                        days:           1,
+                        showMonths:     2,
+                        monthSelect:    false,
+                        monthSelect:    true
+                    });
+                    content.find('#close').click(function(){
+                        bb.boxClose();
+                    });
+                }
+            );
+        });
     });
 </script>
 <div id="AddUserPage" style="display:none;">
@@ -150,6 +175,7 @@
         </tr>
     </table>
 </div>
+
 <div id="ClosePage" style="display:none;">
     <h3><{T w="CloseProject"}></h3>
     <textarea cols="80" rows="15"></textarea>
@@ -168,10 +194,15 @@
 	</table>
 </div>
 <div style="margin-top:16px;float:left;margin-left:12px;width:70%">
-    <div style="min-height:296px;">
+    <div style="min-height:220px;">
 	    <{$tProject.description}>
     </div>
-    <div id="ptl" class="timeline-tgt"></div>
+    <div style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;">
+        <div id="atm" style="cursor:pointer;height:32px;width:32px;overflow:hidden;">
+            <img src="<{$skinpath}>/img/addtm.png" width=32 height=32>
+        </div>
+        <div id="ptl" style="height:130px;"></div>
+    </div>
 	<table width=100% border=1>
 	    <thead>
 	       <th style="background-color:#333366;width:33%;color:white;"><{T w='Developer'}></th>
