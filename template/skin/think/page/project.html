@@ -127,7 +127,14 @@
         
         
         $("#Clo").click(function(){
-            $('#ClosePage').modal();
+            var bb = new BlackBox();
+            bb.popup('<div><div id="close" class="close">x</div><h3><{T w="CloseProject"}></h3><textarea cols="80" rows="15"></textarea></div>',
+                function(content) {
+                    content.find('#close').click(function(){
+                        bb.boxClose();
+                    });
+                } 
+            ); 
         });
 
         fillMember([
@@ -184,10 +191,6 @@
     });
 </script>
 
-<div id="ClosePage" style="display:none;">
-    <h3><{T w="CloseProject"}></h3>
-    <textarea cols="80" rows="15"></textarea>
-</div>
 <div style="margin-left:36px;margin-top:16px;border-right:#c3daf9 1px solid;overflow:none;width:20%;float:left;">
 	<table>
 		<tr><td><h2><{T w="ProjectAuthor"}></h2></td></tr>
@@ -202,7 +205,7 @@
 	</table>
 </div>
 <div style="margin-top:16px;float:left;margin-left:12px;width:70%">
-    <div style="min-height:220px;">
+    <div style="min-height:124px;">
 	    <{$tProject.description}>
     </div>
     <div style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;">
