@@ -128,7 +128,7 @@
                 scrollLeft: prevMonth,
                 scrollRight: nextMonth,
                 markToday: 'labelBox',
-                draggable: true
+                draggable: false
             }
         );
 
@@ -200,7 +200,7 @@
 	    <{$tProject.description}>
     </div>
     <div style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;">
-        <div id="atm" style="cursor:pointer;height:32px;width:32px;overflow:hidden;">
+        <div id="atm" class="lighter">
             <img src="<{$skinpath}>/img/addtm.png" width=32 height=32>
         </div>
         <div id="ptl" style="height:130px;"></div>
