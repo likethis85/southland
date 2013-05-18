@@ -53,20 +53,20 @@
                     switch(r) {
                     case 1:
                     case 2:
-                        elem += '<img src="<{$skinpath}>/img/owner.jpg" alt="owner">';
+                        elem += '<img src="<{$skinpath}>/img/owner.jpg" alt="owner" title=<{T w="Owner"}> >';
                         break;
                     case 3:
                     case 4:
                     case 5:
-                        elem += '<img src="<{$skinpath}>/img/manager.jpg" alt="manager">';
+                        elem += '<img src="<{$skinpath}>/img/manager.jpg" alt="manager" title=<{T w="Manager"}> >';
                         break;
                     case 6:
                     case 7:
                     default:
                         if(i==0)
-                            elem += '<img src="<{$skinpath}>/img/dev.jpg" alt="member">';
+                            elem += '<img src="<{$skinpath}>/img/dev.jpg" alt="member" title=<{T w="Member"}> >';
                         else if(i==1)
-                            elem += '<img src="<{$skinpath}>/img/qa.jpg" alt="member">';
+                            elem += '<img src="<{$skinpath}>/img/qa.jpg" alt="member"  title=<{T w="Member"}> >';
                         break;
                     }
                 });
@@ -138,16 +138,24 @@
         });
 
         fillMember([
-            <{foreach item=item from=$tMembers}>
-            {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
+            <{foreach item=item from=$tMembers name=iterUsers}>
+                <{if $smarty.foreach.iterUsers.last }>
+                    {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>}
+                <{else}>
+                    {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
+                <{/if}>
             <{/foreach}>
         ]);
 
         var prj_timeline = new Chronoline(
             document.getElementById('ptl'),
             [
-                <{foreach item=item from=$tTimeline}>
-                {dates: [new Date("<{$item.date}>")], title:"<{$item.title}>"},
+                <{foreach item=item from=$tTimeline name=iterEvents}>
+                    <{if $smarty.foreach.iterEvents.last }>
+                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title:"<{$item.title}>"}
+                    <{else}>
+                        {dates: [new Date("<{$item.date}>")], title:"<{$item.title}>"},
+                    <{/if}>
                 <{/foreach}>
             ],
             {
