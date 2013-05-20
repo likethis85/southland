@@ -1,16 +1,4 @@
-// chronoline.js
-// by Kevin Leung for Zanbato, https://zanbato.com
-// MIT license at https://github.com/StoicLoofah/chronoline.js/blob/master/LICENSE.md
-
-    if (!Date.now) {
-        Date.now = function now() {
-            return +(new Date);
-        };
-    }
-
 DAY_IN_MILLISECONDS = 86400000;
-
-var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
 requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function( callback, element){
     return window.setTimeout(function(){callback(+new Date());}, 1000 / 60);
@@ -33,6 +21,7 @@ function formatDate(date, formatString){
     // TODO slowly adding in new parts to this
     // note that this also doesn't escape things properly. sorry
     var ret = formatString;
+    var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
     if(formatString.indexOf('%d') != -1){
         var dateNum = date.getUTCDate().toString();
         if(dateNum.length < 2)
@@ -165,6 +154,8 @@ function Chronoline(domElement, events, options) {
 
         continuousScroll: true,  // requires that scrollable be true, click-and-hold arrows
         continuousScrollSpeed: 1,  // I believe this is px/s of scroll. There is no easing in it
+
+        toolbarCmd: []
     }
     var t = this;
 
@@ -182,6 +173,16 @@ function Chronoline(domElement, events, options) {
     t.wrapper = document.createElement('div');
     t.wrapper.className = 'chronoline-wrapper';
     t.domElement.appendChild(t.wrapper);
+
+    t.toolbar = document.createElement('div');
+    t.toolbar.className = 'chronoline-toolbar';
+    $.each(t.toolbarCmd,function(index, item){
+        tbtn = document.createElement('div');
+        $(tbtn).css('background-image', 'url('+item.img+')').click(item.callback);
+        t.toolbar.appendChild(tbtn);
+    });
+    t.wrapper.appendChild(t.toolbar);
+    $(t.wrapper).hover( function() { $(t.toolbar).slideDown('slow');}, function() { $(t.toolbar).slideUp();});
 
     // SORT EVENTS
     t.sortEvents = function(a, b){
