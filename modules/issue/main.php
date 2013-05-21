@@ -13,13 +13,19 @@ class main extends general
 	}
 	
 	function add() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
 			$data = array(
-			    'prj' => spClass('spSession')->getUser()->getCurrentProject(),
+			    'prj' => $pid,
                 'tid' => $this->spArgs('tid'),
-                'reporter' => spClass('spSession')->getUser()->getUserId(),
-                'assigner' => spClass('spSession')->getUser()->getUserId(),
+                'reporter' => $uid,
+                'assigner' => $uid,
 				'owner'    => $this->spArgs('oid'),
 				'priority' => $this->spArgs('IssuePri'),
 				'brief'    => $this->spArgs('IssueBrief'),
@@ -41,24 +47,34 @@ class main extends general
 		}
 	}
     function view() {
-        $iid = $this->spArgs('id');
-        if(empty($iid))
-            $this->jumpIssuePage();
-        else {
-            $condition = array(
-                'id' => $iid
-            );
-            $this->tIssue = spClass('issueModel')->find($condition);
-            $this->tComments = spClass('commentModel')->getIssueComments($iid);
-            $this->display('issue/view.html');
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
         }
-        
+
+        $iid = $this->spArgs('id');
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+        $this->tIssue = spClass('issueModel')->find(array('id' => $iid));
+        $this->tComments = spClass('commentModel')->getIssueComments($iid);
+        $this->display('issue/view.html');
     }
 
     function cmt() {
-        $id = $this->spArgs('id');
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+
+        $iid = $this->spArgs('id');
         $comment = $this->spArgs('reply');
-        if(empty($id) || empty($comment)) {
+        if(empty($iid) || empty($comment)) {
             spClass('keeper')->speak(T('Error Invalid Parameters'));
             return;
         }
@@ -66,14 +82,14 @@ class main extends general
         if($this->spArgs('submit')==1) {
             $sess = spClass('spSession');
             $data = array(
-                'uid' => $sess->getUser()->getUserId(),
-                'prj' => $sess->getUser()->getCurrentProject(),
+                'uid' => $uid,
+                'prj' => $pid,
                 'owner' => 'issue',
-                'rid' => $id,
+                'rid' => $iid,
                 'content' => $comment
             );
             spClass('commentModel')->create($data);
         }
-        $this->navi("/issue.php?a=view&id=$id");
+        $this->navi("/issue.php?a=view&id=$iid");
     }
 }

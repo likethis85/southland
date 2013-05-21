@@ -41,7 +41,7 @@ class userorgModel extends spModel
             return false;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select a.role,b.nick,b.uid from $prefix"."userorg as a,$prefix"."user as b where a.uid=b.uid and a.pid=$pid and a.role<9";
+        $sql = "select a.role,b.nick,b.id from $prefix"."userorg as a,$prefix"."user as b where a.uid=b.id and a.pid=$pid and a.role<9";
         return $this->findSql($sql);
 	}
     /** @brief retreive all projects the user joined
@@ -131,10 +131,10 @@ class userorgModel extends spModel
     	$role_bug_owner         = 9;
         $role_bug_reporter      = 10;
         $role_bug_assigner      = 11;
-	    $sql = "select a.role,b.nick,b.uid from $prefix"."userorg as a,$prefix"."user as b where a.pid=$pid and".
+	    $sql = "select a.role,b.nick,b.id from $prefix"."userorg as a,$prefix"."user as b where a.pid=$pid and".
 	            " scope=".$this->scope_issue.
 	            " and a.role in($role_bug_owner,$role_bug_reporter,$role_bug_assigner)".
-	            " and a.uid=b.uid";
+	            " and a.uid=b.id";
 	    return $this->findSql($sql);
 	}
     /** @brief retreive issues the user related 

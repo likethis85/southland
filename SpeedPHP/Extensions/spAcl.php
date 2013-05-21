@@ -51,7 +51,7 @@ class spUser
 	}
 	public function getUserId() {
 		if(!empty($this->userInfo)) {
-			return $this->userInfo['uid'];
+			return $this->userInfo['id'];
 		}
 	}
     public function setCurrentNid($nid) {

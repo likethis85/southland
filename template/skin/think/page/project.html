@@ -140,9 +140,9 @@
         fillMember([
             <{foreach item=item from=$tMembers name=iterUsers}>
                 <{if $smarty.foreach.iterUsers.last }>
-                    {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>}
+                    {"uid":<{$item.id}>,"nick":"<{$item.nick}>","role":<{$item.role}>}
                 <{else}>
-                    {"uid":<{$item.uid}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
+                    {"uid":<{$item.id}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
                 <{/if}>
             <{/foreach}>
         ]);
@@ -173,8 +173,7 @@
         function ListEvent(){
             alert('not implement yet...');
         }
-        var prj_timeline = new Chronoline(
-            document.getElementById('ptl'),
+        $('#ptl').Chronoline(
             [
                 <{foreach item=item from=$tTimeline name=iterEvents}>
                     <{if $smarty.foreach.iterEvents.last }>

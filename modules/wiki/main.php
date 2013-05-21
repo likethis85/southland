@@ -7,6 +7,13 @@ class main extends general
 	}
 	
 	function publish() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
 		$submit = $this->spArgs("submit");
 		if( $submit == 1 ){
             $keywords = split(',',$this->spArgs('kwd'));
@@ -17,11 +24,18 @@ class main extends general
         }
 	}
     function update() {
+        $uid = $this->tUser['id'];
+        $wid = $this->spArgs('id');
+        if(!spClass('wikiModel')->allow($wid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
 		$submit = $this->spArgs("submit");
 		if($submit == 1)
 		{
             $condition = array(
-                'id' => $this->spArgs('id')
+                'id' => $wid
             );
 			$data = array(
 				'subject'=>$this->spArgs('subject'),
@@ -33,7 +47,7 @@ class main extends general
 		else
 		{
             $condition = array(
-                'id' => $this->spArgs('id')
+                'id' => $wid
             );
             $this->tWiki = spClass('wikiModel')->find($condition);
 			$this->display("wiki/update.html");
@@ -42,7 +56,17 @@ class main extends general
     function del() {
     }
 	function view() {
-	    $this->tWiki = spClass('wikiModel')->getWikiDetail($this->spArgs('id'));
+        $uid = $this->tUser['id'];
+        $wid = $this->spArgs('id');
+        if(!spClass('wikiModel')->allow($wid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(empty($wid)){
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+	    $this->tWiki = spClass('wikiModel')->getWikiDetail($wid);
 		$this->display("wiki/view.html");
 	}
     function search(){

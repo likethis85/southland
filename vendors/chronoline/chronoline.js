@@ -88,7 +88,7 @@ function forwardWeek(date){
     return new Date(date.getTime() + DAY_IN_MILLISECONDS * 7);
 }
 
-function Chronoline(domElement, events, options) {
+$.fn.Chronoline = function (events, options) {
     if(events.length==0)
         return;
         
@@ -168,11 +168,11 @@ function Chronoline(domElement, events, options) {
     t.sectionLabelsOnHover &= t.sections != null;
 
     // HTML elements to put everything in
-    t.domElement = domElement;
+    t.domElement = this;
 
     t.wrapper = document.createElement('div');
     t.wrapper.className = 'chronoline-wrapper';
-    t.domElement.appendChild(t.wrapper);
+    t.domElement.append(t.wrapper);
 
     t.toolbar = document.createElement('div');
     t.toolbar.className = 'chronoline-toolbar';
@@ -270,7 +270,7 @@ function Chronoline(domElement, events, options) {
 
 
     // this ratio converts a time into a px position
-    t.visibleWidth = t.domElement.clientWidth;
+    t.visibleWidth = (t.domElement)[0].clientWidth;
     t.pxRatio = t.visibleWidth / t.visibleSpan;
     t.totalWidth = t.pxRatio * (t.endDate.getTime() - t.startDate.getTime());
     t.maxLeftPx = t.totalWidth - t.visibleWidth;

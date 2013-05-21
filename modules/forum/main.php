@@ -11,9 +11,15 @@ class main extends general
 		$submittopic = $this->spArgs("submit");
 		if($submittopic == 1)
 		{
+            $uid = spClass('spSession')->getUser()->getUserId();
+            $pid = $this->tCurrProj;
+            if(!spClass('projectModel')->allow($pid,$uid)){
+                spClass('keeper')->speak(T('Error Operation not permit'));
+                return;
+            }
 			$data = array(
-			    'prj' => spClass('spSession')->getUser()->getCurrentProject(),
-			    'author' => spClass('spSession')->getUser()->getUserId(),
+			    'prj' => $pid,
+			    'author' => $uid,
 				'subject'=>$this->spArgs('subject'),
 				'content'=>$this->spArgs('Artical')
 			);
@@ -28,6 +34,13 @@ class main extends general
 	}
     function update()
 	{
+        $uid = spClass('spSession')->getUser()->getUserId();
+        $fid = $this->spArgs('id');
+        if(!spClass('forumModel')->allow($fid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+
 		$submittopic = $this->spArgs("submit");
 		if($submittopic == 1)
 		{
@@ -52,18 +65,26 @@ class main extends general
 		}
 	}
     function del() {
-        $id = $this->spArgs('id');
-        if(empty($id))
+        $fid = $this->spArgs('id');
+        if(empty($fid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
             return;
+        }
+
+        $uid = $this->tUser['id'];
+        if(!spClass('forumModel')->allow($fid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
 
         $condition = array(
-            'id' => $id
+            'id' => $fid
         );
         spClass('forumModel')->delete($condition);
 
         $condition = array(
             'owner' => 'forum',
-            'rid' => $id
+            'rid' => $fid
         );
         spClass('commentModel')->delete($condition);
         $this->jumpTopicPage();
@@ -71,15 +92,20 @@ class main extends general
 
 	function view()
 	{
-		$nid = $this->spArgs("nid");
-		$condition = array(
-			'id' => $nid
-		);
-		
-		$objModel = spClass('forumModel');
-		$this->tRow = $objModel->find($condition);
+		$fid = $this->spArgs("id");
+        if(empty($fid)){
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+        $uid = $this->tUser['id'];
+        if(!spClass('forumModel')->allow($fid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+
+		$this->tRow = spClass('forumModel')->find(array('id'=>$fid));
         if($this->tRow['commentable'])
-            $this->tComments = spClass('commentModel')->getForumComments($nid);
+            $this->tComments = spClass('commentModel')->getForumComments($fid);
         else
             $this->tComments = array();
 
@@ -87,32 +113,31 @@ class main extends general
 	}
 
     function cmt() {
-        $id = $this->spArgs('id');
-        if(empty($id)) return;
+        $fid = $this->spArgs('id');
         $comment = $this->spArgs('reply');
-        if(empty($comment)) return;
+        if(empty($fid) || empty($comment)){
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+        $uid = $this->tUser['id'];
+        if(!spClass('forumModel')->allow($fid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
 
-        $sess = spClass('spSession');
         $data = array(
-                'uid' => $sess->getUser()->getUserId(),
-                'prj' => $sess->getUser()->getCurrentProject(),
+                'uid' => $uid,
+                'prj' => $this->tCurrProj,
                 'owner' => 'forum',
-                'rid' => $id,
+                'rid' => $fid,
                 'content' => $comment
                 );
         spClass('commentModel')->create($data);
 
-        $nid = 0;
-        foreach($this->tNavigation as $nav) {
-            if($nav['name'] == 'Topic'){
-                $nid = $nav['nid'];
-                break;
-            }
-        }
         if(empty($nid)) {
             $this->jumpTopicPage();
         } else {
-            $this->navi("/forum.php?a=view&nid=$id");
+            $this->navi("/forum.php?a=view&id=$fid");
         }
     }
 	public function __destruct(){

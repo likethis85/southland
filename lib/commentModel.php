@@ -13,7 +13,7 @@ class commentModel extends spModel
                 'map'  => 'user',
                 'mapkey' => 'uid',
                 'fclass' => 'userModel',
-                'fkey'   => 'uid',
+                'fkey'   => 'id',
                 'enabled' => 'true'
             )
         );

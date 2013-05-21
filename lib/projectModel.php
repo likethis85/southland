@@ -44,7 +44,7 @@ class projectModel extends spModel
                 'map' => 'uid',
                 'mapkey' => 'uid',
                 'fclass' => 'userModel',
-                'fkey' => 'uid',
+                'fkey' => 'id',
                 'enabled' => 'true'
             )
         );

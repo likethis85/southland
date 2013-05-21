@@ -17,13 +17,13 @@ class forumModel extends spModel
             return false;
             
         $topic = $this->find(array('id' => $tid));
-        if(empty($task))
+        if(empty($topic))
             return false;
             
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;
-        if($task['acl']==$allow_public)
+        if($topic['acl']==$allow_public)
             return true;
 
         if(empty($uid))

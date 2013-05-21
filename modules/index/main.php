@@ -39,8 +39,15 @@ class main extends general
 	}
 	function _project() {
 		$pid = $this->spArgs('pid');
-        $uid = spClass('spSession')->getUser()->getUserId();
-		if(!empty($pid) && $pid!=$this->tCurrProj && spClass('projectModel')->allow($pid,$uid)) {
+        if(empty($pid))
+            $pid = $this->tCurrProj;
+        $uid = $this->tUser['id'];
+        if(!spClass('projectModel')->allow($pid,$uid)) {
+            spClass('keeper')->speak(T('Error Operation not permit'), '/index.php');
+            exit;
+        }
+
+		if(!empty($pid) && $pid!=$this->tCurrProj) {
 		    spClass('spSession')->getUser()->setCurrentProject($pid);
 		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
 		    $this->tProject  = spClass('projectModel')->getCurrentInfo();

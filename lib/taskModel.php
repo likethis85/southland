@@ -33,7 +33,7 @@ class taskModel extends spModel
 
         if(empty($uid))
             return false;
-
+print_r($task);exit;
         return spClass('userorgModel')->isMemberOfTask($tid, $uid);
     }
 }

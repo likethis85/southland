@@ -26,16 +26,27 @@ class main extends general
      *
      */
     function utp() {
-        $id = $this->spArgs('id');
+        $tid = $this->spArgs('id');
         $val = $this->spArgs('val');
-        if(is_null($id)) exit;
-        if(is_null($val)) exit;
+        if(is_null($tid) || is_null($val)) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Invalid Parameters');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+        $uid = spClass('spSession')->getUser()->getUserId();
+        if(!spClass('taskModel')->allow($tid, $uid)) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
         $condition = array(
-            'id' => $id
+            'id' => $tid
         );
         if(spClass('taskModel')->updateField($condition, 'priority', $val) === TRUE) {
-            $result = spClass('Services_JSON')->encode('success');
-            echo ($result);
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
         }
         exit;
     }
@@ -44,12 +55,24 @@ class main extends general
      *
      */
     function uts() { 
-        $id = $this->spArgs('id');
+        $tid = $this->spArgs('id');
         $val = $this->spArgs('val');
-        if(is_null($id)) exit;
-        if(is_null($val)) exit;
+        if(is_null($tid) || is_null($val)) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+        $uid = spClass('spSession')->getUser()->getUserId();
+        if(!spClass('taskModel')->allow($tid, $uid)) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
         $condition = array(
-            'id' => $id
+            'id' => $tid
         );
         if(spClass('taskModel')->updateField($condition, 'status', $val) === TRUE) {
             $result = spClass('Services_JSON')->encode('success');
@@ -63,6 +86,13 @@ class main extends general
      **/
     function pushimg() {
         $uid = spClass('spSession')->getUser()->getUserId();
+        if(empty($uid)){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
         $dir = APP_PATH."/mass/$uid";
         __mkdirs($dir, 0777);
         __mkdirs("$dir/origin", 0777);
@@ -103,8 +133,6 @@ class main extends general
      *
      */
     function pau() {
-        $obj = spClass('userorgModel');
-        $sid = $this->spArgs('pid');
         $user = spClass('userModel')->getUserByEmail($this->spArgs('u'));
         if(false === $user) {
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
@@ -113,32 +141,44 @@ class main extends general
             exit;
         }
         
+        $pid = $this->spArgs('pid');
+        $uid = spClass('spSession')->getUser()->getUserId();
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
+        $obj = spClass('userorgModel');
         $uid = $user['uid'];
-        if(empty($sid)) return;
-        if(empty($uid)) return;
+        if(empty($pid) || empty($uid)){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
         $role = $this->spArgs('to');
         if($role=='Developer') {
-            if(false === $obj->AddDevMember($sid, $uid)) {
+            if(false === $obj->AddDevMember($pid, $uid)) {
                 $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
                 $this->ajaxResult->msg = T('Error DB operation failed');
-                echo spClass('Services_JSON')->encode($this->ajaxResult);
-            } else {
-                $this->gpm();
             }
         }
         else if($role == 'QA') {
-            if(false == $obj->AddQAMember($sid, $uid))
-                echo 'error';
-            else
-                $this->gpm();
+            if(false == $obj->AddQAMember($pid, $uid)) {
+                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+                $this->ajaxResult->msg = T('Error DB operation failed');
+            }
         }
         else if($role == 'Observer') {
-            if(false === $obj->AddProjectMember($sid, $uid))
-                echo 'error';
-            else
-                $this->gpm();
+            if(false === $obj->AddProjectMember($pid, $uid)) {
+                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+                $this->ajaxResult->msg = T('Error DB operation failed');
+            }
         }
-        
+        echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
     }
 
@@ -152,11 +192,20 @@ class main extends general
         if(empty($iid) || empty($status)){
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
             $this->ajaxResult->msg = T('Error Invalid Parameters');
-        } else {
-            $this->ajaxResult->error = $obj->updateStatus($iid, $status)===false ? $this->constAjaxErr->ERROR_FAIL:$this->constAjaxErr->ERROR_OK;
-            if($this->ajaxResult->error===$this->constAjaxErr->ERROR_FAIL)
-                $this->ajaxResult->msg = T('Error DB operation failed');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;    
         }
+
+        if(!$obj->allow($iid, $uid)) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
+        $this->ajaxResult->error = $obj->updateStatus($iid, $status)===false ? $this->constAjaxErr->ERROR_FAIL:$this->constAjaxErr->ERROR_OK;
+        if($this->ajaxResult->error===$this->constAjaxErr->ERROR_FAIL)
+            $this->ajaxResult->msg = T('Error DB operation failed');
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;    
     }

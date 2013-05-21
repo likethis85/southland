@@ -3,40 +3,53 @@ if (!defined('SOUTHLAND')) { exit(1);}
 class main extends general
 {
 	public function create() {
-		$create = $this->spArgs('submitcreate'); 
-		if(empty($create)) {
-			$this->display(WORKSPACE.'/create.html');
-		} else {
-			$data = array(
-				'uid' => spClass('spSession')->getUser()->getUserId(),
-				'title' => $this->spArgs('title'),
-				'description'=> $this->spArgs('projDesc')
-			);
-            $nid = spClass('projectModel')->create($data);
-            if($nid === false)
-                spClass('keeper')->speak(T('Error DB operation failed'), '/index.php');
-            else {
-                spClass('spSession')->getUser()->setCurrentProject($nid);
-                spClass('userorgModel')->addProjectCreator($nid,spClass('spSession')->getUser()->getUserId());
-               $this->jumpProjectPage();
-            }
-		}
+        if(empty($this->tUser['id'])){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+		if($this->spArgs('submitcreate')!=1){
+            $this->display(WORKSPACE.'/create.html');
+            exit;
+        }
+
+        $data = array(
+            'uid' => $this->tUser['id'],
+            'title' => $this->spArgs('title'),
+            'description'=> $this->spArgs('projDesc')
+        );
+        $pid = spClass('projectModel')->create($data);
+        if($pid === false) {
+            spClass('keeper')->speak(T('Error DB operation failed'), '/index.php');
+            exit;
+        }
+        spClass('spSession')->getUser()->setCurrentProject($pid);
+        spClass('userorgModel')->addProjectCreator($pid,spClass('spSession')->getUser()->getUserId());
+        $this->jumpProjectPage();
 	}
 
     public function update() {
-		$update = $this->spArgs('submit'); 
-		if(empty($update)) {
+        $uid = $this->tUser['id'];
+        $pid = $this->spArgs('id');
+        if(empty($pid))
+            $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+		if(1 != $this->spArgs('submit')) {
 			$this->display(WORKSPACE.'/update.html');
 		} else {
 			$objModel = spClass('projectModel');
             $condition = array(
-				'id' => $this->tCurrProj
+				'id' => $pid
             );
 			$data = array(
 				'title' => $this->spArgs('title'),
 				'description'=> $this->spArgs('projDesc')
 			);
-			$nid = $objModel->update($condition, $data);
+			$pid = $objModel->update($condition, $data);
             $this->jumpProjectPage();
 		}
     }
@@ -45,6 +58,13 @@ class main extends general
      *
      */
     public function addEvent() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
         $title = $this->spArgs('title');
         $date = $this->spArgs('date');
         $isdate = strtotime($date);
@@ -62,6 +82,13 @@ class main extends general
         }
     }
     public function del() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
         spClass('projectModel')->deleteProject($this->spArgs('id'));
         spClass('spSession')->getUser()->setCurrentProject(0);
 		$this->tCurrProj = 0;

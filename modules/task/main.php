@@ -13,12 +13,19 @@ class main extends general
 	}
 	
 	function add() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
 			$data = array(
 			    'pid' => $this->spArgs('id'),
-			    'prj' => spClass('spSession')->getUser()->getCurrentProject(),
-				'owner'=>spClass('spSession')->getUser()->GetUserId(),
+			    'prj' => $pid,
+				'owner'=> $uid,
 				'priority'=>$this->spArgs('TaskPri'),
 				'subject'=>$this->spArgs('subject'),
                 'detail'=>$this->spArgs('TaskDesc'),
@@ -32,20 +39,34 @@ class main extends general
 		}
 	}
     function view() {
+        $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
-        if(empty($tid))
-            $this->jumpTaskPage();
-        else {
-            $condition = array(
-                'id' => $tid
-            );
-            $this->tTask = spClass('taskModel')->find($condition);
-            $this->tComments = spClass('commentModel')->getTaskComments($tid);
-            $this->display('task/view.html');
+        if(empty($tid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
         }
-        
+
+        if(!spClass('taskModel')->allow($tid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+        $this->tTask = spClass('taskModel')->find(array('id' => $tid));
+        $this->tComments = spClass('commentModel')->getTaskComments($tid);
+        $this->display('task/view.html');
     }
     function update() {
+        $uid = $this->tUser['id'];
+        $tid = $this->spArgs('id');
+        if(!spClass('taskModel')->allow($tid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(empty($tid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+
         $submit = $this->spArgs('submit');
         if($submit == 1) {
             $condition = array(
@@ -68,8 +89,11 @@ class main extends general
         }
     }
     function get_status($tid){
-        if(empty($tid))
-            return false;
+        $tid = $this->spArgs('id');
+        if(empty($tid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
 
         $task = spClass('taskModel')->find(array('id'=>$tid));
         if(empty($task))
@@ -77,7 +101,17 @@ class main extends general
         return $task['status'];
     }
     function update_status($status){
+        $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
+        if(!spClass('taskModel')->allow($tid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(empty($tid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+
         if(!empty($tid)) {
             $condition = array('id' => $tid);
             $data = array('status' => $status);
@@ -121,51 +155,45 @@ class main extends general
             $this->update_status($this->WORKING);
     }
     function del() {
-        $nid = $this->spArgs('id');
-        if(empty($nid)) 
-            return;
+        $uid = $this->tUser['id'];
+        $tid = $this->spArgs('id');
+        if(!spClass('taskModel')->allow($tid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(empty($tid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
 
-        $condition = array(
-            'id' => $nid
-        );
-
-        spClass('taskModel')->delete($condition);
-        $condition = array(
-            'rid' => $nid,
-            'owner' => 'task'
-        );
-        spClass('commentModel')->delete($condition);
-
+        spClass('taskModel')->delete(array('id' => $tid));
+        spClass('commentModel')->delete(array('rid' => $tid, 'owner' => 'task'));
         $this->jumpTaskPage();
     }
 
     function cmt() {
-        $id = $this->spArgs('id');
-        if(empty($id)) return;
+        $uid = $this->tUser['id'];
+        $tid = $this->spArgs('id');
+        if(!spClass('taskModel')->allow($tid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
         $comment = $this->spArgs('reply');
-        if(empty($comment)) return;
+        if(empty($tid) || empty($comment)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
 
         $sess = spClass('spSession');
         $data = array(
-            'uid' => $sess->getUser()->getUserId(),
-            'prj' => $sess->getUser()->getCurrentProject(),
+            'uid' => $uid,
+            'prj' => $pid,
             'owner' => 'task',
-            'rid' => $id,
+            'rid' => $tid,
             'content' => $comment
         );
         spClass('commentModel')->create($data);
-
-        $nid = 0;
-        foreach($this->tNavigation as $nav) {
-            if($nav['name'] == 'Task'){
-                $nid = $nav['nid'];
-                break;
-            }
-        }
-        if(empty($nid)) {
-            $this->jumpTaskPage();
-        } else {
-            $this->navi("/task.php?c=main&a=view&id=$id");
-        }
+        $this->navi("/task.php?c=main&a=view&id=$tid");
     }
 }
