@@ -48,6 +48,9 @@ class userorgModel extends spModel
      *
      */
 	public function getProjectsByUser($uid) {
+        if(empty($uid))
+            return false;
+
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
 	    $sql = "select a.* from ".$prefix."project as a ,".$prefix."userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
 	    return $this->findSql($sql);

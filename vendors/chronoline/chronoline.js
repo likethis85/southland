@@ -155,7 +155,7 @@ $.fn.Chronoline = function (events, options) {
         continuousScroll: true,  // requires that scrollable be true, click-and-hold arrows
         continuousScrollSpeed: 1,  // I believe this is px/s of scroll. There is no easing in it
 
-        toolbarCmd: []
+        toolbar: []
     }
     var t = this;
 
@@ -174,15 +174,17 @@ $.fn.Chronoline = function (events, options) {
     t.wrapper.className = 'chronoline-wrapper';
     t.domElement.append(t.wrapper);
 
-    t.toolbar = document.createElement('div');
-    t.toolbar.className = 'chronoline-toolbar';
-    $.each(t.toolbarCmd,function(index, item){
-        tbtn = document.createElement('div');
-        $(tbtn).css('background-image', 'url('+item.img+')').click(item.callback);
-        t.toolbar.appendChild(tbtn);
-    });
-    t.wrapper.appendChild(t.toolbar);
-    $(t.wrapper).hover( function() { $(t.toolbar).slideDown('slow');}, function() { $(t.toolbar).slideUp();});
+    if(t.toolbar.length){
+        var jtb = $('<div id="chronoline-toolbar"></div>');
+        $(t.wrapper).append(jtb);
+        var tbLayer = '<div class="chronoline-toolbar-options">';
+        $.each(t.toolbar,function(index, item){
+            tbLayer += '<a href="#" title="'+item.title+'" onclick=item.callback(t)></a>';
+        });
+        tbLayer += '</div>';
+        toolbar = $('#chronoline-toolbar').toolbar({'content':tbLayer,'position':'bottom'});
+        $(t.wrapper).hover( function() { toolbar.show();}, function() { toolbar.hide();});
+    }
 
     // SORT EVENTS
     t.sortEvents = function(a, b){

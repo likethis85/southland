@@ -30,6 +30,7 @@ return array(
 'QA' => '测试',
 'Observer' => '参与',
 'ProjectAddEvent' => '添加事件',
+'ProjectListEvent'=> '项目事件',
 
 /* 任务相关 */
 'Task'  => '任务',

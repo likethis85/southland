@@ -13,9 +13,7 @@ class main extends general
 	function index(){ // 这里是首页
 	    $this->tNid = 0;
         spClass('spSession')->getUser()->setCurrentNid($this->tNid);
-	    if(spClass('spSession')->getUser()->is_user()) {
-		    $this->tProjects = spClass('projectModel')->getProjects();
-		}
+        $this->tProjects = spClass('projectModel')->getProjects();
 		$this->display("index.html");
 	}
 	

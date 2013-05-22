@@ -8,11 +8,18 @@ class projectModel extends spModel
 
     public function getProjects() {
         $uid = spClass('spSession')->getUser()->GetUserId();
+        $items = array();
         $projects = spClass('userorgModel')->getProjectsByUser($uid);
-        if(false === $projects) 
-            return array();
-        foreach($projects as $item)
-            $items[$item['id']] = $item;
+        if(!empty($projects)) {
+            foreach($projects as $item)
+                $items[$item['id']] = $item;
+        }
+
+        $projects = $this->findAll(array('acl' => 0, 'droptime' => 0));
+        if(!empty($projects)) {
+            foreach($projects as $item)
+                $items[$item['id']] = $item;
+        }
         return $items;
     }
     /** @brief detect does current user is permit to view the project

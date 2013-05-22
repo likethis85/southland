@@ -170,8 +170,27 @@
                 }
             );
         };
-        function ListEvent(){
-            alert('not implement yet...');
+        function ListEvent(obj){
+            var fdate = function(t){
+                return ''+t.getUTCFullYear()+'-'+(t.getUTCMonth()+1)+'-'+t.getUTCDate();
+            }
+            var bb= new BlackBox();
+            bb.popup(
+                '<div><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectListEvent"}></h3><table width=100% id="events"></table></div>',
+                function(content){
+                    $(obj.events).each(function(i,e){
+                        row = '<tr><td>'+i+'</td><td>'+e.title+'</td><td>'+fdate(e.dates[0])+'</td>';
+                        if(typeof e.dates[1] == 'undefined')
+                            row += '<td>N/A</td><td><img src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
+                        else
+                            row += '<td>'+fdate(e.dates[1])+'</td><td><img src="<{$skinpath}>/img/delete.png"></td></tr>';
+                        content.find('#events').append(row);
+                    });
+                    content.find('#close').click(function(){
+                        bb.boxClose();
+                    });
+                }
+            );
         }
         $('#ptl').Chronoline(
             [
@@ -195,13 +214,12 @@
                 scrollRight: nextMonth,
                 markToday: 'line',
                 draggable: false,
-                toolbarCmd: [
-                                {'Cmd':'AddEvent',  'img':'<{$skinpath}>/img/addtm.png','callback': AddEvent},
-                                {'Cmd':'ListEvent', 'img':'<{$skinpath}>/img/lstm.png', 'callback': ListEvent}
-                            ]
+                toolbar: [
+                            {'title': 'AddEvent', callback:AddEvent},
+                            {'title': 'ListEvent',callback:ListEvent}
+                         ]
             }
         );
-
     });
 </script>
 
