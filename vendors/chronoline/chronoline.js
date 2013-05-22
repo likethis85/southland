@@ -175,15 +175,15 @@ $.fn.Chronoline = function (events, options) {
     t.domElement.append(t.wrapper);
 
     if(t.toolbar.length){
-        var jtb = $('<div id="chronoline-toolbar"></div>');
-        $(t.wrapper).append(jtb);
+        this.on('toolbarItemClick', function(e,p){
+            t.toolbar[p.id].callback(t);
+        });
         var tbLayer = '<div class="chronoline-toolbar-options">';
         $.each(t.toolbar,function(index, item){
-            tbLayer += '<a href="#" title="'+item.title+'" onclick=item.callback(t)></a>';
+            tbLayer += '<a id="'+index+'" href="#" title="'+item.title+'"><i class="'+item.class+'"></i></a>';
         });
         tbLayer += '</div>';
-        toolbar = $('#chronoline-toolbar').toolbar({'content':tbLayer,'position':'bottom'});
-        $(t.wrapper).hover( function() { toolbar.show();}, function() { toolbar.hide();});
+        $('.chronoline-wrapper').toolbar({'content':tbLayer,'position':'top'});
     }
 
     // SORT EVENTS

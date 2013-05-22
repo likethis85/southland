@@ -215,8 +215,10 @@
                 markToday: 'line',
                 draggable: false,
                 toolbar: [
-                            {'title': 'AddEvent', callback:AddEvent},
-                            {'title': 'ListEvent',callback:ListEvent}
+                            {'title': 'BackWeek', 'class':'icon-chevron-left',callback:function(t){}},
+                            {'title': 'AddEvent', 'class':'icon-edit',callback:AddEvent},
+                            {'title': 'ListEvent','class':'icon-list',callback:ListEvent},
+                            {'title': 'NextWeek', 'class':'icon-chevron-right',callback:function(t){}},
                          ]
             }
         );
