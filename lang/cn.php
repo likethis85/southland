@@ -133,4 +133,8 @@ return array(
 'Confirm?'      =>  '确定要',
 'Certification Code' => '验证码',
 'Submit'        => '发送',
+'ACL'           => '访问级别',
+'Public'        => '公开',
+'Protected'     => '非公开',
+'Private'       => '私有',
 );

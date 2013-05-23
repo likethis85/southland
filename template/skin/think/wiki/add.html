@@ -28,6 +28,16 @@
                         <td><label style="margin-right:8px" for="kwd"><{T w='Keyword'}></label></td>
                         <td><input name="kwd" id="kwd" type="text" value="" style="width:490px"/></td>
                     </tr>                
+                    <tr>
+                        <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                        <td>
+                            <select name='acl' id='acl'>
+                                <option value=0 <{if $tProject.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                                <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                                <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                            </select>
+                        </td>
+                    </tr>
                     <tr><td colspan="2"><label style="margin-right:8px" for="WikiContent"><{T w='WikiContent'}></label></td></tr>
                     <tr>
                         <td colspan="2">

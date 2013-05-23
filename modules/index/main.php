@@ -75,7 +75,7 @@ class main extends general
 		    $tTimeline = array();
             $timelines = spClass('timelineModel')->getProject($this->tCurrProj);
             foreach($timelines as $timeline){
-                array_push($tTimeline, array('title' => $timeline['brief'], 'date' => $timeline['etime']));
+                array_push($tTimeline, array('title' => $timeline['brief'], 'date' => $timeline['etime'], 'id' => $timeline['id']));
             }
             $this->tTimeline = $tTimeline;
         }

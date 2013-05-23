@@ -9,20 +9,32 @@
 		});
 	});
 	</script>
-	<div style="margin-left:16px;margin-top:20px;width:600px;">
+	<div style="margin-left:32px;margin-top:20px;width:600px;">
     	<form id="form" method="post">
-    	<div style="margin-left:26px;">
-    		<div style="margin-bottom:8px">
-    		    <label style="margin-right:12px;" for="subject"><{T w='ProjectTitle'}></label>
-    		    <input name="title" id="title" type="text" value="<{$tProject.title}>" style="width:490px"/>
-    		</div>
-    		<div>
-    		    <label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label>
-    			<textarea id="projDesc" name="projDesc"><{$tProject.description}></textarea>
-    			<input type="submit" class="btn-rounded" value="<{T w='UpdateProject}>" />
-    			<input name="submit" type="hidden" id="submit" value="1" />
-    		</div>
-    	</div>
+            <table width=100%>
+                <tr>
+                    <td><label style="margin-right:12px;" for="subject"><{T w='ProjectTitle'}></label></td>
+                    <td><input name="title" id="title" type="text" value="<{$tProject.title}>" style="width:490px"/></td>
+                </tr>
+                <tr>
+                    <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                    <td>
+                        <select name='acl' id='acl'>
+                            <option value=0 <{if $tProject.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                            <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                            <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan=2><label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label></td>
+                </tr>
+                <tr>
+                    <td colspan=2><textarea id="projDesc" name="projDesc"><{$tProject.description}></textarea></td>
+                </tr>
+            </table>
+            <input type="submit" class="btn-rounded" value="<{T w='UpdateProject}>" />
+            <input name="submit" type="hidden" id="submit" value="1" />
     	</form>
     </div>
 <{include file=skin/$skin/footer.html}>

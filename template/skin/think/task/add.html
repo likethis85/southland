@@ -1,50 +1,51 @@
 <{include file=skin/$skin/header.html}>
-    <div style="clear:both;margin-left:32px;margin-top:32px;">
-        <script type="text/javascript">
-        jQuery.extend(jQuery.validator.messages, {
-            required:"<span style=\"color:red\">*</span>"
+<script type="text/javascript">
+    jQuery.extend(jQuery.validator.messages, {
+        required:"<span style=\"color:red\">*</span>"
+    });
+    $(document).ready(function(){
+        CKEDITOR.replace("TaskDesc");
+        $("#form").validate({
+            rules:{
+                subject:{required:true}
+            }
         });
-        $(document).ready(function(){
-            CKEDITOR.replace("TaskDesc");
-            $("#form").validate({
-                rules:{
-                    subject:{required:true}
-                }
-            });
-        });
-        </script>
-        <div style="margin-left:12px;width:600px;">
-            <form id="form" method="post">
-                <table>
-                    <tr>
-                        <td><label style="margin-right:8px" for="subject"><{T w='TaskTitle'}></label></td>
-                        <td><input name="subject" id="subject" type="text" value="" style="width:490px"/></td>
-                    </tr>                
-                    <tr>
-                        <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='TaskPriority'}></label></td>
-                        <td>
-                            <input type="radio" name="TaskPri" value="1"><img src="<{$skinpath}>/img/1.gif" />
-                            <input type="radio" name="TaskPri" value="2" checked><img src="<{$skinpath}>/img/2.gif" />
-                            <input type="radio" name="TaskPri" value="3"><img src="<{$skinpath}>/img/3.gif" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label style="margin-right:8px" for="TaskCat"><{T w='TaskCategory'}></label></td>
-                        <td>
-                            <span style="background:red;"><input type="radio" name="TaskCat" value="1"><{T w="TaskTodo"}></span>
-                            <span style="background:#FC0;"><input type="radio" name="TaskCat" value="2" checked><{T w="TaskFeature"}></span>
-                        </td>
-                    </tr>
-                    <tr><td colspan="2"><label style="margin-right:8px" for="TaskDesc"><{T w='TaskDesc'}></label></td></tr>
-                    <tr>
-                        <td colspan="2">
-                            <textarea id="TaskDesc" name="TaskDesc"></textarea>
-                            <input class="btn-rounded" type="submit" value=<{T w="CreateNewTask"}> />
-                            <input name="submit" type="hidden" id="submit" value="1" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-    </div>
+    });
+</script>
+<div style="clear:both;margin-left:32px;margin-top:32px;width:600px;">
+    <form id="form" method="post">
+        <table>
+            <tr>
+                <td><label style="margin-right:8px" for="subject"><{T w='TaskTitle'}></label></td>
+                <td><input name="subject" id="subject" type="text" value="" style="width:490px"/></td>
+            </tr>                
+            <tr>
+                <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='TaskPriority'}></label></td>
+                <td>
+                    <input type="radio" name="TaskPri" value="1"><img src="<{$skinpath}>/img/1.gif" />
+                    <input type="radio" name="TaskPri" value="2" checked><img src="<{$skinpath}>/img/2.gif" />
+                    <input type="radio" name="TaskPri" value="3"><img src="<{$skinpath}>/img/3.gif" />
+                </td>
+            </tr>
+            <tr>
+                <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                <td>
+                    <select name='acl' id='acl'>
+                        <option value=0 <{if $tProject.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                        <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                        <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                    </select>
+                </td>
+            </tr>
+            <tr><td colspan="2"><label style="margin-right:8px" for="TaskDesc"><{T w='TaskDesc'}></label></td></tr>
+            <tr>
+                <td colspan="2">
+                    <textarea id="TaskDesc" name="TaskDesc"></textarea>
+                    <input class="btn-rounded" type="submit" value=<{T w="CreateNewTask"}> />
+                    <input name="submit" type="hidden" id="submit" value="1" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
 <{include file=skin/$skin/footer.html}>

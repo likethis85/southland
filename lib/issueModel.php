@@ -75,6 +75,9 @@ class issueModel extends spModel
         if(empty($uid))
             return false;
 
-        return spClass('userorgModel')->isMemberOfIssue($iid, $uid);
+        if($issue['acl']==$allow_protected)
+            return spClass('userorgModel')->isMemberOfProject($issue['prj'], $uid);
+        else
+            return spClass('userorgModel')->isMemberOfIssue($iid, $uid);
     }
 }

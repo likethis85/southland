@@ -17,7 +17,14 @@ class main extends general
 		$submit = $this->spArgs("submit");
 		if( $submit == 1 ){
             $keywords = split(',',$this->spArgs('kwd'));
-            spClass('wikiModel')->CreateWiki($this->spArgs('subject'), $this->spArgs('WikiContent'), $keywords);
+            $data = array(
+                    'uid' => $this->tUser['id'],
+                    'prj' => $this->tCurrProj,
+                    'subject' => $this->spArgs('subject'),
+                    'content' => $this->spArgs('WikiContent'),
+                    'acl'     => $this->spArgs('acl')
+            );
+            spClass('wikiModel')->CreateWiki($data, $keywords);
             $this->jumpWikiPage();
         } else {
             $this->display('wiki/add.html');
@@ -39,7 +46,8 @@ class main extends general
             );
 			$data = array(
 				'subject'=>$this->spArgs('subject'),
-				'content'=>$this->spArgs('Artical')
+				'content'=>$this->spArgs('Artical'),
+                'acl'    =>$this->spArgs('acl')
 			);
 			spClass('forumModel')->update($condition, $data);
 			$this->jumpWikiPage();

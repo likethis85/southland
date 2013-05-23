@@ -35,7 +35,7 @@ if ( typeof Object.create !== 'function' ) {
             .addClass('tool-rounded')
             .append('<div class="tool-items" />')
             .append('<div class="arrow" />')
-            .appendTo('body')
+            .appendTo(self.$elem)
             .css('opacity', 0)
             .hide();
             self.initializeToolbar();
@@ -50,7 +50,7 @@ if ( typeof Object.create !== 'function' ) {
 
         setTrigger: function() {
             var self = this;
-
+/*
             self.$elem.on('click', function(event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -60,7 +60,11 @@ if ( typeof Object.create !== 'function' ) {
                     self.show();
                 }
             });
-
+*/
+            self.$elem.hover(
+                function(){ self.show();},
+                function(){ self.hide();}
+            );
             $(window).resize(function( event ) {
                 event.stopPropagation();
                 if ( self.toolbar.is(":visible") ) {
@@ -97,12 +101,17 @@ if ( typeof Object.create !== 'function' ) {
         getCoordinates: function( position, adjustment ) {
             var self = this; 
             self.coordinates = self.$elem.offset();
-            
             switch(self.options.position) {
                 case 'top':
                     return {
                         left: self.coordinates.left-(self.toolbar.width()/2)+(self.$elem.width()/2),
-                        top: self.coordinates.top-self.$elem.height()-adjustment,
+                        top: self.coordinates.top-(self.toolbar.height()/2)-adjustment,
+                        right: 'auto'
+                    };
+                case 'docktop':
+                    return {
+                        left: self.coordinates.left-(self.toolbar.width()/2)+(self.$elem.width()/2),
+                        top: self.coordinates.top+(self.toolbar.height()/2)-adjustment,
                         right: 'auto'
                     };
                 case 'left':
@@ -129,7 +138,7 @@ if ( typeof Object.create !== 'function' ) {
         collistionDetection: function() {
             var self = this;
             var edgeOffset = 20;
-            if(self.options.position == 'top' || self.options.position == 'bottom') {
+            if(self.options.position == 'top' || self.options.position == 'bottom' || self.options.position == 'docktop') {
                 self.arrowCss = {left: '50%', right: '50%'};
                 if( self.toolbarCss.left < edgeOffset ) {
                     self.toolbarCss.left = edgeOffset;
@@ -153,6 +162,9 @@ if ( typeof Object.create !== 'function' ) {
 
             switch(self.options.position) {
                 case 'top':
+                    animation.top = '-=20';
+                    break;
+                case 'docktop':
                     animation.top = '-=20';
                     break;
                 case 'left':

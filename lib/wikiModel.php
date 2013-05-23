@@ -6,16 +6,9 @@ class wikiModel extends spModel
     var $pk = "id";		 // 按id排序
     var $table = "wiki"; // 数据表的名称
 
-    public function createWiki($subject, $content, $kwds) {
-        if(empty($subject) || empty($content))
+    public function createWiki($data, $kwds) {
+        if(empty($data))
             return false;
-
-        $data = array(
-            'uid' => spClass('spSession')->getUser()->getUserId(),
-            'prj' => spClass('spSession')->getUser()->getCurrentProject(),
-            'subject' => $subject,
-            'content' => $content
-        );
 
         $wid = $this->Create($data);
         if(false === $wid)
@@ -45,18 +38,21 @@ class wikiModel extends spModel
             return false;
 
         $wiki = $this->find(array('id' => $wid));
-        if(empty($task))
+        if(empty($wiki))
             return false;
 
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;
-        if($task['acl']==$allow_public)
+        if($wiki['acl']==$allow_public)
             return true;
 
         if(empty($uid))
             return false;
 
-        return spClass('userorgModel')->isMemberOfProject($tid, $uid);
+        if($wiki['acl']==$allow_protected)
+            return spClass('userorgModel')->isMemberOfProject($wiki['prj'], $uid);
+        else
+            return spClass('userorgModel')->isMemberOfProject($wid, $uid);
     }
 }

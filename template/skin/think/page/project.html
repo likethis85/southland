@@ -181,10 +181,19 @@
                     $(obj.events).each(function(i,e){
                         row = '<tr><td>'+i+'</td><td>'+e.title+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
-                            row += '<td>N/A</td><td><img src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
+                            row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
                         else
-                            row += '<td>'+fdate(e.dates[1])+'</td><td><img src="<{$skinpath}>/img/delete.png"></td></tr>';
+                            row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png"></td></tr>';
                         content.find('#events').append(row);
+                    });
+                    content.find('.DelEvent').click(function(){
+                        var url = "/ajax.php?a=dtm&id="+this.id;
+                        $.getJSON(url,function(data) {
+                            if(data.error != 0) alert(data.msg);
+                            else {
+                                $(this.parent).remove();
+                            }
+                        });
                     });
                     content.find('#close').click(function(){
                         bb.boxClose();
@@ -196,9 +205,9 @@
             [
                 <{foreach item=item from=$tTimeline name=iterEvents}>
                     <{if $smarty.foreach.iterEvents.last }>
-                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title:"<{$item.title}>"}
+                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title:"<{$item.title}>", id:"<{$item.id}>"}
                     <{else}>
-                        {dates: [new Date("<{$item.date}>")], title:"<{$item.title}>"},
+                        {dates: [new Date("<{$item.date}>")], title:"<{$item.title}>", id:"<{$item.id}>"},
                     <{/if}>
                 <{/foreach}>
             ],
@@ -215,10 +224,10 @@
                 markToday: 'line',
                 draggable: false,
                 toolbar: [
-                            {'title': 'BackWeek', 'class':'icon-chevron-left',callback:function(t){}},
+                            {'title': 'BackWeek', 'class':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
                             {'title': 'AddEvent', 'class':'icon-edit',callback:AddEvent},
                             {'title': 'ListEvent','class':'icon-list',callback:ListEvent},
-                            {'title': 'NextWeek', 'class':'icon-chevron-right',callback:function(t){}},
+                            {'title': 'NextWeek', 'class':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}},
                          ]
             }
         );

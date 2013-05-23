@@ -9,22 +9,32 @@
         });
 	});
 	</script>
-    <div style="margin-left:16px;margin-top:20px;width:600px;">
+    <div style="margin-left:32px;margin-top:20px;width:600px;">
         <form id="form" method="post" action="/project.php?c=main&a=create">
-        <div style="margin-left:26px;">
-            <div style="margin-bottom:8px">
-                <label style="margin-right:12px;" for="subject"><{T w='ProjectTitle'}></label>
-                <input name="title" id="title" type="text" value="" style="width:490px"/>
-            </div>
-            <div>
-                <label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label>
-                <textarea id="projDesc" name="projDesc"></textarea>
-            </div>
-            <div>
-                <input type="submit" value="<{T w='ProjectCreate'}>" />
-                <input name="submitcreate" type="hidden" id="submitcreate" value="1" />
-            </div>
-        </div>
-        </form>
+            <table width=100%>
+                <tr>
+                    <td><label style="margin-right:12px;" for="subject"><{T w='ProjectTitle'}></label></td>
+                    <td><input name="title" id="title" type="text" value="" style="width:490px"/></td>
+                </tr>
+                <tr>
+                    <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                    <td>
+                        <select name='acl' id='acl'>
+                            <option value=0  ><{T w='Public'}></option>
+                            <option value=1 selected ><{T w='Protected'}></option>
+                            <option value=2  ><{T w='Private'}></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan=2><label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label></td>
+                </tr>
+                <tr>
+                    <td colspan=2><textarea id="projDesc" name="projDesc"></textarea></td>
+                </tr>
+            </table>
+            <input type="submit" class="btn-rounded" value="<{T w='UpdateProject}>" />
+            <input name="submit" type="hidden" id="submit" value="1" />
+    	</form>
     </div>
 <{include file=skin/$skin/footer.html}>

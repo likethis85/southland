@@ -1,6 +1,5 @@
 <{include file=skin/$skin/header.html}>
-<div style="clear:both;margin-left:32px;padding-top:22px;width:600px;"> 
-    <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function(){
         var editor = CKEDITOR.replace("Artical");
         $('.btn-rounded').click(function(){
@@ -12,16 +11,29 @@
     		}
     	});
     });
-    </script>
+</script>
+<div style="clear:both;margin-left:32px;padding-top:22px;width:600px;"> 
     <form id="form" method="post">
-        <div style="margin-bottom:8px">
-            <label for="subject"><{T w='Subject'}></label>
-            <input name="subject" id="subject" type="text" value="<{$tTopic.subject}>" style="width:490px"/></div>
-        <div>
-            <textarea id="Artical" name="Artical"><{$tTopic.content}></textarea>
-            <input class="btn-rounded" type="submit" value="<{T w='UpdateTopic'}>" />
-            <input name="submit" type="hidden" id="submit" value="1" />
-        </div>
+        <table width=100%>
+            <tr>
+                <td><label for="subject"><{T w='Subject'}></label></td>
+                <td><input name="subject" id="subject" type="text" value="<{$tTopic.subject}>" style="width:490px"/></td>
+            </tr>
+            <tr>
+                <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                <td>
+                    <select name='acl' id='acl'>
+                        <option value=0 <{if $tTopic.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                        <option value=1 <{if $tTopic.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                        <option value=2 <{if $tTopic.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=2><textarea id="Artical" name="Artical"><{$tTopic.content}></textarea></td>
+            </tr>
+        <input class="btn-rounded" type="submit" value="<{T w='UpdateTopic'}>" />
+        <input name="submit" type="hidden" id="submit" value="1" />
     </form>
 </div>
 <{include file=skin/$skin/footer.html}>

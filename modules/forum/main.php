@@ -21,7 +21,8 @@ class main extends general
 			    'prj' => $pid,
 			    'author' => $uid,
 				'subject'=>$this->spArgs('subject'),
-				'content'=>$this->spArgs('Artical')
+				'content'=>$this->spArgs('Artical'),
+                'acl'    =>$this->spArgs('acl')
 			);
 			$objMod = spClass('forumModel');
 			$objMod->create($data);
@@ -49,7 +50,8 @@ class main extends general
             );
 			$data = array(
 				'subject'=>$this->spArgs('subject'),
-				'content'=>$this->spArgs('Artical')
+				'content'=>$this->spArgs('Artical'),
+                'acl'    =>$this->spArgs('acl')
 			);
 			$objMod = spClass('forumModel');
 			$objMod->update($condition, $data);

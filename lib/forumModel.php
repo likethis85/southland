@@ -28,7 +28,10 @@ class forumModel extends spModel
 
         if(empty($uid))
             return false;
-        
-        return spClass('userorgModel')->isMemberOfTopic($tid, $uid);
+ 
+        if($topic['acl']==$allow_protected)
+            return spClass('userorgModel')->isMemberOfProject($topic['prj'], $uid);
+        else
+            return spClass('userorgModel')->isMemberOfTopic($tid, $uid);
     }
 }

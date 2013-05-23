@@ -1,6 +1,5 @@
 <{include file=skin/$skin/header.html}>
-<div style="clear:both;margin-left:32px;padding-top:22px;width:600px;">
-    <script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function(){
         CKEDITOR.replace("Artical");
         jQuery.extend(jQuery.validator.messages, {
@@ -19,20 +18,28 @@
             }    
     	});
     });
-    </script>
-    <div style="margin-left:12px;">
-        <form id="form" method="post" action="<{$smarty.server.REQUEST_URI}>">
-            <div style="margin-bottom:8px">
-                <label for="subject" style="margin-right:3px;"><{T w='Title'}></label>
-                <input name="subject" id="subject" type="text" value="" style="width:490px"/>
-            </div>
-            <div>
-                
-                <textarea name="Artical" id="Artical"></textarea>
-                <input class="btn-rounded" type="submit" value="<{T w='Publish'}>"/>
-                <input name="submit" type="hidden" id="submit" value="1" />
-            </div>
-        </form>
-    </div>
+</script>
+<div style="clear:both;margin-left:32px;padding-top:22px;width:600px;">
+    <form id="form" method="post" action="<{$smarty.server.REQUEST_URI}>">
+        <table width=100%>
+            <tr>
+                <td><label for="subject" style="margin-right:3px;"><{T w='Title'}></label></td>
+                <td><input name="subject" id="subject" type="text" value="" style="width:490px"/></td>
+            </tr>
+            <tr>
+                <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                <td>
+                    <select name='acl' id='acl'>
+                        <option value=0 <{if $tProject.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                        <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                        <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                    </select>
+                </td>
+            </tr>
+            <tr><td colspan=2><textarea name="Artical" id="Artical"></textarea></td></tr>
+        </table>
+        <input class="btn-rounded" type="submit" value="<{T w='Publish'}>"/>
+        <input name="submit" type="hidden" id="submit" value="1" />
+    </form>
 </div>
 <{include file=skin/$skin/footer.html}>

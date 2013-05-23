@@ -12,7 +12,7 @@ $(document).ready(function(){
 	});
 });
 </script>
-<div style="margin-left:12px;width:600px;">
+<div style="margin-left:32px;width:600px;">
     <form id="form" method="post">
         <table>
             <tr>
@@ -28,10 +28,13 @@ $(document).ready(function(){
                 </td>
             </tr>
             <tr>
-                <td><label style="margin-right:8px" for="TaskCat"><{T w='TaskCategory'}></label></td>
+                <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
                 <td>
-                    <span style="background:red; "><input type="radio" name="TaskCat" value="1" <{if $tTask.category eq 1}> checked <{/if}> ><{T w="TaskTodo"}></span>
-                    <span style="background:#FC0;"><input type="radio" name="TaskCat" value="2" <{if $tTask.category eq 2}> checked <{/if}>><{T w="TaskFeature"}></span>
+                    <select name='acl' id='acl'>
+                        <option value=0 <{if $tTask.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                        <option value=1 <{if $tTask.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                        <option value=2 <{if $tTask.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                    </select>
                 </td>
             </tr>
             <tr><td colspan="2"><label style="margin-right:8px" for="TaskDesc"><{T w='TaskDesc'}></label></td></tr>

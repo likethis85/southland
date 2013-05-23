@@ -218,6 +218,36 @@ class main extends general
         exit;
     }
 
+    /** @brief delete timeline event
+     *
+     */
+    function dtm(){
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $tid = $this->spArgs('id');
+
+        if($tid==0) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Invalid Parameters');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;    
+        }
+
+        if(!spClass('projectModel')->allow($pid, $uid)) {
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Operation not permit');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+
+        if(spClass('timelineModel')->delete(array('id' => $tid))===false){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error DB operation failed');
+        }
+        echo spClass('Services_JSON')->encode($this->ajaxResult);
+        exit;
+    }
+
 	function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}

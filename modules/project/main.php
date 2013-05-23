@@ -16,7 +16,8 @@ class main extends general
         $data = array(
             'uid' => $this->tUser['id'],
             'title' => $this->spArgs('title'),
-            'description'=> $this->spArgs('projDesc')
+            'description'=> $this->spArgs('projDesc'),
+            'acl'   => $this->spArgs('acl')
         );
         $pid = spClass('projectModel')->create($data);
         if($pid === false) {
@@ -47,7 +48,8 @@ class main extends general
             );
 			$data = array(
 				'title' => $this->spArgs('title'),
-				'description'=> $this->spArgs('projDesc')
+				'description'=> $this->spArgs('projDesc'),
+                'acl'   => $this->spArgs('acl')
 			);
 			$pid = $objModel->update($condition, $data);
             $this->jumpProjectPage();

@@ -14,15 +14,6 @@
     height:32px;
     background-color:#81C0C0;
 }
-.chronoline-toolbar div {
-    float:left;
-    margin-left:8px;
-    width:32px;
-    height:32px;
-}
-.chronoline-toolbar div:hover {
-    background-color:#FF8000;
-}
 .chronoline-canvas {
     overflow: hidden;
     position: relative;
@@ -30,10 +21,6 @@
 }
 .chronoline-canvas > svg {
     position: relative;
-}
-.chronoline-wrapper:hover > .chronoline-left,
-.chronoline-wrapper:hover > .chronoline-right {
-    display: block;
 }
 .chronoline-left,
 .chronoline-right {

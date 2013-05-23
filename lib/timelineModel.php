@@ -9,6 +9,9 @@ class timelineModel extends spModel
 
     var $scope_project = 1;
 
+    /** @brief create timeline event for project
+     *
+     */
     public function createForProject($pid, $uid, $timestamp, $brief) {
         $data = array(
             'uid' => $uid,
@@ -22,7 +25,10 @@ class timelineModel extends spModel
         return $this->Create($data);
     }
 
+    /** @brief get all timeline events for the project
+     *
+     */
     public function getProject($pid) {
-        return $this->findAll(array('scope' => $this->scope_project, 'sid' => $pid, 'droptime' => 0), 'etime');
+        return $this->findAll(array('scope' => $this->scope_project, 'sid' => $pid, 'droptime' => 0),'etime');
     }
 }

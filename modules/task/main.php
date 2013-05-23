@@ -29,7 +29,7 @@ class main extends general
 				'priority'=>$this->spArgs('TaskPri'),
 				'subject'=>$this->spArgs('subject'),
                 'detail'=>$this->spArgs('TaskDesc'),
-                'category'=>$this->spArgs('TaskCat'),
+                'acl'   =>$this->spArgs('acl')
 			);
 			$objMod = spClass('taskModel');
 			$objMod->create($data);
@@ -75,8 +75,8 @@ class main extends general
             $data = array(
                 'subject'  => $this->spArgs('subject'),
                 'priority' => $this->spArgs('TaskPri'),
-                'category' => $this->spArgs('TaskCat'),
-				'detail'   => $this->spArgs('TaskDesc')
+				'detail'   => $this->spArgs('TaskDesc'),
+                'acl'      => $this->spArgs('acl')
             );
             spClass('taskModel')->update($condition, $data);
 			$this->jumpTaskPage();

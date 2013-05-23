@@ -30,7 +30,7 @@ class main extends general
 				'priority' => $this->spArgs('IssuePri'),
 				'brief'    => $this->spArgs('IssueBrief'),
                 'detail'   => $this->spArgs('IssueDesc'),
-                'category' => $this->spArgs('IssueCat')
+                'acl'      => $this->spArgs('acl')
 			);
 			$iid = spClass('issueModel')->create($data);
 			if($iid !== false) {

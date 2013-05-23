@@ -33,7 +33,10 @@ class taskModel extends spModel
 
         if(empty($uid))
             return false;
-print_r($task);exit;
-        return spClass('userorgModel')->isMemberOfTask($tid, $uid);
+
+        if($task['acl']==$allow_protected)
+            return spClass('userorgModel')->isMemberOfProject($task['prj'], $uid);
+        else
+            return spClass('userorgModel')->isMemberOfTask($tid, $uid);
     }
 }
