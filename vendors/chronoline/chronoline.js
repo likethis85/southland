@@ -1,94 +1,99 @@
-DAY_IN_MILLISECONDS = 86400000;
-
-requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function( callback, element){
-    return window.setTimeout(function(){callback(+new Date());}, 1000 / 60);
-};
-
-function addElemClass(paperType, node, newClass){
-    if(paperType == 'SVG'){
-        node.setAttribute('class', newClass);
-    } else {
-        node.className += ' ' + newClass
-    }
-}
-
-function stripTime(date){
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-}
-
-function formatDate(date, formatString){
-    // done in the style of c's strftime
-    // TODO slowly adding in new parts to this
-    // note that this also doesn't escape things properly. sorry
-    var ret = formatString;
-    var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
-    if(formatString.indexOf('%d') != -1){
-        var dateNum = date.getUTCDate().toString();
-        if(dateNum.length < 2)
-            dateNum = '0' + dateNum;
-        ret = ret.replace('%d', dateNum);
-    }
-    if(formatString.indexOf('%b') != -1){
-        var month = monthNames[date.getUTCMonth()].substring(0, 3);
-        ret = ret.replace('%b', month);
-    }
-    if(formatString.indexOf('%Y') != -1){
-        ret = ret.replace('%Y', date.getUTCFullYear());
-    }
-
-    return ret;
-}
-
-function getLeft(elem){
-    var leftString = elem.style.left;
-    return parseInt(leftString.substring(0, leftString.length - 2));
-}
-
-function getEndDate(dateArray){
-    return dateArray[dateArray.length - 1];
-}
-
-function isFifthDay(date){
-    var day = date.getUTCDate();
-    return (day == 1 || day % 5 == 0) && day != 30;
-}
-
-function isHalfMonth(date){
-    var day = date.getUTCDate();
-    return day == 1 || day == 15;
-}
-
-function prevMonth(date){
-    var newDate = new Date(date.getTime() - DAY_IN_MILLISECONDS);
-    return new Date(Date.UTC(newDate.getUTCFullYear(), newDate.getUTCMonth(), 1));
-}
-
-function nextMonth(date){
-    var newDate = new Date(date.getTime() + DAY_IN_MILLISECONDS);
-    return new Date(Date.UTC(newDate.getUTCFullYear(), newDate.getUTCMonth() + 1, 1));
-}
-
-function prevQuarter(date){
-    var newDate = new Date(date - DAY_IN_MILLISECONDS);
-    var month = newDate.getMonth();
-    return new Date(Date.UTC(newDate.getUTCFullYear(), month - month % 3, 1));
-}
-
-function nextQuarter(date){
-    var newDate = new Date(date.getTime() + DAY_IN_MILLISECONDS);
-    var month = newDate.getUTCMonth();
-    return new Date(Date.UTC(newDate.getUTCFullYear(), month - month % 3 + 3, 1));
-}
-
-function backWeek(date){
-    return new Date(date - DAY_IN_MILLISECONDS * 7);
-}
-
-function forwardWeek(date){
-    return new Date(date.getTime() + DAY_IN_MILLISECONDS * 7);
-}
-
 $.fn.Chronoline = function (events, options) {
+    requestAnimationFrame = window.requestAnimationFrame || 
+                        window.mozRequestAnimationFrame || 
+                        window.webkitRequestAnimationFrame || 
+                        window.msRequestAnimationFrame || 
+                        function( callback, element){
+                            return window.setTimeout(function(){callback(+new Date());}, 1000 / 60);
+                        };
+
+    var addElemClass = function(paperType, node, newClass){
+        if(paperType == 'SVG'){
+            node.setAttribute('class', newClass);
+        } else {
+            node.className += ' ' + newClass
+        }
+    }
+    
+    var stripTime = function(date){
+        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    }
+    
+    var formatDate = function(date, formatString){
+        // done in the style of c's strftime
+        // TODO slowly adding in new parts to this
+        // note that this also doesn't escape things properly. sorry
+        var ret = formatString;
+        var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+        if(formatString.indexOf('%d') != -1){
+            var dateNum = date.getUTCDate().toString();
+            if(dateNum.length < 2)
+                dateNum = '0' + dateNum;
+            ret = ret.replace('%d', dateNum);
+        }
+        if(formatString.indexOf('%b') != -1){
+            var month = monthNames[date.getUTCMonth()].substring(0, 3);
+            ret = ret.replace('%b', month);
+        }
+        if(formatString.indexOf('%Y') != -1){
+            ret = ret.replace('%Y', date.getUTCFullYear());
+        }
+    
+        return ret;
+    }
+    
+    var getLeft = function(elem){
+        var leftString = elem.style.left;
+        return parseInt(leftString.substring(0, leftString.length - 2));
+    }
+    
+    var getEndDate = function(dateArray){
+        return dateArray[dateArray.length - 1];
+    }
+    
+    var isFifthDay = function(date){
+        var day = date.getUTCDate();
+        return (day == 1 || day % 5 == 0) && day != 30;
+    }
+    
+    var isHalfMonth = function(date){
+        var day = date.getUTCDate();
+        return day == 1 || day == 15;
+    }
+    
+    var prevMonth = function(date){
+        var DAY_IN_MILLISECONDS = 86400000;
+        var newDate = new Date(date.getTime() - DAY_IN_MILLISECONDS);
+        return new Date(Date.UTC(newDate.getUTCFullYear(), newDate.getUTCMonth(), 1));
+    }
+    
+    var nextMonth = function(date){
+        var DAY_IN_MILLISECONDS = 86400000;
+        var newDate = new Date(date.getTime() + DAY_IN_MILLISECONDS);
+        return new Date(Date.UTC(newDate.getUTCFullYear(), newDate.getUTCMonth() + 1, 1));
+    }
+    
+    var prevQuarter = function(date){
+        var newDate = new Date(date - DAY_IN_MILLISECONDS);
+        var month = newDate.getMonth();
+        return new Date(Date.UTC(newDate.getUTCFullYear(), month - month % 3, 1));
+    }
+    
+    var nextQuarter = function(date){
+        var newDate = new Date(date.getTime() + DAY_IN_MILLISECONDS);
+        var month = newDate.getUTCMonth();
+        return new Date(Date.UTC(newDate.getUTCFullYear(), month - month % 3 + 3, 1));
+    }
+    
+    var backWeek = function(date){
+        var DAY_IN_MILLISECONDS = 86400000;
+        return new Date(date - DAY_IN_MILLISECONDS * 7);
+    }
+    
+    var forwardWeek = function(date){
+        var DAY_IN_MILLISECONDS = 86400000;
+        return new Date(date.getTime() + DAY_IN_MILLISECONDS * 7);
+    }
     var defaults = {
         defaultStartDate: null,  // the date furthest to the left on load. Defaults to today
         startDate: null,  // start of the timeline. Defaults to first event date
@@ -107,15 +112,11 @@ $.fn.Chronoline = function (events, options) {
 
         hashColor: '#b8b8b8',
 
-        eventAttrs: {  // attrs for the bars and circles of the events
-            fill: '#0055e1',
-            stroke: '#0055e1',
-            "stroke-width": 2
-        },
-
+        eventAttrs: { fill: '#0055e1',stroke: '#0055e1',"stroke-width": 2},
+                
         // predefined fns include: null (for daily), isFifthDay, isHalfMonth
-        hashInterval: null,  // fn: date -> boolean, if a hash should appear
-        labelInterval: null,  // fn: date -> boolean, if a hash should appear
+        hashInterval: isFifthDay,  // fn: date -> boolean, if a hash should appear
+        labelInterval: isFifthDay,  // fn: date -> boolean, if a hash should appear
         labelFormat: '%d',  // based on strftime
 
         subLabel: 'month',  // TODO generalize this code
@@ -128,14 +129,12 @@ $.fn.Chronoline = function (events, options) {
         subSubLabelAttrs: {'font-weight': 'bold'},
         floatingSubSubLabels: true,  // whether subSublabels should float into view
 
-        fontAttrs: {
-            'font-size': 10,
-            fill: '#000000'
-        },
-        scrollable: true,
+        fontAttrs: {'font-size': 10,fill: '#000000'},
+        
         // predefined fns include: prevMonth, nextMonth, prevQuarter, nextQuarter, backWeek, forwardWeek
-        scrollLeft: backWeek,
-        scrollRight: forwardWeek,
+        scrollable: true,
+        scrollLeft: prevMonth,
+        scrollRight: nextMonth,
         animated: false,  // whether scrolling is animated or just jumps, requires jQuery
 
         tooltips: false,  // activates qtip tooltips. Otherwise, you just get title tooltips
@@ -177,7 +176,7 @@ $.fn.Chronoline = function (events, options) {
         });
         var tbLayer = '<div class="chronoline-toolbar-options">';
         $.each(t.toolbar,function(index, item){
-            tbLayer += '<a id="'+index+'" href="#" title="'+item.title+'"><i class="'+item.class+'"></i></a>';
+            tbLayer += '<a id="'+index+'" href="#" title="'+item.title+'"><i class="'+item.view+'"></i></a>';
         });
         tbLayer += '</div>';
         $(t).toolbar({'content':tbLayer,'position':'docktop'});
@@ -218,7 +217,7 @@ $.fn.Chronoline = function (events, options) {
 
     // CALCULATING MORE THINGS
     // generating relevant dates
-    t.today = stripTime(new Date(Date.now()));
+    t.today = stripTime(new Date());
 
     if(t.defaultStartDate == null){
         t.defaultStartDate = t.today;
@@ -483,6 +482,7 @@ $.fn.Chronoline = function (events, options) {
 
 
     t.drawLabelsHelper = function(startMs, endMs){
+        var DAY_IN_MILLISECONDS = 86400000;
         for(var curMs = startMs; curMs < endMs; curMs += DAY_IN_MILLISECONDS){
             var curDate = new Date(curMs);
             var day = curDate.getUTCDate();

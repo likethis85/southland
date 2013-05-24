@@ -198,7 +198,7 @@
                 '<div><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectListEvent"}></h3><table width=100% id="events"></table></div>',
                 function(content){
                     $(obj.events).each(function(i,e){
-                        row = '<tr><td>'+i+'</td><td>'+e.title+'</td><td>'+fdate(e.dates[0])+'</td>';
+                        row = '<tr><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
                             row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
                         else
@@ -224,29 +224,24 @@
             [
                 <{foreach item=item from=$tTimeline name=iterEvents}>
                     <{if $smarty.foreach.iterEvents.last }>
-                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title:"<{$item.title}>", id:"<{$item.id}>"}
+                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"}
                     <{else}>
-                        {dates: [new Date("<{$item.date}>")], title:"<{$item.title}>", id:"<{$item.id}>"},
+                        {dates: [new Date("<{$item.date}>")], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"},
                     <{/if}>
                 <{/foreach}>
             ],
             {
-                visibleSpan: DAY_IN_MILLISECONDS * 91,
                 animated: true,
                 tooltips: true,
                 todayAttrs: {'stroke': '#00CACA'},
                 eventAttrs: {'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 2},
-                labelInterval: isFifthDay,
-                hashInterval: isFifthDay,
-                scrollLeft: prevMonth,
-                scrollRight: nextMonth,
                 markToday: 'line',
                 draggable: false,
                 toolbar: [
-                            {'title': "<{T w='BackWeek'}>", 'class':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
-                            {'title': "<{T w='AddEvent'}>", 'class':'icon-edit',callback:AddEvent},
-                            {'title': "<{T w='ListEvent'}>",'class':'icon-list',callback:ListEvent},
-                            {'title': "<{T w='NextWeek'}>", 'class':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}}
+                            {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
+                            {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
+                            {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
+                            {'title': "<{T w='NextWeek'}>", 'view':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}}
                          ]
             }
         );

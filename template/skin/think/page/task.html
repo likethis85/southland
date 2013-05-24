@@ -1,7 +1,6 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
         $().ready(function(){
-            var hm = new HoverMenu('taskstatus');
             $("a[name='DelTask']").each(function(){
                 $(this).click(function(){
                     return confirm('<{T w="Confirm?"}>'+$(this).text());

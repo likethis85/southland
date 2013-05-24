@@ -14,27 +14,6 @@
                 null
             ]
         });
-
-        $("input[name='fixed']").iCheck({
-            checkboxClass: 'icheckbox_square-green',
-            radioClass: 'iradio_flat',
-            increaseArea: '20%'
-        });
-
-        $("input[name='fixed']").on('ifChecked ifUnchecked', function(event){
-            if(event.type == 'ifChecked') {
-                url = '/ajax.php?a=uis&to=fixed&id='+this.id;
-                $.getJSON(url,function(data) {
-                    if(data.error != 0) {
-                        alert(data.msg);
-                        this.iCheck('uncheck');
-                    }
-                });
-            } else {
-                alert("<{T w='Error Operation not permit'}>");
-                $(this).iCheck('check');
-            }
-        });
     });
     </script>
     <div class="page_op">
