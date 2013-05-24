@@ -8,7 +8,7 @@ class main extends general
             exit;
         }
 
-		if($this->spArgs('submitcreate')!=1){
+		if($this->spArgs('submit')!=1){
             $this->display(WORKSPACE.'/create.html');
             exit;
         }
@@ -29,6 +29,9 @@ class main extends general
         $this->jumpProjectPage();
 	}
 
+    /** @brief 更新项目基本信息
+     *
+     */
     public function update() {
         $uid = $this->tUser['id'];
         $pid = $this->spArgs('id');
@@ -54,6 +57,35 @@ class main extends general
 			$pid = $objModel->update($condition, $data);
             $this->jumpProjectPage();
 		}
+    }
+
+    /** @brief 关闭项目
+     *
+     */
+    public function close(){
+        $uid = $this->tUser['id'];
+        $pid = $this->spArgs('id');
+        if(empty($uid) || empty($pid)){
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+        if(false == spClass('projectModel')->closeProject($pid)){
+            spClass('keeper')->speak(T('Error DB operation failed'));
+            exit;
+        }
+
+        $reason = $this->spArgs('reason');
+        if(!empty($reason)) {
+            $date = date('Y-m-d H:i:s');
+            spClass('timelineModel')->createForProject($pid, $uid, $date, $reason);
+        }
+        $this->jumpProjectPage();
     }
 
     /** @brief add event to timeline 

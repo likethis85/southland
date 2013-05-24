@@ -21,7 +21,6 @@ class timelineModel extends spModel
             'brief' => $brief,
             'etime' => $timestamp
         );
-
         return $this->Create($data);
     }
 

@@ -31,6 +31,10 @@ return array(
 'Observer' => '参与',
 'ProjectAddEvent' => '添加事件',
 'ProjectListEvent'=> '项目事件',
+'NextWeek' => '下一星期',
+'BackWeek' => '上一星期',
+'AddEvent' => '添加事件',
+'ListEvent'=> '列表显示',
 
 /* 任务相关 */
 'Task'  => '任务',
@@ -114,6 +118,10 @@ return array(
 'Zip/Postal Code'=>	'邮政编码',
 'Telephone'		=>	'电话',
 'User group'	=>	'用户组',
+'ProjectManager'=>  '项目经理',
+'DevManager'    =>  '开发经理',
+'QAManager'     =>  '测试经理',
+'ProjectMember' =>  '项目成员',
 
 /*常规*/
 'FirstPage'     =>  '首页',

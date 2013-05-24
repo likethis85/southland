@@ -55,9 +55,15 @@ class userorgModel extends spModel
 	    $sql = "select a.* from ".$prefix."project as a ,".$prefix."userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
 	    return $this->findSql($sql);
 	}
+    public function addDevManager($pid,$uid){
+	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_manager));
+    }
 	public function addDevMember($pid,$uid) {
 	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
 	}
+    public function addQAManager($pid,$uid){
+	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_manager));
+    }
 	public function addQAMember($pid,$uid) {
 	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_member));
 	}

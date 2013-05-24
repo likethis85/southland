@@ -88,37 +88,56 @@
         
         $("#btn-PAU").click(function() {
             var bb = new BlackBox();
-            bb.popup('<div style="width:460px;"><div id="close" class="close">x</div>' +
+            bb.popup('<div style="width:460px;margin-left:12px;"><div id="close" class="close">x</div>' +
                         '<h3><{T w="ProjectAddUser"}></h3>' +
                         '<table>'+
                             '<tr>' +
-                                '<td>Email:</td>' +
-                                '<td><input id="pauemail" type="text" size=40></td>' +
+                                '<td><{T w="User"}>:</td>' +
+                                '<td><input id="uname" type="text" size=40></td>' +
                                 '<td>' +
                                     '<div id="PAU" class="btn-rounded" align="center"><{T w="ProjectMemberAdd"}></div>' +
                                 '</td>' +
                             '</tr>' +
-                            '<tr>' +
-                                '<td>Group:</td>' +
-                                '<td colspan=2>' +
-                                    '<input type="radio" name="group" value="Developer" checked/><label for="group-dev"><{T w="Developer"}></label>' +
-                                    '<input type="radio" name="group" value="QA" /><label for="group-dev"><{T w="QA"}></label>' +
-                                    '<input type="radio" name="group" value="Observer" /><label for="group-dev"><{T w="Observer"}></label>' +
-                                '</td>' +
-                            '</tr>' +
+                            '<tr><td colspan=3>'+
+                                '<table width=100% style="cursor:default;background:grey;">' +
+                                    '<tr class="role" id="DevMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="DevManager"}> title=<{T w="DevManager"}>></td>' +
+                                    '<td><{T w="DevManager"}></td></tr>' +
+                                    '<tr class="role" id="DevMember"><td><img src="<{$skinpath}>/img/dev.jpg" alt=<{T w="Developer"}> title=<{T w="Developer"}>></td>' +
+                                    '<td><{T w="Developer"}></td></tr>' +
+                                    '<tr class="role" id="QAMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="QAManager"}> title=<{T w="QAManager"}>></td>' +
+                                    '<td><{T w="QAManager"}></td></tr>' +
+                                    '<tr class="role" id="QAMember"><td><img src="<{$skinpath}>/img/qa.jpg" alt=<{T w="QA"}> title=<{T w="QA"}>></td>' +
+                                    '<td><{T w="QA"}></td></tr>' +
+                                    '<tr class="role" id="PrjMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="ProjectManager"}> title=<{T w="ProjectManager"}>></td>' +
+                                    '<td><{T w="ProjectManager"}></td></tr>' +
+                                    '<tr class="role" id="PrjMember"><td><img src="<{$skinpath}>/img/member.png" alt=<{T w="ProjectMemeber"}> title=<{T w="ProjectMember"}>></td>' +
+                                    '<td><{T w="ProjectMember"}></td></tr>' +
+                                '</table>'+
+                            '</td></tr>' +
                         '</table>' +
                     '</div>',
+                    
                     function(content) {
                         content.find('#close').click(function(){
                             bb.boxClose();
                         });
                         
+                        content.find('.role').hover(
+                            function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','#336666');},
+                            function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','transparent');}
+                        ).click(function(){
+                            content.find('.selectedrole').css('background-color','transparent').toggleClass('selectedrole');
+                            $(this).css('background-color','#FF5809').toggleClass('selectedrole');
+                        });
                         content.find("#PAU").click(function(){
                             var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to=" +
-                                        $('input[name="group"]:checked').val() +
-                                        "&u="+escape($("#pauemail").attr('value'));
+                                        content.find('.selectedrole').attr('id') +
+                                        "&u="+escape($("#uname").attr('value'));
                             $.getJSON(url,function(data) {
                                 if(data.error != 0) alert(data.msg);
+                                else {
+                                    location.reload();
+                                }
                             });
                         });
                     }
@@ -128,7 +147,7 @@
         
         $("#Clo").click(function(){
             var bb = new BlackBox();
-            bb.popup('<div><div id="close" class="close">x</div><h3><{T w="CloseProject"}></h3><textarea cols="80" rows="15"></textarea></div>',
+            bb.popup('<div><div id="close" class="close">x</div><form id="cp" action="/project.php?a=close&id=<{$tProject.id}>" method="post"><h3><{T w="CloseProject"}></h3><textarea name="reason" cols="80" rows="15"></textarea><div class="btn-rounded" onclick="javascript:cp.submit();"><{T w="CloseProject"}></div></form></div>',
                 function(content) {
                     content.find('#close').click(function(){
                         bb.boxClose();
@@ -224,10 +243,10 @@
                 markToday: 'line',
                 draggable: false,
                 toolbar: [
-                            {'title': 'BackWeek', 'class':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
-                            {'title': 'AddEvent', 'class':'icon-edit',callback:AddEvent},
-                            {'title': 'ListEvent','class':'icon-list',callback:ListEvent},
-                            {'title': 'NextWeek', 'class':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}}
+                            {'title': "<{T w='BackWeek'}>", 'class':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
+                            {'title': "<{T w='AddEvent'}>", 'class':'icon-edit',callback:AddEvent},
+                            {'title': "<{T w='ListEvent'}>",'class':'icon-list',callback:ListEvent},
+                            {'title': "<{T w='NextWeek'}>", 'class':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}}
                          ]
             }
         );

@@ -349,8 +349,11 @@
                     e.preventDefault();
                 },
                 mouseDown = function (e) {
-                    $(document).bind('mousemove', mouseMove);
-                    $(document).bind('mouseup', mouseUp);
+                    if($(e.srcElement).is('input') || $(e.srcElement).is('textarea'))
+                        return;
+
+                    element.bind('mousemove', mouseMove);
+                    element.bind('mouseup', mouseUp);
                     elementX = currLeft = parseFloat(element.css('left'));
                     elementY = currTop = parseFloat(element.css('top'));
                     pointX = e.pageX;
@@ -363,8 +366,8 @@
                     element.css('top', currTop);
                     preventDefault(e);
                 }, mouseUp = function (e) {
-                    $(document).unbind('mousemove', mouseMove);
-                    $(document).unbind('mouseup', mouseUp);
+                    element.unbind('mousemove', mouseMove);
+                    element.unbind('mouseup', mouseUp);
                     preventDefault(e);
                 };
             $BlackBoxContent.bind('mousedown', mouseDown);

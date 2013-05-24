@@ -6,6 +6,9 @@ class projectModel extends spModel
 	var $table = "project"; // 数据表的名称
     var $linker = null;
 
+    var $status_open = 0;
+    var $status_close = 1;
+
     public function getProjects() {
         $uid = spClass('spSession')->getUser()->GetUserId();
         $items = array();
@@ -63,6 +66,12 @@ class projectModel extends spModel
     public function getProjectMembers() {
         $members = spClass('userorgModel')->getUsersByProject(spClass('spSession')->getUser()->getCurrentProject());
         return $members;
+    }
+    public function closeProject($pid) {
+        if(false == $this->update(array('id' => $pid), array('status' => $this->status_close)))
+            return false;
+
+        return true;
     }
     public function deleteProject($pid) {
         $this->update(array('id' => $pid), array('droptime' => null));
