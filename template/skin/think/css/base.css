@@ -58,6 +58,16 @@ a:hover {
     -moz-border-radius: 20px;
     -khtml-border-radius: 20px;
 }
+.new_keyword {
+    float:left;
+    width:16px;
+    height:16px;
+    background:transparent url("../img/new_keyword.png") no-repeat center;
+    cursor:pointer;
+}
+.new_keyword:hover{
+    background:#ACD6FF url("../img/new_keyword.png") no-repeat center;
+}
 .btn-rounded a:link,
 .btn-rounded a:visited,
 .btn-rounded a:hover,

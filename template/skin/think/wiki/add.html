@@ -1,13 +1,16 @@
 <{include file=skin/$skin/header.html}>
-    <div style="clear:both;margin-left:32px;margin-top:32px;">
-        <script type="text/javascript">
+<script type="text/javascript">
         jQuery.extend(jQuery.validator.messages, {
             required:"<span style=\"color:red\">*</span>"
         });
         $(document).ready(function(){
             var editor = CKEDITOR.replace("WikiContent");
+            var kwdC = 0;
             $('.btn-rounded').click(function(){
                 editor.updateElement();
+            });
+            $('.new_keyword').click(function(){
+                this.parentElement.insertBefore($('<div style="float:left;margin-right:3px;"><input name="kwd['+(kwdC++)+']" value="" /></div>')[0], this);
             });
             $("#form").validate({
                 rules:{
@@ -16,38 +19,39 @@
                 }
             });
         });
-        </script>
-        <div style="margin-left:12px;width:600px;">
-            <form id="form" method="post">
-                <table>
-                    <tr>
-                        <td><label style="margin-right:8px" for="subject"><{T w='WikiSubject'}></label></td>
-                        <td><input name="subject" id="subject" type="text" value="" style="width:490px"/></td>
-                    </tr>                
-                    <tr>
-                        <td><label style="margin-right:8px" for="kwd"><{T w='Keyword'}></label></td>
-                        <td><input name="kwd" id="kwd" type="text" value="" style="width:490px"/></td>
-                    </tr>                
-                    <tr>
-                        <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
-                        <td>
-                            <select name='acl' id='acl'>
-                                <option value=0 <{if $tProject.acl==0}>selected<{/if}> ><{T w='Public'}></option>
-                                <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
-                                <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr><td colspan="2"><label style="margin-right:8px" for="WikiContent"><{T w='WikiContent'}></label></td></tr>
-                    <tr>
-                        <td colspan="2">
-                            <textarea id="WikiContent" name="WikiContent"></textarea>
-                            <input class="btn-rounded" type="submit" value=<{T w="CreateNewWiki"}> />
-                            <input name="submit" type="hidden" id="submit" value="1" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
+</script>
+<div style="clear:both;margin-left:32px;margin-top:32px;">
+    <div style="margin-left:12px;width:600px;">
+        <form id="form" method="post">
+            <table>
+                <tr>
+                    <td><label style="margin-right:8px" for="subject"><{T w='WikiSubject'}></label></td>
+                    <td><input name="subject" id="subject" type="text" value="" style="width:490px"/></td>
+                </tr>                
+                <tr>
+                    <td><label style="margin-right:8px" for="kwd"><{T w='Keyword'}></label></td>
+                    <td><div class="new_keyword"></div></td>
+                </tr>                
+                <tr>
+                    <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
+                    <td>
+                        <select name='acl' id='acl'>
+                            <option value=0 <{if $tProject.acl==0}>selected<{/if}> ><{T w='Public'}></option>
+                            <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
+                            <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
+                        </select>
+                    </td>
+                </tr>
+                <tr><td colspan="2"><label style="margin-right:8px" for="WikiContent"><{T w='WikiContent'}></label></td></tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea id="WikiContent" name="WikiContent"></textarea>
+                        <input class="btn-rounded" type="submit" value=<{T w="CreateNewWiki"}> />
+                        <input name="submit" type="hidden" id="submit" value="1" />
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
+</div>
 <{include file=skin/$skin/footer.html}>

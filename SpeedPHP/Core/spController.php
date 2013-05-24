@@ -235,7 +235,10 @@ class spArgs {
 	 */
 	public function has($name)
 	{
-		return isset($this->args[$name]) && ( strlen(trim($this->args[$name])) > 0 );
+	    if(isset($this->args[$name])){
+	        return  is_array($this->args[$name]) ? (sizeof($this->args[$name])>0):( strlen(trim($this->args[$name])) > 0 );
+	    }
+	    return false;
 	}
 
 	/**
