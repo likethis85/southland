@@ -14,9 +14,7 @@ class wikiModel extends spModel
         if(false === $wid)
             return false;
 
-        foreach($kwds as $kwd){
-            spClass('keywordsModel')->CreateForWiki($wid, $kwd);
-        }
+        spClass('keywordsModel')->createForWiki($date['prj'], $wid, $kwds);
 
         return $wid;
     }

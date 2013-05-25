@@ -1,3 +1,7 @@
+// chronoline.js
+// by Kevin Leung for Zanbato, https://zanbato.com
+// MIT license at https://github.com/StoicLoofah/chronoline.js/blob/master/LICENSE.md
+
 $.fn.Chronoline = function (events, options) {
     requestAnimationFrame = window.requestAnimationFrame || 
                         window.mozRequestAnimationFrame || 
@@ -99,8 +103,8 @@ $.fn.Chronoline = function (events, options) {
         startDate: null,  // start of the timeline. Defaults to first event date
         endDate: null,  // end of the timeline. Defauls to the last event date
 
-        visibleSpan: 2592000000,  // 30 day in milliseconds,
-        timelinePadding: 432000000, // 3 day in ms. Adds this much time to the front and back to get some space
+        visibleSpan: 86400000*365,// 30 day in milliseconds,
+        timelinePadding: 86400000*3, // 3 day in ms. Adds this much time to the front and back to get some space
 
         topMargin: 40,  // overhead space on the canvas. useful for additional content
         eventHeight: 5,  // how tall event events are
@@ -165,11 +169,9 @@ $.fn.Chronoline = function (events, options) {
 
     // HTML elements to put everything in
     t.domElement = this;
-
     t.wrapper = document.createElement('div');
     t.wrapper.className = 'chronoline-wrapper';
     t.domElement.append(t.wrapper);
-
     if(t.toolbar.length){
         this.on('toolbarItemClick', function(e,p){
             t.toolbar[p.id].callback(t);
@@ -218,13 +220,8 @@ $.fn.Chronoline = function (events, options) {
     // CALCULATING MORE THINGS
     // generating relevant dates
     t.today = stripTime(new Date());
-
     if(t.defaultStartDate == null){
-        t.defaultStartDate = t.today;
-    }
-
-    if(t.startDate == null){
-        if(t.events.length > 0){
+        if(t.events!=null && t.events.length > 0){
             t.startDate = t.events[0].dates[0];
             for(var i = 1; i < t.events.length; i++)
                 if(t.events[i].dates[0] < t.startDate)
@@ -238,15 +235,15 @@ $.fn.Chronoline = function (events, options) {
         } else {
             t.startDate = t.today;
         }
-    }
-    t.startDate = stripTime(t.startDate);
 
-    if(t.startDate > t.defaultStartDate)
-        t.startDate = t.defaultStartDate;
-    t.startDate = new Date(t.startDate.getTime() - t.timelinePadding);
+        t.startDate = new Date(t.startDate.getTime()-t.timelinePadding);
+        t.startDate = stripTime(t.startDate);
+    } else {
+        t.startDate = stripTime(t.defaultStartDate);
+    }
     t.startTime = t.startDate.getTime();
 
-    if(t.endDate == null){
+    if(t.defautlEndDate == null) {
         if(t.events.length > 0){
             t.endDate = getEndDate(t.events[0].dates);
             for(var i = 1; i < t.events.length; i++)
@@ -261,11 +258,14 @@ $.fn.Chronoline = function (events, options) {
         } else {
             t.endDate = t.today;
         }
-    }
-    if(t.endDate < t.defaultStartDate)
-        t.endDate = t.defaultStartDate;
-    t.endDate = stripTime(new Date(Math.max(t.endDate.getTime(), t.startDate.getTime() + t.visibleSpan) + t.timelinePadding))
 
+        t.endDate = new Date(t.endDate.getTime()+t.timelinePadding);
+        t.endDate = stripTime(t.endDate);
+    } else {
+        t.endDate = stripTime(t.defautlEndDate);
+    }
+    t.endTime = t.endDate.getTime();
+    t.visibleSpan = t.endTime-t.startTime;
 
     // this ratio converts a time into a px position
     t.visibleWidth = (t.domElement)[0].clientWidth;

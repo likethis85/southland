@@ -239,8 +239,11 @@
                 draggable: false,
                 toolbar: [
                             {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
+                            {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){}},
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
+                            {'title': "<{T w='ListSection'}>",'view':'icon-tasks',callback:function(t){}},
+                            {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){}},
                             {'title': "<{T w='NextWeek'}>", 'view':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}}
                          ]
             }

@@ -16,7 +16,7 @@ class main extends general
 
 		$submit = $this->spArgs("submit");
 		if( $submit == 1 ){
-            $keywords = split(',',$this->spArgs('kwd'));
+            $keywords = $this->spArgs('kwd');
             $data = array(
                     'uid' => $this->tUser['id'],
                     'prj' => $this->tCurrProj,
