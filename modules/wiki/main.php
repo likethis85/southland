@@ -9,6 +9,10 @@ class main extends general
 	function publish() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
+        if(empty($uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
         if(!spClass('projectModel')->allow($pid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;

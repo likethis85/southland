@@ -3,14 +3,7 @@
 // MIT license at https://github.com/StoicLoofah/chronoline.js/blob/master/LICENSE.md
 
 $.fn.Chronoline = function (events, options) {
-    requestAnimationFrame = window.requestAnimationFrame || 
-                        window.mozRequestAnimationFrame || 
-                        window.webkitRequestAnimationFrame || 
-                        window.msRequestAnimationFrame || 
-                        function( callback, element){
-                            return window.setTimeout(function(){callback(+new Date());}, 1000 / 60);
-                        };
-
+        
     var addElemClass = function(paperType, node, newClass){
         if(paperType == 'SVG'){
             node.setAttribute('class', newClass);
@@ -19,44 +12,32 @@ $.fn.Chronoline = function (events, options) {
         }
     }
     
-    var stripTime = function(date){
-        return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-    }
-    
     var formatDate = function(date, formatString){
-        // done in the style of c's strftime
-        // TODO slowly adding in new parts to this
-        // note that this also doesn't escape things properly. sorry
         var ret = formatString;
         var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
         if(formatString.indexOf('%d') != -1){
-            var dateNum = date.getUTCDate().toString();
+            var dateNum = date.getDate().toString();
             if(dateNum.length < 2)
                 dateNum = '0' + dateNum;
             ret = ret.replace('%d', dateNum);
         }
         if(formatString.indexOf('%b') != -1){
-            var month = monthNames[date.getUTCMonth()].substring(0, 3);
+            var month = monthNames[date.getMonth()].substring(0, 3);
             ret = ret.replace('%b', month);
         }
         if(formatString.indexOf('%Y') != -1){
-            ret = ret.replace('%Y', date.getUTCFullYear());
+            ret = ret.replace('%Y', date.getFullYear());
         }
     
         return ret;
     }
-    
-    var getLeft = function(elem){
-        var leftString = elem.style.left;
-        return parseInt(leftString.substring(0, leftString.length - 2));
-    }
-    
+
     var getEndDate = function(dateArray){
         return dateArray[dateArray.length - 1];
     }
     
     var isFifthDay = function(date){
-        var day = date.getUTCDate();
+        var day = date.getDate();
         return (day == 1 || day % 5 == 0) && day != 30;
     }
     
@@ -65,63 +46,45 @@ $.fn.Chronoline = function (events, options) {
         return day == 1 || day == 15;
     }
     
-    var prevMonth = function(date){
-        var DAY_IN_MILLISECONDS = 86400000;
-        var newDate = new Date(date.getTime() - DAY_IN_MILLISECONDS);
-        return new Date(Date.UTC(newDate.getUTCFullYear(), newDate.getUTCMonth(), 1));
+    var sortEvents = function(a, b){
+        a = a.dates;
+        b = b.dates;
+
+        var aStart = a[0];
+        var bStart = b[0];
+        if(aStart.getTime()!=bStart.getTime())
+            return aStart-bStart;
+            
+        var aEnd = a[a.length - 1].getTime();
+        var bEnd = b[b.length - 1].getTime();
+        if(aEnd != bEnd)
+            return aEnd - bEnd;
+        
+        return 0;
+    }
+    var pxToMs = function(px){ 
+        return t.startTime + px / t.pxRatio;
+    }
+    var msToPx = function(ms){ 
+        return (ms - t.startTime) * t.pxRatio;
     }
     
-    var nextMonth = function(date){
-        var DAY_IN_MILLISECONDS = 86400000;
-        var newDate = new Date(date.getTime() + DAY_IN_MILLISECONDS);
-        return new Date(Date.UTC(newDate.getUTCFullYear(), newDate.getUTCMonth() + 1, 1));
-    }
-    
-    var prevQuarter = function(date){
-        var newDate = new Date(date - DAY_IN_MILLISECONDS);
-        var month = newDate.getMonth();
-        return new Date(Date.UTC(newDate.getUTCFullYear(), month - month % 3, 1));
-    }
-    
-    var nextQuarter = function(date){
-        var newDate = new Date(date.getTime() + DAY_IN_MILLISECONDS);
-        var month = newDate.getUTCMonth();
-        return new Date(Date.UTC(newDate.getUTCFullYear(), month - month % 3 + 3, 1));
-    }
-    
-    var backWeek = function(date){
-        var DAY_IN_MILLISECONDS = 86400000;
-        return new Date(date - DAY_IN_MILLISECONDS * 7);
-    }
-    
-    var forwardWeek = function(date){
-        var DAY_IN_MILLISECONDS = 86400000;
-        return new Date(date.getTime() + DAY_IN_MILLISECONDS * 7);
-    }
     var defaults = {
-        defaultStartDate: null,  // the date furthest to the left on load. Defaults to today
         startDate: null,  // start of the timeline. Defaults to first event date
         endDate: null,  // end of the timeline. Defauls to the last event date
-
-        visibleSpan: 86400000*365,// 30 day in milliseconds,
         timelinePadding: 86400000*3, // 3 day in ms. Adds this much time to the front and back to get some space
 
-        topMargin: 40,  // overhead space on the canvas. useful for additional content
-        eventHeight: 5,  // how tall event events are
-        eventMargin: 4,  // how far apart the events are
         dateLabelHeight: 50, // how tall the bottom margin for the dates is
         hashLength: 4,  // length of the hash marks for the days
-        minEventsHeight: 40,
-        maxEventsHeight: 1000,
 
-        hashColor: '#b8b8b8',
-
-        eventAttrs: { fill: '#0055e1',stroke: '#0055e1',"stroke-width": 2},
+        eventAttrs: { width: 5, 
+                      height:5,
+                      'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 2
+                    },
                 
         // predefined fns include: null (for daily), isFifthDay, isHalfMonth
         hashInterval: isFifthDay,  // fn: date -> boolean, if a hash should appear
         labelInterval: isFifthDay,  // fn: date -> boolean, if a hash should appear
-        labelFormat: '%d',  // based on strftime
 
         subLabel: 'month',  // TODO generalize this code
         subLabelMargin: 2,
@@ -137,15 +100,13 @@ $.fn.Chronoline = function (events, options) {
         
         // predefined fns include: prevMonth, nextMonth, prevQuarter, nextQuarter, backWeek, forwardWeek
         scrollable: true,
-        scrollLeft: prevMonth,
-        scrollRight: nextMonth,
         animated: false,  // whether scrolling is animated or just jumps, requires jQuery
 
         tooltips: false,  // activates qtip tooltips. Otherwise, you just get title tooltips
         markToday: 'line',  // 'line', 'labelBox', false
         todayAttrs: {'stroke': '#484848'},
 
-        sections: null,
+        sections: [],
         floatingSectionLabels: true,
         sectionLabelAttrs: {},
         sectionLabelsOnHover: true,
@@ -158,387 +119,268 @@ $.fn.Chronoline = function (events, options) {
         toolbar: []
     }
     var t = this;
-
-    // FILL DEFAULTS
-    for(var attrname in defaults){ t[attrname] = defaults[attrname];}
-    for(var attrname in options){ t[attrname] = options[attrname];}
-
-    // options shouldn't be on if there aren't any sections
-    t.floatingSectionLabels &= t.sections != null;
-    t.sectionLabelsOnHover &= t.sections != null;
-
+    t.config = $.extend(defaults,options);
+    t.backTimeline = function(){
+        var span = t.endTime-t.startTime;
+        span /= 3;
+        t.startTime -= span;
+        t.endTime  -= span;
+        t.paper.clear();
+        DrawTimeAxis(t.startTime,t.endTime);
+        DrawEvents(t.startTime, t.endTime);
+    }
+    t.zoomIn = function(){
+        var DAY_IN_MILLISECONDS = 86400000;
+        var span = t.endTime-t.startTime;
+        if(span < 30*DAY_IN_MILLISECONDS)
+            return;
+        span /= 3;
+        t.startTime += span;
+        t.endTime  -= span;
+        t.config.startDate.setTime(t.startTime);
+        t.config.endDate.setTime(t.endTime);
+        t.paper.clear();
+        DrawTimeAxis(t.startTime,t.endTime);
+        DrawEvents(t.startTime, t.endTime);
+    }
+    t.zoomOut = function(){
+        var span = t.endTime-t.startTime;
+        span /= 3;
+        t.startTime -= span;
+        t.endTime  += span;
+        t.config.startDate.setTime(t.startTime);
+        t.config.endDate.setTime(t.endTime);
+        t.paper.clear();
+        DrawTimeAxis(t.startTime,t.endTime);
+        DrawEvents(t.startTime, t.endTime);
+    }
+    t.forwardTimeline = function(){
+        var span = t.endTime-t.startTime;
+        span /= 3;
+        t.startTime += span;
+        t.endTime  += span;
+        t.paper.clear();
+        DrawTimeAxis(t.startTime,t.endTime);
+        DrawEvents(t.startTime, t.endTime);
+    }
+    
     // HTML elements to put everything in
-    t.domElement = this;
+    t.domElement = this[0];
     t.wrapper = document.createElement('div');
     t.wrapper.className = 'chronoline-wrapper';
-    t.domElement.append(t.wrapper);
-    if(t.toolbar.length){
+    t.domElement.appendChild(t.wrapper);
+    
+    if(t.config.toolbar.length){
         this.on('toolbarItemClick', function(e,p){
-            t.toolbar[p.id].callback(t);
+            t.config.toolbar[p.id].callback(t);
         });
         var tbLayer = '<div class="chronoline-toolbar-options">';
-        $.each(t.toolbar,function(index, item){
+        $.each(t.config.toolbar,function(index, item){
             tbLayer += '<a id="'+index+'" href="#" title="'+item.title+'"><i class="'+item.view+'"></i></a>';
         });
         tbLayer += '</div>';
-        $(t).toolbar({'content':tbLayer,'position':'docktop'});
+        this.toolbar({'content':tbLayer,'position':'docktop'});
     }
 
-    // SORT EVENTS
-    t.sortEvents = function(a, b){
-        a = a.dates;
-        b = b.dates;
-
-        var aEnd = a[a.length - 1].getTime();
-        var bEnd = b[b.length - 1].getTime();
-        if(aEnd != bEnd){
-            return aEnd - bEnd;
-        }
-        return a[0].getTime() - b[0].getTime();
-    };
-
-    // need to convert dates to UTC
-    for(var i = 0; i < events.length; i++){
-        for(var j = 0; j < events[i].dates.length; j++){
-            events[i].dates[j] = stripTime(events[i].dates[j]);
-        }
-    }
+    // 按升序排列事件对象
+    // event row描述一种表现形式，保证在同一个层面上不出现事件的重叠
     t.events = events;
     t.events.sort(t.sortEvents);
-
-    // same thing for sections
-    if(t.sections != null){
-        for(var i = 0; i < t.sections.length; i++){
-            for(var j = 0; j < t.sections[i].dates.length; j++){
-                t.sections[i].dates[j] = stripTime(t.sections[i].dates[j]);
-            }
-        }
-        t.sections.sort(t.sortEvents);
-    }
-
-
-    // CALCULATING MORE THINGS
-    // generating relevant dates
-    t.today = stripTime(new Date());
-    if(t.defaultStartDate == null){
-        if(t.events!=null && t.events.length > 0){
-            t.startDate = t.events[0].dates[0];
-            for(var i = 1; i < t.events.length; i++)
-                if(t.events[i].dates[0] < t.startDate)
-                    t.startDate = t.events[i].dates[0];
-        } else if(t.sections!=null && t.sections.length > 0) {
-            t.startDate = t.sections[0].dates[0];
-            for(var i = 0; i < t.sections.length; i++){
-                if(t.sections[i].dates[0] < t.startDate)
-                    t.startDate = t.sections[i].dates[0];
-            }
-        } else {
-            t.startDate = t.today;
-        }
-
-        t.startDate = new Date(t.startDate.getTime()-t.timelinePadding);
-        t.startDate = stripTime(t.startDate);
-    } else {
-        t.startDate = stripTime(t.defaultStartDate);
-    }
-    t.startTime = t.startDate.getTime();
-
-    if(t.defautlEndDate == null) {
-        if(t.events.length > 0){
-            t.endDate = getEndDate(t.events[0].dates);
-            for(var i = 1; i < t.events.length; i++)
-                if(getEndDate(t.events[i].dates) > t.endDate)
-                    t.endDate = getEndDate(t.events[i].dates);
-        } else if( t.sections!=null && t.sections.length > 0) {
-            t.endDate = t.sections[0].dates[1];
-            for(var i = 0; i < t.sections.length; i++){
-                if(t.sections[i].dates[1] > t.endDate)
-                    t.endDate = t.sections[i].dates[1];
-            }
-        } else {
-            t.endDate = t.today;
-        }
-
-        t.endDate = new Date(t.endDate.getTime()+t.timelinePadding);
-        t.endDate = stripTime(t.endDate);
-    } else {
-        t.endDate = stripTime(t.defautlEndDate);
-    }
-    t.endTime = t.endDate.getTime();
-    t.visibleSpan = t.endTime-t.startTime;
-
-    // this ratio converts a time into a px position
-    t.visibleWidth = (t.domElement)[0].clientWidth;
-    t.pxRatio = t.visibleWidth / t.visibleSpan;
-    t.totalWidth = t.pxRatio * (t.endDate.getTime() - t.startDate.getTime());
-    t.maxLeftPx = t.totalWidth - t.visibleWidth;
-
-    // 2 handy utility functions
-    t.pxToMs = function(px){
-        return t.startTime + px / t.pxRatio;
-    }
-    t.msToPx = function(ms){
-        return (ms - t.startTime) * t.pxRatio;
-    }
-
-    // SPLIT THE DATES INTO THE ROW THAT THEY BELONG TO
-    // TODO
-    // this is a greedy algo that definitely isn't optimal
-    // it at least needs to find the latest row that still fits
-    // this, however, may cause very strange behavior (everything being on the 2nd line),
-    // so I'm going to prefer this in the short term
-
-    // calculated here so it can be used in splitting dates
-    t.circleRadius = t.eventHeight / 2;
-
-    t.eventRows = [[]];
-    t.rowLastPxs = [0];
-
-    for(var i = 0; i < t.events.length; i++){
+    
+    t.event_rows = [];
+    for(i=0;i<t.events.length;i++){
         var found = false;
-        var startPx = t.msToPx(t.events[i].dates[0].getTime()) - t.circleRadius;
-        for(var j = 0; j < t.eventRows.length; j++){
-            if(t.rowLastPxs[j] < startPx){
-                t.eventRows[j].push(t.events[i]);
-                t.rowLastPxs[j] = t.msToPx(getEndDate(t.events[i].dates).getTime()) + t.circleRadius;
+        for(j=0;j<t.event_rows.length;j++){
+            if(t.event_rows[j][t.event_rows[j].length-1].dates[t.event_rows[j][t.event_rows[j].length-1].dates.length-1].getTime()<t.events[i].dates[0].getTime()){
                 found = true;
+                t.event_rows[j].push(t.events[i]);
                 break;
-            }
+            }   
         }
+        
         if(!found){
-            t.eventRows.push([t.events[i]]);
-            t.rowLastPxs.push(t.msToPx(getEndDate(t.events[i].dates).getTime()) + t.circleRadius);
+            var new_row = new Array();
+            new_row.push(t.events[i]);
+            t.event_rows.push(new_row);
         }
     }
+    
+    // 设置视口的时间区域
+    t.today = new Date();
+    t.today = new Date(t.today.getFullYear(), t.today.getMonth(),t.today.getDate());
+    if(t.config.startDate == null){
+        if(t.events.length)
+            t.config.startDate = t.events[0].dates[0];
+        else if(t.config.sections.length) 
+            t.config.startDate = t.config.sections[0].dates[0];
+        else
+            t.config.startDate = t.today;
 
-    // a few more calculations and creation
-    t.eventsHeight = Math.max(Math.min(t.eventRows.length * (t.eventMargin + t.eventHeight), t.maxEventsHeight), t.minEventsHeight);
-    t.totalHeight = t.dateLabelHeight + t.eventsHeight + t.topMargin;
+        t.config.startDate = new Date(t.config.startDate.getTime()-t.config.timelinePadding);
+        t.config.startDate.setDate(1);
+    }
+    t.startTime = t.config.startDate.getTime();
 
-    // creating canvas pieces
+    if(t.config.endDate == null) {
+        if(t.events.length)
+            t.config.endDate = t.events[t.events.length-1].dates[t.events[t.events.length-1].dates.length-1];
+        else if(t.config.sections.length)
+            t.config.endDate = t.sections[t.config.sections.length-1].dates[t.config.sections[t.config.sections.length-1].dates.length-1];
+        else
+            t.config.endDate = t.today;
+          
+        t.config.endDate = new Date(t.config.endDate.getTime()+t.config.timelinePadding);  
+    }
+    t.endTime = t.config.endDate.getTime();
+    
+    //创建显示部件
     t.myCanvas = document.createElement('div');
     t.myCanvas.className = 'chronoline-canvas';
     t.wrapper.appendChild(t.myCanvas);
-
-    t.paper = Raphael(t.myCanvas, t.totalWidth, t.totalHeight);
+    t.paper = Raphael(t.myCanvas, t.wrapper.clientWidth, t.wrapper.clientHeight);
     t.paperType = t.paper.raphael.type;
     t.paperElem = t.myCanvas.childNodes[0];
-
-    // DRAWING
-    t.floatingSet = t.paper.set();
-    t.sectionLabelSet = t.paper.set();
-    // drawing sections
-    if(t.sections != null){
-        for(var i = 0; i < t.sections.length; i++){
-            var section = t.sections[i];
-            var startX = (section.dates[0].getTime() - t.startTime) * t.pxRatio;
-            var width = (section.dates[1] - section.dates[0]) * t.pxRatio;
-            var elem = t.paper.rect(startX, 0, width, t.totalHeight);
-            elem.attr('stroke-width', 0);
-            elem.attr('stroke', '#ffffff');
-            if(typeof section.attrs != "undefined"){
-                elem.attr(section.attrs);
-            }
-            var sectionLabel = t.paper.text(startX + 10, 10, section.title);
-            sectionLabel.attr('text-anchor', 'start');
-            sectionLabel.attr(t.sectionLabelAttrs);
-            if(t.floatingSectionLabels){
-                // bounds determine how far things can float
-                sectionLabel.data('left-bound', startX + 10);
-                sectionLabel.data('right-bound', startX + width - sectionLabel.attr('width'));
-                t.floatingSet.push(sectionLabel);
-                t.sectionLabelSet.push(sectionLabel);
-            }
-
-            elem.data('label', sectionLabel);
-
-            if(t.sectionLabelsOnHover){
-                elem.hover(function(){this.data('label').animate({opacity: 1}, 200);},
-                           function(){this.data('label').animate({opacity: 0}, 200);});
-                sectionLabel.hover(function(){this.animate({opacity: 1}, 200);},
-                                   function(){this.animate({opacity: 0}, 200);});
-                sectionLabel.attr('opacity', 0);
-            }
-
-        }
-    }
-
-    // put all of these in front of the sections
-    t.sectionLabelSet.forEach(function(label){
-        label.toFront();
-    });
-
-    // drawing events
-    for(var row = 0; row < t.eventRows.length; row++){
-        var upperY = t.totalHeight - t.dateLabelHeight - (row + 1) * (t.eventMargin + t.eventHeight);
-        for(var col = 0; col < t.eventRows[row].length; col++){
-            var event = t.eventRows[row][col];
-            var startX = (event.dates[0].getTime() - t.startTime) * t.pxRatio;
-            var elem = null;
-            if(event.dates.length == 1){  // it's a single point
-                elem = t.paper.circle(startX, upperY + t.circleRadius, t.circleRadius).attr(t.eventAttrs);
-            } else {  // it's a range
-                var width = (getEndDate(event.dates) - event.dates[0]) * t.pxRatio;
-                // left rounded corner
-                var leftCircle = t.paper.circle(startX, upperY + t.circleRadius, t.circleRadius).attr(t.eventAttrs);
-                if(typeof event.attrs != "undefined"){
-                    leftCircle.attr(event.attrs);
+    t.visibleWidth = t.domElement.clientWidth;
+    t.visibleHeight = t.domElement.clientHeight;
+    t.pxRatio = t.visibleWidth/(t.endTime-t.startTime);
+    
+    var DrawEvents = function(startTime, endTime){
+        var delta = t.config.eventAttrs.width/2;
+        var margin = 3;
+        for(var row = 0; row < t.event_rows.length; row++){
+            var upperY = t.visibleHeight-t.config.dateLabelHeight-(row+1)*(t.config.eventAttrs.height/2+8);
+            for(var col = 0; col < t.event_rows[row].length; col++){
+                var event = t.event_rows[row][col];
+                var elem = null;
+                if(event.dates.length == 1){
+                    var startX = (event.dates[0].getTime() - t.startTime) * t.pxRatio;
+                    elem = t.paper.circle(startX-delta, upperY + delta, delta).attr(t.config.eventAttrs);
+                    
+                } else {
+                    var startX = (event.dates[0].getTime() - t.startTime) * t.pxRatio;
+                    var leftMark = t.paper.circle(startX-delta, upperY + delta, delta).attr(t.config.eventAttrs);
+                    var endX = (event.dates[1].getTime() - t.startTime) * t.pxRatio;
+                    var rightMark = t.paper.circle(endX-delta, upperY + delta, delta).attr(t.config.eventAttrs);    
+                    addElemClass(t.paperType, leftMark.node, 'chronoline-event');
+                    addElemClass(t.paperType, rightMark.node, 'chronoline-event');
+                    elem = t.paper.rect(startX-delta, upperY, endX-startX, t.config.eventAttrs.height)
+                            .attr({ 'fill': t.config.eventAttrs.fill,
+                                    'stroke': t.config.eventAttrs.stroke,
+                                    'stroke-width': t.config.eventAttrs['stroke-width']});
                 }
-                addElemClass(t.paperType, leftCircle.node, 'chronoline-event');
-                // right rounded corner
-                var rightCircle = t.paper.circle(startX + width, upperY + t.circleRadius, t.circleRadius).attr(t.eventAttrs);
-                if(typeof event.attrs != "undefined"){
-                    rightCircle.attr(event.attrs);
-                }
-                addElemClass(t.paperType, rightCircle.node, 'chronoline-event');
-                elem = t.paper.rect(startX, upperY, width, t.eventHeight).attr(t.eventAttrs);
-            }
-
-            if(typeof event.attrs != "undefined"){
-                elem.attr(event.attrs);
-            }
-            addElemClass(t.paperType, elem.node, 'chronoline-event');
-
-            elem.attr('title', event.title);
-            if(t.tooltips && !jQuery.browser.msie){
-                var description = event.description;
-                var title = event.title;
-                if(typeof description == "undefined" || description == ''){
-                    description = title;
-                    title = '';
-                }
-                jQuery(elem.node).parent().qtip({
-                    content: {
-                        title: title,
-                        text: description
-                    },
-                    position: {
-                        my: 'top left',
-                        target: 'mouse',
-                        viewport: jQuery(window), // Keep it on-screen at all times if possible
-                        adjust: {
-                            x: 10,  y: 10
-                        }
-                    },
-                    hide: {
-                        fixed: true // Helps to prevent the tooltip from hiding ocassionally when tracking!
-                    },
-                    style: {
-                        classes: 'ui-tooltip-shadow ui-tooltip-dark ui-tooltip-rounded'
+                addElemClass(t.paperType, elem.node, 'chronoline-event');
+                elem.attr('title', event.title);
+                if(t.tooltips && !jQuery.browser.msie){
+                    var description = event.description;
+                    var title = event.title;
+                    if(typeof description == "undefined" || description == ''){
+                        description = title;
+                        title = '';
                     }
-                });
-            }
-            if(t.sections != null && t.sectionLabelsOnHover){
-                // some magic here to tie the event back to the section label element
-                var originalIndex = event.section;
-                if(typeof originalIndex != "undefined"){
-                    var newIndex = 0;
-                    for(var i = 0; i < t.sections.length; i++){
-                        if(t.sections[i].section == originalIndex){
-                            elem.data('sectionLabel', t.sectionLabelSet[i]);
-                            break;
+                    jQuery(elem.node).parent().qtip({
+                        content: {
+                            title: title,
+                            text: description
+                        },
+                        position: {
+                            my: 'top left',
+                            target: 'mouse',
+                            viewport: jQuery(window), // Keep it on-screen at all times if possible
+                            adjust: {
+                                x: 10,  y: 10
+                            }
+                        },
+                        hide: {
+                            fixed: true // Helps to prevent the tooltip from hiding ocassionally when tracking!
+                        },
+                        style: {
+                            classes: 'ui-tooltip-shadow ui-tooltip-dark ui-tooltip-rounded'
                         }
-                    }
-                    elem.hover(function(){this.data('sectionLabel').animate({opacity: 1}, 200);},
-                               function(){this.data('sectionLabel').animate({opacity: 0}, 200);});
+                    });
                 }
             }
         }
     }
 
-    // calculated ahead of time
-    var dateLineY = t.totalHeight - t.dateLabelHeight;
-    var baseline = t.paper.path('M0,' + dateLineY + 'L' + t.totalWidth + ',' + dateLineY);
-    baseline.attr('stroke', t.hashColor);
-
-    t.bottomHashY = dateLineY + t.hashLength;
-    t.labelY = t.bottomHashY + t.fontAttrs['font-size'];
-    t.subLabelY = t.bottomHashY + t.fontAttrs['font-size'] * 2 + t.subLabelMargin;
-    t.subSubLabelY = t.subLabelY + t.fontAttrs['font-size'] + t.subSubLabelMargin;
-
-    // DATE LABELS
-    // only a helper b/c it works within a specific range
-
-    // subSublabels. These can float
-    if(t.subSubLabel == 'year'){
-        var endYear = t.endDate.getFullYear();
-        for(var year = t.startDate.getFullYear(); year <= endYear; year++){
-            var curDate = stripTime(new Date(year, 0, 1));
-            var x = t.msToPx(curDate.getTime());
-            var subSubLabel = t.paper.text(x, t.subSubLabelY, formatDate(curDate, '%Y').toUpperCase());
-            subSubLabel.attr(t.fontAttrs);
-            subSubLabel.attr(t.subSubLabelAttrs);
-            if(t.floatingSubSubLabels){
-                // bounds determine how far things can float
+    var DrawTimeAxis = function(startTime, endTime){
+        var dateLineY =t.visibleHeight - t.config.dateLabelHeight;
+        var baseline = t.paper.path('M0,' + dateLineY + 'L' + t.visibleWidth + ',' + dateLineY);
+        baseline.attr('stroke', '#b8b8b8');
+        
+        var bottomHashY = dateLineY + t.config.hashLength;
+        var labelY = bottomHashY + t.config.fontAttrs['font-size'];
+        var subLabelY = bottomHashY + t.config.fontAttrs['font-size'] * 2 + t.config.subLabelMargin;
+        var subSubLabelY = subLabelY + t.config.fontAttrs['font-size'] + t.config.subSubLabelMargin;
+        if(t.config.subSubLabel == 'year'){
+            var endYear = t.config.endDate.getFullYear();
+            for(var year = t.config.startDate.getFullYear(); year <= endYear; year++){
+                var curDate = new Date(year, 0, 1);
+                var x = msToPx(curDate.getTime());
+                if(x<0) x=12;
+                if(x>t.visibleWidth) x= t.visibleWidth-12;
+                var subSubLabel = t.paper.text(x, subSubLabelY, formatDate(curDate, '%Y').toUpperCase());
+                subSubLabel.attr(t.config.fontAttrs);
+                subSubLabel.attr(t.config.subSubLabelAttrs);
+                
                 subSubLabel.data('left-bound', x);
-                var endOfYear = stripTime(new Date(year, 11, 31));
-                subSubLabel.data('right-bound',
-                                 Math.min((endOfYear.getTime() - t.startTime) * t.pxRatio - 5,
-                                          t.totalWidth));
-                t.floatingSet.push(subSubLabel);
+                var endOfYear = new Date(year, 11, 31);
+                subSubLabel.data('right-bound',Math.min((endOfYear.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
             }
         }
-    }
-
-
-    t.drawLabelsHelper = function(startMs, endMs){
+        
         var DAY_IN_MILLISECONDS = 86400000;
-        for(var curMs = startMs; curMs < endMs; curMs += DAY_IN_MILLISECONDS){
+        for(var curMs = startTime; curMs < endTime; curMs += DAY_IN_MILLISECONDS){
             var curDate = new Date(curMs);
-            var day = curDate.getUTCDate();
-            var x = t.msToPx(curMs);
+            var day = curDate.getDate();
+            var x = msToPx(curMs);
 
             // the little hashes
-            if(t.hashInterval == null || t.hashInterval(curDate)){
-                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + t.bottomHashY);
-                hash.attr('stroke', t.hashColor);
+            if(t.config.hashInterval == null || true || t.config.hashInterval(curDate)){
+                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
+                hash.attr('stroke', '#b8b8b8');
             }
 
             // the labels directly below the hashes
-            if(t.labelInterval == null || t.labelInterval(curDate)){
+            if(t.config.labelInterval == null || t.config.labelInterval(curDate)){
                 var displayDate = String(day);
-                if(displayDate.length == 1)
-                    displayDate = '0' + displayDate;
-
-                var label = t.paper.text(x, t.labelY, displayDate);
-                label.attr(t.fontAttrs);
+                if(displayDate.length == 1) displayDate = '0' + displayDate;
+                var label = t.paper.text(x, labelY, displayDate);
+                label.attr(t.config.fontAttrs);
             }
 
-            // special markers for today
-            if(t.markToday && curMs == t.today.getTime()){
-                if(t.markToday == 'labelBox'){
-                    label.attr({'text': t.today.getUTCDate() + '\n' + formatDate(curDate, '%b').toUpperCase(),
+            if( t.config.markToday && 
+                t.today.getDate()==curDate.getDate() &&
+                t.today.getMonth()==curDate.getMonth() &&
+                t.today.getFullYear()==curDate.getFullYear()){
+                if(t.config.markToday == 'labelBox'){
+                    label.attr({'text': t.today.getDate() + '\n' + formatDate(curDate, '%b').toUpperCase(),
                                 'font-size': t.fontAttrs['font-size'] + 2,
                                 'y': t.bottomHashY + t.fontAttrs['font-size'] + 5});
                     var bbox = label.getBBox();
                     var labelBox = t.paper.rect(bbox.x - 2, bbox.y - 2, bbox.width + 4, bbox.height + 4);
                     labelBox.attr('fill', '90-#f4f4f4-#e8e8e8');
                     labelBox.insertBefore(label);
-                }else if(t.markToday == 'line'){
+                }else if(t.config.markToday == 'line'){
                     var line = t.paper.path('M' + x + ',0L' + x + ',' + dateLineY);
-                    line.attr(t.todayAttrs);
+                    line.attr(t.config.todayAttrs);
                 }
             }
 
-            // sublabels. These can float
-            if(day == 1 && t.subLabel == 'month'){
-                var subLabel = t.paper.text(x, t.subLabelY, formatDate(curDate, '%b').toUpperCase());
-                subLabel.attr(t.fontAttrs);
-                subLabel.attr(t.subLabelAttrs);
-                if(t.floatingSubLabels){
-                    // bounds determine how far things can float
-                    subLabel.data('left-bound', x);
-                    var endOfMonth = new Date(Date.UTC(curDate.getUTCFullYear(), curDate.getUTCMonth() + 1, 0));
-                    subLabel.data('right-bound',
-                                  Math.min((endOfMonth.getTime() - t.startTime) * t.pxRatio - 5,
-                                           t.totalWidth));
-                    t.floatingSet.push(subLabel);
-                }
+            if(day == 1 && t.config.subLabel == 'month'){
+                var subLabel = t.paper.text(x, subLabelY, formatDate(curDate, '%b').toUpperCase());
+                subLabel.attr(t.config.fontAttrs);
+                subLabel.attr(t.config.subLabelAttrs);
+                subLabel.data('left-bound', x);
+                var endOfMonth = new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0);
+                subLabel.data('right-bound',Math.min((endOfMonth.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
             }
         }
     }
+  
+    DrawTimeAxis(t.startTime,t.endTime);
+    DrawEvents(t.startTime, t.endTime);
 
-
+/*
     t.drawnStartMs = null;
     t.drawnEndMs = null;
     // this actually draws labels. It calculates the set of labels to draw in-between
@@ -577,18 +419,7 @@ $.fn.Chronoline = function (events, options) {
 
     t.isMoving = false;
     t.goToPx = function(finalLeft, isAnimated, isLabelsDrawn) {
-        /*
-          finalLeft is negative
 
-          I tried several implementations here, including:
-          - moving the left of the canvas within a wrapper (current strategy)
-          - animating setViewbox using getAnimationFrame
-          - animating each individual element using getAnimation frame
-
-          - animating floating content using getAnimation (current strategy)
-          - animating floating content using raphael.animate
-          This solution is by far the smoothest and doesn't have any asynchrony problems. There's some twitching going on with floating content, but it's not THAT bad
-        */
         if(t.isMoving) return false;
 
         isAnimated = typeof isAnimated !== 'undefined' ? isAnimated : t.animated;
@@ -842,4 +673,5 @@ $.fn.Chronoline = function (events, options) {
     t.paperElem.style.left = - (t.defaultStartDate - t.startDate) * t.pxRatio + 20 + 'px';
     t.goToPx(getLeft(t.paperElem));
     t.myCanvas.style.height = t.totalHeight + 'px';
+    */
 }

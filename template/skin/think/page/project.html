@@ -99,7 +99,7 @@
                                 '</td>' +
                             '</tr>' +
                             '<tr><td colspan=3>'+
-                                '<table width=100% style="cursor:default;background:grey;">' +
+                                '<table width=100% style="cursor:default;">' +
                                     '<tr class="role" id="DevMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="DevManager"}> title=<{T w="DevManager"}>></td>' +
                                     '<td><{T w="DevManager"}></td></tr>' +
                                     '<tr class="role" id="DevMember"><td><img src="<{$skinpath}>/img/dev.jpg" alt=<{T w="Developer"}> title=<{T w="Developer"}>></td>' +
@@ -198,13 +198,17 @@
                 '<div><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectListEvent"}></h3><table width=100% id="events"></table></div>',
                 function(content){
                     $(obj.events).each(function(i,e){
-                        row = '<tr><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
+                        row = '<tr class="event"><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
                             row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
                         else
                             row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png"></td></tr>';
                         content.find('#events').append(row);
                     });
+                    content.find('.event').hover(
+                        function(){this.css('background-color','#FF5809');},
+                        function(){this.css('background-color','transparent');}
+                    );
                     content.find('.DelEvent').click(function(){
                         var url = "/ajax.php?a=dtm&id="+this.id;
                         $.getJSON(url,function(data) {
@@ -226,25 +230,26 @@
                     <{if $smarty.foreach.iterEvents.last }>
                         {dates: [new Date("<{$item.date}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"}
                     <{else}>
-                        {dates: [new Date("<{$item.date}>")], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"},
+                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"},
                     <{/if}>
                 <{/foreach}>
             ],
             {
                 animated: true,
+                startDate:new Date(2013,3,1),
+                endDate: new Date(2013,6,1),
                 tooltips: true,
                 todayAttrs: {'stroke': '#00CACA'},
-                eventAttrs: {'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 2},
                 markToday: 'line',
                 draggable: false,
                 toolbar: [
-                            {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.scrollLeftDiscrete();}},
-                            {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){}},
+                            {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.backTimeline();}},
+                            {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){t.zoomIn();}},
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
                             {'title': "<{T w='ListSection'}>",'view':'icon-tasks',callback:function(t){}},
-                            {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){}},
-                            {'title': "<{T w='NextWeek'}>", 'view':'icon-chevron-right',callback:function(t){ t.scrollRightDiscrete();}}
+                            {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}},
+                            {'title': "<{T w='NextWeek'}>", 'view':'icon-chevron-right',callback:function(t){ t.forwardTimeline();}}
                          ]
             }
         );
@@ -268,7 +273,7 @@
     <div style="min-height:124px;">
 	    <{$tProject.description}>
     </div>
-    <div id='ptl' style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;"></div>
+    <div id='ptl' style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;height:168px;"></div>
 	<table width=100% border=1>
 	    <thead>
 	       <th style="background-color:#333366;width:33%;color:white;"><{T w='Developer'}></th>
