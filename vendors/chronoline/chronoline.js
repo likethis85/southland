@@ -71,7 +71,7 @@ $.fn.Chronoline = function (events, options) {
     
     var defaults = {
         startDate: null,  // start of the timeline. Defaults to first event date
-        endDate: null,  // end of the timeline. Defauls to the last event date
+        endDate: null,    // end of the timeline. Defauls to the last event date
         timelinePadding: 86400000*3, // 3 day in ms. Adds this much time to the front and back to get some space
 
         dateLabelHeight: 50, // how tall the bottom margin for the dates is
@@ -118,16 +118,33 @@ $.fn.Chronoline = function (events, options) {
 
         toolbar: []
     }
+    var DAY = 86400000;
     var t = this;
     t.config = $.extend(defaults,options);
+    t.show = function(){
+        var span = (t.endTime-t.startTime)/DAY;
+        if(span > 800)
+            t.resolution = 30;
+        else if(span > 100)
+            t.resolution = 5;
+        else
+            t.resolution = 1;
+     
+        t.cols = (t.endTime-t.startTime)/(t.resolution*DAY);
+        t.colspan = t.visibleWidth/t.cols;
+        t.pxRatio = t.colspan/(t.resolution*DAY);
+        t.paper.clear();
+        DrawTimeAxis(t.startTime,t.endTime);
+        DrawEvents(t.startTime, t.endTime);
+    }
     t.backTimeline = function(){
         var span = t.endTime-t.startTime;
         span /= 3;
         t.startTime -= span;
         t.endTime  -= span;
-        t.paper.clear();
-        DrawTimeAxis(t.startTime,t.endTime);
-        DrawEvents(t.startTime, t.endTime);
+        t.config.startDate.setTime(t.startTime);
+        t.config.endDate.setTime(t.endTime);
+        t.show();
     }
     t.zoomIn = function(){
         var DAY_IN_MILLISECONDS = 86400000;
@@ -139,29 +156,28 @@ $.fn.Chronoline = function (events, options) {
         t.endTime  -= span;
         t.config.startDate.setTime(t.startTime);
         t.config.endDate.setTime(t.endTime);
-        t.paper.clear();
-        DrawTimeAxis(t.startTime,t.endTime);
-        DrawEvents(t.startTime, t.endTime);
+        t.show();
     }
     t.zoomOut = function(){
+        var DAY_IN_MILLISECONDS = 86400000;
         var span = t.endTime-t.startTime;
+        if(span/DAY_IN_MILLISECONDS > 2000)
+            return;
         span /= 3;
         t.startTime -= span;
         t.endTime  += span;
         t.config.startDate.setTime(t.startTime);
         t.config.endDate.setTime(t.endTime);
-        t.paper.clear();
-        DrawTimeAxis(t.startTime,t.endTime);
-        DrawEvents(t.startTime, t.endTime);
+        t.show();
     }
     t.forwardTimeline = function(){
         var span = t.endTime-t.startTime;
         span /= 3;
         t.startTime += span;
         t.endTime  += span;
-        t.paper.clear();
-        DrawTimeAxis(t.startTime,t.endTime);
-        DrawEvents(t.startTime, t.endTime);
+        t.config.startDate.setTime(t.startTime);
+        t.config.endDate.setTime(t.endTime);
+        t.show();
     }
     
     // HTML elements to put everything in
@@ -242,8 +258,7 @@ $.fn.Chronoline = function (events, options) {
     t.paperElem = t.myCanvas.childNodes[0];
     t.visibleWidth = t.domElement.clientWidth;
     t.visibleHeight = t.domElement.clientHeight;
-    t.pxRatio = t.visibleWidth/(t.endTime-t.startTime);
-    
+   
     var DrawEvents = function(startTime, endTime){
         var delta = t.config.eventAttrs.width/2;
         var margin = 3;
@@ -252,8 +267,8 @@ $.fn.Chronoline = function (events, options) {
             for(var col = 0; col < t.event_rows[row].length; col++){
                 var event = t.event_rows[row][col];
                 var elem = null;
-                if(event.dates.length == 1){
-                    var startX = (event.dates[0].getTime() - t.startTime) * t.pxRatio;
+                if(event.dates.length == 1 || ((event.dates[1].getTime()-event.dates[0].getTime())<t.resolution*DAY)){
+                    var startX = msToPx(event.dates[0].getTime());
                     elem = t.paper.circle(startX-delta, upperY + delta, delta).attr(t.config.eventAttrs);
                     
                 } else {
@@ -311,74 +326,57 @@ $.fn.Chronoline = function (events, options) {
         var labelY = bottomHashY + t.config.fontAttrs['font-size'];
         var subLabelY = bottomHashY + t.config.fontAttrs['font-size'] * 2 + t.config.subLabelMargin;
         var subSubLabelY = subLabelY + t.config.fontAttrs['font-size'] + t.config.subSubLabelMargin;
-        if(t.config.subSubLabel == 'year'){
-            var endYear = t.config.endDate.getFullYear();
-            for(var year = t.config.startDate.getFullYear(); year <= endYear; year++){
-                var curDate = new Date(year, 0, 1);
-                var x = msToPx(curDate.getTime());
-                if(x<0) x=12;
-                if(x>t.visibleWidth) x= t.visibleWidth-12;
-                var subSubLabel = t.paper.text(x, subSubLabelY, formatDate(curDate, '%Y').toUpperCase());
-                subSubLabel.attr(t.config.fontAttrs);
-                subSubLabel.attr(t.config.subSubLabelAttrs);
-                
-                subSubLabel.data('left-bound', x);
-                var endOfYear = new Date(year, 11, 31);
-                subSubLabel.data('right-bound',Math.min((endOfYear.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
-            }
+
+        if( t.config.markToday ) {
+            var x = msToPx(t.today.getTime());
+            var line = t.paper.path('M' + x  + ',0L' + x + ',' + dateLineY);
+            line.attr(t.config.todayAttrs);
         }
-        
-        var DAY_IN_MILLISECONDS = 86400000;
-        for(var curMs = startTime; curMs < endTime; curMs += DAY_IN_MILLISECONDS){
-            var curDate = new Date(curMs);
-            var day = curDate.getDate();
-            var x = msToPx(curMs);
 
-            // the little hashes
-            if(t.config.hashInterval == null || true || t.config.hashInterval(curDate)){
-                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
-                hash.attr('stroke', '#b8b8b8');
-            }
+        var endYear = t.config.endDate.getFullYear();
+        for(var year = t.config.startDate.getFullYear(); year <= endYear; year++){
+            var curDate = new Date(year, 0, 1);
+            var x = msToPx(curDate.getTime());
+            if(x<0) x=12;
+            var subSubLabel = t.paper.text(x, subSubLabelY, formatDate(curDate, '%Y').toUpperCase());
+            subSubLabel.attr(t.config.fontAttrs);
+            subSubLabel.attr(t.config.subSubLabelAttrs);
+            
+            subSubLabel.data('left-bound', x);
+            var endOfYear = new Date(year, 11, 31);
+            subSubLabel.data('right-bound',Math.min((endOfYear.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
 
-            // the labels directly below the hashes
-            if(t.config.labelInterval == null || t.config.labelInterval(curDate)){
-                var displayDate = String(day);
-                if(displayDate.length == 1) displayDate = '0' + displayDate;
-                var label = t.paper.text(x, labelY, displayDate);
-                label.attr(t.config.fontAttrs);
-            }
-
-            if( t.config.markToday && 
-                t.today.getDate()==curDate.getDate() &&
-                t.today.getMonth()==curDate.getMonth() &&
-                t.today.getFullYear()==curDate.getFullYear()){
-                if(t.config.markToday == 'labelBox'){
-                    label.attr({'text': t.today.getDate() + '\n' + formatDate(curDate, '%b').toUpperCase(),
-                                'font-size': t.fontAttrs['font-size'] + 2,
-                                'y': t.bottomHashY + t.fontAttrs['font-size'] + 5});
-                    var bbox = label.getBBox();
-                    var labelBox = t.paper.rect(bbox.x - 2, bbox.y - 2, bbox.width + 4, bbox.height + 4);
-                    labelBox.attr('fill', '90-#f4f4f4-#e8e8e8');
-                    labelBox.insertBefore(label);
-                }else if(t.config.markToday == 'line'){
-                    var line = t.paper.path('M' + x + ',0L' + x + ',' + dateLineY);
-                    line.attr(t.config.todayAttrs);
-                }
-            }
-
-            if(day == 1 && t.config.subLabel == 'month'){
-                var subLabel = t.paper.text(x, subLabelY, formatDate(curDate, '%b').toUpperCase());
+            for(var month=curDate.getMonth();month<12; month++){
+                var cd = new Date(year, month, 1);
+                var x = msToPx(cd.getTime());
+                var subLabel = t.paper.text(x, subLabelY, formatDate(cd, '%b').toUpperCase());
                 subLabel.attr(t.config.fontAttrs);
                 subLabel.attr(t.config.subLabelAttrs);
                 subLabel.data('left-bound', x);
-                var endOfMonth = new Date(curDate.getFullYear(), curDate.getMonth() + 1, 0);
-                subLabel.data('right-bound',Math.min((endOfMonth.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
+
+                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
+                hash.attr('stroke', '#b8b8b8');
             }
+        }
+       
+        for(var curMs = startTime; t.resolution<30 && curMs < endTime; curMs+=DAY){
+            var curDate = new Date(curMs);
+            var day = curDate.getDate();
+            if(day!=1 && day!=5 && day!=10 && day!=15 && day!=20 && day!=25)
+                continue;
+
+            curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
+            var x = msToPx(curDate.getTime());
+            var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
+            hash.attr('stroke', '#b8b8b8');
+            var displayDate = String(day);
+            if(displayDate.length == 1) displayDate = '0' + displayDate;
+            var label = t.paper.text(x, labelY, displayDate);
+            label.attr(t.config.fontAttrs);
         }
     }
   
-    DrawTimeAxis(t.startTime,t.endTime);
-    DrawEvents(t.startTime, t.endTime);
+    t.show();
 
 /*
     t.drawnStartMs = null;
