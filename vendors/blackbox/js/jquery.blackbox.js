@@ -271,7 +271,7 @@
         var $BlackBoxContent = $("#" + _getNowID.call(this)),
             _this = this;
         if (!$BlackBoxContent[0]) return;
-        $BlackBoxContent.fadeOut(400,
+        $BlackBoxContent.fadeOut(100,
             function () {
                 $(this).remove();
                 _clearOverlay.call(_this, callback);
@@ -425,7 +425,7 @@
         if (!delay_appear) {
             $BBOverlay.css({
                 background_color: config.overlayColor
-            }).fadeTo(0, 0).fadeTo(400, config.overlayOpacity);
+            }).fadeTo(0, 0).fadeTo(200, config.overlayOpacity);
         }
         var resize = function () {
             $BBOverlay.width($W.width() + "px").height($W.height() + "px");
@@ -452,7 +452,7 @@
         if (overlay_list.length == 0) {
             var $BlackBox = $("#BlackBox");
             if (!$BlackBox[0]) return;
-            $BlackBox.fadeOut(400,
+            $BlackBox.fadeOut(100,
                 function () {
                     $(this).remove();
                 });

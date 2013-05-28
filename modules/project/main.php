@@ -99,9 +99,13 @@ class main extends general
             exit;
         }
 
-        $title = $this->spArgs('title');
-        $date = $this->spArgs('date');
-        $isdate = strtotime($date);
+        $title = $this->spArgs('EventSummary');
+        $est = $this->spArgs('EventStartTime');
+        $eet = $this->spArgs('EventEndTime');
+        $isdate = strtotime($est);
+        $isdate = $isdate!=-1 && $isdate!=false;
+        if($isdate && !empty($eet))
+            $isdate = strtotime($eet);
         if(empty($title) || -1==$isdate || false==$isdate) {
             $this->jumpProjectPage();
             return;
@@ -109,7 +113,7 @@ class main extends general
 
         $pid = $this->tCurrProj;
         $uid = spClass('spSession')->getUser()->getUserId();
-        if(false == spClass('timelineModel')->createForProject($pid, $uid, $date, $title)) {
+        if(false == spClass('timelineModel')->createForProject($pid, $uid, $est, $eet, $title)) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {
             $this->jumpProjectPage();

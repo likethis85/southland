@@ -123,7 +123,7 @@
                         });
                         
                         content.find('.role').hover(
-                            function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','#336666');},
+                            function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','#FF5809');},
                             function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','transparent');}
                         ).click(function(){
                             content.find('.selectedrole').css('background-color','transparent').toggleClass('selectedrole');
@@ -170,19 +170,14 @@
             var bb = new BlackBox();
             bb.popup(
                 '<form action="/project.php?a=addEvent" method="post"><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
-                        '<tr><td><{T w="Title"}>:</td><td><input name="title" type="text" size=40></td><td><input type="submit" class="btn-rounded" value=<{T w="Submit"}> /></td></tr>' +
-                        '<tr><td colspan=3 id="jCalTarget"></td></tr>'+
-                '</table></div><input type="hidden" name="date" value=""/></form>',
+                        '<tr><td><{T w="EventStartTime"}>:</td><td><input name="EventStartTime" id="est" /><td><{T w="EventEndTime"}></td><td><input name="EventEndTime" id="eet" /></td></tr>'+
+                        '<tr><td colspan=4><{T w="EventSummary"}></td></tr>'+
+                        '<tr><td colspan=4><textarea name="EventSummary" cols="63" rows="15" /></td></tr>' +
+                        '<tr><td colspan=4 align=center><input type="submit" class="btn-rounded" value=<{T w="Submit"}>></td></tr>' +
+                '</table></div></form>',
                 function(content) {
-                    content.find('#jCalTarget').jCal({
-                        day:            new Date(),
-                        days:           1,
-                        showMonths:     2,
-                        monthSelect:    false,
-                        callback:       function(day,days){
-                            content.find('input[name=date]').attr('value', ''+day.getFullYear()+'-'+(day.getMonth()+1)+'-'+day.getDate());
-                        }
-                    });
+                    content.find('#est').datepicker({dateFormat:'yy-mm-dd'});
+                    content.find('#eet').datepicker({dateFormat:'yy-mm-dd'});
                     content.find('#close').click(function(){
                         bb.boxClose();
                     });
@@ -205,11 +200,12 @@
                             row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png"></td></tr>';
                         content.find('#events').append(row);
                     });
+                    content.find('#events').css('cursor', 'default');
                     content.find('.event').hover(
-                        function(){this.css('background-color','#FF5809');},
-                        function(){this.css('background-color','transparent');}
+                        function(){$(this).css('background-color','#FF5809');},
+                        function(){$(this).css('background-color','transparent');}
                     );
-                    content.find('.DelEvent').click(function(){
+                    content.find('.DelEvent').css('cursor','pointer').click(function(){
                         var url = "/ajax.php?a=dtm&id="+this.id;
                         $.getJSON(url,function(data) {
                             if(data.error != 0) alert(data.msg);
@@ -228,9 +224,9 @@
             [
                 <{foreach item=item from=$tTimeline name=iterEvents}>
                     <{if $smarty.foreach.iterEvents.last }>
-                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"}
+                        {dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"}
                     <{else}>
-                        {dates: [new Date("<{$item.date}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"},
+                        {dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"},
                     <{/if}>
                 <{/foreach}>
             ],
@@ -244,7 +240,7 @@
                             {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.backTimeline();}},
                             {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){t.zoomIn();}},
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
-                            {'title': "<{T w='NextWeek'}>", 'view':'icon-eye-open',callback:function(t){ t.fullView();}},
+                            {'title': "<{T w='NextWeek'}>", 'view':'icon-eye-open',callback:function(t){ alert(t.config.startDate);}},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
                             {'title': "<{T w='ListSection'}>",'view':'icon-tasks',callback:function(t){}},
                             {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}},

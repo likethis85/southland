@@ -12,14 +12,15 @@ class timelineModel extends spModel
     /** @brief create timeline event for project
      *
      */
-    public function createForProject($pid, $uid, $timestamp, $brief) {
+    public function createForProject($pid, $uid, $start, $end, $brief) {
         $data = array(
             'uid' => $uid,
             'prj' => $pid,
             'scope' => $this->scope_project,
             'sid' => $pid,
             'brief' => $brief,
-            'etime' => $timestamp
+            'stime' => $start,
+            'etime' => $end==null ? 0:$end
         );
         return $this->Create($data);
     }

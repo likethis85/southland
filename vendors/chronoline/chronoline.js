@@ -261,7 +261,7 @@ $.fn.Chronoline = function (events, options) {
     t.myCanvas = document.createElement('div');
     t.myCanvas.className = 'chronoline-canvas';
     t.wrapper.appendChild(t.myCanvas);
-    t.paper = Raphael(t.myCanvas, t.wrapper.clientWidth, t.wrapper.clientHeight);
+    t.paper = Raphael(t.myCanvas, t.domElement.clientWidth, t.domElement.clientHeight);
     t.paperType = t.paper.raphael.type;
     t.paperElem = t.myCanvas.childNodes[0];
     t.visibleWidth = t.domElement.clientWidth;

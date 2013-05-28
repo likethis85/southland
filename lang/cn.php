@@ -35,6 +35,9 @@ return array(
 'BackWeek' => '上一星期',
 'AddEvent' => '添加事件',
 'ListEvent'=> '列表显示',
+'EventStartTime' => '开始日期',
+'EventEndTime'   => '结束日期',
+'EventSummary'   => '事件简述',
 
 /* 任务相关 */
 'Task'  => '任务',
