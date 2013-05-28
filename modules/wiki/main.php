@@ -70,12 +70,12 @@ class main extends general
 	function view() {
         $uid = $this->tUser['id'];
         $wid = $this->spArgs('id');
-        if(!spClass('wikiModel')->allow($wid, $uid)){
-            spClass('keeper')->speak(T('Error Operation not permit'));
-            exit;
-        }
         if(empty($wid)){
             spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+        if(!spClass('wikiModel')->allow($wid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
 	    $this->tWiki = spClass('wikiModel')->getWikiDetail($wid);

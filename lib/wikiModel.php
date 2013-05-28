@@ -24,11 +24,16 @@ class wikiModel extends spModel
     }
     
     public function getWikiDetail($wid) {
-        $wiki = $this->find(array('id' => $wid));
-        $kwds = spClass('keywordsModel')->findForWiki($wid);
-        if(empty($kwds))
-            $kwds = array();
-        return array('wiki' => $wiki, 'keywords' => $kwds);
+        $wiki = spClass('keywordsModel')->findForWiki($wid);
+        if(false == $wiki) 
+            return array();
+
+        $tW = array('wiki' => $wiki[0], 'keywords' => array());
+        foreach($wiki as $w){
+            array_push($tW['keywords'], $w['keyword']);
+        }
+        array_unique($tW['keywords']);
+        return $tW;
     }
 
     public function allow($wid, $uid) {

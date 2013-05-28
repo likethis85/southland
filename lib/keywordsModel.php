@@ -23,8 +23,7 @@ class keywordsModel extends spModel
         $exists = $this->findSql($sql);
         $finds = array();
         foreach($exists as $value) {
-            list($k,$v) = each($value);
-            $finds["$k"] = $v;
+            $finds[$value['content']] = $value['id'];
         }
         foreach($kwds as $value) {
             if(empty($finds["$value"]))
@@ -39,7 +38,6 @@ class keywordsModel extends spModel
             }
         }
 
-        $this->table = 'keywords_ref';
         $refs = array();
         foreach($finds as $value){
             if(empty($value))
@@ -56,14 +54,19 @@ class keywordsModel extends spModel
                 array_push($refs, $value);
             }
         }
-        $this->table = 'keywords';
 
+        $sql = "UPDATE $prefix"."keywords set ref_count=ref_count+1 WHERE id in(";
         foreach($refs as $value){
-            $this->update(array('id' => $value), array('ref_count' => 'ref_count+1'));
+            $sql .= "$value,";
         }
+        $sql .= "0)";
+
+        $this->runSql($sql);
     }
     
     public function findForWiki($wid) {
-        return false;
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        $sql = "SELECT a.*,b.content as keyword FROM $prefix"."wiki as a,$prefix"."keywords as b,$prefix"."keywords_ref as c WHERE a.id=$wid AND a.droptime=0 AND a.id=c.sid and c.scope=".$this->scope_wiki." AND b.id=c.ref";
+        return $this->findSql($sql);
     }
 }

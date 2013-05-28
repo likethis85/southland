@@ -236,8 +236,11 @@
             ],
             {
                 animated: true,
+<<<<<<< HEAD
                 startDate:new Date(2013,3,1),
                 endDate: new Date(2014,8,1),
+=======
+>>>>>>> work
                 tooltips: true,
                 todayAttrs: {'stroke': '#00CACA'},
                 markToday: 'line',
@@ -246,6 +249,7 @@
                             {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.backTimeline();}},
                             {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){t.zoomIn();}},
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
+                            {'title': "<{T w='NextWeek'}>", 'view':'icon-eye-open',callback:function(t){ t.fullView();}},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
                             {'title': "<{T w='ListSection'}>",'view':'icon-tasks',callback:function(t){}},
                             {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}},

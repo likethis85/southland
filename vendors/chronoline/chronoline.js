@@ -157,6 +157,15 @@ $.fn.Chronoline = function (events, options) {
         t.config.startDate.setTime(t.startTime);
         t.config.endDate.setTime(t.endTime);
         t.show();
+<<<<<<< HEAD
+=======
+    }
+    t.fullView = function() {
+        t.config.startDate = null;
+        t.config.endDate = null;
+        CalcViewport();
+        t.show();
+>>>>>>> work
     }
     t.zoomOut = function(){
         var DAY_IN_MILLISECONDS = 86400000;
@@ -220,35 +229,37 @@ $.fn.Chronoline = function (events, options) {
             t.event_rows.push(new_row);
         }
     }
-    
+   
     // 设置视口的时间区域
-    t.today = new Date();
-    t.today = new Date(t.today.getFullYear(), t.today.getMonth(),t.today.getDate());
-    if(t.config.startDate == null){
-        if(t.events.length)
-            t.config.startDate = t.events[0].dates[0];
-        else if(t.config.sections.length) 
-            t.config.startDate = t.config.sections[0].dates[0];
-        else
-            t.config.startDate = t.today;
+    var CalcViewport = function() {
+        t.today = new Date();
+        t.today = new Date(t.today.getFullYear(), t.today.getMonth(),t.today.getDate());
+        if(t.config.startDate == null){
+            if(t.events.length)
+                t.config.startDate = t.events[0].dates[0];
+            else if(t.config.sections.length) 
+                t.config.startDate = t.config.sections[0].dates[0];
+            else
+                t.config.startDate = t.today;
 
-        t.config.startDate = new Date(t.config.startDate.getTime()-t.config.timelinePadding);
-        t.config.startDate.setDate(1);
-    }
-    t.startTime = t.config.startDate.getTime();
+            t.config.startDate = new Date(t.config.startDate.getTime()-t.config.timelinePadding);
+        }
+        t.startTime = t.config.startDate.getTime();
 
-    if(t.config.endDate == null) {
-        if(t.events.length)
-            t.config.endDate = t.events[t.events.length-1].dates[t.events[t.events.length-1].dates.length-1];
-        else if(t.config.sections.length)
-            t.config.endDate = t.sections[t.config.sections.length-1].dates[t.config.sections[t.config.sections.length-1].dates.length-1];
-        else
-            t.config.endDate = t.today;
-          
-        t.config.endDate = new Date(t.config.endDate.getTime()+t.config.timelinePadding);  
+        if(t.config.endDate == null) {
+            if(t.events.length)
+                t.config.endDate = t.events[t.events.length-1].dates[t.events[t.events.length-1].dates.length-1];
+            else if(t.config.sections.length)
+                t.config.endDate = t.sections[t.config.sections.length-1].dates[t.config.sections[t.config.sections.length-1].dates.length-1];
+            else
+                t.config.endDate = t.today;
+              
+            t.config.endDate = new Date(t.config.endDate.getTime()+t.config.timelinePadding);  
+        }
+        t.endTime = t.config.endDate.getTime();
     }
-    t.endTime = t.config.endDate.getTime();
-    
+    CalcViewport();
+
     //创建显示部件
     t.myCanvas = document.createElement('div');
     t.myCanvas.className = 'chronoline-canvas';
@@ -353,6 +364,7 @@ $.fn.Chronoline = function (events, options) {
                 subLabel.attr(t.config.fontAttrs);
                 subLabel.attr(t.config.subLabelAttrs);
                 subLabel.data('left-bound', x);
+<<<<<<< HEAD
 
                 var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
                 hash.attr('stroke', '#b8b8b8');
@@ -417,259 +429,30 @@ $.fn.Chronoline = function (events, options) {
 
     t.isMoving = false;
     t.goToPx = function(finalLeft, isAnimated, isLabelsDrawn) {
+=======
+>>>>>>> work
 
-        if(t.isMoving) return false;
-
-        isAnimated = typeof isAnimated !== 'undefined' ? isAnimated : t.animated;
-        isLabelsDrawn = typeof isLabelsDrawn !== 'undefined' ? isLabelsDrawn : true;
-
-        finalLeft = Math.min(finalLeft, 0);
-        finalLeft = Math.max(finalLeft, -t.maxLeftPx);
-
-        if(isLabelsDrawn)
-            t.drawLabels(-finalLeft);
-
-        var left = getLeft(t.paperElem);
-
-        // hide scroll buttons if you're at the end
-        if(t.scrollable){
-            if(finalLeft == 0){
-                t.leftControl.style.display = 'none';
-                t.isScrolling = false;
-            } else {
-                t.leftControl.style.display = '';
-            }
-            if(finalLeft == t.visibleWidth - t.totalWidth){
-                t.rightControl.style.display = 'none';
-                t.isScrolling = false;
-            } else {
-                t.rightControl.style.display = '';
+                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
+                hash.attr('stroke', '#b8b8b8');
             }
         }
+       
+        for(var curMs = startTime; t.resolution<30 && curMs < endTime; curMs+=DAY){
+            var curDate = new Date(curMs);
+            var day = curDate.getDate();
+            if(t.resolution==5 && day!=1 && day!=5 && day!=10 && day!=15 && day!=20 && day!=25)
+                continue;
 
-        var movingLabels = [];
-        var floatedLeft = -finalLeft + 5;
-        t.floatingSet.forEach(function(label){
-            // pin the to the left side
-            if(label.data('left-bound') < floatedLeft && label.data('right-bound') > floatedLeft) {
-                movingLabels.push([label, label.attr('x'),
-                                   floatedLeft - label.attr('x') + 10]);
-            } else if(label.attr('x') != label.data('left-bound')) { // push it to where it should be
-                movingLabels.push([label, label.attr('x'),
-                                   label.data('left-bound') - label.attr('x')]);
-            }
-        });
-
-        if(isAnimated){
-            t.isMoving = true;
-
-            var start = null;
-            var elem = t.paperElem;
-            function step(timestamp) {
-                if(start == null)
-                    start = timestamp;
-                var progress = (timestamp - start) / 200;
-                var pos = (finalLeft - left) * progress + left;
-                elem.style.left = pos + "px";
-
-                // move the labels
-                for(var i = 0; i < movingLabels.length; i++){
-                    movingLabels[i][0].attr('x', movingLabels[i][2] * progress + movingLabels[i][1]);
-                }
-
-                if (progress < 1) {  // keep going
-                    requestAnimationFrame(step);
-                }else{  // put it in its final position
-                    t.paperElem.style.left = finalLeft + "px";
-                    for(var i = 0; i < movingLabels.length; i++){
-                        movingLabels[i][0].attr('x', movingLabels[i][2] + movingLabels[i][1]);
-                    }
-                    t.isMoving = false;
-                }
-            }
-            requestAnimationFrame(step);
-
-        }else{  // no animation is just a shift
-            t.paperElem.style.left = finalLeft + 'px';
-            for(var i = 0; i < movingLabels.length; i++){
-                movingLabels[i][0].attr('x', movingLabels[i][2] + movingLabels[i][1]);
-            }
-        }
-
-        return finalLeft != 0 && finalLeft != -t.maxLeftPx;
-    }
-
-    t.goToDate = function(date, position){
-        // position is negative for left, 0 for middle, 1 for right
-        date = stripTime(date);
-        if(position < 0){
-            t.goToPx(-t.msToPx(date.getTime()));
-        } else if(position > 0){
-            t.goToPx(-t.msToPx(date.getTime()) + t.visibleWidth);
-        } else {
-            t.goToPx(-t.msToPx(date.getTime()) + t.visibleWidth / 2);
+            curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
+            var x = msToPx(curDate.getTime());
+            var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
+            hash.attr('stroke', '#b8b8b8');
+            var displayDate = String(day);
+            if(displayDate.length == 1) displayDate = '0' + displayDate;
+            var label = t.paper.text(x, labelY, displayDate);
+            label.attr(t.config.fontAttrs);
         }
     }
-
-    // CREATING THE NAVIGATION
-    // this is boring
-    if(t.scrollable){
-        t.leftControl = document.createElement('div');
-        t.leftControl.className = 'chronoline-left';
-        t.leftControl.style.marginTop = t.topMargin + 'px';
-
-        var leftIcon = document.createElement('div');
-        leftIcon.className = 'chronoline-left-icon';
-        t.leftControl.appendChild(leftIcon);
-        t.wrapper.appendChild(t.leftControl);
-        var controlHeight = Math.max(t.eventsHeight,
-                                     t.leftControl.clientHeight);
-        t.leftControl.style.height =  controlHeight + 'px';
-        leftIcon.style.marginTop = (controlHeight - 15) / 2 + 'px';
-
-        t.rightControl = document.createElement('div');
-        t.rightControl.className = 'chronoline-right';
-        t.rightControl.style.marginTop = t.topMargin + 'px';
-
-        var rightIcon = document.createElement('div');
-        rightIcon.className = 'chronoline-right-icon';
-        t.rightControl.appendChild(rightIcon);
-        t.wrapper.appendChild(t.rightControl);
-        t.rightControl.style.height = t.leftControl.style.height;
-        rightIcon.style.marginTop = leftIcon.style.marginTop;
-
-        t.scrollLeftDiscrete = function(e){
-            t.goToDate(t.scrollLeft(new Date(t.pxToMs(-getLeft(t.paperElem)))), -1);
-            return false;
-        };
-
-        t.scrollRightDiscrete = function(e){
-            t.goToDate(t.scrollRight(new Date(t.pxToMs(-getLeft(t.paperElem)))), -1);
-            return false;
-        };
-
-        // continuous scroll
-        // left and right are pretty much the same but need to be flipped
-        if(t.continuousScroll){
-            t.isScrolling = false;
-            t.timeoutId = -1;
-
-            t.scrollLeftContinuous = function(timestamp){
-                if(t.scrollStart == null)
-                    t.scrollStart = timestamp;
-                if(t.isScrolling){
-                    requestAnimationFrame(t.scrollLeftContinuous);
-                }
-                var finalLeft = t.continuousScrollSpeed * (timestamp - t.scrollStart) + t.scrollPaperStart;
-                t.goToPx(finalLeft, false, finalLeft > - t.msToPx(t.drawnStartMs));
-            };
-
-            t.endScrollLeft = function(e){
-                clearTimeout(t.scrollTimeoutId);
-                if(t.toScrollDiscrete){
-                    t.toScrollDiscrete = false;
-                    t.scrollLeftDiscrete();
-                }
-                t.isScrolling = false;
-            };
-
-            t.leftControl.onmousedown = function(e){
-                t.toScrollDiscrete = true;
-                t.scrollPaperStart = getLeft(t.paperElem);
-                t.scrollTimeoutId = setTimeout(function(){
-                    t.toScrollDiscrete = false;  // switched is flipped
-                    t.scrollStart = null;
-                    t.isScrolling = true;  // whether it's currently moving
-                    requestAnimationFrame(t.scrollLeftContinuous);
-                }, 200);
-            };
-            t.leftControl.onmouseup = t.endScrollLeft;
-            t.leftControl.onmouseleave = t.endScrollLeft;
-
-
-            t.scrollRightContinuous = function(timestamp){
-                if(t.scrollStart == null)
-                    t.scrollStart = timestamp;
-                if(t.isScrolling){
-                    requestAnimationFrame(t.scrollRightContinuous);
-                }
-                var finalLeft = t.continuousScrollSpeed * (t.scrollStart - timestamp) + t.scrollPaperStart;
-                t.goToPx(finalLeft, false, finalLeft - t.visibleWidth < - t.msToPx(t.drawnEndMs));
-            };
-
-            t.endScrollRight = function(e){
-                clearTimeout(t.scrollTimeoutId);
-                if(t.toScrollDiscrete){
-                    t.toScrollDiscrete = false;
-                    t.scrollRightDiscrete();
-                }
-                t.isScrolling = false;
-            };
-
-            t.rightControl.onmousedown = function(e){
-                t.toScrollDiscrete = true;
-                t.scrollPaperStart = getLeft(t.paperElem);
-                t.scrollTimeoutId = setTimeout(function(){
-                    t.toScrollDiscrete = false;  // switched is flipped
-                    t.scrollStart = null;
-                    t.isScrolling = true;  // whether it's currently moving
-                    requestAnimationFrame(t.scrollRightContinuous);
-                }, 500);
-            };
-            t.rightControl.onmouseup = t.endScrollRight;
-            t.rightControl.onmouseleave = t.endScrollRight;
-
-        } else {  // just hook up discrete scrolling
-            t.leftControl.onclick = t.scrollLeftDiscrete;
-            t.rightControl.onclick = t.scrollLeftDiscrete;
-        }
-
-    }
-
-    // ENABLING DRAGGING
-    // i'm not using raphael.js built-in dragging since this is for the entire canvas
-    // also, i didn't see that function before I wrote this
-    // using jQuery to get mouseleave to work cross-browser
-    if(t.draggable){
-        t.stopDragging = function(e){
-            jQuery(t.wrapper).removeClass('dragging')
-                .unbind('mousemove', t.mouseMoved)
-                .unbind('mouseleave', t.stopDragging)
-                .unbind('mouseup', t.stopDragging);
-            t.drawLabels(-getLeft(t.paperElem));
-        }
-
-        t.mouseMoved = function(e){
-            t.goToPx(t.dragPaperStart - (t.dragMouseStart - e.pageX), false, false);
-        }
-
-        t.wrapper.className += ' chronoline-draggable';
-        jQuery(t.paperElem).mousedown(function(e){
-            e.preventDefault();
-            t.dragMouseStart = e.pageX;
-            t.dragPaperStart = getLeft(t.paperElem);
-            jQuery(t.wrapper).addClass('dragging')
-                .bind('mousemove', t.mouseMoved)
-                .bind('mouseleave', t.stopDragging)
-                .bind('mouseup', t.stopDragging);
-        });
-    }
-
-    t.goToToday = function(){
-        t.goToDate(t.today, 0);
-    };
-
-    t.getLeftTime = function(){
-        return Math.floor(t.startTime - getLeft(t.paperElem) / t.pxRatio);
-    };
-
-    t.getRightTime = function(){
-        return Math.floor(t.startTime - (getLeft(t.paperElem) - t.visibleWidth) / t.pxRatio);
-    };
-
-    // set the default position
-    t.paperElem.style.left = - (t.defaultStartDate - t.startDate) * t.pxRatio + 20 + 'px';
-    t.goToPx(getLeft(t.paperElem));
-    t.myCanvas.style.height = t.totalHeight + 'px';
-    */
+  
+    t.show();
 }

@@ -6,13 +6,13 @@
     });
 </script>
 <div style="margin-left:32px;margin-top:22px;width:600px;">
-    <div style="border-bottom:2px solid #e0e0e0;">
+    <div style="padding-bottom:12px;border-bottom:2px solid #e0e0e0;">
         <h1 class="title"><{$tWiki.wiki.subject}></h1>
         <table>
             <tr>
-                <td><{T w='Keyword'}></td>
+                <td><{T w='Keyword'}>:&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <{foreach item=item from=$tWiki.keywords}>
-                <td class="keyword"><a href="/wiki.php?a=search&t=<{$item.kwd}>"><{$item.kwd}></a></td>
+                <td><div class="keyword"><a href="/wiki.php?a=search&t=<{$item}>"><{$item}></a></div></td>
                 <{/foreach}>
             </tr>
         </table>
