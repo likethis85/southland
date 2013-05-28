@@ -157,15 +157,12 @@ $.fn.Chronoline = function (events, options) {
         t.config.startDate.setTime(t.startTime);
         t.config.endDate.setTime(t.endTime);
         t.show();
-<<<<<<< HEAD
-=======
     }
     t.fullView = function() {
         t.config.startDate = null;
         t.config.endDate = null;
         CalcViewport();
         t.show();
->>>>>>> work
     }
     t.zoomOut = function(){
         var DAY_IN_MILLISECONDS = 86400000;
@@ -364,74 +361,6 @@ $.fn.Chronoline = function (events, options) {
                 subLabel.attr(t.config.fontAttrs);
                 subLabel.attr(t.config.subLabelAttrs);
                 subLabel.data('left-bound', x);
-<<<<<<< HEAD
-
-                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
-                hash.attr('stroke', '#b8b8b8');
-            }
-        }
-       
-        for(var curMs = startTime; t.resolution<30 && curMs < endTime; curMs+=DAY){
-            var curDate = new Date(curMs);
-            var day = curDate.getDate();
-            if(day!=1 && day!=5 && day!=10 && day!=15 && day!=20 && day!=25)
-                continue;
-
-            curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
-            var x = msToPx(curDate.getTime());
-            var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
-            hash.attr('stroke', '#b8b8b8');
-            var displayDate = String(day);
-            if(displayDate.length == 1) displayDate = '0' + displayDate;
-            var label = t.paper.text(x, labelY, displayDate);
-            label.attr(t.config.fontAttrs);
-        }
-    }
-  
-    t.show();
-
-/*
-    t.drawnStartMs = null;
-    t.drawnEndMs = null;
-    // this actually draws labels. It calculates the set of labels to draw in-between
-    // what it currently has and needs to add
-    t.drawLabels = function(leftPxPos){
-        var newStartPx = Math.max(0, leftPxPos - t.visibleWidth);
-        var newEndPx = Math.min(t.totalWidth, leftPxPos + 2 * t.visibleWidth);
-
-        var newStartDate = new Date(t.pxToMs(newStartPx));
-        newStartDate = new Date(Date.UTC(newStartDate.getUTCFullYear(), newStartDate.getUTCMonth(), 1));
-        var newStartMs = newStartDate.getTime();
-        var newEndDate = stripTime(new Date(t.pxToMs(Math.min(t.totalWidth, leftPxPos + 2 * t.visibleWidth))))
-        var newEndMs = newEndDate.getTime();
-
-        if(t.drawnStartMs == null){  // first time
-            t.drawnStartMs = newStartMs;
-            t.drawnEndMs = newEndMs;
-            t.drawLabelsHelper(newStartMs, newEndMs);
-        }else if(newStartMs > t.drawnEndMs){  // new labels are to the right
-            t.drawLabelsHelper(t.drawnEndMs, newEndMs);
-            t.drawnEndMs = newEndMs;
-        }else if(newEndMs < t.drawnStartMs){  // to the left
-            t.drawLabelsHelper(newStartMs, t.drawnStartMs);
-            t.drawnStartMs = newStartMs;
-        }else {  // overlap
-            if(newStartMs < t.drawnStartMs){
-                t.drawLabelsHelper(newStartMs, t.drawnStartMs);
-                t.drawnStartMs = newStartMs;
-            }
-            if(newEndMs > t.drawnEndMs){
-                t.drawLabelsHelper(t.drawnEndMs, newEndMs);
-                t.drawnEndMs = newEndMs;
-            }
-        }
-    }
-
-    t.isMoving = false;
-    t.goToPx = function(finalLeft, isAnimated, isLabelsDrawn) {
-=======
->>>>>>> work
-
                 var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
                 hash.attr('stroke', '#b8b8b8');
             }
