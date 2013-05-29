@@ -75,7 +75,12 @@ class main extends general
 		    $tTimeline = array();
             $timelines = spClass('timelineModel')->getProject($this->tCurrProj);
             foreach($timelines as $timeline){
-                array_push($tTimeline, array('title' => $timeline['brief'], 'start' => $timeline['stime'], 'end' => $timeline['etime'], 'id' => $timeline['id']));
+                array_push($tTimeline, array('title' => $timeline['brief'], 
+                                             'start' => $timeline['stime'], 
+                                             'end' => $timeline['etime'], 
+                                             'id' => $timeline['id'], 
+                                             'source' => spClass('timelineModel')->scope2string($timeline['scope']))
+                );
             }
             $this->tTimeline = $tTimeline;
         }

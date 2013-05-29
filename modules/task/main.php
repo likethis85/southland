@@ -31,8 +31,13 @@ class main extends general
                 'detail'=>$this->spArgs('TaskDesc'),
                 'acl'   =>$this->spArgs('acl')
 			);
-			$objMod = spClass('taskModel');
-			$objMod->create($data);
+			$tid = spClass('taskModel')->create($data);
+            if($tid == false){
+                spClass('keeper')->speak(T('Error DB operation failed'));
+                exit;
+            }
+
+            spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,T('Create'));
 			$this->jumpTaskPage();
 		} else {
 			$this->display("task/add.html");

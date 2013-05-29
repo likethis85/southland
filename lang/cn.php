@@ -148,4 +148,5 @@ return array(
 'Public'        => '公开',
 'Protected'     => '非公开',
 'Private'       => '私有',
+'Create'        => '创建',
 );

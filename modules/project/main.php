@@ -3,7 +3,8 @@ if (!defined('SOUTHLAND')) { exit(1);}
 class main extends general
 {
 	public function create() {
-        if(empty($this->tUser['id'])){
+        $uid = $this->tUser['id'];
+        if(empty($uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -14,7 +15,7 @@ class main extends general
         }
 
         $data = array(
-            'uid' => $this->tUser['id'],
+            'uid' => $uid,
             'title' => $this->spArgs('title'),
             'description'=> $this->spArgs('projDesc'),
             'acl'   => $this->spArgs('acl')
@@ -26,6 +27,7 @@ class main extends general
         }
         spClass('spSession')->getUser()->setCurrentProject($pid);
         spClass('userorgModel')->addProjectCreator($pid,spClass('spSession')->getUser()->getUserId());
+        spClass('timelineModel')->createForProject($pid, $uid, date('y-m-d'), null, T('Create'));
         $this->jumpProjectPage();
 	}
 
@@ -104,9 +106,11 @@ class main extends general
         $eet = $this->spArgs('EventEndTime');
         $isdate = strtotime($est);
         $isdate = $isdate!=-1 && $isdate!=false;
-        if($isdate && !empty($eet))
+        if($isdate && !empty($eet)) {
             $isdate = strtotime($eet);
-        if(empty($title) || -1==$isdate || false==$isdate) {
+            $isdate = $isdate!=-1 && $isdate!=false;
+        }
+        if(!$isdate || empty($title)) {
             $this->jumpProjectPage();
             return;
         }

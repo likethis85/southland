@@ -76,11 +76,6 @@ $.fn.Chronoline = function (events, options) {
 
         dateLabelHeight: 50, // how tall the bottom margin for the dates is
         hashLength: 4,  // length of the hash marks for the days
-
-        eventAttrs: { width: 5, 
-                      height:5,
-                      'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 2
-                    },
                 
         // predefined fns include: null (for daily), isFifthDay, isHalfMonth
         hashInterval: isFifthDay,  // fn: date -> boolean, if a hash should appear
@@ -207,11 +202,52 @@ $.fn.Chronoline = function (events, options) {
     // 按升序排列事件对象
     // event row描述一种表现形式，保证在同一个层面上不出现事件的重叠
     t.events = events;
-    t.events.sort(t.sortEvents);
-    
+    t.events.sort(sortEvents);
+   
+    t.sections = [
+        {   
+            'name':'project', 
+            'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5 }, 
+            'draw' :function(event, startX, Y, endX){
+                        Y += 2.5;
+                        elem = t.paper.circle(startX, Y, 2.5).attr(this.eventAttr);
+                        addElemClass(t.paperType, elem.node, 'chronoline-event');
+                        elem.attr('title', event.description);
+                        if(typeof endX!='undefined'){
+                            elem = t.paper.circle(endX, Y, 2.5).attr(this.eventAttr);
+                            addElemClass(t.paperType, elem.node, 'chronoline-event');
+                            elem.attr('title', event.description);
+                            t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr('title',event.description).attr({'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5});
+                        }
+                    }
+        },
+       {   
+            'name':'task', 
+            'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width': 5 }, 
+            'draw' :function(event, startX, Y, endX){
+                        startX -= 2.5;
+                        elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
+                        addElemClass(t.paperType, elem.node, 'chronoline-event');
+                        elem.attr('title', event.description);
+                        if(typeof endX!='undefined'){
+                            endX -= 2.5;
+                            elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr).attr('title', event.description);
+                            addElemClass(t.paperType, elem.node, 'chronoline-event');
+                            elem = t.paper.rect(endX, Y, 5, 5).attr(this.eventAttr).attr('title', event.description);
+                            addElemClass(t.paperType, elem.node, 'chronoline-event');
+                            elem = t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr('title',event.description).attr(this.eventAttr);
+                            addElemClass(t.paperType, elem.node, 'chronoline-event');
+                        }
+                    }
+       }
+    ];
     t.event_rows = [];
     for(i=0;i<t.events.length;i++){
         var found = false;
+        if(t.events[i].section=='task')
+            t.events[i].section = t.sections[1];
+        else
+            t.events[i].section = t.sections[0];
         for(j=0;j<t.event_rows.length;j++){
             if(t.event_rows[j][t.event_rows[j].length-1].dates[t.event_rows[j][t.event_rows[j].length-1].dates.length-1].getTime()<t.events[i].dates[0].getTime()){
                 found = true;
@@ -234,8 +270,6 @@ $.fn.Chronoline = function (events, options) {
         if(t.config.startDate == null){
             if(t.events.length)
                 t.config.startDate = t.events[0].dates[0];
-            else if(t.config.sections.length) 
-                t.config.startDate = t.config.sections[0].dates[0];
             else
                 t.config.startDate = t.today;
 
@@ -244,13 +278,13 @@ $.fn.Chronoline = function (events, options) {
         t.startTime = t.config.startDate.getTime();
 
         if(t.config.endDate == null) {
-            if(t.events.length)
-                t.config.endDate = t.events[t.events.length-1].dates[t.events[t.events.length-1].dates.length-1];
-            else if(t.config.sections.length)
-                t.config.endDate = t.sections[t.config.sections.length-1].dates[t.config.sections[t.config.sections.length-1].dates.length-1];
+            if(t.events.length) {
+                for(var i=0; i<t.events.length; i++)
+                    t.config.endDate = (t.config.endDate==null || (t.config.endDate < t.events[i].dates[t.events[i].dates.length-1])) ? 
+                                            t.events[i].dates[t.events[i].dates.length-1] : t.config.endDate;
+            }
             else
                 t.config.endDate = t.today;
-              
             t.config.endDate = new Date(t.config.endDate.getTime()+t.config.timelinePadding);  
         }
         t.endTime = t.config.endDate.getTime();
@@ -268,58 +302,18 @@ $.fn.Chronoline = function (events, options) {
     t.visibleHeight = t.domElement.clientHeight;
    
     var DrawEvents = function(startTime, endTime){
-        var delta = t.config.eventAttrs.width/2;
-        var margin = 3;
         for(var row = 0; row < t.event_rows.length; row++){
-            var upperY = t.visibleHeight-t.config.dateLabelHeight-(row+1)*(t.config.eventAttrs.height/2+8);
+            var upperY = t.visibleHeight-t.config.dateLabelHeight-(row+1)*16;
             for(var col = 0; col < t.event_rows[row].length; col++){
                 var event = t.event_rows[row][col];
                 var elem = null;
                 if(event.dates.length == 1 || ((event.dates[1].getTime()-event.dates[0].getTime())<t.resolution*DAY)){
                     var startX = msToPx(event.dates[0].getTime());
-                    elem = t.paper.circle(startX-delta, upperY + delta, delta).attr(t.config.eventAttrs);
-                    
+                    event.section.draw(event,startX,upperY);
                 } else {
                     var startX = (event.dates[0].getTime() - t.startTime) * t.pxRatio;
-                    var leftMark = t.paper.circle(startX-delta, upperY + delta, delta).attr(t.config.eventAttrs);
                     var endX = (event.dates[1].getTime() - t.startTime) * t.pxRatio;
-                    var rightMark = t.paper.circle(endX-delta, upperY + delta, delta).attr(t.config.eventAttrs);    
-                    addElemClass(t.paperType, leftMark.node, 'chronoline-event');
-                    addElemClass(t.paperType, rightMark.node, 'chronoline-event');
-                    elem = t.paper.rect(startX-delta, upperY, endX-startX, t.config.eventAttrs.height)
-                            .attr({ 'fill': t.config.eventAttrs.fill,
-                                    'stroke': t.config.eventAttrs.stroke,
-                                    'stroke-width': t.config.eventAttrs['stroke-width']});
-                }
-                addElemClass(t.paperType, elem.node, 'chronoline-event');
-                elem.attr('title', event.title);
-                if(t.tooltips && !jQuery.browser.msie){
-                    var description = event.description;
-                    var title = event.title;
-                    if(typeof description == "undefined" || description == ''){
-                        description = title;
-                        title = '';
-                    }
-                    jQuery(elem.node).parent().qtip({
-                        content: {
-                            title: title,
-                            text: description
-                        },
-                        position: {
-                            my: 'top left',
-                            target: 'mouse',
-                            viewport: jQuery(window), // Keep it on-screen at all times if possible
-                            adjust: {
-                                x: 10,  y: 10
-                            }
-                        },
-                        hide: {
-                            fixed: true // Helps to prevent the tooltip from hiding ocassionally when tracking!
-                        },
-                        style: {
-                            classes: 'ui-tooltip-shadow ui-tooltip-dark ui-tooltip-rounded'
-                        }
-                    });
+                    event.section.draw(event,startX,upperY,endX);
                 }
             }
         }

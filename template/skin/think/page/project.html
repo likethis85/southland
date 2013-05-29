@@ -197,7 +197,7 @@
                         if(typeof e.dates[1] == 'undefined')
                             row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
                         else
-                            row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png"></td></tr>';
+                            row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
                         content.find('#events').append(row);
                     });
                     content.find('#events').css('cursor', 'default');
@@ -224,9 +224,57 @@
             [
                 <{foreach item=item from=$tTimeline name=iterEvents}>
                     <{if $smarty.foreach.iterEvents.last }>
-                        {dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"}
+                        <{if $item.start==0}>
+                            {
+                                dates: [new Date("<{$item.end}>".replace('-','/'))], 
+                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
+                                description:"<{$item.title}>", 
+                                id:"<{$item.id}>",
+                                section: "<{$item.source}>"
+                             }
+                        <{elseif $item.end==0}>
+                            {
+                                dates: [new Date("<{$item.start}>".replace('-','/'))], 
+                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
+                                description:"<{$item.title}>", 
+                                id:"<{$item.id}>",
+                                section: "<{$item.source}>"
+                            }
+                        <{else}>
+                            {
+                                dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], 
+                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
+                                description:"<{$item.title}>", 
+                                id:"<{$item.id}>",
+                                section: "<{$item.source}>"
+                            }
+                        <{/if}>
                     <{else}>
-                        {dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], title: "<{$item.date}>".replace(/\s\w.*/,''), description:"<{$item.title}>", id:"<{$item.id}>"},
+                        <{if $item.start==0}>
+                            {
+                                dates: [new Date("<{$item.end}>".replace('-','/'))], 
+                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
+                                description:"<{$item.title}>", 
+                                id:"<{$item.id}>",
+                                section: "<{$item.source}>"
+                            },
+                        <{elseif $item.end==0}>
+                            {
+                                dates: [new Date("<{$item.start}>".replace('-','/'))], 
+                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
+                                description:"<{$item.title}>", 
+                                id:"<{$item.id}>",
+                                section: "<{$item.source}>"
+                            },
+                        <{else}>
+                            {
+                                dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], 
+                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
+                                description:"<{$item.title}>", 
+                                id:"<{$item.id}>",
+                                section: "<{$item.source}>"
+                            },
+                        <{/if}>
                     <{/if}>
                 <{/foreach}>
             ],
@@ -240,7 +288,7 @@
                             {'title': "<{T w='BackWeek'}>", 'view':'icon-chevron-left',callback:function(t){ t.backTimeline();}},
                             {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){t.zoomIn();}},
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
-                            {'title': "<{T w='NextWeek'}>", 'view':'icon-eye-open',callback:function(t){ alert(t.config.startDate);}},
+                            {'title': "<{T w='NextWeek'}>", 'view':'icon-eye-open',callback:function(t){ t.fullView();}},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
                             {'title': "<{T w='ListSection'}>",'view':'icon-tasks',callback:function(t){}},
                             {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}},
