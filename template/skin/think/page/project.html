@@ -192,15 +192,16 @@
             bb.popup(
                 '<div><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectListEvent"}></h3><table width=100% id="events"></table></div>',
                 function(content){
+                    var tbl = content.find('#events');
+                    tbl.css({'cursor':'default', 'margin-bottom':'8px'});
                     $(obj.events).each(function(i,e){
                         row = '<tr class="event"><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
                             row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
                         else
                             row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
-                        content.find('#events').append(row);
+                        tbl.append(row);
                     });
-                    content.find('#events').css('cursor', 'default');
                     content.find('.event').hover(
                         function(){$(this).css('background-color','#FF5809');},
                         function(){$(this).css('background-color','transparent');}
@@ -219,6 +220,38 @@
                     });
                 }
             );
+        }
+        function ListSection(obj){
+            var bb = new BlackBox();
+            bb.popup(
+                '<div><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="EventSection"}></h3><table width=100% id="events"></table></div>',
+                function(content){
+                    content.find('#close').click(function(){
+                        bb.boxClose();
+                    });
+                    
+                    var tbl = content.find('#events');
+                    tbl.css({'cursor':'default', 'margin-bottom':'8px'});
+                    $(obj.sections).each(function(i,s){
+                        row = '<tr class="event" align="center"><td>'+i+'</td><td>'+s.name+'</td>'+
+                              '<td><input type="checkbox" name="'+s.name+'"'+ (s.visible ? 'checked':'unchecked')+' ></td></tr>';
+                        tbl.append(row);
+                    });
+                    content.find('input:checkbox').click(function(){
+                        for(i=0;i<obj.sections.length;i++){
+                            if(obj.sections[i].name != this.name)
+                                continue;
+                            obj.sections[i].visible = this.checked;
+                            obj.show();
+                            break;
+                        }
+                    });
+                    content.find('.event').hover(
+                        function(){$(this).css('background-color','#FF5809');},
+                        function(){$(this).css('background-color','transparent');}
+                    );
+                }
+            )
         }
         $('#ptl').Chronoline(
             [
@@ -290,7 +323,7 @@
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
                             {'title': "<{T w='FitTimeline'}>", 'view':'icon-eye-open',callback:function(t){ t.fullView();}},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
-                            {'title': "",'view':'icon-tasks',callback:function(t){}},
+                            {'title': "",'view':'icon-tasks',callback:ListSection},
                             {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}},
                             {'title': "<{T w='NextTimeline'}>", 'view':'icon-chevron-right',callback:function(t){ t.forwardTimeline();}}
                          ]

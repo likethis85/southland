@@ -204,7 +204,7 @@ $.fn.Chronoline = function (events, options) {
     t.events = events;
     t.events.sort(sortEvents);
    
-    t.sections = [
+    var sections = [
         {   
             'name':'project', 
             'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5 }, 
@@ -219,9 +219,11 @@ $.fn.Chronoline = function (events, options) {
                             elem.attr('title', event.description);
                             t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr('title',event.description).attr({'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5});
                         }
-                    }
+                    },
+            'events': Array(),
+            'visible':true
         },
-       {   
+        {   
             'name':'task', 
             'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width': 5 }, 
             'draw' :function(event, startX, Y, endX){
@@ -238,16 +240,19 @@ $.fn.Chronoline = function (events, options) {
                             elem = t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr('title',event.description).attr(this.eventAttr);
                             addElemClass(t.paperType, elem.node, 'chronoline-event');
                         }
-                    }
-       }
+                    },
+            'events': Array(),
+            'visible':true
+        }
     ];
     t.event_rows = [];
     for(i=0;i<t.events.length;i++){
         var found = false;
         if(t.events[i].section=='task')
-            t.events[i].section = t.sections[1];
+            t.events[i].section = sections[1];
         else
-            t.events[i].section = t.sections[0];
+            t.events[i].section = sections[0];
+        t.events[i].section.events.push(t.events[i]);
         for(j=0;j<t.event_rows.length;j++){
             if(t.event_rows[j][t.event_rows[j].length-1].dates[t.event_rows[j][t.event_rows[j].length-1].dates.length-1].getTime()<t.events[i].dates[0].getTime()){
                 found = true;
@@ -261,6 +266,12 @@ $.fn.Chronoline = function (events, options) {
             new_row.push(t.events[i]);
             t.event_rows.push(new_row);
         }
+    }
+    
+    t.sections = Array();
+    for(i=0; i<sections.length;i++){
+        if(sections[i].events.length)
+            t.sections.push(sections[i]);
     }
    
     // 设置视口的时间区域
@@ -306,6 +317,8 @@ $.fn.Chronoline = function (events, options) {
             var upperY = t.visibleHeight-t.config.dateLabelHeight-(row+1)*16;
             for(var col = 0; col < t.event_rows[row].length; col++){
                 var event = t.event_rows[row][col];
+                if(!event.section.visible)
+                    continue;
                 var elem = null;
                 if(event.dates.length == 1 || ((event.dates[1].getTime()-event.dates[0].getTime())<t.resolution*DAY)){
                     var startX = msToPx(event.dates[0].getTime());

@@ -41,6 +41,7 @@ return array(
 'EventStartTime' => '开始日期',
 'EventEndTime'   => '结束日期',
 'EventSummary'   => '事件简述',
+'EventSection'   => '事件分类',
 
 /* 任务相关 */
 'Task'  => '任务',
