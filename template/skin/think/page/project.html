@@ -197,23 +197,28 @@
                     $(obj.events).each(function(i,e){
                         row = '<tr class="event"><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
-                            row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
+                            row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
                         else
-                            row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/delete.png" width=16 height=16></td></tr>';
+                            row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
                         tbl.append(row);
                     });
                     content.find('.event').hover(
                         function(){$(this).css('background-color','#FF5809');},
                         function(){$(this).css('background-color','transparent');}
                     );
-                    content.find('.DelEvent').css('cursor','pointer').click(function(){
-                        var url = "/ajax.php?a=dtm&id="+this.id;
-                        $.getJSON(url,function(data) {
-                            if(data.error != 0) alert(data.msg);
-                            else {
-                                $(this.parent).remove();
-                            }
-                        });
+                    content.find('.DelEvent,.EditEvent').css('cursor','pointer').click(function(){
+                        
+                        if(this.className=='DelEvent'){
+                            var url = '/ajax.php?a=dtm&id='+this.id;
+                            $.getJSON(url,function(data) {
+                                if(data.error != 0) alert(data.msg);
+                                else {
+                                    location.reload();
+                                }
+                            });
+                        }else{
+                            
+                        }
                     });
                     content.find('#close').click(function(){
                         bb.boxClose();
