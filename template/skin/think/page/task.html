@@ -6,6 +6,26 @@
                     return confirm('<{T w="Confirm?"}>'+$(this).text());
                 });
             });
+
+            $('.stu').each(function(i,e){
+                $(e).HoverMenu({
+                    'item' :[
+                       { 'icon' :"<{$skinpath}>/img/working.png" , 'caption':"<{T w='TaskWorking'}>", 'callback':function(elem) {location.href='/task.php?a=working&id='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/codecompleted.png",'caption':"<{T w='TaskCC'}>", 'callback':function(elem) {location.href='/task.php?a=cc&id='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/verified.png", 'caption':"<{T w='TaskVeri'}>", 'callback':function(elem) {location.href='/task.php?a=veri&id='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/completed.png",'caption':"<{T w='TaskComplete'}>", 'callback':function(elem) {location.href='/task.php?a=complete&id='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/pending.png", 'caption':"<{T w='TaskPending'}>", 'callback':function(elem) {location.href='/task.php?a=pending&id='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/bug.png", 'caption':"<{T w='IssueReport'}>", 'callback':function(elem) {location.href='/issue.php?a=add&tid='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/edit.png" , 'caption':"<{T w='EditTask'}>", 'callback':function(elem) {location.href='/task.php?a=update&id='+elem.id;}},
+                       { 'icon' :"<{$skinpath}>/img/delete.png" ,'caption':"<{T w='DelTask'}>", 
+                         'callback':function(elem) {
+                                if(confirm('<{T w="Confirm?"}>'+"<{T w='DelTask'}>"))
+                                    location.href='/task.php?a=del&id='+elem.id;
+                            }
+                        }
+                    ]
+                });
+            });
         });
     </script>
     <div class="page_op">
@@ -20,30 +40,19 @@
     <{foreach item=item from=$tTasks}>
     <tr>
         <td width=22>
-            <ul id="taskstatus" class="hm_nav">
+            <div class="stu" id=<{$item.id}>></div>
                 <{if $item.status eq 1}>
-                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/working.png" width=16 height=16></a>
+                <img src="<{$skinpath}>/img/working.png" width=16 height=16>
                 <{elseif $item.status eq 2}>
-                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/codecompleted.png" width=16 height=16></a>
+                <img src="<{$skinpath}>/img/codecompleted.png" width=16 height=16>
                 <{elseif $item.status eq 3}>
-                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/verified.png" width=16 height=16></a>
+                <img src="<{$skinpath}>/img/verified.png" width=16 height=16>
                 <{elseif $item.status eq 4}>
-                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/completed.png" width=16 height=16></a>
+                <img src="<{$skinpath}>/img/completed.png" width=16 height=16>
                 <{else}>
-                <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/pending.png" width=16 height=16></a>
+                <img src="<{$skinpath}>/img/pending.png" width=16 height=16>
                 <{/if}>
-                <ul class="hm_sub">
-                   <li><a href="/task.php?a=working&id=<{$item.id}>"><img src="<{$skinpath}>/img/working.png" width=16 height=16><{T w='TaskWorking'}></a></li>
-                   <li><a href="/task.php?a=cc&id=<{$item.id}>"><img src="<{$skinpath}>/img/codecompleted.png"width=16 height=16><{T w='TaskCC'}></a></li>
-                   <li><a href="/task.php?a=veri&id=<{$item.id}>"><img src="<{$skinpath}>/img/verified.png" width=16 height=16><{T w='TaskVeri'}></a></li>
-                   <li><a href="/task.php?a=complete&id=<{$item.id}>"><img src="<{$skinpath}>/img/completed.png"width=16 height=16><{T w='TaskComplete'}></a></li>
-                   <li><a href="/task.php?a=pending&id=<{$item.id}>"><img src="<{$skinpath}>/img/pending.png"width=16 height=16><{T w='TaskPending'}></a></li>
-                   <li><a href="/issue.php?a=add&tid=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/bug.png" width=16 height=16><{T w='IssueReport'}></a></li>
-                   <li><a href="/task.php?a=update&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/edit.png" width=16 height=16><{T w='EditTask'}></a></li>
-                   <li><a name="DelTask" href="/task.php?a=del&id=<{$item.id}>"><img src="/template/skin/<{$skin}>/img/delete.png" width=16 height=16><{T w='DelTask'}></a></li>
-                </ul>
-               </li>
-            </ul>
+            </div>
         </td>
         <td width=22>
             <{if $item.priority eq 1}><img src="<{$skinpath}>/img/1.gif"/><{/if}>
