@@ -22,9 +22,9 @@ $(document).ready(function(){
             <tr>
                 <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='TaskPriority'}></label></td>
                 <td>
-                    <input type="radio" name="TaskPri" value="1"><img src="<{$skinpath}>/img/1.gif" />
-                    <input type="radio" name="TaskPri" value="2" checked><img src="<{$skinpath}>/img/2.gif" />
-                    <input type="radio" name="TaskPri" value="3"><img src="<{$skinpath}>/img/3.gif" />
+                    <input type="radio" name="TaskPri" value="1" <{if $tTask.priority==1}>checked<{/if}>><img src="<{$skinpath}>/img/1.gif" />
+                    <input type="radio" name="TaskPri" value="2" <{if $tTask.priority==2}>checked<{/if}>><img src="<{$skinpath}>/img/2.gif" />
+                    <input type="radio" name="TaskPri" value="3" <{if $tTask.priority>2}>checked<{/if}>><img src="<{$skinpath}>/img/3.gif" />
                 </td>
             </tr>
             <tr>
