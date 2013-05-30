@@ -15,7 +15,7 @@ class main extends general
 	function add() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -63,7 +63,7 @@ class main extends general
     function update() {
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
-        if(!spClass('taskModel')->allow($tid,$uid)){
+        if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -108,7 +108,7 @@ class main extends general
     function update_status($status){
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
-        if(!spClass('taskModel')->allow($tid,$uid)){
+        if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -162,7 +162,7 @@ class main extends general
     function del() {
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
-        if(!spClass('taskModel')->allow($tid,$uid)){
+        if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }

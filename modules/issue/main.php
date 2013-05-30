@@ -15,7 +15,7 @@ class main extends general
 	function add() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        if(!spClass('projectModel')->allow($pid,$uid)){
+        if(empty($uid) || !spClass('projectModel')->allow($pid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }

@@ -39,7 +39,7 @@ class main extends general
         $pid = $this->spArgs('id');
         if(empty($pid))
             $pid = $this->tCurrProj;
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -96,7 +96,7 @@ class main extends general
     public function addEvent() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -116,7 +116,6 @@ class main extends general
         }
 
         $pid = $this->tCurrProj;
-        $uid = spClass('spSession')->getUser()->getUserId();
         if(false == spClass('timelineModel')->createForProject($pid, $uid, $est, $eet, $title)) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {
@@ -126,7 +125,7 @@ class main extends general
     public function del() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }

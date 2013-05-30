@@ -13,7 +13,7 @@ class main extends general
 		{
             $uid = spClass('spSession')->getUser()->getUserId();
             $pid = $this->tCurrProj;
-            if(!spClass('projectModel')->allow($pid,$uid)){
+            if(empty($uid) || !spClass('projectModel')->allow($pid,$uid)){
                 spClass('keeper')->speak(T('Error Operation not permit'));
                 return;
             }
@@ -37,7 +37,7 @@ class main extends general
 	{
         $uid = spClass('spSession')->getUser()->getUserId();
         $fid = $this->spArgs('id');
-        if(!spClass('forumModel')->allow($fid, $uid)){
+        if(empty($uid) || !spClass('forumModel')->allow($fid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }
@@ -74,7 +74,7 @@ class main extends general
         }
 
         $uid = $this->tUser['id'];
-        if(!spClass('forumModel')->allow($fid, $uid)){
+        if(empty($uid) || !spClass('forumModel')->allow($fid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }

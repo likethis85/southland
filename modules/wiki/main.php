@@ -37,7 +37,7 @@ class main extends general
     function update() {
         $uid = $this->tUser['id'];
         $wid = $this->spArgs('id');
-        if(!spClass('wikiModel')->allow($wid, $uid)){
+        if(empty($uid) || !spClass('wikiModel')->allow($wid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
