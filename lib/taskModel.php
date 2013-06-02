@@ -4,17 +4,22 @@ class taskModel extends spModel
 {
     var $pk = "id";		 // 按id排序
     var $table = "task"; // 数据表的名称
-
-    public function getTasks() {
-        $projId = spClass('spSession')->getUser()->getCurrentProject();
-        if(!empty($projId)) {
-            $condition=array(
-                'prj' => "$projId",
-            );
-            return $this->findAll($condition);
-        } else {
+    
+    var $STATUS_PENDING = 0;
+    var $STATUS_WORKING = 1;
+    var $STATUS_CODECOMPLETE = 2;
+    var $STATUS_VERIFIED = 3;
+    var $STATUS_COMPLETED = 4;
+        
+    public function getTasks($pid) {
+        if(empty($pid))
             return array();
-        }
+        
+        $tasks = $this->findAll(array('prj' => $pid));
+        if(false==$tasks)
+            return array();
+            
+        return $tasks;
     }
 
     public function allow($tid, $uid) {

@@ -1,10 +1,23 @@
 <{include file=skin/$skin/header.html}>
 	<script language="javascript" type="text/javascript">
 	$(document).ready(function(){
-	    CKEDITOR.replace("projDesc");
-		$("#form").validate({
+	    //CKEDITOR.replace("projDesc");
+	    UE.getEditor('projDesc',{
+            //focus时自动清空初始化时的内容
+            autoClearinitialContent:false,
+            //关闭字数统计
+            wordCount:true,
+            //关闭elementPath
+            elementPathEnabled:false
+            //更多其他参数，请参考editor_config.js中的配置项
+        })
+
+		$("#form").submit(function(){
+		    UE.getEditor('projDesc').sync();    
+		})
+		.validate({
 			rules:{
-				title: {required:true}
+				title:  {required:true}
 			}
 		});
 	});
@@ -26,6 +39,7 @@
                         </select>
                     </td>
                 </tr>
+                <tr><td colspan=2>&nbsp;</td></tr>
                 <tr>
                     <td colspan=2><label style="margin-right:12px;" for="projDesc"><{T w='ProjectDesc'}></label></td>
                 </tr>

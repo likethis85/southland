@@ -115,12 +115,47 @@ class main extends general
             return;
         }
 
-        $pid = $this->tCurrProj;
         if(false == spClass('timelineModel')->createForProject($pid, $uid, $est, $eet, $title)) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {
             $this->jumpProjectPage();
         }
+    }
+    /** @brief update event to timeline 
+     *
+     */
+    public function updateEvent(){
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $eid = $this->spArgs('id');
+        if(empty($eid)){
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+        $title = $this->spArgs('EventSummary');
+        $est = $this->spArgs('EventStartTime');
+        $eet = $this->spArgs('EventEndTime');
+        $isdate = strtotime($est);
+        $isdate = $isdate!=-1 && $isdate!=false;
+        if($isdate && !empty($eet)) {
+            $isdate = strtotime($eet);
+            $isdate = $isdate!=-1 && $isdate!=false;
+        }
+        if(!$isdate || empty($title)) {
+            $this->jumpProjectPage();
+            return;
+        }
+
+        if(false == spClass('timelineModel')->updateTimeline($eid, $est, $eet, $title)) {
+            spClass('keeper')->speak(T('Error DB operation failed'));
+        } else {
+            $this->jumpProjectPage();
+        }  
     }
     public function del() {
         $uid = $this->tUser['id'];

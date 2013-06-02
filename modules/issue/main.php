@@ -42,7 +42,7 @@ class main extends general
 		} else {
 		    $tid = $this->spArgs('tid');
 		    $this->tTid = $tid===null ? 0:$tid;  
-		    $this->tTasks = spClass('taskModel')->getTasks();
+		    $this->tTasks = spClass('taskModel')->getTasks($pid);
 			$this->display("issue/add.html");
 		}
 	}

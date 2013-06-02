@@ -362,8 +362,11 @@ $.fn.Chronoline = function (events, options) {
             subSubLabel.data('right-bound',Math.min((endOfYear.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
 
             for(var month=curDate.getMonth();month<12; month++){
+                if(year==t.config.startDate.getFullYear() && month<t.config.startDate.getMonth())
+                    continue;
                 var cd = new Date(year, month, 1);
                 var x = msToPx(cd.getTime());
+                if(x<0) x=12;
                 var subLabel = t.paper.text(x, subLabelY, formatDate(cd, '%b').toUpperCase());
                 subLabel.attr(t.config.fontAttrs);
                 subLabel.attr(t.config.subLabelAttrs);

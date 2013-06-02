@@ -3,11 +3,6 @@ if (!defined('SOUTHLAND')) { exit(1);}
 
 class main extends general
 {
-    var $COMPLETED = 4;
-    var $VERIFIED = 3;
-    var $CODECOMPLETE = 2;
-    var $WORKING = 1;
-
 	function __construct(){ // 公用
 		parent::__construct(); // 这是必须的
 	}
@@ -129,35 +124,35 @@ class main extends general
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status(0);
+            $this->update_status(spClass('taskModel')->STATUS_PENDING);
     }
     function complete() {
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($this->COMPLETED);
+            $this->update_status(spClass('taskModel')->STATUS_COMPLETED);
     }
     function veri(){
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($this->VERIFIED);
+            $this->update_status(spClass('taskModel')->STATUS_VERIFIED);
     }
     function cc(){
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($this->CODECOMPLETE);
+            $this->update_status(spClass('taskModel')->STATUS_CODECOMPLETE);
     }
     function working(){
         $status = $this->get_status($this->spArgs('id'));
         if($status === false)
             $this->jumpTaskPage();
         else 
-            $this->update_status($this->WORKING);
+            $this->update_status(spClass('taskModel')->STATUS_WORKING);
     }
     function del() {
         $uid = $this->tUser['id'];

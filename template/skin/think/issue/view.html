@@ -4,17 +4,24 @@
         jQuery.extend(jQuery.validator.messages, {
             required:"<span style=\"color:red\">*</span>"
         });
-        var editor = CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
-        
-        $('.btn-rounded').click(function(){
-            editor.updateElement();
+        UE.getEditor('reply',{
+            //focus时自动清空初始化时的内容
+            autoClearinitialContent:false,
+            //关闭字数统计
+            wordCount:true,
+            //关闭elementPath
+            elementPathEnabled:false
+            //更多其他参数，请参考editor_config.js中的配置项
         });
-        
-        $("#form").validate({
-            rules:{
-                reply: {required:true}
-            }
-        });
+    
+    	$("#form").submit(function(){
+    	    UE.getEditor('reply').sync();    
+    	})
+    	.validate({
+    		rules:{
+    			reply: {required:true}
+    		}
+    	});
 
         $(".btn-rounded").hover(
             function(){ $(this).css('color','red');}, 
@@ -46,7 +53,7 @@
                     <form id="form" method="post" action="/issue.php?a=cmt&id=<{$tIssue.id}>">
                         <div style="margin-top:32px;">
                             <input type="submit" class="btn-rounded" value=<{T w='Reply'}> />
-                            <textarea class="ckeditor" id="reply" name="reply"></textarea>
+                            <textarea id="reply" name="reply"></textarea>
                         </div>
                         <input name="submit" type="hidden" id="submit" value="1" />
                     </form>

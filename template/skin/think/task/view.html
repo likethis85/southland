@@ -5,21 +5,30 @@
             required:"<span style=\"color:red\">*</span>"
         });
         
-        var editor = CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
-        $('#cmt').click(function(){
-            editor.updateElement();
+        UE.getEditor('reply',{
+            //focus时自动清空初始化时的内容
+            autoClearinitialContent:false,
+            //关闭字数统计
+            wordCount:true,
+            //关闭elementPath
+            elementPathEnabled:false
+            //更多其他参数，请参考editor_config.js中的配置项
         });
-        $("#form").validate({
-            rules:{
-                reply: {required:true}
-            }
-        });
-
+        
+        $("#form").submit(function(){
+    	    UE.getEditor('reply').sync();    
+    	})
+    	.validate({
+    		rules:{
+    			reply: {required:true}
+    		}
+    	});
+    	
         $(".btn-rounded").hover(
             function(){ $(this).css('color','red');}, 
             function(){ $(this).css('color','white');}
         );
-});
+    });
 </script>
 <div style="margin-left:32px;margin-top:22px;width:600px;">
     <table id="box" cellpadding="5" cellspacing="0">
@@ -30,7 +39,11 @@
                 </div>
                 <div>
                     <{$tTask.detail}>
-                    <div align=right><a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded"><{T w='IssueReport'}></a></div>
+                    <div align=right>
+                        <a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded">
+                            <{T w='IssueReport'}>
+                        </a>
+                    </div>
                 </div>
             </td> 
         </tr>
@@ -48,7 +61,7 @@
                     <form id="form" method="post" action="/task.php?a=cmt&id=<{$tTask.id}>">
                         <div style="margin-top:32px;">
                             <input id="cmt" type="submit" class="btn-rounded" value=<{T w='Reply'}> />
-                            <textarea class="ckeditor" id="reply" name="reply"></textarea>
+                            <textarea id="reply" name="reply"></textarea>
                         </div>
                         <input name="submitreply" type="hidden" id="submitreply" value="1" />
                     </form>

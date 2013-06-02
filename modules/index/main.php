@@ -91,13 +91,12 @@ class main extends general
 	}
 
     function _task() {
-        $objTask = spClass('taskModel');
-        $this->tTasks = $objTask->getTasks();
+        $this->tTasks = spClass('taskModel')->getTasks($this->tCurrProj);
     }
     function _issue() {
         $uom = spClass('userorgModel');
-        $pid = spClass('spSession')->getUser()->getCurrentProject();
-        $uid = spClass('spSession')->getUser()->getUserId();
+        $pid = $this->tCurrProj;
+        $uid = $this->tUser['id'];
         $owners = $uom->getUsersByIssue($pid);
         $this->tIssues = spClass('issueModel')->getIssues();
         $issues = $this->tIssues;

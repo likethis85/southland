@@ -1,15 +1,29 @@
 <{include file=skin/$skin/header.html}>
 <script type="text/javascript">
 $(document).ready(function(){
-    var editor = CKEDITOR.replace("reply", {customConfig:'config-reply.js'});
-    $('.btn-rounded').click(function(){
-        editor.updateElement();
-    });
-	$("#form").validate({
+	UE.getEditor('reply',{
+        //focus时自动清空初始化时的内容
+        autoClearinitialContent:false,
+        //关闭字数统计
+        wordCount:true,
+        //关闭elementPath
+        elementPathEnabled:false
+        //更多其他参数，请参考editor_config.js中的配置项
+    })
+
+	$("#form").submit(function(){
+	    UE.getEditor('reply').sync();    
+	})
+	.validate({
 		rules:{
 			reply: {required:true}
 		}
 	});
+	
+	$(".btn-rounded").hover(
+        function(){ $(this).css('color','red');}, 
+        function(){ $(this).css('color','white');}
+    );
 });
 </script>
 <div style="margin-left:32px;margin-top:22px;width:600px;">

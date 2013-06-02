@@ -49,7 +49,7 @@
                         <{/if}>
                         <{if $tUser.role.Manager || ($tUser.uid == $itemI.owner.uid)}>
                         <ul class="hm_sub">
-                            <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $itemI.owner.uid)}>
+                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $itemI.owner.uid)}>
                            <li><a href="#"><img src="<{$skinpath}>/img/open.png" width=16 height=16><{T w='IssueWorking'}></a></li>
                            <{/if}>
                            

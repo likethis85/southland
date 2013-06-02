@@ -186,7 +186,7 @@
         };
         function ListEvent(obj){
             var fdate = function(t){
-                return ''+t.getUTCFullYear()+'-'+(t.getUTCMonth()+1)+'-'+t.getUTCDate();
+                return ''+t.getFullYear()+'-'+(t.getMonth()+1)+'-'+t.getDate();
             }
             var bb= new BlackBox();
             bb.popup(
@@ -197,7 +197,7 @@
                     $(obj.events).each(function(i,e){
                         row = '<tr class="event"><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
-                            row += '<td>N/A</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
+                            row += '<td></td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
                         else
                             row += '<td>'+fdate(e.dates[1])+'</td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
                         tbl.append(row);
@@ -217,7 +217,25 @@
                                 }
                             });
                         }else{
+                           var est = this.parentNode.parentNode.childNodes[2].outerText;
+                           var eet = this.parentNode.parentNode.childNodes[3].outerText;
+                           var description = this.parentNode.parentNode.childNodes[1].outerText;
+                           bb.popup(
+                            '<form action="/project.php?a=updateEvent&id='+this.id+'" method="post"><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
+                            '<tr><td><{T w="EventStartTime"}>:</td><td><input name="EventStartTime" id="est" value="'+est+'"/><td><{T w="EventEndTime"}></td><td><input name="EventEndTime" id="eet" value="'+eet+'"/></td></tr>'+
+                            '<tr><td colspan=4><{T w="EventSummary"}></td></tr>'+
+                            '<tr><td colspan=4><textarea name="EventSummary" cols="63" rows="15">'+description+'</textarea></td></tr>' +
+                            '<tr><td colspan=4 align=center><input type="submit" class="btn-rounded" value=<{T w="Submit"}>></td></tr>' +
+                            '</table></div></form>',
+                            function(content){
+                                content.find('#est').datepicker({dateFormat:'yy-mm-dd'});
+                                content.find('#eet').datepicker({dateFormat:'yy-mm-dd'});
+                                content.find('#close').click(function(){
+                                    bb.boxClose();
+                                });
+                            });
                             
+                            bb.boxClose();
                         }
                     });
                     content.find('#close').click(function(){
