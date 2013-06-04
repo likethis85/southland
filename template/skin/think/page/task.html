@@ -11,15 +11,15 @@
             $('#t<{$item.id}>').each(function(i,e){
                 $(e).HoverMenu({
                     'item' :[
-                       <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $item.owner.uid)}> 
+                       <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $item.owner)}> 
                        { 'icon' :"<{$skinpath}>/img/working.png" , 'caption':"<{T w='TaskWorking'}>", 'callback':function(elem) {location.href='/task.php?a=working&id='+elem.id;}},
                        <{/if}>
                        
-                       <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $item.owner.uid)}> 
+                       <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $item.owner)}> 
                        { 'icon' :"<{$skinpath}>/img/codecompleted.png",'caption':"<{T w='TaskCC'}>", 'callback':function(elem) {location.href='/task.php?a=cc&id='+elem.id;}},
                        <{/if}>
                        
-                       <{if $tUser.role.Manager || ($tUser.role.QA && $tUser.uid == $item.owner.uid)}> 
+                       <{if $tUser.role.Manager || ($tUser.role.QA && $tUser.id == $item.owner)}> 
                        { 'icon' :"<{$skinpath}>/img/verified.png", 'caption':"<{T w='TaskVeri'}>", 'callback':function(elem) {location.href='/task.php?a=veri&id='+elem.id;}},
                        <{/if}>
                        
@@ -27,12 +27,13 @@
                        { 'icon' :"<{$skinpath}>/img/edit.png" , 'caption':"<{T w='EditTask'}>", 'callback':function(elem) {location.href='/task.php?a=update&id='+elem.id;}},
                        <{/if}>
                        
-                       <{if $tUser.role.Manager || $tUser.uid==$item.assigner.uid}> 
-                       { 'icon' :"<{$skinpath}>/img/delete.png" ,'caption':"<{T w='DelTask'}>",                       
-                         'callback':function(elem) {
-                                        if(confirm('<{T w="Confirm?"}>'+"<{T w='DelTask'}>"))
-                                            location.href='/task.php?a=del&id='+elem.id;
-                                    }
+                       <{if $tUser.role.Manager || $tUser.id==$item.assigner}> 
+                       { 
+                            'icon' :"<{$skinpath}>/img/delete.png" ,'caption':"<{T w='DelTask'}>",                       
+                            'callback': function(elem) {
+                                            if(confirm('<{T w="Confirm?"}>'+"<{T w='DelTask'}>"))
+                                                location.href='/task.php?a=del&id='+elem.id;
+                                        }
                        },
                        <{/if}>
                        { 'icon' :"<{$skinpath}>/img/bug.png", 'caption':"<{T w='IssueReport'}>", 'callback':function(elem) {location.href='/issue.php?a=add&tid='+elem.id;}} 

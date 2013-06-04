@@ -24,13 +24,17 @@ class wikiModel extends spModel
     }
     
     public function getWikiDetail($wid) {
-        $wiki = spClass('keywordsModel')->findForWiki($wid);
-        if(false == $wiki) 
+        $wiki = $this->find(array('id' => $wid, 'droptime' => 0));
+        if(empty($wiki))
             return array();
 
-        $tW = array('wiki' => $wiki[0], 'keywords' => array());
-        foreach($wiki as $w){
-            array_push($tW['keywords'], $w['keyword']);
+        $keywords = spClass('keywordsModel')->findForWiki($wid);
+        if(false == $wiki) 
+            return array('wiki' => $wiki, 'keywords' => array());
+
+        $tW = array('wiki' => $wiki, 'keywords' => array());
+        foreach($keywords as $keyword){
+            array_push($tW['keywords'], $keyword['keyword']);
         }
         array_unique($tW['keywords']);
         return $tW;

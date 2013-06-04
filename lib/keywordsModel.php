@@ -66,7 +66,8 @@ class keywordsModel extends spModel
     
     public function findForWiki($wid) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "SELECT a.*,b.content as keyword FROM $prefix"."wiki as a,$prefix"."keywords as b,$prefix"."keywords_ref as c WHERE a.id=$wid AND a.droptime=0 AND a.id=c.sid and c.scope=".$this->scope_wiki." AND b.id=c.ref";
-        return $this->findSql($sql);
+        $sql = "SELECT b.content as keyword FROM $prefix"."keywords as b,$prefix"."keywords_ref as c WHERE $wid=c.sid and c.scope=".$this->scope_wiki." AND b.id=c.ref";
+        $wiki = $this->findSql($sql);
+        return $wiki;
     }
 }

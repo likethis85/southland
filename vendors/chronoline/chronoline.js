@@ -212,7 +212,33 @@ $.fn.Chronoline = function (events, options) {
                         Y += 2.5;
                         elem = t.paper.circle(startX, Y, 2.5).attr(this.eventAttr);
                         addElemClass(t.paperType, elem.node, 'chronoline-event');
-                        elem.attr('title', event.description);
+                        elem.attr('title', "");
+                        $(elem.node.parentNode).qtip({
+                            content:
+                                {
+                                    title: 
+                                        {
+                                            text:event.dates[0].toDateString()
+                                        },
+                                    text: event.description
+                                },
+                            position:
+                                {
+                                    my: 'top left',
+                                    at: 'right top',
+                                    adjust: {x:6,y:6}
+                                },
+                            /*show:
+                                {
+                                    event: false,
+                                    ready: true
+                                },
+                            hide: false,*/
+                            style:
+                                {
+                                    classes: 'qtip-shadow qtip-dark'
+                                }
+                        });
                         if(typeof endX!='undefined'){
                             elem = t.paper.circle(endX, Y, 2.5).attr(this.eventAttr);
                             addElemClass(t.paperType, elem.node, 'chronoline-event');
@@ -230,7 +256,33 @@ $.fn.Chronoline = function (events, options) {
                         startX -= 2.5;
                         elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
                         addElemClass(t.paperType, elem.node, 'chronoline-event');
-                        elem.attr('title', event.description);
+                        elem.attr('title', "");
+                        $(elem.node.parentNode).qtip({
+                            content:
+                                {
+                                    title: 
+                                        {
+                                            text:event.dates[0].toDateString()
+                                        },
+                                    text: event.description
+                                },
+                            position:
+                                {
+                                    my: 'top left',
+                                    adjust: {x:10,y:10},
+                                    at: 'right top'
+                                },
+                            /*show:
+                                {
+                                    event: false,
+                                    ready: true
+                                },
+                            hide: false,*/
+                            style:
+                                {
+                                    classes: 'qtip-shadow qtip-dark'
+                                }
+                        });
                         if(typeof endX!='undefined'){
                             endX -= 2.5;
                             elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr).attr('title', event.description);
@@ -319,7 +371,6 @@ $.fn.Chronoline = function (events, options) {
                 var event = t.event_rows[row][col];
                 if(!event.section.visible)
                     continue;
-                var elem = null;
                 if(event.dates.length == 1 || ((event.dates[1].getTime()-event.dates[0].getTime())<t.resolution*DAY)){
                     var startX = msToPx(event.dates[0].getTime());
                     event.section.draw(event,startX,upperY);

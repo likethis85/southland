@@ -11,7 +11,10 @@
     <table>
     <{foreach item=item from=$tWikis}>
     <tr>
-        <td><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></td>
+        <table width=100%>
+        <tr><td><h1><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1></td></tr>
+        <tr><td><{$item.content|truncate:512:""|escape:"html"}></td></tr>
+        </table>
     </tr>
     <{/foreach}>
     </table>

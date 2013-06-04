@@ -16,9 +16,7 @@ class spUser
     private $currNid = 0;
 
 	public function __construct() {
-        $this->userInfo = array(
-            'acl' => 'ANONYMOUS'
-        );
+        $this->userInfo = array();
 	}
     public function setUserInfo($uinfo) {
         $this->userInfo = $uinfo;
