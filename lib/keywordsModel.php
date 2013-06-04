@@ -15,7 +15,7 @@ class keywordsModel extends spModel
         if($pid==null) $pid = 0;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select id,content from $prefix"."keywords where content in (";
+        $sql = "select id,content from {$prefix}keywords where content in (";
         foreach($kwds as $kwd){
             $sql .= "\"$kwd\",";
         }
@@ -49,13 +49,13 @@ class keywordsModel extends spModel
                 'sid' => $wid,
                 'ref' => $value
             );
-            $sql = "INSERT INTO $prefix"."keywords_ref(prj,scope,sid,ref) VALUES($pid,$this->scope_wiki,$wid,$value)";
+            $sql = "INSERT INTO {$prefix}keywords_ref(prj,scope,sid,ref) VALUES($pid,$this->scope_wiki,$wid,$value)";
             if($this->runSql($sql)){
                 array_push($refs, $value);
             }
         }
 
-        $sql = "UPDATE $prefix"."keywords set ref_count=ref_count+1 WHERE id in(";
+        $sql = "UPDATE {$prefix}keywords set ref_count=ref_count+1 WHERE id in(";
         foreach($refs as $value){
             $sql .= "$value,";
         }
@@ -66,8 +66,14 @@ class keywordsModel extends spModel
     
     public function findForWiki($wid) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "SELECT b.content as keyword FROM $prefix"."keywords as b,$prefix"."keywords_ref as c WHERE $wid=c.sid and c.scope=".$this->scope_wiki." AND b.id=c.ref";
+        $sql = "SELECT b.content as keyword FROM {$prefix}keywords as b,{$prefix}keywords_ref as c WHERE $wid=c.sid  AND b.id=c.ref AND c.scope=".$this->scope_wiki;
         $wiki = $this->findSql($sql);
         return $wiki;
+    }
+    
+    public function findWikis($keyword){
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        $sql = "SELECT * FROM {$prefix}wiki WHERE id IN(SELECT sid FROM {$prefix}keywords as a,{$prefix}keywords_ref as b WHERE a.id=b.ref and b.scope=".$this->scope_wiki.")";
+        return $this->findSql($sql);
     }
 }

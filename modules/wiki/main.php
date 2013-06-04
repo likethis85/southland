@@ -82,7 +82,22 @@ class main extends general
 		$this->display("wiki/view.html");
 	}
     function search(){
+        $keyword = $this->spArgs('t');
+        if(empty($keyword)){
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
         
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        if(!spClass('projectModel')->allow($pid, $uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        
+        $this->tModule = 'wiki';
+        $this->tWikis = spClass('keywordsModel')->findWikis($keyword);
+        $this->display("page.html");
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的
