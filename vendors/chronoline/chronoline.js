@@ -243,7 +243,7 @@ $.fn.Chronoline = function (events, options) {
                             elem = t.paper.circle(endX, Y, 2.5).attr(this.eventAttr);
                             addElemClass(t.paperType, elem.node, 'chronoline-event');
                             elem.attr('title', event.description);
-                            t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr('title',event.description).attr({'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5});
+                            t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr({'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5});
                         }
                     },
             'events': Array(),
@@ -285,11 +285,11 @@ $.fn.Chronoline = function (events, options) {
                         });
                         if(typeof endX!='undefined'){
                             endX -= 2.5;
-                            elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr).attr('title', event.description);
+                            elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
                             addElemClass(t.paperType, elem.node, 'chronoline-event');
-                            elem = t.paper.rect(endX, Y, 5, 5).attr(this.eventAttr).attr('title', event.description);
+                            elem = t.paper.rect(endX, Y, 5, 5).attr(this.eventAttr);
                             addElemClass(t.paperType, elem.node, 'chronoline-event');
-                            elem = t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr('title',event.description).attr(this.eventAttr);
+                            elem = t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr(this.eventAttr);
                             addElemClass(t.paperType, elem.node, 'chronoline-event');
                         }
                     },

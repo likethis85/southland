@@ -10,47 +10,19 @@ way to fit your requirements.
 =================================================================== */
 
 .hm_nav {padding:0;z-index:500;}
-.hm_nav li.hm_top {display:block; float:left;}
-.hm_nav li a.hm_top_link {display:block; float:left; line-height:33px; color:#ccc; text-decoration:none; font-size:11px; font-weight:bold; cursor:pointer;}
-
-/* Default list styling */
-
-.hm_nav li:hover {position:relative; z-index:200;}
-
-.hm_nav li:hover ul.hm_sub
+.hm_nav:hover {position:relative; z-index:200;}
+.hm_nav:hover ul.hm_sub
 {left:1px; top:16px; width:90px;background: #bbd37e; white-space:nowrap; height:auto; z-index:300;}
-.hm_nav li:hover ul.hm_sub li
+.hm_nav:hover ul.hm_sub li
 {display:block; background:white;width:150px;position:relative; float:left;font-weight:normal;}
-.hm_nav li:hover ul.hm_sub li a
+.hm_nav:hover ul.hm_sub li a
 {display:block; font-size:11px; line-height:18px; text-indent:5px; color:#000; text-decoration:none;border:1px solid #bbd37e;}
-.hm_nav li ul.hm_sub li a.fly
-{background:#bbd37e url(arrow.gif) 80px 6px no-repeat;}
-.hm_nav li:hover ul.hm_sub li a:hover 
+.hm_nav:hover ul.hm_sub li a:hover 
 {background:#6a812c; color:#fff; border-color:#fff;}
-.hm_nav li:hover ul.hm_sub li a.fly:hover
-{background:#6a812c url(arrow_over.gif) 80px 6px no-repeat; color:#fff;}
-
-
-.hm_nav li:hover li:hover ul,
-.hm_nav li:hover li:hover li:hover ul,
-.hm_nav li:hover li:hover li:hover li:hover ul,
-.hm_nav li:hover li:hover li:hover li:hover li:hover ul
-{left:90px; top:-4px; background: #bbd37e; padding:3px; border:1px solid #5c731e; white-space:nowrap; z-index:400; height:auto;}
-
+.hm_nav:hover ul.hm_sub li a img {margin-right:8px;}
 .hm_nav ul, 
 .hm_nav li:hover ul ul,
 .hm_nav li:hover li:hover ul ul,
 .hm_nav li:hover li:hover li:hover ul ul,
 .hm_nav li:hover li:hover li:hover li:hover ul ul
 {position:absolute; left:-9999px; top:-9999px; width:0; height:0; margin:0; padding:0; list-style:none;}
-
-.hm_nav li:hover li:hover a.fly,
-.hm_nav li:hover li:hover li:hover a.fly,
-.hm_nav li:hover li:hover li:hover li:hover a.fly,
-.hm_nav li:hover li:hover li:hover li:hover li:hover a.fly
-{background:#6a812c url(arrow_over.gif) 80px 6px no-repeat; color:#fff; border-color:#fff;} 
-
-.hm_nav li:hover li:hover li a.fly,
-.hm_nav li:hover li:hover li:hover li a.fly,
-.hm_nav li:hover li:hover li:hover li:hover li a.fly
-{background:#bbd37e url(arrow.gif) 80px 6px no-repeat; color:#000; border-color:#bbd37e;} 

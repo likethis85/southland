@@ -115,6 +115,8 @@ class main extends general
             return;
         }
 
+        $newline = array("\n", "\r\n", "\r");
+        $title = str_replace($newline, '<br/>', $title);
         if(false == spClass('timelineModel')->createForProject($pid, $uid, $est, $eet, $title)) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {
@@ -151,6 +153,8 @@ class main extends general
             return;
         }
 
+        $newline = array("\n", "\r\n", "\r");
+        $title = str_replace($newline, '<br/>', $title);
         if(false == spClass('timelineModel')->updateTimeline($eid, $est, $eet, $title)) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {

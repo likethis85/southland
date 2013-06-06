@@ -85,8 +85,8 @@ return array(
 'IssueDate'=>     '发布日期',
 'IssueReport' =>  '报Bug',
 'IssueOperator' => '操作',
-'IssueWorking'  => '开始处理',
-'IssueFixed'    => '修复',
+'IssueOpen'  => '未修复',
+'IssueFixed'    => '已修复',
 'IssueVerified' => '已验证',
 
 /* Wiki */

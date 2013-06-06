@@ -5,13 +5,22 @@ class issueModel extends spModel
     var $pk = "id";		 // 按id排序
     var $table = "issue"; // 数据表的名称
 
+    var $STATUS_PENDING = 0;
+    var $STATUS_WORKING = 1;
+    var $STATUS_FIXED = 2;
+    var $STATUS_VERIFIED = 3;
+    var $STATUS_CLOSED = 4;
+    var $STATUS_DUPLICATED = 5;
+    var $STATUS_KNOWISSUE = 6;
+    var $STATUS_DEFER = 7;            
+            
     var $linker = array(
         array (
             'type' => 'hasone',
             'map' => 'owner',
             'mapkey' => 'owner',
             'fclass' => 'userModel',
-            'fkey' => 'uid',
+            'fkey' => 'id',
             'enabled' => 'true'
         )
     );
@@ -43,14 +52,14 @@ class issueModel extends spModel
      */
     public function str2status($str){
         $status = array(
-            'pending'   => 0,
-            'working'   => 1,
-            'fixed'     => 2,
-            'verified'  => 3,
-            'closed'    => 4,
-            'duplicated'=> 5,
-            'knowissue' => 6,
-            'defer'     => 7
+            'pending'   => $this->STATUS_PENDING,
+            'working'   => $this->STATUS_WORKING,
+            'fixed'     => $this->STATUS_FIXED,
+            'verified'  => $this->STATUS_VERIFIED,
+            'closed'    => $this->STATUS_CLOSED,
+            'duplicated'=> $this->STATUS_DUPLICATED,
+            'knowissue' => $this->STATUS_KNOWISSUE,
+            'defer'     => $this->STATUS_DEFER
         );
         
         return $status[$str];

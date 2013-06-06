@@ -49,21 +49,37 @@ class main extends general
     function view() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        if(!spClass('projectModel')->allow($pid,$uid)){
-            spClass('keeper')->speak(T('Error Operation not permit'));
-            return;
-        }
-
         $iid = $this->spArgs('id');
         if(empty($iid)) {
             spClass('keeper')->speak(T('Error Invalid Parameters'));
             return;
         }
+        
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+        
         $this->tIssue = spClass('issueModel')->find(array('id' => $iid));
         $this->tComments = spClass('commentModel')->getIssueComments($iid);
         $this->display('issue/view.html');
     }
+    function open(){
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $iid = $this->spArgs('id');
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+        
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
 
+        
+    }
     function cmt() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;

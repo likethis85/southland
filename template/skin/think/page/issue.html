@@ -41,33 +41,32 @@
                 <td>
                     <ul class="hm_nav">
                         <{if $itemI.status==1}>
-                        <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/open.png" width=16 height=16></a>
+                        <img src="<{$skinpath}>/img/open.png" width=16 height=16>
                         <{elseif $itemI.status==2}>
-                        <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/fixed.png" width=16 height=16></a>
+                        <img src="<{$skinpath}>/img/fixed.png" width=16 height=16>
                         <{else}>
-                        <li class="hm_top"><a href="#" class="hm_top_link"><img src="<{$skinpath}>/img/open.png" width=16 height=16></a>
+                        <img src="<{$skinpath}>/img/open.png" width=16 height=16>
                         <{/if}>
-                        <{if $tUser.role.Manager || ($tUser.uid == $itemI.owner.uid)}>
+                        <{if $tUser.role.Manager || ($tUser.uid == $itemI.owner.id)}>
                         <ul class="hm_sub">
-                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $itemI.owner.uid)}>
-                           <li><a href="#"><img src="<{$skinpath}>/img/open.png" width=16 height=16><{T w='IssueWorking'}></a></li>
+                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $itemI.owner.id)}>
+                           <li><a href="/issue.php?a=open&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/open.png" width=16 height=16><{T w='IssueOpen'}></a></li>
                            <{/if}>
                            
-                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.uid == $itemI.owner.uid)}>
-                           <li><a href="#"><img src="<{$skinpath}>/img/fixed.png"width=16 height=16><{T w='IssueFixed'}></a></li>
+                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $itemI.owner.id)}>
+                           <li><a href="/issue.php?a=fixed&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/fixed.png"width=16 height=16><{T w='IssueFixed'}></a></li>
                            <{/if}>
                            
-                           <{if $tUser.role.Manager || ($tUser.role.QA && $tUser.uid == $itemI.owner.uid)}>
-                           <li><a href="#"><img src="<{$skinpath}>/img/verified.png" width=16 height=16><{T w='IssueVerified'}></a></li>
+                           <{if $tUser.role.Manager || ($tUser.role.QA && $tUser.id == $itemI.owner.id)}>
+                           <li><a href="/issue.php?a=verified&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/verified.png" width=16 height=16><{T w='IssueVerified'}></a></li>
                            <{/if}>
                            
                            <{if $tUser.role.Manager}>
-                           <li><a href="#"><img src="<{$skinpath}>/img/completed.png"width=16 height=16><{T w='TaskComplete'}></a></li>
-                           <li><a href="#"><img src="<{$skinpath}>/img/pending.png"width=16 height=16><{T w='TaskPending'}></a></li>
+                           <li><a href="/issue.php?a=close&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/completed.png"width=16 height=16><{T w='TaskComplete'}></a></li>
+                           <li><a href="/issue.php?a=pending&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/pending.png"width=16 height=16><{T w='TaskPending'}></a></li>
                            <{/if}>
                         </ul>
                         <{/if}>
-                       </li>
                     </ul>
                 </td>
                 <td><a href="/issue.php?a=view&id=<{$itemI.id}>"><{$itemI.brief}></a></td>
