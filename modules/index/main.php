@@ -116,13 +116,18 @@ class main extends general
         $tMembers = array();
         $members = $uom->getUsersByProject($pid);
         foreach($members as $member){
-            $tMembers[$member['uid']] = $member;
+            $tMembers[$member['id']] = $member;
         }
         $this->tMembers = $tMembers;
         unset($tMembers);
     }
     function _wiki() {
-        $this->tWikis = spClass('wikiModel')->getWikis();
+        $Wikis = spClass('wikiModel')->getWikis();
+        foreach($Wikis as &$wiki){
+            $str = strip_tags(substr($wiki['content'], 0, 512), '<img>');
+            $wiki['content'] = preg_replace('/<\s*img/i', '<img width=128 height=128', $str);
+        }
+        $this->tWikis = $Wikis;
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的

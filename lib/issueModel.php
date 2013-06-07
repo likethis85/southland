@@ -4,7 +4,6 @@ class issueModel extends spModel
 {
     var $pk = "id";		 // 按id排序
     var $table = "issue"; // 数据表的名称
-
     var $STATUS_PENDING = 0;
     var $STATUS_WORKING = 1;
     var $STATUS_FIXED = 2;
@@ -13,17 +12,7 @@ class issueModel extends spModel
     var $STATUS_DUPLICATED = 5;
     var $STATUS_KNOWISSUE = 6;
     var $STATUS_DEFER = 7;            
-            
-    var $linker = array(
-        array (
-            'type' => 'hasone',
-            'map' => 'owner',
-            'mapkey' => 'owner',
-            'fclass' => 'userModel',
-            'fkey' => 'id',
-            'enabled' => 'true'
-        )
-    );
+
     /** @brief retrieve issues belongs to current project
      *
      */

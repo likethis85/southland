@@ -47,7 +47,7 @@
                         <{else}>
                         <img src="<{$skinpath}>/img/open.png" width=16 height=16>
                         <{/if}>
-                        <{if $tUser.role.Manager || ($tUser.uid == $itemI.owner.id)}>
+                        <{if $tUser.role.Manager || ($tUser.id == $itemI.owner.id)}>
                         <ul class="hm_sub">
                            <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $itemI.owner.id)}>
                            <li><a href="/issue.php?a=open&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/open.png" width=16 height=16><{T w='IssueOpen'}></a></li>
@@ -73,10 +73,10 @@
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>
                 <td>
-                    <{if $tUser.role.manager || ($tUser.uid == $itemI.owner.uid)}>
+                    <{if $tUser.role.manager || ($tUser.id == $itemI.owner.id)}>
                         <select>
                         <{foreach item=itemM from=$tMembers}>
-                            <option value="<{$itemM.uid}>" <{if $itemM.uid==$itemI.owner.uid}>selected<{/if}>><{$itemM.nick}></option>
+                            <option value="<{$itemM.id}>" <{if $itemM.id==$itemI.owner.id}>selected<{/if}>><{$itemM.nick}></option>
                         <{/foreach}>
                         </select>
                     <{else}>

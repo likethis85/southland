@@ -155,6 +155,7 @@ class main extends general
 
         $newline = array("\n", "\r\n", "\r");
         $title = str_replace($newline, '<br/>', $title);
+        $title = preg_replace('/(<\s*br\s*\/\s*>)+/i','<br/>', $title);
         if(false == spClass('timelineModel')->updateTimeline($eid, $est, $eet, $title)) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {

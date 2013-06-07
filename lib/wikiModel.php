@@ -60,6 +60,6 @@ class wikiModel extends spModel
         if($wiki['acl']==$allow_protected)
             return spClass('userorgModel')->isMemberOfProject($wiki['prj'], $uid);
         else
-            return spClass('userorgModel')->isMemberOfProject($wid, $uid);
+            return spClass('userorgModel')->isMemberOfProject($wiki['prj'], $uid);
     }
 }
