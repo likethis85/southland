@@ -195,7 +195,7 @@
                     var tbl = content.find('#events');
                     tbl.css({'cursor':'default', 'margin-bottom':'8px'});
                     $(obj.events).each(function(i,e){
-                        row = '<tr class="event"><td>'+i+'</td><td>'+e.description+'</td><td>'+fdate(e.dates[0])+'</td>';
+                        row = '<tr class="event"><td>'+i+'</td><td>'+e.description.substr(0,16).replace(/[\r\n]/g,"")+'</td><td>'+fdate(e.dates[0])+'</td>';
                         if(typeof e.dates[1] == 'undefined')
                             row += '<td></td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
                         else
@@ -219,7 +219,14 @@
                         }else{
                            var est = this.parentNode.parentNode.childNodes[2].outerText;
                            var eet = this.parentNode.parentNode.childNodes[3].outerText;
-                           var description = this.parentNode.parentNode.childNodes[1].outerText;
+                           var tid = this.id;
+                           var description = '';
+                           $(obj.events).each(function(i,e){
+                               if(e.id == tid) {
+                                   description = e.description.replace(/<\s*br\s*\/\s*>/ig,"\n");
+                                   return false;
+                               }
+                           });
                            bb.popup(
                             '<form action="/project.php?a=updateEvent&id='+this.id+'" method="post"><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
                             '<tr><td><{T w="EventStartTime"}>:</td><td><input name="EventStartTime" id="est" value="'+est+'"/><td><{T w="EventEndTime"}></td><td><input name="EventEndTime" id="eet" value="'+eet+'"/></td></tr>'+
