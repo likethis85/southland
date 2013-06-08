@@ -67,18 +67,38 @@ class main extends general
     function open(){
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        $iid = $this->spArgs('id');
+        $iid = $this->spArgs('iid');
         if(empty($iid)) {
             spClass('keeper')->speak(T('Error Invalid Parameters'));
             return;
         }
-        
-        if(!spClass('projectModel')->allow($pid,$uid)){
+       
+        $model = spClass('issueModel');
+        if(!$model->allow($iid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }
 
-        
+        $model->updateStatus($iid, $model->STATUS_WORKING);
+        $this->jumpIssuePage();
+    }
+    function fixed(){
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $iid = $this->spArgs('iid');
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+       
+        $model = spClass('issueModel');
+        if(!$model->allow($iid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+
+        $model->updateStatus($iid, $model->STATUS_FIXED);
+        $this->jumpIssuePage();
     }
     function cmt() {
         $uid = $this->tUser['id'];

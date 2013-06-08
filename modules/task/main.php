@@ -32,7 +32,7 @@ class main extends general
                 exit;
             }
 
-            spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,T('Create'));
+            spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
 			$this->jumpTaskPage();
 		} else {
 			$this->display("task/add.html");
