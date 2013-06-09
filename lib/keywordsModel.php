@@ -63,7 +63,11 @@ class keywordsModel extends spModel
 
         $this->runSql($sql);
     }
-    
+    public function findForProject($pid){
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        $sql = "SELECT content FROM {$prefix}keywords WHERE id in (SELECT id FROM {$prefix}keywords_ref WHERE prj=$pid or prj=0)";
+        return $this->findSql($sql);
+    }
     public function findForWiki($wid) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
         $sql = "SELECT b.content as keyword FROM {$prefix}keywords as b,{$prefix}keywords_ref as c WHERE $wid=c.sid  AND b.id=c.ref AND c.scope=".$this->scope_wiki;

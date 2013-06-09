@@ -26,19 +26,7 @@
 </div>
 
 <div id="TagBall" style="position:absolute;top:196px;float:left;left:900px;">
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
-    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Tag 1</a>
+    <{foreach item=item from=$tKeywords}>
+    <a href="http://wiki.php?a=search&t=<{$item.content}>" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;"><{$item.content}></a>
+    <{/foreach}>
 </div>

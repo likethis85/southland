@@ -130,6 +130,7 @@ class main extends general
             $wiki['content'] = preg_replace('/<\s*img/i', '<img width=128 height=128', $str);
         }
         $this->tWikis = $Wikis;
+        $this->tKeywords = spClass('keywordsModel')->findForProject($this->tCurrProj);
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的
