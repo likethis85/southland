@@ -20,6 +20,7 @@ class main extends general
 			$data = array(
 			    'pid' => $this->spArgs('id'),
 			    'prj' => $pid,
+                'assigner' => $uid,
 				'owner'=> $uid,
 				'priority'=>$this->spArgs('TaskPri'),
 				'subject'=>$this->spArgs('subject'),

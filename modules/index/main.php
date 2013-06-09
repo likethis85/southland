@@ -59,10 +59,12 @@ class main extends general
                     break;
                 case $uom->role_dev_owner:
                 case $uom->role_dev_manager:
+                case $uom->role_dev_member:
                     $ur['Dev'] = true;
                     break;
                 case $uom->role_qa_owner:
                 case $uom->role_qa_manager:
+                case $uom->role_qa_member:
                     $ur['QA'] = true;
                     break;
                 }
