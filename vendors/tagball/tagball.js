@@ -3,7 +3,7 @@ $.fn.TagBall = function(options) {
     var howElliptical=1;
     
     this.cfg = $.extend({radius:80,speed:1,distance:500}, options);
-    this.css({'border':'1px solid red','width':'200px','height':'200px'});
+    this.css({'width':'230px','height':'230px'});
 	this.hover(
 	    function() { active = true;},
 	    function() { active = false;}
