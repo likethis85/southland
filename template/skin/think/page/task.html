@@ -1,6 +1,7 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
         $().ready(function(){
+            CreateTagBall();
             $("a[name='DelTask']").each(function(){
                 $(this).click(function(){
                     return confirm('<{T w="Confirm?"}>'+$(this).text());
@@ -80,14 +81,39 @@
     </tr>
     <{/foreach}>
     </table>
+</div>
 
-    <script type="text/javascript">
-        ($("div.task-link")).each(function() {
-            $(this).hover(function() {
-                $(this).children(".operator").show();
-            },function() {
-                $(this).children(".operator").hide();
-            });
-        });
-    </script>
+<div id="TagBall" style="height:400px;width:450px;position:relative;margin:10px auto;float:left;left:620px;">
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">起名取名</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">宣传策划</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">网游试玩</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">短信表白</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">卡片设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">网页设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">SEO优化</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">外语翻译</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">产品推广</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">网络营销</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">动漫设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">招聘求职</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">家居装修</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">影视创作</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">照片美化</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">产品设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">包装设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">Logo设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">海报设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">程序开发</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">站长素材</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">微博营销</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">网站开发</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">宣传品设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">配音配词</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">产品推广</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">网络营销</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">动漫设计</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">招聘求职</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">家居装修</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">影视创作</a>
+    <a href="http://sc.chinaz.com" target="_blank" style="position:absolute;top:0px;left:0px;font-weight:bold;padding:3px 6px;">照片美化</a>
 </div>
