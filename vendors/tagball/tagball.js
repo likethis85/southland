@@ -1,236 +1,209 @@
-var radius = 150;
-var dtr = Math.PI/180;
-var d=300;
-
-var mcList = [];
-var active = false;
-var lasta = 1;
-var lastb = 1;
-var distr = true;
-var tspeed=2;
-var size=250;
-
-var mouseX=0;
-var mouseY=0;
-
-var howElliptical=1;
-
-var aA=null;
-var oDiv=null;
-
-function CreateTagBall()
-{
-	var i=0;
-	var oTag=null;
+$.fn.TagBall = function(options) {
+    var radius = 150;
+    var dtr = Math.PI/180;
+    var d=300;
+    var active = false;
+    var lasta = 1;
+    var lastb = 1;
+    var distr = true;
+    var tspeed=2;
+    var size=250;
+    var howElliptical=1;
+    
+    this.mouseX = 0;
+    this.mouseY = 0;
+	this.hover(
+	    function() { active = true;},
+	    function() { active = false;}
+	).mousemove(function(e){
+		this.mouseX=e.clientX-(e.srcElement.offsetLeft+e.srcElement.offsetWidth/2);
+		this.mouseY=e.clientY-(e.srcElement.offsetTop+e.srcElement.offsetHeight/2);
+		this.mouseX/=5;
+		this.mouseY/=5;
+	});
 	
-	oDiv=document.getElementById('TagBall');
-	
-	aA=oDiv.getElementsByTagName('a');
-	
-	for(i=0;i<aA.length;i++)
+	this.aA=this.find('a');
+	this.mcList = new Array();
+	for(i=0;i<this.aA.length;i++)
 	{
-		oTag={};
+		var oTag={};
 		
-		oTag.offsetWidth=aA[i].offsetWidth;
-		oTag.offsetHeight=aA[i].offsetHeight;
+		oTag.offsetWidth=this.aA[i].offsetWidth;
+		oTag.offsetHeight=this.aA[i].offsetHeight;
 		
-		mcList.push(oTag);
+		this.mcList.push(oTag);
 	}
 	
-	TB_sineCosine( 0,0,0 );
-	
-	TB_positionAll();
-	
-	oDiv.onmouseover=function ()
-	{
-		active=true;
-	};
-	
-	oDiv.onmouseout=function ()
-	{
-		active=false;
-	};
-	
-	oDiv.onmousemove=function (ev)
-	{
-		var oEvent=window.event || ev;
-		
-		mouseX=oEvent.clientX-(oDiv.offsetLeft+oDiv.offsetWidth/2);
-		mouseY=oEvent.clientY-(oDiv.offsetTop+oDiv.offsetHeight/2);
-		
-		mouseX/=5;
-		mouseY/=5;
-	};
-	
-	setInterval(updateBall, 30);
-};
+	var updateBall = function (){
+    	var a;
+    	var b;
+    	
+    	if(active)
+    	{
+    		a = (-Math.min( Math.max( -this.mouseY, -size ), size ) / radius ) * tspeed;
+    		b = (Math.min( Math.max( -this.mouseX, -size ), size ) / radius ) * tspeed;
+    	}
+    	else
+    	{
+    		a = lasta * 0.98;
+    		b = lastb * 0.98;
+    	}
+    	
+    	lasta=a;
+    	lastb=b;
+    	
+    	if(Math.abs(a)<=0.01 && Math.abs(b)<=0.01)
+    	{
+    		return;
+    	}
+    	
+    	var c=0;
+    	TB_sineCosine(a,b,c);
+    	for(var j=0;j<this.mcList.length;j++)
+    	{
+    		var rx1=this.mcList[j].cx;
+    		var ry1=this.mcList[j].cy*ca+this.mcList[j].cz*(-sa);
+    		var rz1=this.mcList[j].cy*sa+this.mcList[j].cz*ca;
+    		
+    		var rx2=rx1*cb+rz1*sb;
+    		var ry2=ry1;
+    		var rz2=rx1*(-sb)+rz1*cb;
+    		
+    		var rx3=rx2*cc+ry2*(-sc);
+    		var ry3=rx2*sc+ry2*cc;
+    		var rz3=rz2;
+    		
+    		this.mcList[j].cx=rx3;
+    		this.mcList[j].cy=ry3;
+    		this.mcList[j].cz=rz3;
+    		
+    		per=d/(d+rz3);
+    		
+    		this.mcList[j].x=(howElliptical*rx3*per)-(howElliptical*2);
+    		this.mcList[j].y=ry3*per;
+    		this.mcList[j].scale=per;
+    		this.mcList[j].alpha=per;
+    		
+    		this.mcList[j].alpha=(this.mcList[j].alpha-0.6)*(10/6);
+    	}
+    	
+    	TB_doPosition.call(this);
+    	TB_depthSort.call(this);
+    }
 
-function updateBall()
-{
-	var a;
-	var b;
-	
-	if(active)
-	{
-		a = (-Math.min( Math.max( -mouseY, -size ), size ) / radius ) * tspeed;
-		b = (Math.min( Math.max( -mouseX, -size ), size ) / radius ) * tspeed;
-	}
-	else
-	{
-		a = lasta * 0.98;
-		b = lastb * 0.98;
-	}
-	
-	lasta=a;
-	lastb=b;
-	
-	if(Math.abs(a)<=0.01 && Math.abs(b)<=0.01)
-	{
-		return;
-	}
-	
-	var c=0;
-	TB_sineCosine(a,b,c);
-	for(var j=0;j<mcList.length;j++)
-	{
-		var rx1=mcList[j].cx;
-		var ry1=mcList[j].cy*ca+mcList[j].cz*(-sa);
-		var rz1=mcList[j].cy*sa+mcList[j].cz*ca;
-		
-		var rx2=rx1*cb+rz1*sb;
-		var ry2=ry1;
-		var rz2=rx1*(-sb)+rz1*cb;
-		
-		var rx3=rx2*cc+ry2*(-sc);
-		var ry3=rx2*sc+ry2*cc;
-		var rz3=rz2;
-		
-		mcList[j].cx=rx3;
-		mcList[j].cy=ry3;
-		mcList[j].cz=rz3;
-		
-		per=d/(d+rz3);
-		
-		mcList[j].x=(howElliptical*rx3*per)-(howElliptical*2);
-		mcList[j].y=ry3*per;
-		mcList[j].scale=per;
-		mcList[j].alpha=per;
-		
-		mcList[j].alpha=(mcList[j].alpha-0.6)*(10/6);
-	}
-	
-	TB_doPosition();
-	TB_depthSort();
-}
+    var TB_depthSort = function(){
+    	var i=0;
+    	var aTmp=[];
+    	
+    	for(i=0;i<this.aA.length;i++)
+    	{
+    		aTmp.push(this.aA[i]);
+    	}
+    	
+    	aTmp.sort
+    	(
+    		function (vItem1, vItem2)
+    		{
+    			if(vItem1.cz>vItem2.cz)
+    			{
+    				return -1;
+    			}
+    			else if(vItem1.cz<vItem2.cz)
+    			{
+    				return 1;
+    			}
+    			else
+    			{
+    				return 0;
+    			}
+    		}
+    	);
+    	
+    	for(i=0;i<aTmp.length;i++)
+    	{
+    		aTmp[i].style.zIndex=i;
+    	}
+    }
 
-function TB_depthSort()
-{
-	var i=0;
-	var aTmp=[];
-	
-	for(i=0;i<aA.length;i++)
-	{
-		aTmp.push(aA[i]);
-	}
-	
-	aTmp.sort
-	(
-		function (vItem1, vItem2)
-		{
-			if(vItem1.cz>vItem2.cz)
-			{
-				return -1;
-			}
-			else if(vItem1.cz<vItem2.cz)
-			{
-				return 1;
-			}
-			else
-			{
-				return 0;
-			}
-		}
-	);
-	
-	for(i=0;i<aTmp.length;i++)
-	{
-		aTmp[i].style.zIndex=i;
-	}
-}
+    var TB_positionAll = function() {
+    	var phi=0;
+    	var theta=0;
+    	var max=this.mcList.length;
+    	var i=0;
+    	
+    	var aTmp=[];
+    	var oFragment=document.createDocumentFragment();
+    	
+    	for(i=0;i<this.aA.length;i++)
+    	{
+    		aTmp.push(this.aA[i]);
+    	}
+    	
+    	aTmp.sort
+    	(
+    		function ()
+    		{
+    			return Math.random()<0.5?1:-1;
+    		}
+    	);
+    	
+    	for(i=0;i<aTmp.length;i++)
+    	{
+    		oFragment.appendChild(aTmp[i]);
+    	}
+    	
+    	this.append(oFragment);
+    	
+    	for( var i=1; i<max+1; i++){
+    		if( distr )
+    		{
+    			phi = Math.acos(-1+(2*i-1)/max);
+    			theta = Math.sqrt(max*Math.PI)*phi;
+    		}
+    		else
+    		{
+    			phi = Math.random()*(Math.PI);
+    			theta = Math.random()*(2*Math.PI);
+    		}
+    
+    		this.mcList[i-1].cx = radius * Math.cos(theta)*Math.sin(phi);
+    		this.mcList[i-1].cy = radius * Math.sin(theta)*Math.sin(phi);
+    		this.mcList[i-1].cz = radius * Math.cos(phi);
+    		
+    		this.aA[i-1].style.left=this.mcList[i-1].cx+this[0].offsetWidth/2-this.mcList[i-1].offsetWidth/2+'px';
+    		this.aA[i-1].style.top=this.mcList[i-1].cy+this[0].offsetHeight/2-this.mcList[i-1].offsetHeight/2+'px';
+    	}
+    }
 
-function TB_positionAll()
-{
-	var phi=0;
-	var theta=0;
-	var max=mcList.length;
-	var i=0;
-	
-	var aTmp=[];
-	var oFragment=document.createDocumentFragment();
-	
-	for(i=0;i<aA.length;i++)
-	{
-		aTmp.push(aA[i]);
-	}
-	
-	aTmp.sort
-	(
-		function ()
-		{
-			return Math.random()<0.5?1:-1;
-		}
-	);
-	
-	for(i=0;i<aTmp.length;i++)
-	{
-		oFragment.appendChild(aTmp[i]);
-	}
-	
-	oDiv.appendChild(oFragment);
-	
-	for( var i=1; i<max+1; i++){
-		if( distr )
-		{
-			phi = Math.acos(-1+(2*i-1)/max);
-			theta = Math.sqrt(max*Math.PI)*phi;
-		}
-		else
-		{
-			phi = Math.random()*(Math.PI);
-			theta = Math.random()*(2*Math.PI);
-		}
+    var TB_doPosition = function() {
+    	var l=this[0].offsetWidth/2;
+    	var t=this[0].offsetHeight/2;
+    	for(var i=0;i<this.mcList.length;i++)
+    	{
+    		this.aA[i].style.left=this.mcList[i].cx+l-this.mcList[i].offsetWidth/2+'px';
+    		this.aA[i].style.top=this.mcList[i].cy+t-this.mcList[i].offsetHeight/2+'px';
+    		
+    		this.aA[i].style.fontSize=Math.ceil(12*this.mcList[i].scale/2)+8+'px';
+    		
+    		this.aA[i].style.filter="alpha(opacity="+100*this.mcList[i].alpha+")";
+    		this.aA[i].style.opacity=this.mcList[i].alpha;
+    	}
+    }
 
-		mcList[i-1].cx = radius * Math.cos(theta)*Math.sin(phi);
-		mcList[i-1].cy = radius * Math.sin(theta)*Math.sin(phi);
-		mcList[i-1].cz = radius * Math.cos(phi);
-		
-		aA[i-1].style.left=mcList[i-1].cx+oDiv.offsetWidth/2-mcList[i-1].offsetWidth/2+'px';
-		aA[i-1].style.top=mcList[i-1].cy+oDiv.offsetHeight/2-mcList[i-1].offsetHeight/2+'px';
-	}
-}
-
-function TB_doPosition()
-{
-	var l=oDiv.offsetWidth/2;
-	var t=oDiv.offsetHeight/2;
-	for(var i=0;i<mcList.length;i++)
-	{
-		aA[i].style.left=mcList[i].cx+l-mcList[i].offsetWidth/2+'px';
-		aA[i].style.top=mcList[i].cy+t-mcList[i].offsetHeight/2+'px';
-		
-		aA[i].style.fontSize=Math.ceil(12*mcList[i].scale/2)+8+'px';
-		
-		aA[i].style.filter="alpha(opacity="+100*mcList[i].alpha+")";
-		aA[i].style.opacity=mcList[i].alpha;
-	}
-}
-
-function TB_sineCosine( a, b, c)
-{
-	sa = Math.sin(a * dtr);
-	ca = Math.cos(a * dtr);
-	sb = Math.sin(b * dtr);
-	cb = Math.cos(b * dtr);
-	sc = Math.sin(c * dtr);
-	cc = Math.cos(c * dtr);
+    var TB_sineCosine = function( a, b, c){
+    	sa = Math.sin(a * dtr);
+    	ca = Math.cos(a * dtr);
+    	sb = Math.sin(b * dtr);
+    	cb = Math.cos(b * dtr);
+    	sc = Math.sin(c * dtr);
+    	cc = Math.cos(c * dtr);
+    }
+    
+	TB_sineCosine.call(this, 0,0,0 );
+	
+	TB_positionAll.call(this);
+	
+	var _this = this;
+	var callback = function() { updateBall.call(_this); }
+	setInterval(callback, 30);
 }
