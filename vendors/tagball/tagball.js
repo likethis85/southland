@@ -1,26 +1,13 @@
 $.fn.TagBall = function(options) {
-    var radius = 150;
-    var dtr = Math.PI/180;
-    var d=300;
     var active = false;
-    var lasta = 1;
-    var lastb = 1;
-    var distr = true;
-    var tspeed=2;
-    var size=250;
     var howElliptical=1;
     
-    this.mouseX = 0;
-    this.mouseY = 0;
+    this.cfg = $.extend({radius:80,speed:1,distance:500}, options);
+    this.css({'border':'1px solid red','width':'200px','height':'200px'});
 	this.hover(
 	    function() { active = true;},
 	    function() { active = false;}
-	).mousemove(function(e){
-		this.mouseX=e.clientX-(e.srcElement.offsetLeft+e.srcElement.offsetWidth/2);
-		this.mouseY=e.clientY-(e.srcElement.offsetTop+e.srcElement.offsetHeight/2);
-		this.mouseX/=5;
-		this.mouseY/=5;
-	});
+	);
 	
 	this.aA=this.find('a');
 	this.mcList = new Array();
@@ -40,25 +27,17 @@ $.fn.TagBall = function(options) {
     	
     	if(active)
     	{
-    		a = (-Math.min( Math.max( -this.mouseY, -size ), size ) / radius ) * tspeed;
-    		b = (Math.min( Math.max( -this.mouseX, -size ), size ) / radius ) * tspeed;
+    		return;
     	}
     	else
     	{
-    		a = lasta * 0.98;
-    		b = lastb * 0.98;
+    		a = this.cfg.speed*0.18;
+    		b = this.cfg.speed*0.18;
     	}
     	
-    	lasta=a;
-    	lastb=b;
-    	
-    	if(Math.abs(a)<=0.01 && Math.abs(b)<=0.01)
-    	{
-    		return;
-    	}
     	
     	var c=0;
-    	TB_sineCosine(a,b,c);
+    	TB_sineCosine.call(this,a,b,c);
     	for(var j=0;j<this.mcList.length;j++)
     	{
     		var rx1=this.mcList[j].cx;
@@ -77,7 +56,7 @@ $.fn.TagBall = function(options) {
     		this.mcList[j].cy=ry3;
     		this.mcList[j].cz=rz3;
     		
-    		per=d/(d+rz3);
+    		per=this.cfg.distance/(this.cfg.distance+rz3);
     		
     		this.mcList[j].x=(howElliptical*rx3*per)-(howElliptical*2);
     		this.mcList[j].y=ry3*per;
@@ -155,20 +134,11 @@ $.fn.TagBall = function(options) {
     	this.append(oFragment);
     	
     	for( var i=1; i<max+1; i++){
-    		if( distr )
-    		{
-    			phi = Math.acos(-1+(2*i-1)/max);
-    			theta = Math.sqrt(max*Math.PI)*phi;
-    		}
-    		else
-    		{
-    			phi = Math.random()*(Math.PI);
-    			theta = Math.random()*(2*Math.PI);
-    		}
-    
-    		this.mcList[i-1].cx = radius * Math.cos(theta)*Math.sin(phi);
-    		this.mcList[i-1].cy = radius * Math.sin(theta)*Math.sin(phi);
-    		this.mcList[i-1].cz = radius * Math.cos(phi);
+			phi = Math.acos(-1+(2*i-1)/max);
+			theta = Math.sqrt(max*Math.PI)*phi;
+    		this.mcList[i-1].cx = this.cfg.radius * Math.cos(theta)*Math.sin(phi);
+    		this.mcList[i-1].cy = this.cfg.radius * Math.sin(theta)*Math.sin(phi);
+    		this.mcList[i-1].cz = this.cfg.radius * Math.cos(phi);
     		
     		this.aA[i-1].style.left=this.mcList[i-1].cx+this[0].offsetWidth/2-this.mcList[i-1].offsetWidth/2+'px';
     		this.aA[i-1].style.top=this.mcList[i-1].cy+this[0].offsetHeight/2-this.mcList[i-1].offsetHeight/2+'px';
@@ -191,6 +161,7 @@ $.fn.TagBall = function(options) {
     }
 
     var TB_sineCosine = function( a, b, c){
+        var dtr = 0.01734218;
     	sa = Math.sin(a * dtr);
     	ca = Math.cos(a * dtr);
     	sb = Math.sin(b * dtr);
