@@ -2,7 +2,7 @@ $.fn.TagBall = function(options) {
     var active = false;
     var howElliptical=1;
     
-    this.cfg = $.extend({radius:80,speed:1,distance:500}, options);
+    this.cfg = $.extend({radius:80,speed:10,distance:500}, options);
     this.css({'width':'230px','height':'230px'});
 	this.hover(
 	    function() { active = true;},
@@ -176,5 +176,5 @@ $.fn.TagBall = function(options) {
 	
 	var _this = this;
 	var callback = function() { updateBall.call(_this); }
-	setInterval(callback, 30);
+	setInterval(callback, 100);
 }
