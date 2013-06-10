@@ -8,6 +8,7 @@ class main extends general
 	
 	function publish()
 	{
+	    $this->tTitle = $this->tProject['title'].'-'.T('Publish New Topic');
 		$submittopic = $this->spArgs("submit");
 		if($submittopic == 1)
 		{
@@ -63,6 +64,7 @@ class main extends general
                 'id' => $this->spArgs('id')
             );
             $this->tTopic = spClass('forumModel')->find($condition);
+            $this->tTitle = $this->tProject['title'].'-'.T('EditTopic').'-'.$this->tTopic['subject'];
 			$this->display("forum/update.html");
 		}
 	}
@@ -106,6 +108,7 @@ class main extends general
         }
 
 		$this->tRow = spClass('forumModel')->find(array('id'=>$fid));
+		$this->tTitle = $this->tProject['title'].'-'.$this->tRow['subject'];
         if($this->tRow['commentable'])
             $this->tComments = spClass('commentModel')->getForumComments($fid);
         else

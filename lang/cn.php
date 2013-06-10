@@ -97,6 +97,7 @@ return array(
 'Keyword'           => '关键字',
 'WikiContent'       => '内容',
 'CreateNewWiki'     => '发布词条',
+'SeachWiki'         => '搜索词条',
 
 /* Users */
 'Signon'        =>  '注册',

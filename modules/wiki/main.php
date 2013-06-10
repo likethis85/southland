@@ -31,6 +31,7 @@ class main extends general
             spClass('wikiModel')->CreateWiki($data, $keywords);
             $this->jumpWikiPage();
         } else {
+            $this->tTitle = $this->tProject['title'].'-'.T('Publish New Wiki');
             $this->display('wiki/add.html');
         }
 	}
@@ -79,6 +80,7 @@ class main extends general
             exit;
         }
 	    $this->tWiki = spClass('wikiModel')->getWikiDetail($wid);
+	    $this->tTitle = $this->tProject['title'].'-'.$this->tWiki['brief'];
 		$this->display("wiki/view.html");
 	}
     function search(){
@@ -101,6 +103,7 @@ class main extends general
         }
         $this->tModule = 'wiki';
         $this->tWikis = $Wikis;
+        $this->tTitle = $this->tProject['title'].'-'.T('SeachWiki')."[$keyword]";
         $this->display("page.html");
     }
 	public function __destruct(){
