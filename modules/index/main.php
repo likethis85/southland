@@ -11,6 +11,7 @@ class main extends general
 	}
 	
 	function index(){ // 这里是首页
+	    $this->tTitle = T('FirstPage');
 	    $this->tNid = 0;
         spClass('spSession')->getUser()->setCurrentNid($this->tNid);
         $this->tProjects = spClass('projectModel')->getProjects();
@@ -73,6 +74,7 @@ class main extends general
 		}
 		
 		if($this->tNid==1) {
+		    $this->tTitle = $this->tProject['title'].'-'.T('ProjectDesc');
             $this->tMembers = spClass('projectModel')->getProjectMembers();
 		    $tTimeline = array();
             $timelines = spClass('timelineModel')->getProject($this->tCurrProj);
@@ -88,14 +90,17 @@ class main extends general
         }
 	}
 	function _forum(){
+	    $this->tTitle = $this->tProject['title'].'-'.T('Topic');
     	$objForum = spClass("forumModel");
         $this->tSubjects = $objForum->getTopics();
 	}
 
     function _task() {
+        $this->tTitle = $this->tProject['title'].'-'.T('Task');
         $this->tTasks = spClass('taskModel')->getTasks($this->tCurrProj);
     }
     function _issue() {
+        $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
         $uom = spClass('userorgModel');
         $pid = $this->tCurrProj;
         $uid = $this->tUser['id'];
@@ -124,6 +129,7 @@ class main extends general
         unset($tMembers);
     }
     function _wiki() {
+        $this->tTitle = $this->tProject['title'].'-'.T('Wiki');
         $Wikis = spClass('wikiModel')->getWikis();
         foreach($Wikis as &$wiki){
             $str = strip_tags(substr($wiki['content'], 0, 512), '<img>');
