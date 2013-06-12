@@ -4,7 +4,7 @@ html {
 body { 
     margin:0;
     font-size: 62.5%; 
-    line-height: 1; 
+    line-height: 180%; 
     font-family: "Trebuchet MS",Trebuchet,Arial,Helvetica,Sans-serif;
 }
 ol, ul { 
