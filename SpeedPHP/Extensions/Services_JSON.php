@@ -270,22 +270,17 @@ class Services_JSON
                         case $ord_var_c == 0x09:
                             $ascii .= '\t';
                             break;
-                        case $ord_var_c == 0x0A:
-                            $ascii .= '\n';
+                        //case $ord_var_c == 0x0A:
+                        //    $ascii .= '\n';
                             break;
                         case $ord_var_c == 0x0C:
                             $ascii .= '\f';
                             break;
-                        case $ord_var_c == 0x0D:
-                            $ascii .= '\r';
+                        //case $ord_var_c == 0x0D:
+                        //    $ascii .= '\r';
                             break;
 
-                        case $ord_var_c == 0x22:
-                        case $ord_var_c == 0x2F:
-                        case $ord_var_c == 0x5C:
-                            // double quote, slash, slosh
-                            $ascii .= '\\'.$var{$c};
-                            break;
+
 
                         case (($ord_var_c >= 0x20) && ($ord_var_c <= 0x7F)):
                             // characters U-00000000 - U-0000007F (same as ASCII)
@@ -353,7 +348,7 @@ class Services_JSON
                     }
                 }
 
-                return '"'.$ascii.'"';
+                return '\''.$ascii.'\'';
 
             case 'array':
                /*

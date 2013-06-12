@@ -61,7 +61,17 @@ class general extends spController
         $this->tNid = $spSess->getUser()->getCurrentNid();
 	}
 	
-	
+	public function array2class($arr){
+	    if(is_array($arr)){
+            $obj = new stdClass();
+            foreach($arr as $k => $v){
+                $obj->$k = $v;
+            }
+            return $obj;
+        }
+        
+        return $arr;
+	}
 	/**
 	 * 错误提示程序  应用程序的控制器类可以覆盖该函数以使用自定义的错误提示
 	 * @param $msg   错误提示需要的相关信息
