@@ -66,12 +66,14 @@ return array(
 'TaskFeature' => '新功能',
 
 /* 话题相关 */
+'Topic'     =>  '讨论组',
 'Publish New Topic' => '发布新话题',
 'DelTopic' => '删除话题',
 'EditTopic' => '编辑话题',
 'UpdateTopic' => '更新话题',
 
 /* 问题相关 */
+'BugTracker'    =>  '问题跟踪',
 'CreateNewIssue' => '报告该问题',
 'NewIssues' =>  '创建新问题',
 'IssueTitle'=>'问题简述',
@@ -95,6 +97,7 @@ return array(
 'Keyword'           => '关键字',
 'WikiContent'       => '内容',
 'CreateNewWiki'     => '发布词条',
+'SeachWiki'         => '搜索词条',
 
 /* Users */
 'Signon'        =>  '注册',
@@ -132,8 +135,6 @@ return array(
 
 /*常规*/
 'FirstPage'     =>  '首页',
-'Topic'         =>  '讨论组',
-'BugTracker'    =>  '问题跟踪',
 'Wiki'          =>  '维基',
 'Owner'         =>  '负责人',
 'Manager'       =>  '经理',

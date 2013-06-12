@@ -45,7 +45,8 @@ class main extends general
         }
 
 		if(1 != $this->spArgs('submit')) {
-			$this->display(WORKSPACE.'/update.html');
+		    $this->tTitle = $this->tProject['title'].'-'.T('EditProject');
+			$this->display('project/update.html');
 		} else {
 			$objModel = spClass('projectModel');
             $condition = array(

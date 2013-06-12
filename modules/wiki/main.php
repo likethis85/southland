@@ -31,6 +31,7 @@ class main extends general
             spClass('wikiModel')->CreateWiki($data, $keywords);
             $this->jumpWikiPage();
         } else {
+            $this->tTitle = $this->tProject['title'].'-'.T('Publish New Wiki');
             $this->display('wiki/add.html');
         }
 	}
@@ -79,6 +80,7 @@ class main extends general
             exit;
         }
 	    $this->tWiki = spClass('wikiModel')->getWikiDetail($wid);
+	    $this->tTitle = $this->tProject['title'].'-'.$this->tWiki['brief'];
 		$this->display("wiki/view.html");
 	}
     function search(){
@@ -94,9 +96,14 @@ class main extends general
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
-        
+        $Wikis = spClass('keywordsModel')->findWikis($keyword);
+        foreach($Wikis as &$wiki){
+            $str = strip_tags(substr($wiki['content'], 0, 512), '<img>');
+            $wiki['content'] = preg_replace('/<\s*img/i', '<img width=128 height=128', $str);
+        }
         $this->tModule = 'wiki';
-        $this->tWikis = spClass('keywordsModel')->findWikis($keyword);
+        $this->tWikis = $Wikis;
+        $this->tTitle = $this->tProject['title'].'-'.T('SeachWiki')."[$keyword]";
         $this->display("page.html");
     }
 	public function __destruct(){

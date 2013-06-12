@@ -39,7 +39,7 @@ class userModel extends spModel
 		    if(WORKSPACE==='admin')
 		        return false;
             spClass('spSession')->getUser()->setUserInfo($result);
-			// 成功通过验证，下面开始对用户的权限进行会话设置，最后返回用户ID
+			spClass('spSession')->getUser()->setCurrentProject(0);
 			return true;
 		}else{
 			// 找不到匹配记录，用户名或密码错误，返回false

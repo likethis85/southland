@@ -40,6 +40,7 @@ class main extends general
 			}
 			$this->jumpIssuePage();
 		} else {
+		    $this->tTitle = $this->tProject['title'].'-'.T('CreateNewIssue');
 		    $tid = $this->spArgs('tid');
 		    $this->tTid = $tid===null ? 0:$tid;  
 		    $this->tTasks = spClass('taskModel')->getTasks($pid);
@@ -61,6 +62,7 @@ class main extends general
         }
         
         $this->tIssue = spClass('issueModel')->find(array('id' => $iid));
+        $this->tTitle = $this->tProject['title'].'-'.$this->tIssue['brief'];
         $this->tComments = spClass('commentModel')->getIssueComments($iid);
         $this->display('issue/view.html');
     }

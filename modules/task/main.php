@@ -36,6 +36,7 @@ class main extends general
             spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
 			$this->jumpTaskPage();
 		} else {
+		    $this->tTitle = $this->tProject['title'].'-'.T('AddTask');
 			$this->display("task/add.html");
 		}
 	}
@@ -53,6 +54,7 @@ class main extends general
         }
 
         $this->tTask = spClass('taskModel')->find(array('id' => $tid));
+        $this->tTitle = $this->tProject['title'].'-'.$this->tTask['subject'];
         $this->tComments = spClass('commentModel')->getTaskComments($tid);
         $this->display('task/view.html');
     }
@@ -86,6 +88,7 @@ class main extends general
                 'id' => $this->spArgs('id')
             );
             $this->tTask = spClass('taskModel')->find($condition);
+            $this->tTitle = $this->tProject['title'].'-'.T('EditTask').'-'.$this->tTask['subject'];
             $this->display('task/update.html');
         }
     }

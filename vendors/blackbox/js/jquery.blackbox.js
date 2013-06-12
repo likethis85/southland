@@ -44,7 +44,7 @@
 
         var default_config = {
             'clickOverlayEffect': 'shake',
-            'overlayColor': '#000',
+            'overlayColor': '#eee',
             'overlayOpacity': .6,
             'allowPromptBlank': false,
             'displayClose': true,
@@ -420,13 +420,16 @@
         if (!$("#BlackBox")[0]) {
             $("body").append('<div id="BlackBox"><div id="BBOverlay"></div></div>');
         }
-        var $BBOverlay = $("#BBOverlay"),
-            config = this.config;
-        if (!delay_appear) {
-            $BBOverlay.css({
-                background_color: config.overlayColor
-            }).fadeTo(0, 0).fadeTo(200, config.overlayOpacity);
-        }
+        var $BBOverlay = $("#BBOverlay");
+        $BBOverlay.css({
+            'position': 'absolute',
+            'top': '0',
+            'left': '0',
+            'z-index': '-1',
+            '_z-index': '7000',
+            'background-color': this.config.overlayColor
+        }).fadeTo(0,0).fadeTo(200, this.config.overlayOpacity);
+        
         var resize = function () {
             $BBOverlay.width($W.width() + "px").height($W.height() + "px");
         };
