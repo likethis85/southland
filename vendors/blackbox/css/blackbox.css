@@ -14,27 +14,18 @@
     font-size: 14px;
 }
 
-#BBOverlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: black url("../images/fullbody.png") repeat;
-    z-index: -1;
-    _z-index: 7000;
-}
-
 .Dragable {
     cursor:move;
 }
 
 .BlackBoxContent {
     z-index: 8050;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, .8);
     background: none\9;
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4D000000,endColorstr=#4D000000)\9;
     position: absolute;
-    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
+    -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
