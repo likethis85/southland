@@ -6,19 +6,19 @@ $.fn.HoverMenu = function(options) {
     var _e = this[0];
     var m = $('<div style="background:transparent;position:absolute;">'+
                 '<div style="width:23px;height:16px;background:transparent;"><div id="hm_icon"  style="width:16px;height:16px;float:left;background:transparent;"></div>' +
-                '<div id="hm_arrow" style="width:7px;height:16px;float:left;background:transparent;"></div></div>' +
+                '<div id="hm_arrow" style="display:none;background-color:#6E88B7;text-align:center;color:white;line-height:16px;width:7px;height:16px;float:left;">v</div></div>' +
               '</div>');
     m.hover(
         function(){
             $(this).find('div:first').css({'border':'1px solid #6E88B7'});
-            $(this).find('#hm_arrow').css('background-color','#6E88B7');
+            $(this).find('#hm_arrow').show();
             $(this).click(function(){
                 $(this).find('#hm_menu').slideDown('fast');
             });
         },
         function(){
             $(this).find('div:first').css({'border':'none'});
-            $(this).find('#hm_arrow').css('background-color','transparent');
+            $(this).find('#hm_arrow').hide();
             $(this).find('#hm_menu').slideUp('fast');
         }
     );

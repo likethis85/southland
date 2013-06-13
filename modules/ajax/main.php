@@ -236,7 +236,7 @@ class main extends general
         exit;
     }
 
-    /** @brief delete timeline event
+    /** @brief 删除时间线事件
      *
      */
     function dtm(){
@@ -266,6 +266,31 @@ class main extends general
         exit;
     }
 
+    /** @brief 收消息
+     *
+     */
+    function rmsg(){
+        $uid = $this->tUser['id'];
+        if(empty($uid)){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Invalid Parameters');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+        
+        $msgs = spClass('messageModel')->receiver_message($uid);
+        if(false == $msgs){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error DB operation failed');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+        
+        
+        $this->ajaxResult->msg = $msgs;
+        echo spClass('Services_JSON')->encode($this->ajaxResult);
+        exit;
+    }
 	function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}

@@ -178,6 +178,7 @@ class main extends general
     function cmt() {
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
+        $pid = $this->tCurrProj;
         if(!spClass('taskModel')->allow($tid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;

@@ -217,12 +217,12 @@ class main extends general
                     $this->array2class($op_verified),
                     $this->array2class($op_completed),
                     $this->array2class($op_pending)));
-        else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$issue['owner']))
+        else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$issue['owner']['id']))
             echo json_encode(array(
                     $this->array2class($op_open),
                     $this->array2class($op_fixed),
                     $this->array2class($op_pending)));
-        else if($uo['QAMgr'] || ($uo['QA']&&$uid==$issue['owner']))
+        else if($uo['QAMgr'] || ($uo['QA']&&$uid==$issue['owner']['id']))
             echo json_encode(array(
                     $this->array2class($op_open),
                     $this->array2class($op_verified),
