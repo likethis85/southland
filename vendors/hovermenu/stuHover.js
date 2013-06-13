@@ -1,4 +1,7 @@
 $.fn.HoverMenu = function(options) {
+    if(options.item.length==0)
+        return;
+
     var settings = $.extend({'lazy':false}, options);
     var _e = this[0];
     var m = $('<div style="background:transparent;position:absolute;">'+

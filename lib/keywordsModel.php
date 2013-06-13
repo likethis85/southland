@@ -65,7 +65,7 @@ class keywordsModel extends spModel
     }
     public function findForProject($pid){
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "SELECT content FROM {$prefix}keywords WHERE id in (SELECT id FROM {$prefix}keywords_ref WHERE prj=$pid or prj=0)";
+        $sql = "SELECT content FROM {$prefix}keywords WHERE id in (SELECT ref FROM {$prefix}keywords_ref WHERE prj=$pid or prj=0)";
         return $this->findSql($sql);
     }
     public function findForWiki($wid) {
@@ -77,7 +77,7 @@ class keywordsModel extends spModel
     
     public function findWikis($keyword){
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "SELECT * FROM {$prefix}wiki WHERE id IN(SELECT sid FROM {$prefix}keywords as a,{$prefix}keywords_ref as b WHERE a.id=b.ref and b.scope=".$this->scope_wiki.")";
+        $sql = "SELECT * FROM {$prefix}wiki WHERE id IN(SELECT sid FROM {$prefix}keywords as a,{$prefix}keywords_ref as b WHERE a.content=\"$keyword\" AND a.id=b.ref and b.scope=".$this->scope_wiki.")";
         return $this->findSql($sql);
     }
 }

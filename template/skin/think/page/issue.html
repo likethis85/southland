@@ -1,12 +1,19 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
+    $.fn.dataTableExt.afnSortData['iStatus'] = function  ( oSettings, iColumn ){
+        var aData = [];
+        $( 'td:eq('+iColumn+') div>img', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            aData.push( this.src );
+        });
+        return aData;
+    }
     $(document).ready(function(){
         $('#issues').dataTable({
             "bJQueryUI":true,
             "sPaginationType":"full_numbers",
             "aoColumns" : [
-                //{"sClass": "center", "bSortable": false},
-                {"bSortable": false},
+                null,
+                {"sSortDataType": "iStatus", "sType": "string" },
                 null,
                 null,
                 null,
@@ -14,6 +21,14 @@
                 null
             ]
         });
+
+        <{foreach item=item from=$tIssues}>
+        $('#t<{$item.id}>').each(function(i,e){
+            $(e).HoverMenu({
+                'item' : <{spIssueOperation issue=$item}>
+                });
+            });
+        <{/foreach}>
     });
     </script>
     <div class="page_op">
@@ -24,9 +39,10 @@
         </table>
 
     </div>
-    <table id="issues" name="issues" class="display" width="100%">
+    <table id="issues" class="display" style="line-height:108%;">
         <thead>
             <tr>
+                <th>ID</th>
                 <th><{T w="IssueStatus"}></th>
                 <th><{T w="IssueTitle"}></th>
                 <th><{T w="IssueReporter"}></th>
@@ -38,36 +54,17 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
+                <td><{$itemI.id}></td>
                 <td>
-                    <ul class="hm_nav">
-                        <{if $itemI.status==1}>
-                        <img src="<{$skinpath}>/img/open.png" width=16 height=16>
-                        <{elseif $itemI.status==2}>
-                        <img src="<{$skinpath}>/img/fixed.png" width=16 height=16>
-                        <{else}>
-                        <img src="<{$skinpath}>/img/open.png" width=16 height=16>
-                        <{/if}>
-                        <{if $tUser.role.Manager || ($tUser.id == $itemI.owner.id)}>
-                        <ul class="hm_sub">
-                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $itemI.owner.id)}>
-                           <li><a href="/issue.php?a=open&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/open.png" width=16 height=16><{T w='IssueOpen'}></a></li>
-                           <{/if}>
-                           
-                           <{if $tUser.role.Manager || ($tUser.role.Dev && $tUser.id == $itemI.owner.id)}>
-                           <li><a href="/issue.php?a=fixed&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/fixed.png"width=16 height=16><{T w='IssueFixed'}></a></li>
-                           <{/if}>
-                           
-                           <{if $tUser.role.Manager || ($tUser.role.QA && $tUser.id == $itemI.owner.id)}>
-                           <li><a href="/issue.php?a=verified&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/verified.png" width=16 height=16><{T w='IssueVerified'}></a></li>
-                           <{/if}>
-                           
-                           <{if $tUser.role.Manager}>
-                           <li><a href="/issue.php?a=close&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/completed.png"width=16 height=16><{T w='TaskComplete'}></a></li>
-                           <li><a href="/issue.php?a=pending&iid=<{$itemI.id}>"><img src="<{$skinpath}>/img/pending.png"width=16 height=16><{T w='TaskPending'}></a></li>
-                           <{/if}>
-                        </ul>
-                        <{/if}>
-                    </ul>
+                <div id="t<{$itemI.id}>">
+                    <{if $itemI.status==1}>
+                    <img src="<{$skinpath}>/img/open.png" width=16 height=16>
+                    <{elseif $itemI.status==2}>
+                    <img src="<{$skinpath}>/img/fixed.png" width=16 height=16>
+                    <{else}>
+                    <img src="<{$skinpath}>/img/open.png" width=16 height=16>
+                    <{/if}>
+                </div>
                 </td>
                 <td><a href="/issue.php?a=view&id=<{$itemI.id}>"><{$itemI.brief}></a></td>
                 <td><{$itemI.reporter.nick}></td>

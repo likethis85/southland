@@ -103,6 +103,9 @@ class main extends general
         $this->tSubjects = $objForum->getTopics();
 	}
 
+    /** @brief 用于Smarty的函数，用于显示可用的Task操作项
+     *
+     */
     function __template_TaskOperation($param){
         $uid = $this->tUser['id'];
         $task = $param['task'];
@@ -163,11 +166,70 @@ class main extends general
         else
             echo json_encode(array(
                     $this->array2class($op_bug)));
-    }       
+    }
+    /** @brief 任务页
+     *
+     */
     function _task() {
         $this->tTitle = $this->tProject['title'].'-'.T('Task');
         $this->tTasks = spClass('taskModel')->getTasks($this->tCurrProj);
         spAddViewFunction('spTaskOperation', array(&$this, '__template_TaskOperation'));
+    }
+
+    function __template_IssueOperation($param) {
+        $uid = $this->tUser['id'];
+        $issue = $param['issue'];
+        $uo = spClass('spSession')->getUser()->getRole();
+        $op_open = array(
+            'icon' => '/'.$this->skinpath.'/img/open.png',
+            'caption' => T('IssueOpen'),
+            'callback' => 'location.href="/issue.php?a=open&iid="+elem.id.replace("i","")'
+        );
+
+        $op_fixed = array(
+            'icon' => '/'.$this->skinpath.'/img/fixed.png',
+            'caption' => T('IssueFixed'),
+            'callback' => 'location.href="/issue.php?a=fixed&iid="+elem.id.replace("i","")'
+        );
+
+        $op_verified = array(
+            'icon' => '/'.$this->skinpath.'/img/verifed.png',
+            'caption' => T('IssueVerified'),
+            'callback' => 'location.href="/issue.php?a=verified&iid="+elem.id.replace("i","")'
+        );
+
+        $op_completed = array(
+            'icon' => '/'.$this->skinpath.'/img/completed.png',
+            'caption' => T('IssueCompleted'),
+            'callback' => 'location.href="/issue.php?a=completed&iid="+elem.id.replace("i","")'
+        );
+
+        $op_pending = array(
+            'icon' => '/'.$this->skinpath.'/img/pending.png',
+            'caption' => T('IssuePending'),
+            'callback' => 'location.href="/issue.php?a=pending&iid="+elem.id.replace("i","")'
+        );
+
+        if($uo['Manager'])
+            echo spClass('Services_JSON')->encode(array(
+                    $this->array2class($op_open),
+                    $this->array2class($op_fixed),
+                    $this->array2class($op_verified),
+                    $this->array2class($op_completed),
+                    $this->array2class($op_pending)));
+        else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$issue['owner']))
+            echo json_encode(array(
+                    $this->array2class($op_open),
+                    $this->array2class($op_fixed),
+                    $this->array2class($op_pending)));
+        else if($uo['QAMgr'] || ($uo['QA']&&$uid==$issue['owner']))
+            echo json_encode(array(
+                    $this->array2class($op_open),
+                    $this->array2class($op_verified),
+                    $this->array2class($op_completed),
+                    $this->array2class($op_pending)));
+        else
+            echo spClass('Services_JSON')->encode(array());
     }
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
@@ -197,6 +259,7 @@ class main extends general
         }
         $this->tMembers = $tMembers;
         unset($tMembers);
+        spAddViewFunction('spIssueOperation', array(&$this, '__template_IssueOperation'));
     }
     function _wiki() {
         $this->tTitle = $this->tProject['title'].'-'.T('Wiki');
