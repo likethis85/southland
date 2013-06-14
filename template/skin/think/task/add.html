@@ -11,6 +11,10 @@
             }
         });
         
+        $('div.file .clear').hover(
+            function(){$(this).css({'background-color':'green'});},
+            function(){$(this).css({'background-color':'transparent'});}
+        );
         $('input.file').hover(
             function() { $(this).prev().css({'background-color':'orange'})},
             function() { $(this).prev().css({'background-color':'transparent'})}
@@ -21,12 +25,15 @@
                 function() { $(this).prev().css({'background-color':'orange'})},
                 function() { $(this).prev().css({'background-color':'transparent'})}
             );
-        });
-        $('div.file .clear').click(function() {
-            if($('div.file table tr').length == 1)
-                return;
-                
-            $(this.parentNode.parentNode).remove();
+            $('div.file .clear').hover(
+                function(){$(this).css({'background-color':'green'});},
+                function(){$(this).css({'background-color':'transparent'});}
+            ).click(function() {
+                if($('div.file table tr').length == 1)
+                    return;
+                    
+                $(this.parentNode.parentNode).remove();
+            });
         });
     });
 </script>
