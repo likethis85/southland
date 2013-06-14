@@ -146,7 +146,6 @@ li.puser {
     margin-bottom:2px;
 }
 div.file {
-    position:relative;
     min-height:24px;
 }
 div.file .browse{
@@ -158,7 +157,6 @@ div.file .browse{
     width:70px;
 }
 div.file .clear{
-    position:absolute;
     left:78px;
     background-color:#FFF; 
     border:1px solid #CDCDCD;
@@ -172,9 +170,4 @@ div.file .file{
     height:24px; 
     filter:alpha(opacity:0);
     opacity: 0;
-}
-div.file table{
-    width:100%;
-    position:relative;
-    top:26px;
 }

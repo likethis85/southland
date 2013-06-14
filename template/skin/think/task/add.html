@@ -12,25 +12,26 @@
         });
         
         $('input.file').hover(
-            function() { $('div.file .browse').css({'background-color':'orange'})},
-            function() {$('div.file .browse').css({'background-color':'transparent'})}
+            function() { $(this).prev().css({'background-color':'orange'})},
+            function() { $(this).prev().css({'background-color':'transparent'})}
         ).live('change', function(){
-            $('div.file table').remove();;
-            var tbl = $('<table></table>');
-            for(i=0;i<this.files.length;i++) {
-                tbl.append('<tr><td>'+this.files[i].name+'</td></tr>');
-            }
-            $('div.file').append(tbl);
+            $(this.parentNode.parentNode.parentNode).append('<td>'+this.value+'</td>');
+            $('div.file table').append($('<tr><td><div style="position:relative;width:80px;height:24px;"><input type="button" class="browse" value=\"<{T w="Attachment"}>\" /><input type="file" class="file" name="attachments[]" /></div></td><td><input type="button" class="clear" value=\"<{T w="Clear"}>\" /></td></tr>'));
+            $('input.file').hover(
+                function() { $(this).prev().css({'background-color':'orange'})},
+                function() { $(this).prev().css({'background-color':'transparent'})}
+            );
         });
         $('div.file .clear').click(function() {
-            $('div.file table tr').remove();
-            $('div.file .file').remove();
-            $('div.file').append($('<input type="file" class="file" name="file[]" multiple />'));
+            if($('div.file table tr').length == 1)
+                return;
+                
+            $(this.parentNode.parentNode).remove();
         });
     });
 </script>
 <div style="clear:both;margin-left:32px;margin-top:32px;width:600px;">
-    <form id="form" method="post">
+    <form id="form" method="post" enctype="multipart/form-data">
         <table>
             <tr>
                 <td><label style="margin-right:8px" for="subject"><{T w='TaskTitle'}></label></td>
@@ -57,10 +58,16 @@
             <tr>
                 <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='Attachment'}></label></td>
                 <td>
-                    <div class="file">  
-                        <input type='button' class='browse' value='<{T w="Attachment"}>' />
-                        <input type="file" class="file" name="file[]" multiple />
-                        <input type="button" class="clear" value='<{T w="Clear"}>'/>
+                    <div class="file">
+                        <table>
+                            <tr>
+                                <td><div style="position:relative;width:80px;height:24px;">
+                                    <input type='button' class='browse' value='<{T w="Attachment"}>' />
+                                    <input type="file" class="file" name="attachments[]" />
+                                </div></td>
+                                <td><input type="button" class="clear" value='<{T w="Clear"}>'/></td>
+                            </tr>
+                        </table>
                     </div>
                 </td>
             </tr>

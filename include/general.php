@@ -60,7 +60,55 @@ class general extends spController
         );
         $this->tNid = $spSess->getUser()->getCurrentNid();
 	}
-	
+	/** @brief 保存上传文件到个人目录
+	 *
+	 */
+	public function saveFile($uid, $files, $msg){
+	    if(empty($uid))
+	        return false;
+	        
+	    if(empty($files))
+	        return false;
+	        
+	    $dir = APP_PATH."/mass/$uid";
+        __mkdirs($dir, 0777);
+        __mkdirs("$dir/origin", 0777);
+        __mkdirs("$dir/thumbnail", 0777);
+        __mkdirs("$dir/avatar", 0777);
+        
+        $stores = array();
+        $uf = spClass('spUpload', array('save_path' => "$dir/origin"));
+        foreach($files as $attachments){
+            for($i=0; $i<count($attachments['name']);$i++){
+                if(empty($attachments['name'][$i]))
+                    continue;
+                $file = array(  'name' => $attachments['name'][$i],
+                                'type' => $attachments['type'][$i],
+                                'tmp_name' => $attachments['tmp_name'][$i],
+                                'error' => $attachments['error'][$i],
+                                'size' => $attachments['size'][$i]);
+                if(TRUE === $uf->upload_file($file)) {
+                    $total_size += $file['size'];
+                    array_push($stores, $uf->file_name);
+                }
+                
+            }
+        }
+        
+        if($total_size){
+            $recorder = array(
+                'uid' => $uid,
+                'bytes' => $total_size,
+                'reason' => $msg,
+            );
+            spClass('occupyModel')->create($recorder);
+        }
+        
+        return $stores;
+	}
+	/** @brief 把数组转化为一个类，方便json输出
+	 *
+	 */
 	public function array2class($arr){
 	    if(is_array($arr)){
             $obj = new stdClass();

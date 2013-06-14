@@ -17,6 +17,7 @@ class main extends general
 
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
+		    $files = $this->saveFile($uid, $_FILES, 'attachments for task'.$this->spArgs('subject'));
 			$data = array(
 			    'pid' => $this->spArgs('id'),
 			    'prj' => $pid,
@@ -40,7 +41,7 @@ class main extends general
                     'msgbody' => "/task.php?a=view&tid=$tid"
                 );
                 foreach($uos as $uo){
-                    spClass('messageModel')->send_msg($uid, $uo['id'],$msg);
+                    spClass('messageModel')->send_message($uid, $uo['id'],$msg);
                 }
             }
 			$this->jumpTaskPage();
