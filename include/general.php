@@ -89,7 +89,7 @@ class general extends spController
                                 'size' => $attachments['size'][$i]);
                 if(TRUE === $uf->upload_file($file)) {
                     $total_size += $file['size'];
-                    array_push($stores, $uf->file_name);
+                    array_push($stores, '/mass/origin/'.$uf->file_name);
                 }
                 
             }

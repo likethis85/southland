@@ -33,6 +33,7 @@ class main extends general
                 spClass('keeper')->speak(T('Error DB operation failed'));
                 exit;
             }
+            spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
             if($data['acl']<2) {
                 spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
                 $uos = spClass('userorgModel')->getUsersByProject($pid);
@@ -66,6 +67,7 @@ class main extends general
         $this->tTask = spClass('taskModel')->find(array('id' => $tid));
         $this->tTitle = $this->tProject['title'].'-'.$this->tTask['subject'];
         $this->tComments = spClass('commentModel')->getTaskComments($tid);
+        $this->tAttachments = spClass('attachmentModel')->getTaskAttachment($tid);
         $this->display('task/view.html');
     }
     function update() {
