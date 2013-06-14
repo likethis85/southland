@@ -97,10 +97,37 @@ class main extends general
             $this->tTimeline = $tTimeline;
         }
 	}
+
+    /** @brief 用户smarty的函数，显示讨论组话题的可操作项
+     *
+     */
+    function __template_TopicOperation($param){
+        $uid = $this->tUser['id'];
+        $topic = $param['topic'];
+        $uo = spClass('spSession')->getUser()->getRole();
+        $op_edit = array(
+            'icon' => '/'.$this->skinpath.'/img/edit.png',
+            'caption' => T('EditTopic'),
+            'callback'=> 'location.href="/forum.php?a=edit&id="+elem.id.replace("f","")'
+        );
+        $op_del = array(
+            'icon' => '/'.$this->skinpath.'/img/delete.png',
+            'caption' => T('DelTopic'),
+            'callback'=> 'if(confirm("'.T('Confirm?').T('DelTopic').'"))location.href="/forum.php?a=del&id="+elem.id.replace("f","")'
+        );
+        if($uid == $topic['author']){
+            echo spClass('Services_JSON')->encode(array(
+                            $this->array2class($op_edit),
+                            $this->array2class($op_del)));                 
+        } else {
+            echo spClass('Services_JSON')->encode(array());
+        }
+    }
 	function _forum(){
 	    $this->tTitle = $this->tProject['title'].'-'.T('Topic');
     	$objForum = spClass("forumModel");
         $this->tSubjects = $objForum->getTopics();
+        spAddViewFunction('spTopicOperation', array(&$this, '__template_TopicOperation'));
 	}
 
     /** @brief 用于Smarty的函数，用于显示可用的Task操作项

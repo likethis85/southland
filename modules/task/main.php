@@ -32,8 +32,17 @@ class main extends general
                 spClass('keeper')->speak(T('Error DB operation failed'));
                 exit;
             }
-
-            spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
+            if($data['acl']<2) {
+                spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
+                $uos = spClass('userorgModel')->getUsersByProject($pid);
+                $msg = array(
+                    'subject' => T('NewTask'),
+                    'msgbody' => "/task.php?a=view&tid=$tid"
+                );
+                foreach($uos as $uo){
+                    spClass('messageModel')->send_msg($uid, $uo['id'],$msg);
+                }
+            }
 			$this->jumpTaskPage();
 		} else {
 		    $this->tTitle = $this->tProject['title'].'-'.T('AddTask');
@@ -170,8 +179,7 @@ class main extends general
             exit;
         }
 
-        spClass('taskModel')->delete(array('id' => $tid));
-        spClass('commentModel')->delete(array('rid' => $tid, 'owner' => 'task'));
+        spClass('taskModel')->drop($tid);
         $this->jumpTaskPage();
     }
 

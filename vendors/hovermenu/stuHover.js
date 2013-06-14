@@ -23,7 +23,7 @@ $.fn.HoverMenu = function(options) {
         }
     );
     
-    var menus = '<div id="hm_menu" style="border:1px solid #0080FF;display:none;background:white;position:relative;top:0px;z-index:100;"><ul>';
+    var menus = '<div id="hm_menu" style="border:1px solid #0080FF;display:none;background:white;position:relative;top:0px;z-index:100;cursor:pointer;"><ul>';
     for(var i=0; i<settings.item.length; i++){
         settings.item[i].callback = new Function('elem', settings.item[i].callback);
         menus += '<li id="'+i+'"><img style="margin-right:6px;" src="'+settings.item[i].icon+'" width=16 height=16>';

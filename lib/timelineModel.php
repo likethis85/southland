@@ -50,11 +50,20 @@ class timelineModel extends spModel
             );
             return $this->Create($data);
     }
+    public function dropTask($tid, $tm) {
+        if(empty($tid))
+            return true;
+
+        if(empty($tm))
+            $tm = date('Y-m-d H:i:s');
+
+        return $this->update(array('scope'=>$this->scope_task, 'sid'=>$tid), array('droptime' => $tm));
+    }
     /** @brief get all timeline events for the project
      *
      */
     public function getProject($pid) {
-        return $this->findAll(array('prj' => $pid));
+        return $this->findAll(array('prj' => $pid, 'droptime'=>0));
     }
 
     /** @brief 把scope值从数值转化为字符串

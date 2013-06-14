@@ -44,4 +44,14 @@ class taskModel extends spModel
         else
             return spClass('userorgModel')->isMemberOfTask($tid, $uid);
     }
+
+    public function drop($tid) {
+        if(empty($tid))
+            return true;
+
+        $droptime=date('Y-m-d H:i:s');
+        spClass('timelineModel')->dropTask($tid, $droptime);
+        spClass('commentModel')->dropTask($tid, $droptime);
+        return $this->update(array('id'=>$tid), array('droptime'=>$droptime));
+    }
 }

@@ -27,13 +27,13 @@ class userorgModel extends spModel
 	 * project related
      ***********************************************************************************************/
 
-    /** @brief add user as project creator
+    /** @brief 添加项目创建者角色
      *
      */
     public function addProjectCreator($pid,$uid) {
         $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_creator));
     }
-    /** @brief retreives all users for the project 
+    /** @brief 获取所有的项目成员
      *
      */
 	public function getUsersByProject($pid) {
@@ -41,10 +41,10 @@ class userorgModel extends spModel
             return false;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select a.role,b.nick,b.id from $prefix"."userorg as a,$prefix"."user as b where a.uid=b.id and a.pid=$pid and a.role<9";
+        $sql = "select a.role,b.nick,b.id from {$prefix}userorg as a,{$prefix}user as b where a.uid=b.id and a.pid=$pid and a.role<9";
         return $this->findSql($sql);
 	}
-    /** @brief retreive all projects the user joined
+    /** @brief 获取该用户参与的所有项目
      *
      */
 	public function getProjectsByUser($uid) {
@@ -52,24 +52,42 @@ class userorgModel extends spModel
             return false;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-	    $sql = "select a.* from ".$prefix."project as a ,".$prefix."userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
+	    $sql = "select a.* from {$prefix}project as a,{$prefix}userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
 	    return $this->findSql($sql);
 	}
+    /** @brief 添加开发经理
+     *
+     */
     public function addDevManager($pid,$uid){
 	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_manager));
     }
+    /** @brief 添加开发成员
+     *
+     */
 	public function addDevMember($pid,$uid) {
 	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
 	}
+    /** @brief 添加测试经理
+     *
+     */
     public function addQAManager($pid,$uid){
 	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_manager));
     }
+    /** @brief 添加测试成员
+     *
+     */
 	public function addQAMember($pid,$uid) {
 	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_member));
 	}
+    /** @brief 添加项目成员
+     *
+     */
 	public function addProjectMember($pid, $uid) {
 	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_member));
 	}
+    /** @brief 添加项目经理
+     *
+     */
 	public function addProjectManager($pid, $uid) {
 	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_manager));
 	}
