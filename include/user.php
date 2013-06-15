@@ -142,17 +142,8 @@ class user extends general
 					$this->error(T("The username address or password you provided does not match our records."), spUrl("user","login"));//"用户名/密码错误，请重新输入！"
 					
 				}else{
-					// 成功登录，跳转。这里要进行判断一下：
-					// 如果用户角色是GBADMIN（管理员）则跳转到admin/index的管理中心
-					// 如果用户角色是GBUSER（普通会员）则跳转回首页
-					$useracl = spClass("spAcl")->get(); // 通过acl的get可以获取到当前用户的角色标识
-					if( "WEBMASTER" == $useracl ){
-					    $this->jump(spUrl("main","index"));
-						//$this->success(T("Welcome, the administrator"), spUrl("main","index"));//登录成功，欢迎您，管理员！
-					}else{
-					    $this->jump(spUrl("main","index"));
-						//$this->success(T("Welcome, Dear Member"), spUrl("main","index"));//登录成功，欢迎您，尊敬的会员！
-					}
+				    // 登录成功，跳转到首页
+					$this->jump(spUrl("main","index"));
 				}
 			}else{
 				// $results不是false，所以没有通过验证，错误信息是$results

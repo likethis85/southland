@@ -1,4 +1,71 @@
 <?php
+/** @brief 用于session的用户信息类型
+ *
+ *  @Detail
+ *      用于描述当前登录用户的信息,与session一起持久化
+ */
+class spUser {
+	private $userInfo = null;
+    private $usingProj = 0;
+    private $currNid = 0;
+
+	public function __construct() {
+        $this->userInfo = array('id' => 0);
+	}
+    public function setUserInfo($uinfo) {
+        $this->userInfo = $uinfo;
+    }
+    public function getUserInfo() {
+        return $this->userInfo;
+    }
+	public function is_guest() {
+        return $this->userInfo['id']==0;
+	}
+	public function is_admin() {
+        return false;
+	}
+	public function is_user() {
+        return $this->userInfo['id']!=0;
+	}
+    public function getAcl() {
+        return $this->userInfo['acl'];
+    }
+	public function getUserAccount() {
+		if(!empty($this->userInfo)) {
+			return $this->userInfo['uname'];
+		}
+	}
+	public function getUserName() {
+		if(!empty($this->userInfo)) {
+			return $this->userInfo['firstname'].' '.$this->userInfo['lastname'];
+		}
+        return null;
+	}
+	public function getUserId() {
+		if(!empty($this->userInfo)) {
+			return $this->userInfo['id'];
+		}
+	}
+    public function setCurrentNid($nid) {
+        $this->currNid = $nid;
+    }
+    public function getCurrentNid() {
+        return $this->currNid;
+    }
+	public function setCurrentProject($pid) {
+	    $this->usingProj = $pid;
+    }
+    public function getCurrentProject() {
+        return $this->usingProj;
+    }
+    public function setRole($role) {
+        $this->userInfo['role'] = $role;
+    }
+    public function getRole() {
+        return $this->userInfo['role'];
+    }
+}
+
 /**
  * Session扩展类
  *
