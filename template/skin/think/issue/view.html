@@ -33,8 +33,15 @@
     <table id="box" cellpadding="5" cellspacing="0">
         <tr>
             <td id="content" valign="top">
-                <h1 class="title"><{$tIssue.brief}></h1>
+                <div style="border-bottom:2px solid #E0E0E0;">
+                    <h1 class="title"><{$tIssue.brief}></h1>
+                </div>
                 <div>
+                    <{foreach item=attach from=$tAttachments}>
+                    <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
+                    <{/foreach}>
+                </div>
+                <div style="border-bottom:2px solid #E0E0E0;">
                     <{$tIssue.detail}>
                 </div>
             </td> 

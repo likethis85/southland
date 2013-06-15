@@ -17,7 +17,7 @@ class main extends general
 
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
-		    $files = $this->saveFile($uid, $_FILES, 'attachments for task'.$this->spArgs('subject'));
+		    $files = $this->saveFile($uid, $_FILES, 'attachments for task '.$this->spArgs('subject'));
 			$data = array(
 			    'pid' => $this->spArgs('id'),
 			    'prj' => $pid,
@@ -85,7 +85,7 @@ class main extends general
 
         $submit = $this->spArgs('submit');
         if($submit == 1) {
-            $files = $this->saveFile($uid, $_FILES, 'attachments for task'.$this->spArgs('subject'));
+            $files = $this->saveFile($uid, $_FILES, 'attachments for task '.$this->spArgs('subject'));
             $condition = array(
                 'id' => $this->spArgs('id')
             );

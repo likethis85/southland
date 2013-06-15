@@ -21,6 +21,7 @@ class main extends general
         }
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
+		    $files = $this->saveFile($uid, $_FILES, 'attachments for issue '.$this->spArgs('IssueBrief'));
 			$data = array(
 			    'prj' => $pid,
                 'tid' => $this->spArgs('tid'),
@@ -34,6 +35,7 @@ class main extends general
 			);
 			$iid = spClass('issueModel')->create($data);
 			if($iid !== false) {
+			    spClass('attachmentModel')->createForIssue($uid, $pid, $iid, $files);
 			    spClass('userorgModel')->addIssueReporter($iid, spClass('spSession')->getUser()->getUserId());
 			    spClass('userorgModel')->addIssueAssigner($iid, spClass('spSession')->getUser()->getUserId());
 			    spClass('userorgModel')->addIssueOwner($iid, spClass('spSession')->getUser()->getUserId());
@@ -64,6 +66,7 @@ class main extends general
         $this->tIssue = spClass('issueModel')->find(array('id' => $iid));
         $this->tTitle = $this->tProject['title'].'-'.$this->tIssue['brief'];
         $this->tComments = spClass('commentModel')->getIssueComments($iid);
+        $this->tAttachments = spClass('attachmentModel')->getIssueAttachment($iid);
         $this->display('issue/view.html');
     }
     function open(){
