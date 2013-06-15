@@ -191,8 +191,7 @@ class main extends general
                     $this->array2class($op_del),
                     $this->array2class($op_bug)));
         else
-            echo json_encode(array(
-                    $this->array2class($op_bug)));
+            echo json_encode(array());
     }
     /** @brief 任务页
      *

@@ -361,5 +361,5 @@ function spConfigReady( $preconfig, $useconfig = null){
 }
 
 function spPreSession() {
-	import('spAcl.php');
+	import('spSession.php');
 }
