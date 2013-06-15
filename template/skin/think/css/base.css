@@ -145,3 +145,29 @@ li.puser {
     width:100%;
     margin-bottom:2px;
 }
+div.file {
+    min-height:24px;
+}
+div.file .browse{
+    position:absolute;
+    left:0;
+    background-color:#FFF; 
+    border:1px solid #CDCDCD;
+    height:24px; 
+    width:70px;
+}
+div.file .clear{
+    left:78px;
+    background-color:#FFF; 
+    border:1px solid #CDCDCD;
+    height:24px; 
+    width:70px;
+}
+div.file .file{
+    position:absolute;
+    left:0;
+    width:70px;
+    height:24px; 
+    filter:alpha(opacity:0);
+    opacity: 0;
+}

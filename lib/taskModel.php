@@ -15,7 +15,7 @@ class taskModel extends spModel
         if(empty($pid))
             return array();
         
-        $tasks = $this->findAll(array('prj' => $pid));
+        $tasks = $this->findAll(array('prj' => $pid, 'droptime'=>0));
         if(false==$tasks)
             return array();
             

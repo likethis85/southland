@@ -17,6 +17,7 @@ class main extends general
 
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
+		    $files = $this->saveFile($uid, $_FILES, 'attachments for task '.$this->spArgs('subject'));
 			$data = array(
 			    'pid' => $this->spArgs('id'),
 			    'prj' => $pid,
@@ -32,6 +33,7 @@ class main extends general
                 spClass('keeper')->speak(T('Error DB operation failed'));
                 exit;
             }
+            spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
             if($data['acl']<2) {
                 spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
                 $uos = spClass('userorgModel')->getUsersByProject($pid);
@@ -40,7 +42,7 @@ class main extends general
                     'msgbody' => "/task.php?a=view&tid=$tid"
                 );
                 foreach($uos as $uo){
-                    spClass('messageModel')->send_msg($uid, $uo['id'],$msg);
+                    spClass('messageModel')->send_message($uid, $uo['id'],$msg);
                 }
             }
 			$this->jumpTaskPage();
@@ -65,10 +67,12 @@ class main extends general
         $this->tTask = spClass('taskModel')->find(array('id' => $tid));
         $this->tTitle = $this->tProject['title'].'-'.$this->tTask['subject'];
         $this->tComments = spClass('commentModel')->getTaskComments($tid);
+        $this->tAttachments = spClass('attachmentModel')->getTaskAttachment($tid);
         $this->display('task/view.html');
     }
     function update() {
         $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
         $tid = $this->spArgs('id');
         if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
@@ -81,6 +85,7 @@ class main extends general
 
         $submit = $this->spArgs('submit');
         if($submit == 1) {
+            $files = $this->saveFile($uid, $_FILES, 'attachments for task '.$this->spArgs('subject'));
             $condition = array(
                 'id' => $this->spArgs('id')
             );
@@ -91,6 +96,7 @@ class main extends general
                 'acl'      => $this->spArgs('acl')
             );
             spClass('taskModel')->update($condition, $data);
+            spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
 			$this->jumpTaskPage();
         } else {
             $condition = array(

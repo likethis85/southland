@@ -10,6 +10,31 @@
                 subject:{required:true}
             }
         });
+        
+        $('div.file .clear').hover(
+            function(){$(this).css({'background-color':'green'});},
+            function(){$(this).css({'background-color':'transparent'});}
+        );
+        $('input.file').hover(
+            function() { $(this).prev().css({'background-color':'orange'})},
+            function() { $(this).prev().css({'background-color':'transparent'})}
+        ).live('change', function(){
+            $(this.parentNode.parentNode.parentNode).append('<td>'+this.value+'</td>');
+            $('div.file table').append($('<tr><td><div style="position:relative;width:80px;height:24px;"><input type="button" class="browse" value=\"<{T w="Attachment"}>\" /><input type="file" class="file" name="attachments[]" /></div></td><td><input type="button" class="clear" value=\"<{T w="Clear"}>\" /></td></tr>'));
+            $('input.file').hover(
+                function() { $(this).prev().css({'background-color':'orange'})},
+                function() { $(this).prev().css({'background-color':'transparent'})}
+            );
+            $('div.file .clear').hover(
+                function(){$(this).css({'background-color':'green'});},
+                function(){$(this).css({'background-color':'transparent'});}
+            ).click(function() {
+                if($('div.file table tr').length == 1)
+                    return;
+                    
+                $(this.parentNode.parentNode).remove();
+            });
+        });
     });
 </script>
 <div style="clear:both;margin-left:32px;margin-top:32px;width:600px;">
@@ -54,6 +79,22 @@
                         <option value=1 <{if $tProject.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
                         <option value=2 <{if $tProject.acl==2}>selected<{/if}> ><{T w='Private'}></option>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='Attachment'}></label></td>
+                <td>
+                    <div class="file">
+                        <table>
+                            <tr>
+                                <td><div style="position:relative;width:80px;height:24px;">
+                                    <input type='button' class='browse' value='<{T w="Attachment"}>' />
+                                    <input type="file" class="file" name="attachments[]" />
+                                </div></td>
+                                <td><input type="button" class="clear" value='<{T w="Clear"}>'/></td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
             </tr>
             <tr><td colspan="2"><label style="margin-right:8px" for="IssueDesc"><{T w='IssueDesc'}></label></td></tr>

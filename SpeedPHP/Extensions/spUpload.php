@@ -4,7 +4,7 @@
   */
  class spUpload {
 
- 	public $max_size = '1000000';//设置上传文件大小
+ 	public $max_size = '5000000';//设置上传文件大小
  	public $file_name = 'date';//重命名方式代表以时间命名，其他则使用给予的名称
  	public $allow_types;//允许上传的文件扩展名，不同文件类型用“|”隔开
  	public $errmsg = '';//错误信息
@@ -21,7 +21,7 @@
  	 * @param string $save_path 上传的目标文件夹
  	 */
  	public function __construct($args) {
- 		$this->allow_types = 'jpg|gif|png|zip|rar';
+ 		$this->allow_types = 'jpg|gif|png|zip|rar|tar|gz|bz';
  		extract($args);
  		if(isset($ex_file_name))
 			$this->file_name   = $ex_file_name;//重命名方式代表以时间命名，其他则使用给予的名称
@@ -71,18 +71,18 @@
 				return FALSE;
 			}
 			$this->set_save_path();//设置文件存放路径
-			$new_name = $this->file_name != 'date' ? $this->file_name.'.'.$this->ext : date('YmdHis').'.'.$this->ext;//设置新文件名
-			$this->uploaded = $this->save_path.$new_name;//上传后的文件名
-			//移动文件
-			if(move_uploaded_file($tmp_name,$this->uploaded)){
-				$this->errmsg = '文件<font color=red>'.$this->uploaded.'</font>上传成功！';
-                $this->file_name = $new_name;
-				return TRUE;
-			}else{
-				$this->errmsg = '文件<font color=red>'.$this->uploaded.'</font>上传失败！';
-				return FALSE;
-			}
-
+			for($i=0;$i<100;$i++){
+			    $new_name = date('YmdHis').'-'.rand().'.'.$this->ext;
+			    $uploaded = $this->save_path.$new_name;//上传后的文件名
+    			if(move_uploaded_file($tmp_name,$uploaded)){
+    				$this->errmsg = '文件<font color=red>'.$uploaded.'</font>上传成功！';
+                    $this->file_name = $new_name;
+    				return TRUE;
+    			}else{
+    				$this->errmsg = '文件<font color=red>'.$uploaded.'</font>上传失败！';
+    				return FALSE;
+    			}
+            }
 		}
 	}
 

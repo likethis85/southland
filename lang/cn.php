@@ -154,4 +154,6 @@ return array(
 'Protected'     => '非公开',
 'Private'       => '私有',
 'Create'        => '创建',
+'Attachment'    => '附件',
+'Clear'         => '清除',
 );

@@ -38,6 +38,11 @@
                     <h1 class="title"><{$tTask.subject}></h1>
                 </div>
                 <div>
+                    <{foreach item=attach from=$tAttachments}>
+                    <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
+                    <{/foreach}>
+                </div>
+                <div>
                     <{$tTask.detail}>
                     <div align=right>
                         <a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded">
