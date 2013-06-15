@@ -39,7 +39,7 @@
                 </div>
                 <div>
                     <{foreach item=attach from=$tAttachments}>
-                    <a href="<{$attach.path}>"><{$attach.oname}></a>
+                    <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
                     <{/foreach}>
                 </div>
                 <div>
