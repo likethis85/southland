@@ -7,13 +7,35 @@ $(document).ready(function(){
 			subject: {required:true}
 		}
 	});
-	$("#project").change(function(){
-		location.href = "/index.php?c=main&a=project&id="+$("#project").val();
-	});
+	
+	$('div.file .clear').hover(
+            function(){$(this).css({'background-color':'green'});},
+            function(){$(this).css({'background-color':'transparent'});}
+        );
+        $('input.file').hover(
+            function() { $(this).prev().css({'background-color':'orange'})},
+            function() { $(this).prev().css({'background-color':'transparent'})}
+        ).live('change', function(){
+            $(this.parentNode.parentNode.parentNode).append('<td>'+this.value+'</td>');
+            $('div.file table').append($('<tr><td><div style="position:relative;width:80px;height:24px;"><input type="button" class="browse" value=\"<{T w="Attachment"}>\" /><input type="file" class="file" name="attachments[]" /></div></td><td><input type="button" class="clear" value=\"<{T w="Clear"}>\" /></td></tr>'));
+            $('input.file').hover(
+                function() { $(this).prev().css({'background-color':'orange'})},
+                function() { $(this).prev().css({'background-color':'transparent'})}
+            );
+            $('div.file .clear').hover(
+                function(){$(this).css({'background-color':'green'});},
+                function(){$(this).css({'background-color':'transparent'});}
+            ).click(function() {
+                if($('div.file table tr').length == 1)
+                    return;
+                    
+                $(this.parentNode.parentNode).remove();
+            });
+        });
 });
 </script>
 <div style="margin-left:32px;width:600px;">
-    <form id="form" method="post">
+    <form id="form" method="post" enctype="multipart/form-data">
         <table>
             <tr>
                 <td><label style="margin-right:8px" for="subject"><{T w='TaskTitle'}></label></td>
@@ -35,6 +57,22 @@ $(document).ready(function(){
                         <option value=1 <{if $tTask.acl==1}>selected<{/if}> ><{T w='Protected'}></option>
                         <option value=2 <{if $tTask.acl==2}>selected<{/if}> ><{T w='Private'}></option>
                     </select>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='Attachment'}></label></td>
+                <td>
+                    <div class="file">
+                        <table>
+                            <tr>
+                                <td><div style="position:relative;width:80px;height:24px;">
+                                    <input type='button' class='browse' value='<{T w="Attachment"}>' />
+                                    <input type="file" class="file" name="attachments[]" />
+                                </div></td>
+                                <td><input type="button" class="clear" value='<{T w="Clear"}>'/></td>
+                            </tr>
+                        </table>
+                    </div>
                 </td>
             </tr>
             <tr><td colspan="2"><label style="margin-right:8px" for="TaskDesc"><{T w='TaskDesc'}></label></td></tr>

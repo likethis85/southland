@@ -87,12 +87,12 @@ class general extends spController
                                 'tmp_name' => $attachments['tmp_name'][$i],
                                 'error' => $attachments['error'][$i],
                                 'size' => $attachments['size'][$i]);
-                                print_r($file);
                 if(TRUE === $uf->upload_file($file)) {
                     $total_size += $file['size'];
-                    print_r($uf->file_name.'</br>');
                     array_push($stores, array(  'origin' => $file['name'],
                                                 'save' => "/mass/$uid/origin/".$uf->file_name));
+                } else {
+                    print_r($uf->errmsg);
                 }
                 
             }

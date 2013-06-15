@@ -72,6 +72,7 @@ class main extends general
     }
     function update() {
         $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
         $tid = $this->spArgs('id');
         if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
@@ -84,6 +85,7 @@ class main extends general
 
         $submit = $this->spArgs('submit');
         if($submit == 1) {
+            $files = $this->saveFile($uid, $_FILES, 'attachments for task'.$this->spArgs('subject'));
             $condition = array(
                 'id' => $this->spArgs('id')
             );
@@ -94,6 +96,7 @@ class main extends general
                 'acl'      => $this->spArgs('acl')
             );
             spClass('taskModel')->update($condition, $data);
+            spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
 			$this->jumpTaskPage();
         } else {
             $condition = array(

@@ -4,7 +4,7 @@
   */
  class spUpload {
 
- 	public $max_size = '1000000';//设置上传文件大小
+ 	public $max_size = '5000000';//设置上传文件大小
  	public $file_name = 'date';//重命名方式代表以时间命名，其他则使用给予的名称
  	public $allow_types;//允许上传的文件扩展名，不同文件类型用“|”隔开
  	public $errmsg = '';//错误信息
