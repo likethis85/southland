@@ -162,6 +162,11 @@ class main extends general
             'caption'=> T('DelTask'),                       
             'callback'=> 'if(confirm("'.T('Confirm?').T('DelTask').'"))location.href="/task.php?a=del&id="+elem.id.replace("t","")'
         );
+        $op_transfer = array(
+            'icon' => '/'.$this->skinpath.'/img/transfer.png' ,
+            'caption'=> T('PostTask'),                       
+            'callback'=> 'if(confirm("'.T('Confirm?').T('PostTask').'"))location.href="/task.php?a=post&id="+elem.id.replace("t","")'
+        );
         $op_bug = array(
              'icon' => '/'.$this->skinpath.'/img/bug.png',
              'caption'=> T('IssueReport'), 
@@ -182,6 +187,7 @@ class main extends general
                     $this->array2class($op_cc),
                     $this->array2class($op_edit),
                     $this->array2class($op_del),
+                    $this->array2class($op_transfer),
                     $this->array2class($op_bug)));
         else if($uo['QAMgr'] || ($uo['QA']&&$uid==$task['owner']))
             echo json_encode(array(

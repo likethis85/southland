@@ -26,7 +26,7 @@ class keywordsModel extends spModel
             $finds[$value['content']] = $value['id'];
         }
         foreach($kwds as $value) {
-            if(empty($finds["$value"]))
+            if(empty($finds[$value]))
                 $finds["$value"] = 0;
         }
         foreach($finds as $key=>$value){
@@ -34,7 +34,7 @@ class keywordsModel extends spModel
                 continue;
 
             if(empty($value)){
-                $finds["$key"] = $this->Create(array('content' => "$key"));
+                $finds[$key] = $this->Create(array('content' => strtolower($key)));
             }
         }
 

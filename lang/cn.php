@@ -49,6 +49,7 @@ return array(
 'DelTask' => '删除该任务',
 'EditTask' => '编辑该任务',
 'UpdateTask' => '更新该任务',
+'PostTask'  => '推迟任务到...',
 'TaskPriority' => '任务优先级',
 'TaskStatus' => '任务状态',
 'TaskPending' => '等待任务安排',

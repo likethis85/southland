@@ -54,4 +54,13 @@ class taskModel extends spModel
         spClass('commentModel')->dropTask($tid, $droptime);
         return $this->update(array('id'=>$tid), array('droptime'=>$droptime));
     }
+
+    public function post($tid, $pid) {
+        if(false == $this->update(array('id' => $tid), array('prj' => $pid)))
+            return false;
+
+        spClass('timeline')->postTask($tid, $pid);
+        spClass('commentModel')->postTask($tid, $pid);
+        return true;
+    }
 }

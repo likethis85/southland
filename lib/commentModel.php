@@ -5,6 +5,21 @@ class commentModel extends spModel
     var $pk = "id";		 // 按id排序
     var $table = "comment"; // 数据表的名称
 
+    /** @brief 任务相关的注释
+     *
+     */
+    public function createForTask($uid, $pid, $tid, $content){
+        if(empty($tid) || empty($pid) || empty($content))
+            return false;
+
+        return $this->create(array(
+                        'uid' => $uid,
+                        'prj' => $pid,
+                        'owner' => 'task',
+                        'rid' => $tid,
+                        'content' => $content
+                        ));
+    }
     /** @brief 获取任务相关的条目
      *
      */
@@ -44,6 +59,15 @@ class commentModel extends spModel
             $dt = date('Y-m-d H:i:s');
 
         return $this->update(array('owner'=>'task', 'rid'=>$tid), array('droptime'=>$dt));
+    }
+    /** @brief 转移任务相关的注释到新的项目
+     *
+     */
+    public function postTask($tid, $pid) {
+        if(empty($tid) || empty($pid))
+            return false;
+
+        return $this->update(array('rid'=>$tid,'owner' => 'task'), array('prj' => $pid));
     }
     public function getIssueComments($iid) {
 
