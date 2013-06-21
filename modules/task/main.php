@@ -176,19 +176,35 @@ class main extends general
     function del() {
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
-        if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
-            spClass('keeper')->speak(T('Error Operation not permit'));
-            exit;
-        }
         if(empty($tid)) {
             spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+        if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
 
         spClass('taskModel')->drop($tid);
         $this->jumpTaskPage();
     }
-
+    function post() {
+        $uid = $this->tUser['id'];
+        $tid = $this->spArgs('id');
+        $pid = $this->spArgs('prj');
+        if(empty($tid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+        if(empty($uid) || !spClass('taskModel')->allow($tid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(!spClass('projectModel')->allow($uid,$pid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+    }
     function cmt() {
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');
@@ -204,7 +220,6 @@ class main extends general
             exit;
         }
 
-        $sess = spClass('spSession');
         $data = array(
             'uid' => $uid,
             'prj' => $pid,

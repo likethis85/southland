@@ -59,6 +59,15 @@ class timelineModel extends spModel
 
         return $this->update(array('scope'=>$this->scope_task, 'sid'=>$tid), array('droptime' => $tm));
     }
+    /** @brief 把任务转移到新的项目
+     *
+     */
+    public function postTask($tid, $newPid){
+        if(empty($newPid) || empty($tid))
+            return false;
+
+        return $this->update(array('scope'=>$this->scope_task, 'sid'=>$tid),array('prj'=>$newPid));
+    }
     /** @brief get all timeline events for the project
      *
      */
