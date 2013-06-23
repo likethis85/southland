@@ -23,23 +23,41 @@ $.fn.HoverMenu = function(options) {
         }
     );
     
-    var menus = '<div id="hm_menu" style="border:1px solid #0080FF;display:none;background:white;position:relative;top:0px;z-index:100;cursor:pointer;"><ul>';
-    for(var i=0; i<settings.item.length; i++){
-        settings.item[i].callback = new Function('elem', settings.item[i].callback);
-        menus += '<li id="'+i+'"><img style="margin-right:6px;" src="'+settings.item[i].icon+'" width=16 height=16>';
-        if(typeof settings.item[i].caption=='string')
-            menus += settings.item[i].caption
-        menus += '</li>';
+    var createMenu = function(items){
+        var createMenuHtml = function(items){
+            var menus = '<div id="hm_menu" style="border:1px solid #0080FF;display:none;background:white;position:relative;top:0px;z-index:100;cursor:pointer;"><ul>';
+            for(var i=0; i<items.length; i++){
+                if(typeof items[i].callback == 'string')
+                    items[i].callback = new Function('elem', items[i].callback);
+                else
+                    items[i].callback = null;
+                menus += '<li id="'+i+'"><img style="margin-right:6px;" src="'+items[i].icon+'" width=16 height=16>';
+                if(typeof items[i].caption=='string')
+                    menus += items[i].caption
+                if(typeof items[i].item!='undefined' && items[i].item.length){
+                    items[i].hasSub = true;
+                    menus += createMenuHtml(items[i].item);
+                }
+                menus += '</li>';
+            }
+            menus += '</ul></div>';
+            return menus;
+        }
+        
+        menus = $(createMenuHtml(settings.item));
+        menus.find('li').css({'padding':'2px','padding-right':'8px'}).hover(
+            function() { $(this).css('background','#6E88B7');},
+            function() { $(this).css('background','white');}
+        ).click(function(){
+            if(settings.item[this.id].callback)
+                settings.item[this.id].callback(_e);
+            else if(settings.onSelect)
+                settings.onSelect(_e,settings.item[this.id]);
+        });
+        
+        return menus;
     }
-    menus += '</ul></div>';
-    menus = $(menus);
-    menus.find('li').css({'padding':'2px','padding-right':'8px'}).hover(
-        function() { $(this).css('background','#6E88B7');},
-        function() { $(this).css('background','white');}
-    ).click(function(){
-        settings.item[this.id].callback(_e);
-    });
     
-    m.append(menus);
+    m.append(createMenu());
     this.append(m);
 }

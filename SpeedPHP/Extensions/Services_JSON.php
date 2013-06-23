@@ -348,7 +348,7 @@ class Services_JSON
                     }
                 }
 
-                return '\''.$ascii.'\'';
+                return '"'.$ascii.'"';
 
             case 'array':
                /*

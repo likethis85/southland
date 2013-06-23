@@ -291,6 +291,31 @@ class main extends general
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
     }
+    /** @brief 获取当前用户的所有项目
+     *
+     */
+	function GetAllProjects(){
+	    $uid = $this->tUser['id'];
+	    if(empty($uid)){
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+            $this->ajaxResult->msg = T('Error Invalid Parameters');
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        }
+        $names = array();
+        $projects = spClass('userorgModel')->getProjectsByUser($uid);
+        foreach($projects as $project){
+            array_push($names, $project['title']);
+        }
+        $names = array_unique($names);
+        $this->ajaxResult->msg = array();
+        foreach($names as $name){
+            array_push($this->ajaxResult->msg, $name);
+        }
+        echo spClass('Services_JSON')->encode($this->ajaxResult);
+        exit;
+	}
+	
 	function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}

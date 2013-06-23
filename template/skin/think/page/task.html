@@ -1,16 +1,36 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
-        $().ready(function(){
-            $("a[name='DelTask']").each(function(){
-                $(this).click(function(){
-                    return confirm('<{T w="Confirm?"}>'+$(this).text());
-                });
-            });
-            
+        $().ready(function(){           
             <{foreach item=item from=$tTasks}>
             $('#t<{$item.id}>').each(function(i,e){
                 $(e).HoverMenu({
-                    'item' : <{spTaskOperation task=$item}>
+                    'item' : <{spTaskOperation task=$item}>,
+                    onSelect: function(e, item){
+                        if(item.caption=='<{T w="PostTask"}>'){
+                            var bb = new BlackBox();
+                            bb.popup('<div>'+
+                                        '<div id="close" class="close">x</div>'+
+                                        '<form action="/task.php?a=post&id='+e.id.replace("t","")+'" method="post"><h3><{T w="PostTask"}></h3>'+
+                                        '<input id="mprjs" size=80>'+
+                                        '<div class="btn-rounded" onclick="javascript:cp.submit();"><{T w="Submit"}></div>'+
+                                        '</form>'+
+                                     '</div>',
+                                function(content) {
+                                    content.find('#close').click(function(){
+                                        bb.boxClose();
+                                    });
+
+                                    $.getJSON("/ajax.php?a=GetAllProjects",function(json) {
+                                        if(json.error != 0)
+                                            alert(json.msg);
+                                        else {
+                                            $('#mprjs').autocomplete(json.msg);
+                                        }
+                                    });
+                                }
+                            ); 
+                        }
+                    }
                 });
             });
             <{/foreach}>

@@ -140,37 +140,36 @@ class main extends general
         $op_work = array(
                 'icon' => '/'.$this->skinpath.'/img/working.png',
                 'caption' => T('TaskWorking'),
-                'callback'=> 'location.href="/task.php?a=working&id="+elem.id.replace("t","")'
+                'callback'=> 'location.href=\"/task.php?a=working&id=\"+elem.id.replace(\"t\",\"\")'
         );
         $op_cc = array(
             'icon' => '/'.$this->skinpath.'/img/codecompleted.png',
             'caption' => T('TaskCC'), 
-            'callback'=> 'location.href="/task.php?a=cc&id="+elem.id.replace("t","")'
+            'callback'=> 'location.href=\"/task.php?a=cc&id=\"+elem.id.replace(\"t\",\"\")'
         );
         $op_veri = array(
             'icon' => '/'.$this->skinpath.'/img/verified.png', 
             'caption' => T('TaskVeri'),
-            'callback'=> 'location.href="/task.php?a=veri&id="+elem.id.replace("t","")'
+            'callback'=> 'location.href=\"/task.php?a=veri&id=\"+elem.id.replace(\"t\",\"\")'
         );
         $op_edit = array(
             'icon' => '/'.$this->skinpath.'/img/edit.png' , 
             'caption'=>T('EditTask'), 
-            'callback' => 'location.href="/task.php?a=update&id="+elem.id.replace("t","")'
+            'callback' => 'location.href=\"/task.php?a=update&id=\"+elem.id.replace(\"t\",\"\")'
         );
         $op_del = array(
             'icon' => '/'.$this->skinpath.'/img/delete.png' ,
             'caption'=> T('DelTask'),                       
-            'callback'=> 'if(confirm("'.T('Confirm?').T('DelTask').'"))location.href="/task.php?a=del&id="+elem.id.replace("t","")'
+            'callback'=> 'if(confirm(\"'.T('Confirm?').T('DelTask').'\"))location.href=\"/task.php?a=del&id=\"+elem.id.replace(\"t\",\"\")'
         );
         $op_transfer = array(
             'icon' => '/'.$this->skinpath.'/img/transfer.png' ,
-            'caption'=> T('PostTask'),                       
-            'callback'=> 'if(confirm("'.T('Confirm?').T('PostTask').'"))location.href="/task.php?a=post&id="+elem.id.replace("t","")'
+            'caption'=> T('PostTask')
         );
         $op_bug = array(
              'icon' => '/'.$this->skinpath.'/img/bug.png',
              'caption'=> T('IssueReport'), 
-             'callback'=> 'location.href="/issue.php?a=add&tid="+elem.id.replace("t","")'
+             'callback'=> 'location.href=\"/issue.php?a=add&tid=\"+elem.id.replace(\"t\",\"\")'
         ); 
            
         if($uo['Manager'])
@@ -180,6 +179,7 @@ class main extends general
                     $this->array2class($op_veri),
                     $this->array2class($op_edit),
                     $this->array2class($op_del),
+                    $this->array2class($op_transfer),
                     $this->array2class($op_bug)));                 
         else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$task['owner']))
             echo json_encode(array(
