@@ -200,10 +200,13 @@ class main extends general
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
-        if(!spClass('projectModel')->allow($uid,$pid)){
+        if(!spClass('projectModel')->allow($pid,$uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
+
+        spClass('taskModel')->post($tid, $pid);
+        $this->jumpTaskPage();
     }
     function cmt() {
         $uid = $this->tUser['id'];

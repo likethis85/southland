@@ -8,10 +8,10 @@
                     onSelect: function(e, item){
                         if(item.caption=='<{T w="PostTask"}>'){
                             var bb = new BlackBox();
-                            bb.popup('<div>'+
+                            bb.popup('<div style="width:300px;">'+
                                         '<div id="close" class="close">x</div>'+
-                                        '<form action="/task.php?a=post&id='+e.id.replace("t","")+'" method="post"><h3><{T w="PostTask"}></h3>'+
-                                        '<input id="mprjs" size=80>'+
+                                        '<form id="cp" action="/task.php?a=post&id='+e.id.replace("t","")+'" method="post"><h3><{T w="PostTask"}></h3>'+
+                                        '<div id="projects" style="width:100%"></div>'+
                                         '<div class="btn-rounded" onclick="javascript:cp.submit();"><{T w="Submit"}></div>'+
                                         '</form>'+
                                      '</div>',
@@ -24,7 +24,12 @@
                                         if(json.error != 0)
                                             alert(json.msg);
                                         else {
-                                            $('#mprjs').autocomplete(json.msg);
+                                            var select = '<select name="prj" style="width:100%;">';
+                                            for(var i=0;i<json.data.length;i++){
+                                                select += '<option value="'+json.data[i].id+'">'+json.data[i].title+'</option>';
+                                            }
+                                            select += '</select>';
+                                            content.find('#projects').append($(select));
                                         }
                                     });
                                 }

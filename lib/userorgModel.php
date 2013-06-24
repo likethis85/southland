@@ -52,7 +52,8 @@ class userorgModel extends spModel
             return false;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-	    $sql = "select a.* from {$prefix}project as a,{$prefix}userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
+//	    $sql = "select a.* from {$prefix}project as a,{$prefix}userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
+	    $sql = "select * from {$prefix}project where droptime=0 and id in(select sid from {$prefix}userorg where uid=$uid and scope=".$this->scope_project.')';
 	    return $this->findSql($sql);
 	}
     /** @brief 添加开发经理

@@ -305,13 +305,9 @@ class main extends general
         $names = array();
         $projects = spClass('userorgModel')->getProjectsByUser($uid);
         foreach($projects as $project){
-            array_push($names, $project['title']);
+            array_push($names, array('title'=>$project['title'], 'id'=>$project['id']));
         }
-        $names = array_unique($names);
-        $this->ajaxResult->msg = array();
-        foreach($names as $name){
-            array_push($this->ajaxResult->msg, $name);
-        }
+        $this->ajaxResult->data = $names;
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
 	}

@@ -349,7 +349,7 @@
                     e.preventDefault();
                 },
                 mouseDown = function (e) {
-                    if($(e.srcElement).is('input') || $(e.srcElement).is('textarea'))
+                    if($(e.srcElement).is('input') || $(e.srcElement).is('textarea') || $(e.srcElement).is('select'))
                         return;
 
                     element.bind('mousemove', mouseMove);

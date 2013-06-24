@@ -59,7 +59,7 @@ class taskModel extends spModel
         if(false == $this->update(array('id' => $tid), array('prj' => $pid)))
             return false;
 
-        spClass('timeline')->postTask($tid, $pid);
+        spClass('timelineModel')->postTask($tid, $pid);
         spClass('commentModel')->postTask($tid, $pid);
         return true;
     }
