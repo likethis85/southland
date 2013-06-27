@@ -43,12 +43,6 @@ class keywordsModel extends spModel
             if(empty($value))
                 continue;
 
-            $data = array(
-                'prj' => $pid,
-                'scope' => $this->scope_wiki,
-                'sid' => $wid,
-                'ref' => $value
-            );
             $sql = "INSERT INTO {$prefix}keywords_ref(prj,scope,sid,ref) VALUES($pid,$this->scope_wiki,$wid,$value)";
             if($this->runSql($sql)){
                 array_push($refs, $value);
