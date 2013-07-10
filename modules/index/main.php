@@ -215,31 +215,31 @@ class main extends general
         $op_open = array(
             'icon' => '/'.$this->skinpath.'/img/open.png',
             'caption' => T('IssueOpen'),
-            'callback' => 'location.href="/issue.php?a=open&iid="+elem.id.replace("i","")'
+            'callback' => 'location.href=\"/issue.php?a=open&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
         $op_fixed = array(
             'icon' => '/'.$this->skinpath.'/img/fixed.png',
             'caption' => T('IssueFixed'),
-            'callback' => 'location.href="/issue.php?a=fixed&iid="+elem.id.replace("i","")'
+            'callback' => 'location.href=\"/issue.php?a=fixed&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
         $op_verified = array(
             'icon' => '/'.$this->skinpath.'/img/verifed.png',
             'caption' => T('IssueVerified'),
-            'callback' => 'location.href="/issue.php?a=verified&iid="+elem.id.replace("i","")'
+            'callback' => 'location.href=\"/issue.php?a=verified&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
         $op_completed = array(
             'icon' => '/'.$this->skinpath.'/img/completed.png',
             'caption' => T('IssueCompleted'),
-            'callback' => 'location.href="/issue.php?a=completed&iid="+elem.id.replace("i","")'
+            'callback' => 'location.href=\"/issue.php?a=completed&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
         $op_pending = array(
             'icon' => '/'.$this->skinpath.'/img/pending.png',
             'caption' => T('IssuePending'),
-            'callback' => 'location.href="/issue.php?a=pending&iid="+elem.id.replace("i","")'
+            'callback' => 'location.href=\"/issue.php?a=pending&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
         if($uo['Manager'])
