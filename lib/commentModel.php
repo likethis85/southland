@@ -69,6 +69,15 @@ class commentModel extends spModel
 
         return $this->update(array('rid'=>$tid,'owner' => 'task'), array('prj' => $pid));
     }
+    /** @brief 转移Bug相关的注释到新的项目
+     *
+     */
+    public function postIssue($iid, $pid) {
+        if(empty($iid) || empty($pid))
+            return false;
+
+        return $this->update(array('rid'=>$iid,'owner' => 'issue'), array('prj' => $pid));
+    }
     public function getIssueComments($iid) {
 
         $this->linker = array(

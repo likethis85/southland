@@ -78,4 +78,17 @@ class issueModel extends spModel
         else
             return spClass('userorgModel')->isMemberOfIssue($iid, $uid);
     }
+
+    /** @brief 推迟bug到指定的项目 
+     *
+     *  @Detail
+     *      把Bug相关的timeline事件和comments都更新到指定的pid下
+     */
+    public function post($iid, $pid) {
+        if(false == $this->update(array('id' => $iid), array('prj' => $pid)))
+            return false;
+
+        spClass('commentModel')->postIssue($iid, $pid);
+        return true;
+    }
 }

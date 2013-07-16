@@ -21,13 +21,43 @@
                 null
             ]
         });
-
         <{foreach item=item from=$tIssues}>
-        $('#t<{$item.id}>').each(function(i,e){
+        $('#i<{$item.id}>').each(function(i,e){
             $(e).HoverMenu({
-                'item' : <{spIssueOperation issue=$item}>
-                });
-            });
+                'item' : <{spIssueOperation issue=$item}>,
+                onSelect: function(e, item){
+                    if(item.caption=='<{T w="IssuePost"}>'){
+                        var bb = new BlackBox();
+                        bb.popup('<div style="width:300px;">'+
+                                    '<div id="close" class="close">x</div>'+
+                                    '<form id="cp" action="/issue.php?a=post&id='+e.id.replace("i","")+'" method="post"><h3><{T w="IssuePost"}></h3>'+
+                                    '<div id="projects" style="width:100%"></div>'+
+                                    '<div class="btn-rounded" onclick="javascript:cp.submit();"><{T w="Submit"}></div>'+
+                                    '</form>'+
+                                 '</div>',
+                            function(content) {
+                                content.find('#close').click(function(){
+                                    bb.boxClose();
+                                });
+
+                                $.getJSON("/ajax.php?a=GetAllProjects",function(json) {
+                                    if(json.error != 0)
+                                        alert(json.msg);
+                                    else {
+                                        var select = '<select name="prj" style="width:100%;">';
+                                        for(var i=0;i<json.data.length;i++){
+                                            select += '<option value="'+json.data[i].id+'">'+json.data[i].title+'</option>';
+                                        }
+                                        select += '</select>';
+                                        content.find('#projects').append($(select));
+                                    }
+                                });
+                            }
+                        ); 
+                    }
+                }
+            })
+        });
         <{/foreach}>
     });
     </script>
@@ -56,7 +86,7 @@
             <tr>
                 <td><{$itemI.id}></td>
                 <td>
-                    <div id="t<{$itemI.id}>"></div>
+                    <div id="i<{$itemI.id}>"></div>
                     <{if $itemI.status==1}>
                     <img src="<{$skinpath}>/img/open.png" width=16 height=16>
                     <{elseif $itemI.status==2}>

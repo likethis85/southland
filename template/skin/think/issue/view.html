@@ -29,7 +29,7 @@
         );
     });
 </script>
-<div style="margin-left:32px;margin-top:22px;width:600px;">
+<div style="float:left;margin-left:32px;margin-top:22px;width:600px;">
     <table id="box" cellpadding="5" cellspacing="0">
         <tr>
             <td id="content" valign="top">
@@ -41,18 +41,29 @@
                     <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
                     <{/foreach}>
                 </div>
-                <div style="border-bottom:2px solid #E0E0E0;">
+                <div>
                     <{$tIssue.detail}>
                 </div>
             </td> 
         </tr>
+    </table>
+</div>
+<div style="margin-left:32px;margin-top:76px;">
+    <table>
         <tr>
             <td>
                 <div>
                     <{foreach item=item from=$tComments}>
                     <div class="comment">
-                        <div><{$item.content}></div>
-                        <div style="text-align:right;"><{$item.addtime}>&nbsp;--&nbsp;<{$item.user.nick}></div>
+                        <table width=100%>
+                            <tr>
+                                <td colspan=2 style="background:#C2D5F5;"><{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}></td>
+                            </tr>
+                            <tr>
+                                <td><img src="<{$tUser.avatar}>"></td>
+                                <td><{$item.content}></td>
+                            </tr>
+                        </table>
                     </div>
                     <{/foreach}>
                 </div>

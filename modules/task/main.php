@@ -188,6 +188,7 @@ class main extends general
         spClass('taskModel')->drop($tid);
         $this->jumpTaskPage();
     }
+    /** @brief 推迟任务 */
     function post() {
         $uid = $this->tUser['id'];
         $tid = $this->spArgs('id');

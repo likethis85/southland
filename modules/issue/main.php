@@ -12,6 +12,7 @@ class main extends general
 		parent::__construct(); // 这是必须的
 	}
 	
+    /** @brief 添加新bug */
 	function add() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -49,6 +50,7 @@ class main extends general
 			$this->display("issue/add.html");
 		}
 	}
+    /** @brief 查看bug的详细信息 */
     function view() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -69,6 +71,7 @@ class main extends general
         $this->tAttachments = spClass('attachmentModel')->getIssueAttachment($iid);
         $this->display('issue/view.html');
     }
+    /** @brief 标记为Open */
     function open(){
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -87,6 +90,7 @@ class main extends general
         $model->updateStatus($iid, $model->STATUS_WORKING);
         $this->jumpIssuePage();
     }
+    /** @brief 标记为Fixed */
     function fixed(){
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -103,6 +107,27 @@ class main extends general
         }
 
         $model->updateStatus($iid, $model->STATUS_FIXED);
+        $this->jumpIssuePage();
+    }
+    /** @brief 推迟bug */
+    function post() {
+        $uid = $this->tUser['id'];
+        $iid = $this->spArgs('id');
+        $pid = $this->spArgs('prj');
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+        if(empty($uid) || !spClass('issueModel')->allow($iid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+        spClass('issueModel')->post($iid, $pid);
         $this->jumpIssuePage();
     }
     function cmt() {

@@ -139,11 +139,7 @@ class main extends general
                 );
         spClass('commentModel')->create($data);
 
-        if(empty($nid)) {
-            $this->jumpTopicPage();
-        } else {
-            $this->navi("/forum.php?a=view&id=$fid");
-        }
+        $this->navi("/forum.php?a=view&id=$fid");
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的

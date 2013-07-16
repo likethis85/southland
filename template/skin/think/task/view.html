@@ -30,7 +30,7 @@
         );
     });
 </script>
-<div style="margin-left:32px;margin-top:22px;width:600px;">
+<div style="float:left;margin-left:32px;margin-top:22px;width:600px;">
     <table id="box" cellpadding="5" cellspacing="0">
         <tr>
             <td id="content" valign="top">
@@ -44,7 +44,7 @@
                 </div>
                 <div>
                     <{$tTask.detail}>
-                    <div align=right>
+                    <div>
                         <a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded">
                             <{T w='IssueReport'}>
                         </a>
@@ -52,13 +52,24 @@
                 </div>
             </td> 
         </tr>
+    </table>
+</div>
+<div style="margin-left:32px;margin-top:76px;">
+    <table>
         <tr>
             <td>
                 <div>
                     <{foreach item=item from=$tComments}>
-                    <div style="border-top:solid #E0E0E0 1px;">
-                        <div><{$item.content}></div>
-                        <div style="text-align:right;"><{$item.addtime}>&nbsp;--&nbsp;<{$item.user.nick}></div>
+                    <div class="comment">
+                        <table width=100%>
+                            <tr>
+                                <td colspan=2 style="background:#C2D5F5;"><{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}></td>
+                            </tr>
+                            <tr>
+                                <td style="width:32px;"><img src="<{$tUser.avatar}>"></td>
+                                <td style="padding-left:8px;"><{$item.content}></td>
+                            </tr>
+                        </table>
                     </div>
                     <{/foreach}>
                 </div>

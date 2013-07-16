@@ -19,18 +19,37 @@
                     form.submit();
                 },
             });
+            $('#avatar').dropkick({'width':'160px'});
         });
     </script>
     <{if !empty($tErrorMsg)}><div style="color:red;"><{T w=$tErrorMsg}></div><{/if}>
     <form id="form" name="form" action="<{spUrl c=user a=signon}>" method="POST">
-        <table width="400">
+        <table>
             <tr>
-                <td><label for="uname"><span class="fontwhite">E-mail'</span></label>
+                <td><label for="uname"><span class="fontwhite">E-mail</span></label>
                 <td><input name="uname" id="uname" size="40" /></td>
             </tr>
             <tr>
                 <td><label for="nick"><span class="fontwhite"><{T w='Nick'}></span></label>
                 <td><input name="nick" id="nick" size="40" /></td>
+            </tr>
+            <tr>
+                <td><label for="avatar"><span class="fontwhite"><{T w='Avatar'}></span></label>
+                <td>
+                    <input name="avatar" type=hidden />
+                    <div style="display:hide;" id="avatar">  
+                        <option value="/template/skin/think/img/avatar/1.jpg" ><img src="/template/skin/think/img/avatar/1.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/2.jpg" ><img src="/template/skin/think/img/avatar/2.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/3.jpg" ><img src="/template/skin/think/img/avatar/3.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/4.jpg" ><img src="/template/skin/think/img/avatar/4.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/5.jpg" ><img src="/template/skin/think/img/avatar/5.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/6.jpg" ><img src="/template/skin/think/img/avatar/6.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/7.jpg" ><img src="/template/skin/think/img/avatar/7.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/8.jpg" ><img src="/template/skin/think/img/avatar/8.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/9.jpg" selected><img src="/template/skin/think/img/avatar/9.jpg"></option>            
+                        <option value="/template/skin/think/img/avatar/10.jpg" ><img src="/template/skin/think/img/avatar/10.jpg"></option>            
+                    </div>
+                </td>
             </tr>
             <tr>
                 <td><label for="pass" align="right" valign="top" class="fontwhite"><{T w='Password'}></td>

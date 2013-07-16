@@ -225,7 +225,7 @@ class main extends general
         );
 
         $op_verified = array(
-            'icon' => '/'.$this->skinpath.'/img/verifed.png',
+            'icon' => '/'.$this->skinpath.'/img/verified.png',
             'caption' => T('IssueVerified'),
             'callback' => 'location.href=\"/issue.php?a=verified&iid=\"+elem.id.replace(\"i\",\"\")'
         );
@@ -236,10 +236,9 @@ class main extends general
             'callback' => 'location.href=\"/issue.php?a=completed&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
-        $op_pending = array(
-            'icon' => '/'.$this->skinpath.'/img/pending.png',
-            'caption' => T('IssuePending'),
-            'callback' => 'location.href=\"/issue.php?a=pending&iid=\"+elem.id.replace(\"i\",\"\")'
+        $op_post = array(
+            'icon' => '/'.$this->skinpath.'/img/transfer.png',
+            'caption' => T('IssuePost')
         );
 
         if($uo['Manager'])
@@ -248,18 +247,18 @@ class main extends general
                     $this->array2class($op_fixed),
                     $this->array2class($op_verified),
                     $this->array2class($op_completed),
-                    $this->array2class($op_pending)));
+                    $this->array2class($op_post)));
         else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$issue['owner']['id']))
-            echo json_encode(array(
+            echo spClass('Services_JSON')->encode(array(
                     $this->array2class($op_open),
                     $this->array2class($op_fixed),
-                    $this->array2class($op_pending)));
+                    $this->array2class($op_post)));
         else if($uo['QAMgr'] || ($uo['QA']&&$uid==$issue['owner']['id']))
-            echo json_encode(array(
+            echo spClass('Services_JSON')->encode(array(
                     $this->array2class($op_open),
                     $this->array2class($op_verified),
                     $this->array2class($op_completed),
-                    $this->array2class($op_pending)));
+                    $this->array2class($op_post)));
         else
             echo spClass('Services_JSON')->encode(array());
     }

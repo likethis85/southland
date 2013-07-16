@@ -91,8 +91,10 @@ return array(
 'IssueOpen'  => '未修复',
 'IssueFixed'    => '已修复',
 'IssueVerified' => '已验证',
+'IssuePost'     => '推迟到...',
 
 /* Wiki */
+'Wiki'              => '维基',
 'Publish New Wiki'  => '发布新词条',
 'WikiSubject'       => '词条',
 'Keyword'           => '关键字',
@@ -104,6 +106,7 @@ return array(
 'Signon'        =>  '注册',
 'Users'			=>	'用户',
 'User'			=>	'用户',
+'Avatar'        =>  '头像',
 'Password'		=>	'密码',
 'Login'			=>	'登录',
 'Reset'			=>	'重置',
@@ -136,7 +139,6 @@ return array(
 
 /*常规*/
 'FirstPage'     =>  '首页',
-'Wiki'          =>  '维基',
 'Owner'         =>  '负责人',
 'Manager'       =>  '经理',
 'Member'        =>  '成员',
@@ -157,4 +159,6 @@ return array(
 'Create'        => '创建',
 'Attachment'    => '附件',
 'Clear'         => '清除',
+'Posted On'     => '发表于',
+'Post'          => '发表',
 );
