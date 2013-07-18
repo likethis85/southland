@@ -1,7 +1,15 @@
 <{include file=skin/$skin/header.html}>
 	<script language="javascript" type="text/javascript">
 	$(document).ready(function(){
-        CKEDITOR.replace("projDesc");
+        UE.getEditor('projDesc',{
+            //focus时自动清空初始化时的内容
+            autoClearinitialContent:false,
+            //关闭字数统计
+            wordCount:true,
+            //关闭elementPath
+            elementPathEnabled:false
+            //更多其他参数，请参考editor_config.js中的配置项
+        });
         $("#form").validate({
             rules:{
                 title: {required:true}

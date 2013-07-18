@@ -88,9 +88,9 @@
         
         $("#btn-PAU").click(function() {
             var bb = new BlackBox();
-            bb.popup('<div style="width:460px;margin-left:12px;"><div id="close" class="close">x</div>' +
+            bb.popup('<div style="width:460px;"><div id="close" class="close">x</div>' +
                         '<h3><{T w="ProjectAddUser"}></h3>' +
-                        '<table>'+
+                        '<table width=460>'+
                             '<tr>' +
                                 '<td><{T w="User"}>:</td>' +
                                 '<td><input id="uname" type="text" size=40></td>' +
@@ -99,7 +99,7 @@
                                 '</td>' +
                             '</tr>' +
                             '<tr><td colspan=3>'+
-                                '<table width=100% style="cursor:default;">' +
+                                '<table width=100% style="cursor:default;background:white;color:black;">' +
                                     '<tr class="role" id="DevMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="DevManager"}> title=<{T w="DevManager"}>></td>' +
                                     '<td><{T w="DevManager"}></td></tr>' +
                                     '<tr class="role" id="DevMember"><td><img src="<{$skinpath}>/img/dev.jpg" alt=<{T w="Developer"}> title=<{T w="Developer"}>></td>' +

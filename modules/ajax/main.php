@@ -106,7 +106,7 @@ class main extends general
                 'reason' => "upload file ".$_FILES['photo']['name'].' rename '.$uf->file_name
             );
             spClass('occupyModel')->create($recorder);
-            echo "/mass/$uid/origin/".$uf->file_name;
+            echo "{'url':'" . "/mass/$uid/origin/".$uf->file_name . "','title':'" . $title . "','original':'" . $_FILES['photo']['name'] . "','state':'" . 'SUCCESS' . "'}";
         }
         else {
 

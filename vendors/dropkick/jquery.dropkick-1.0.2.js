@@ -19,9 +19,9 @@
       ie6 = msie && parseFloat(msVersion[1]) < 7;
 
   // Help prevent flashes of unstyled content
-  if (!ie6) {
-    document.documentElement.className = document.documentElement.className + ' dk_fouc';
-  }
+  //if (!ie6) {
+  //  document.documentElement.className = document.documentElement.className + ' dk_fouc';
+  //}
 
   var
     // Public methods exposed to $.fn.dropkick()
