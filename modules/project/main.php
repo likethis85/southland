@@ -86,7 +86,7 @@ class main extends general
         $reason = $this->spArgs('reason');
         if(!empty($reason)) {
             $date = date('Y-m-d H:i:s');
-            spClass('timelineModel')->createForProject($pid, $uid, $date, $reason);
+            spClass('timelineModel')->createForProject($pid, $uid, $date, null, $reason);
         }
         $this->jumpProjectPage();
     }

@@ -207,91 +207,66 @@ $.fn.Chronoline = function (events, options) {
     var sections = [
         {   
             'name':'project', 
-            'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5 }, 
+            'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width':5,'opacity':'0.38'}, 
             'draw' :function(event, startX, Y, endX){
-                        Y += 2.5;
-                        elem = t.paper.circle(startX, Y, 2.5).attr(this.eventAttr);
-                        addElemClass(t.paperType, elem.node, 'chronoline-event');
-                        elem.attr('title', "");
-                        $(elem.node.parentNode).qtip({
-                            content:
-                                {
-                                    title: 
-                                        {
-                                            text:event.dates[0].toDateString()
-                                        },
-                                    text: event.description
-                                },
-                            position:
-                                {
-                                    my: 'top left',
-                                    at: 'right top',
-                                    adjust: {x:6,y:6}
-                                },
-                            /*show:
-                                {
-                                    event: false,
-                                    ready: true
-                                },
-                            hide: false,*/
-                            style:
-                                {
-                                    classes: 'qtip-shadow qtip-dark'
-                                }
+                        txt = t.paper.text(startX+4, Y-16, event.description).attr({'text-anchor':'start','opacity':this.eventAttr.opacity});
+                        bbox = txt.getBBox();
+                        if(bbox.width<68) bbox.width = 68;
+                        rect = t.paper.rect(bbox.x-4,bbox.y-2, bbox.width+8,bbox.height+4).attr({'fill':'#8CEA00', 'stroke':'white','opacity':this.eventAttr.opacity});
+                        rect.insertBefore(txt);
+                        txt.click(function(){
+                            t.paper.top.prev.attr('opacity','0.38');
+                            t.paper.top.attr('opacity','0.38');
+                            this.prev.toFront().attr('opacity','1.0');
+                            this.toFront().attr('opacity','1.0');
                         });
+                        rect.click(function(){
+                            t.paper.top.prev.attr('opacity','0.38');
+                            t.paper.top.attr('opacity','0.38');
+                            bindTxt = this.next;
+                            this.toFront().attr('opacity','1.0');
+                            bindTxt.toFront().attr('opacity','1.0');
+                        });
+                        /*Y += 2.5;
+                        elem = t.paper.circle(startX, Y, 2.5).attr(this.eventAttr);
                         if(typeof endX!='undefined'){
                             elem = t.paper.circle(endX, Y, 2.5).attr(this.eventAttr);
-                            addElemClass(t.paperType, elem.node, 'chronoline-event');
-                            elem.attr('title', event.description);
                             t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr({'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5});
-                        }
+                        }*/
                     },
             'events': Array(),
             'visible':true
         },
         {   
             'name':'task', 
-            'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width': 5 }, 
+            'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width':5,'opacity':'0.38' }, 
             'draw' :function(event, startX, Y, endX){
-                        startX -= 2.5;
-                        elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
-                        addElemClass(t.paperType, elem.node, 'chronoline-event');
-                        elem.attr('title', "");
-                        $(elem.node.parentNode).qtip({
-                            content:
-                                {
-                                    title: 
-                                        {
-                                            text:event.dates[0].toDateString()
-                                        },
-                                    text: event.description
-                                },
-                            position:
-                                {
-                                    my: 'top left',
-                                    adjust: {x:10,y:10},
-                                    at: 'right top'
-                                },
-                            /*show:
-                                {
-                                    event: false,
-                                    ready: true
-                                },
-                            hide: false,*/
-                            style:
-                                {
-                                    classes: 'qtip-shadow qtip-dark'
-                                }
+                        txt = t.paper.text(startX+4, Y-16, event.description).attr({'text-anchor':'start', 'opacity':this.eventAttr.opacity});
+                        bbox = txt.getBBox();
+                        if(bbox.width<68) bbox.width=68;
+                        rect = t.paper.rect(bbox.x-4,bbox.y-2,bbox.width+8,bbox.height+4).attr({'fill':'#FF00FF', 'stroke':'white','opacity':this.eventAttr.opacity});
+                        rect.insertBefore(txt);
+                        txt.click(function(){
+                            t.paper.top.prev.attr('opacity','0.38');
+                            t.paper.top.attr('opacity','0.38');
+                            this.prev.toFront().attr('opacity','1.0');
+                            this.toFront().attr('opacity','1.0');
                         });
+                        rect.click(function(){
+                            t.paper.top.prev.attr('opacity','0.38');
+                            t.paper.top.attr('opacity','0.38');
+                            bindTxt = this.next;
+                            this.toFront().attr('opacity','1.0');
+                            bindTxt.toFront().attr('opacity','1.0');
+                        });
+                        /*startX -= 2.5;
+                        elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
                         if(typeof endX!='undefined'){
                             endX -= 2.5;
-                            elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
-                            addElemClass(t.paperType, elem.node, 'chronoline-event');
-                            elem = t.paper.rect(endX, Y, 5, 5).attr(this.eventAttr);
-                            addElemClass(t.paperType, elem.node, 'chronoline-event');
-                            elem = t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr(this.eventAttr);
-                            addElemClass(t.paperType, elem.node, 'chronoline-event');
-                        }
+                            t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
+                            t.paper.rect(endX, Y, 5, 5).attr(this.eventAttr);
+                            t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr(this.eventAttr);
+                        }*/
                     },
             'events': Array(),
             'visible':true
@@ -366,7 +341,7 @@ $.fn.Chronoline = function (events, options) {
    
     var DrawEvents = function(startTime, endTime){
         for(var row = 0; row < t.event_rows.length; row++){
-            var upperY = t.visibleHeight-t.config.dateLabelHeight-(row+1)*16;
+            var upperY = t.visibleHeight-t.config.dateLabelHeight-(row)*25;
             for(var col = 0; col < t.event_rows[row].length; col++){
                 var event = t.event_rows[row][col];
                 if(!event.section.visible)

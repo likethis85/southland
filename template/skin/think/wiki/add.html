@@ -4,10 +4,18 @@
             required:"<span style=\"color:red\">*</span>"
         });
         $(document).ready(function(){
-            var editor = CKEDITOR.replace("WikiContent");
             var kwdC = 0;
+            UE.getEditor('WikiContent',{
+                //focus时自动清空初始化时的内容
+                autoClearinitialContent:false,
+                //关闭字数统计
+                wordCount:true,
+                //关闭elementPath
+                elementPathEnabled:false
+                //更多其他参数，请参考editor_config.js中的配置项
+            });
             $('.btn-rounded').click(function(){
-                editor.updateElement();
+                UE.getEditor('WikiContent').sync();
             });
             $('.new_keyword').click(function(){
                 this.parentElement.insertBefore($('<div style="float:left;margin-right:3px;"><input name="kwd['+(kwdC++)+']" value="" /></div>')[0], this);
