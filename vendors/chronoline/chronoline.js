@@ -91,8 +91,8 @@ $.fn.Chronoline = function (events, options) {
 
         tooltips: false,  // activates qtip tooltips. Otherwise, you just get title tooltips
         markToday: 'line',  // 'line', 'labelBox', false
-        todayAttrs: {'stroke': '#484848'},
-
+        todayAttrs: {'stroke': '#00CACA'},
+                
         sections: [],
         floatingSectionLabels: true,
         sectionLabelAttrs: {},
@@ -125,8 +125,10 @@ $.fn.Chronoline = function (events, options) {
         DrawEvents(t.startTime, t.endTime);
         if(typeof t.icons == 'undefined') {
             t.icons = {
+                'plus': "M25.979,12.896 19.312,12.896 19.312,6.229 12.647,6.229 12.647,12.896 5.979,12.896 5.979,19.562 12.647,19.562 12.647,26.229 19.312,26.229 19.312,19.562 25.979,19.562z",
                 'view': "M16,8.286C8.454,8.286,2.5,16,2.5,16s5.954,7.715,13.5,7.715c5.771,0,13.5-7.715,13.5-7.715S21.771,8.286,16,8.286zM16,20.807c-2.649,0-4.807-2.157-4.807-4.807s2.158-4.807,4.807-4.807s4.807,2.158,4.807,4.807S18.649,20.807,16,20.807zM16,13.194c-1.549,0-2.806,1.256-2.806,2.806c0,1.55,1.256,2.806,2.806,2.806c1.55,0,2.806-1.256,2.806-2.806C18.806,14.451,17.55,13.194,16,13.194z",
                 'tag': "M14.263,2.826H7.904L2.702,8.028v6.359L18.405,30.09l11.561-11.562L14.263,2.826zM6.495,8.859c-0.619-0.619-0.619-1.622,0-2.24C7.114,6,8.117,6,8.736,6.619c0.62,0.62,0.619,1.621,0,2.241C8.117,9.479,7.114,9.479,6.495,8.859z",
+                'wrench': "M26.834,14.693c1.816-2.088,2.181-4.938,1.193-7.334l-3.646,4.252l-3.594-0.699L19.596,7.45l3.637-4.242c-2.502-0.63-5.258,0.13-7.066,2.21c-1.907,2.193-2.219,5.229-1.039,7.693L5.624,24.04c-1.011,1.162-0.888,2.924,0.274,3.935c1.162,1.01,2.924,0.888,3.935-0.274l9.493-10.918C21.939,17.625,24.918,16.896,26.834,14.693z",
             };
             ray1 = t.paper.path(t.icons.tag)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
@@ -176,12 +178,28 @@ $.fn.Chronoline = function (events, options) {
             
             ray3 = t.paper.path(t.icons.view)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
-                .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6')  
+                .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6');  
             t.paper.path(t.icons.view)
                 .attr({fill: "#888", stroke: "none", 'title':'全视图'})
                 .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6')
                 .hover(function(){ray3.stop().animate({opacity:1},200)},function(){ray3.stop().animate({opacity:0},200)})
                 .click(t.fullView);
+            ray4 = t.paper.path(t.icons.plus)
+                .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
+                .transform('T'+(t.visibleWidth-104)+',0S0.6,0.6');  
+            t.paper.path(t.icons.plus)
+                .attr({fill: "#888", stroke: "none", 'title':'新事件'})
+                .transform('T'+(t.visibleWidth-104)+',0S0.6,0.6')
+                .hover(function(){ray4.stop().animate({opacity:1},200)},function(){ray4.stop().animate({opacity:0},200)})
+                .click(t.config.onAdd);
+            ray5 = t.paper.path(t.icons.wrench)
+                .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
+                .transform('T'+(t.visibleWidth-128)+',0S0.6,0.6');  
+            t.paper.path(t.icons.wrench)
+                .attr({fill: "#888", stroke: "none", 'title':'新事件'})
+                .transform('T'+(t.visibleWidth-128)+',0S0.6,0.6')
+                .hover(function(){ray5.stop().animate({opacity:1},200)},function(){ray5.stop().animate({opacity:0},200)})
+                .click(function(){t.config.onSetting(t)});
         }
     }
     t.backTimeline = function(){
