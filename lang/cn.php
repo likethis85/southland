@@ -161,8 +161,5 @@ return array(
 'Clear'         => '清除',
 'Posted On'     => '发表于',
 'Post'          => '发表',
-<<<<<<< HEAD
-=======
 'Accomplished'  => '完成',
->>>>>>> work
 );

@@ -3,15 +3,7 @@
 // MIT license at https://github.com/StoicLoofah/chronoline.js/blob/master/LICENSE.md
 
 $.fn.Chronoline = function (events, options) {
-        
-    var addElemClass = function(paperType, node, newClass){
-        if(paperType == 'SVG'){
-            node.setAttribute('class', newClass);
-        } else {
-            node.className += ' ' + newClass
-        }
-    }
-    
+           
     var formatDate = function(date, formatString){
         var ret = formatString;
         var monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
@@ -128,9 +120,69 @@ $.fn.Chronoline = function (events, options) {
         t.cols = (t.endTime-t.startTime)/(t.resolution*DAY);
         t.colspan = t.visibleWidth/t.cols;
         t.pxRatio = t.colspan/(t.resolution*DAY);
-        t.paper.clear();
+        //t.paper.clear();
         DrawTimeAxis(t.startTime,t.endTime);
         DrawEvents(t.startTime, t.endTime);
+        if(typeof t.icons == 'undefined') {
+            t.icons = {
+                'view': "M16,8.286C8.454,8.286,2.5,16,2.5,16s5.954,7.715,13.5,7.715c5.771,0,13.5-7.715,13.5-7.715S21.771,8.286,16,8.286zM16,20.807c-2.649,0-4.807-2.157-4.807-4.807s2.158-4.807,4.807-4.807s4.807,2.158,4.807,4.807S18.649,20.807,16,20.807zM16,13.194c-1.549,0-2.806,1.256-2.806,2.806c0,1.55,1.256,2.806,2.806,2.806c1.55,0,2.806-1.256,2.806-2.806C18.806,14.451,17.55,13.194,16,13.194z",
+                'tag': "M14.263,2.826H7.904L2.702,8.028v6.359L18.405,30.09l11.561-11.562L14.263,2.826zM6.495,8.859c-0.619-0.619-0.619-1.622,0-2.24C7.114,6,8.117,6,8.736,6.619c0.62,0.62,0.619,1.621,0,2.241C8.117,9.479,7.114,9.479,6.495,8.859z",
+            };
+            ray1 = t.paper.path(t.icons.tag)
+                .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
+                .transform('T'+(t.visibleWidth-32)+',0S0.5,0.5');
+            t.paper.path(t.icons.tag)
+                .attr({fill: "#8CEA00", stroke: "none",'title':'项目'})
+                .transform('T'+(t.visibleWidth-32)+',0S0.5,0.5')
+                .hover(function(){ray1.stop().animate({opacity:1},200)},function(){ray1.stop().animate({opacity:0},200)})
+                .click(function(){
+                    for(i=0;i<t.sections.length;i++){
+                        if(t.sections[i].name !='project')
+                            continue;
+                        if(t.sections[i].visible){
+                            t.sections[i].elements.attr({'opacity':0});
+                            t.sections[i].visible = false;
+                            this.attr({fill:'#EEE'});
+                        }else{
+                            t.sections[i].elements.attr({'opacity':1});
+                            t.sections[i].visible = true;
+                            this.attr({fill:'#8CEA00'});
+                        }
+                    }
+                });
+                
+            ray2 = t.paper.path(t.icons.tag)
+                .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
+                .transform('T'+(t.visibleWidth-56)+',0S0.5,0.5');
+            t.paper.path(t.icons.tag)
+                .attr({fill: "#FF00FF", stroke: "none",'title':'任务'})
+                .transform('T'+(t.visibleWidth-56)+',0S0.5,0.5')
+                .hover(function(){ray2.stop().animate({opacity:1},200)},function(){ray2.stop().animate({opacity:0},200)})
+                .click(function(){
+                    for(i=0;i<t.sections.length;i++){
+                        if(t.sections[i].name !='task')
+                            continue;
+                        if(t.sections[i].visible){
+                            t.sections[i].elements.attr({'opacity':0});
+                            t.sections[i].visible = false;
+                            this.attr({fill:'#EEE'});
+                        }else{
+                            t.sections[i].elements.attr({'opacity':1});
+                            t.sections[i].visible = true;
+                            this.attr({fill:'#FF00FF'});
+                        }
+                    }
+                });
+            
+            ray3 = t.paper.path(t.icons.view)
+                .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
+                .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6')  
+            t.paper.path(t.icons.view)
+                .attr({fill: "#888", stroke: "none", 'title':'全视图'})
+                .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6')
+                .hover(function(){ray3.stop().animate({opacity:1},200)},function(){ray3.stop().animate({opacity:0},200)})
+                .click(t.fullView);
+        }
     }
     t.backTimeline = function(){
         var span = t.endTime-t.startTime;
@@ -169,8 +221,7 @@ $.fn.Chronoline = function (events, options) {
         t.endTime  += span;
         t.config.startDate.setTime(t.startTime);
         t.config.endDate.setTime(t.endTime);
-        t.show();
-    }
+        t.show(); }
     t.forwardTimeline = function(){
         var span = t.endTime-t.startTime;
         span /= 3;
@@ -186,7 +237,32 @@ $.fn.Chronoline = function (events, options) {
     t.wrapper = document.createElement('div');
     t.wrapper.className = 'chronoline-wrapper';
     t.domElement.appendChild(t.wrapper);
+    t.drag = {'sX':0,'cX':0,'sT':0,'cT':0,'os':0,'oe':0};
+    $(t.wrapper).mousedown(function(e){
+        if(e.srcElement.tagName != 'svg')
+            return;
+        e.preventDefault();
+        t.drag.os = t.startTime;
+        t.drag.oe = t.endTime;
+        t.drag.sX = e.offsetX;
+        t.drag.cT = Date();
+        $(t.wrapper).css({'cursor':'move'}).bind('mousemove',function(e){
+            e.preventDefault();
+            t.drag.cX = e.offsetX;
+            span = (t.drag.cX-t.drag.sX)/t.pxRatio;
+            t.startTime = t.drag.os-span;
+            t.endTime  = t.drag.oe-span;
+            t.config.startDate.setTime(t.startTime);
+            t.config.endDate.setTime(t.endTime);
+            t.show();
+        }).bind('mouseup',function(e){
+            e.preventDefault();
+            t.drag.cT = Date();
+            $(t.wrapper).unbind('mousemove').unbind('mouseup').css({'cursor':'default'});
+        });
+    });
     
+    t.config.toolbar = [];
     if(t.config.toolbar.length){
         this.on('toolbarItemClick', function(e,p){
             t.config.toolbar[p.id].callback(t);
@@ -207,69 +283,79 @@ $.fn.Chronoline = function (events, options) {
     var sections = [
         {   
             'name':'project', 
-            'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width':5,'opacity':'0.38'}, 
+            'ready':false,
+            'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width':5,'opacity':'1'}, 
             'draw' :function(event, startX, Y, endX){
-                        txt = t.paper.text(startX+4, Y-16, event.description).attr({'text-anchor':'start','opacity':this.eventAttr.opacity});
+                        if(event.element){
+                            txt = event.element.pop();
+                            rect = event.element.pop();
+                            txt.transform('T'+(startX+4)+','+(Y-16));
+                            bbox = txt.getBBox();
+                            rect.transform('T'+(bbox.x-4)+','+(bbox.y-2));
+                            event.element.push(rect,txt);
+                            return;
+                        }
+                        if(this.elements==null)
+                            this.elements = t.paper.set();
+                        txt = t.paper.text(0, 0, event.title)
+                            .attr({'text-anchor':'start','opacity':this.eventAttr.opacity})
+                            .transform('T'+(startX+4)+','+(Y-16));
                         bbox = txt.getBBox();
-                        if(bbox.width<68) bbox.width = 68;
-                        rect = t.paper.rect(bbox.x-4,bbox.y-2, bbox.width+8,bbox.height+4).attr({'fill':'#8CEA00', 'stroke':'white','opacity':this.eventAttr.opacity});
+                        rect = t.paper.rect(0,0, bbox.width+8,bbox.height+4)
+                            .attr({'fill':'#8CEA00', 'stroke':'white','opacity':this.eventAttr.opacity})
+                            .transform('T'+(bbox.x-4)+','+(bbox.y-2));
                         rect.insertBefore(txt);
                         txt.click(function(){
-                            t.paper.top.prev.attr('opacity','0.38');
-                            t.paper.top.attr('opacity','0.38');
-                            this.prev.toFront().attr('opacity','1.0');
-                            this.toFront().attr('opacity','1.0');
+                            alert(event.description);
                         });
                         rect.click(function(){
-                            t.paper.top.prev.attr('opacity','0.38');
-                            t.paper.top.attr('opacity','0.38');
-                            bindTxt = this.next;
-                            this.toFront().attr('opacity','1.0');
-                            bindTxt.toFront().attr('opacity','1.0');
+                            alert(event.description);
                         });
-                        /*Y += 2.5;
-                        elem = t.paper.circle(startX, Y, 2.5).attr(this.eventAttr);
-                        if(typeof endX!='undefined'){
-                            elem = t.paper.circle(endX, Y, 2.5).attr(this.eventAttr);
-                            t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr({'fill': '#8CEA00','stroke': '#8CEA00','stroke-width': 5});
-                        }*/
+                        elem = t.paper.set().push(rect,txt);
+                        this.elements.push(elem);
+                        event.element = elem;
                     },
             'events': Array(),
-            'visible':true
+            'visible':true,
+            'elements':null
         },
         {   
             'name':'task', 
-            'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width':5,'opacity':'0.38' }, 
+            'ready':false,
+            'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width':5,'opacity':'1' }, 
             'draw' :function(event, startX, Y, endX){
-                        txt = t.paper.text(startX+4, Y-16, event.description).attr({'text-anchor':'start', 'opacity':this.eventAttr.opacity});
+                        if(event.element){
+                            txt = event.element.pop();
+                            rect = event.element.pop();
+                            txt.transform('T'+(startX+4)+','+(Y-16));
+                            bbox = txt.getBBox();
+                            rect.transform('T'+(bbox.x-4)+','+(bbox.y-2));
+                            event.element.push(rect,txt);
+                            return;
+                        }
+                        if(this.elements==null)
+                            this.elements = t.paper.set();
+                        txt = t.paper.text(0, 0, event.title)
+                            .attr({'text-anchor':'start', 'opacity':this.eventAttr.opacity})
+                            .transform('T'+(startX+4)+','+(Y-16));
                         bbox = txt.getBBox();
-                        if(bbox.width<68) bbox.width=68;
-                        rect = t.paper.rect(bbox.x-4,bbox.y-2,bbox.width+8,bbox.height+4).attr({'fill':'#FF00FF', 'stroke':'white','opacity':this.eventAttr.opacity});
+                        rect = t.paper.rect(0,0,bbox.width+8,bbox.height+4)
+                            .attr({'fill':'#FF00FF', 'stroke':'white','opacity':this.eventAttr.opacity})
+                            .transform('T'+(bbox.x-4)+','+(bbox.y-2));
                         rect.insertBefore(txt);
                         txt.click(function(){
-                            t.paper.top.prev.attr('opacity','0.38');
-                            t.paper.top.attr('opacity','0.38');
-                            this.prev.toFront().attr('opacity','1.0');
-                            this.toFront().attr('opacity','1.0');
+                            alert(event.description);
                         });
                         rect.click(function(){
-                            t.paper.top.prev.attr('opacity','0.38');
-                            t.paper.top.attr('opacity','0.38');
-                            bindTxt = this.next;
-                            this.toFront().attr('opacity','1.0');
-                            bindTxt.toFront().attr('opacity','1.0');
+                            alert(event.description);
                         });
-                        /*startX -= 2.5;
-                        elem = t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
-                        if(typeof endX!='undefined'){
-                            endX -= 2.5;
-                            t.paper.rect(startX, Y, 5, 5).attr(this.eventAttr);
-                            t.paper.rect(endX, Y, 5, 5).attr(this.eventAttr);
-                            t.paper.path('M'+startX+', '+Y+'L'+endX+','+Y).attr(this.eventAttr);
-                        }*/
+                        elem = t.paper.set().push(rect,txt);
+                        this.elements.push(elem);
+                        event.element = elem;
                     },
             'events': Array(),
-            'visible':true
+            'visible':true,
+            'elements': null
         }
     ];
     t.event_rows = [];
@@ -280,6 +366,7 @@ $.fn.Chronoline = function (events, options) {
         else
             t.events[i].section = sections[0];
         t.events[i].section.events.push(t.events[i]);
+        t.events[i].element = null;
         for(j=0;j<t.event_rows.length;j++){
             if(t.event_rows[j][t.event_rows[j].length-1].dates[t.event_rows[j][t.event_rows[j].length-1].dates.length-1].getTime()<t.events[i].dates[0].getTime()){
                 found = true;
@@ -334,11 +421,10 @@ $.fn.Chronoline = function (events, options) {
     t.myCanvas.className = 'chronoline-canvas';
     t.wrapper.appendChild(t.myCanvas);
     t.paper = Raphael(t.myCanvas, t.domElement.clientWidth, t.domElement.clientHeight);
-    t.paperType = t.paper.raphael.type;
-    t.paperElem = t.myCanvas.childNodes[0];
     t.visibleWidth = t.domElement.clientWidth;
     t.visibleHeight = t.domElement.clientHeight;
-   
+    t.axis = t.paper.set();
+    
     var DrawEvents = function(startTime, endTime){
         for(var row = 0; row < t.event_rows.length; row++){
             var upperY = t.visibleHeight-t.config.dateLabelHeight-(row)*25;
@@ -356,12 +442,16 @@ $.fn.Chronoline = function (events, options) {
                 }
             }
         }
+        
+        for(i=0;i<t.sections.length;i++){
+            t.sections[i].ready = true;
+        }
     }
 
     var DrawTimeAxis = function(startTime, endTime){
+        t.axis.remove();
         var dateLineY =t.visibleHeight - t.config.dateLabelHeight;
-        var baseline = t.paper.path('M0,' + dateLineY + 'L' + t.visibleWidth + ',' + dateLineY);
-        baseline.attr('stroke', '#b8b8b8');
+        t.axis.push(t.paper.path('M0,' + dateLineY + 'L' + t.visibleWidth + ',' + dateLineY).attr('stroke', '#b8b8b8'));
         
         var bottomHashY = dateLineY + t.config.hashLength;
         var labelY = bottomHashY + t.config.fontAttrs['font-size'];
@@ -370,8 +460,7 @@ $.fn.Chronoline = function (events, options) {
 
         if( t.config.markToday ) {
             var x = msToPx(t.today.getTime());
-            var line = t.paper.path('M' + x  + ',0L' + x + ',' + dateLineY);
-            line.attr(t.config.todayAttrs);
+            t.axis.push(t.paper.path('M' + x  + ',0L' + x + ',' + dateLineY).attr(t.config.todayAttrs));
         }
 
         var endYear = t.config.endDate.getFullYear();
@@ -379,10 +468,10 @@ $.fn.Chronoline = function (events, options) {
             var curDate = new Date(year, 0, 1);
             var x = msToPx(curDate.getTime());
             if(x<0) x=12;
-            var subSubLabel = t.paper.text(x, subSubLabelY, formatDate(curDate, '%Y').toUpperCase());
-            subSubLabel.attr(t.config.fontAttrs);
-            subSubLabel.attr(t.config.subSubLabelAttrs);
-            
+            var subSubLabel = t.paper.text(x, subSubLabelY, formatDate(curDate, '%Y').toUpperCase())
+                .attr(t.config.fontAttrs)
+                .attr(t.config.subSubLabelAttrs);
+            t.axis.push(subSubLabel);
             subSubLabel.data('left-bound', x);
             var endOfYear = new Date(year, 11, 31);
             subSubLabel.data('right-bound',Math.min((endOfYear.getTime() - startTime) * t.pxRatio - 5,t.visibleWidth));
@@ -393,12 +482,12 @@ $.fn.Chronoline = function (events, options) {
                 var cd = new Date(year, month, 1);
                 var x = msToPx(cd.getTime());
                 if(x<0) x=12;
-                var subLabel = t.paper.text(x, subLabelY, formatDate(cd, '%b').toUpperCase());
-                subLabel.attr(t.config.fontAttrs);
-                subLabel.attr(t.config.subLabelAttrs);
+                var subLabel = t.paper.text(x, subLabelY, formatDate(cd, '%b').toUpperCase())
+                    .attr(t.config.fontAttrs)
+                    .attr(t.config.subLabelAttrs);
+                t.axis.push(subLabel);
                 subLabel.data('left-bound', x);
-                var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
-                hash.attr('stroke', '#b8b8b8');
+                t.axis.push(t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY).attr('stroke', '#b8b8b8'));
             }
         }
        
@@ -410,12 +499,10 @@ $.fn.Chronoline = function (events, options) {
 
             curDate = new Date(curDate.getFullYear(), curDate.getMonth(), curDate.getDate());
             var x = msToPx(curDate.getTime());
-            var hash = t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY);
-            hash.attr('stroke', '#b8b8b8');
+            t.axis.push(t.paper.path('M' + x + ',' + dateLineY + 'L' + x + ',' + bottomHashY).attr('stroke', '#b8b8b8'));
             var displayDate = String(day);
             if(displayDate.length == 1) displayDate = '0' + displayDate;
-            var label = t.paper.text(x, labelY, displayDate);
-            label.attr(t.config.fontAttrs);
+            t.axis.push(t.paper.text(x, labelY, displayDate).attr(t.config.fontAttrs));
         }
     }
   

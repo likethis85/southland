@@ -290,24 +290,24 @@
                         <{if $item.start==0}>
                             {
                                 dates: [new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
-                                description:"<{$item.title}>", 
+                                title: "<{$item.brief}>", 
+                                description:"<{$item.content}>", 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                              }
                         <{elseif $item.end==0}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/'))], 
-                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
-                                description:"<{$item.title}>", 
+                                title: "<{$item.brief}>", 
+                                description:"<{$item.content}>", 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             }
                         <{else}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
-                                description:"<{$item.title}>", 
+                                title: "<{$item.brief}>", 
+                                description:"<{$item.content}>", 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             }
@@ -316,24 +316,24 @@
                         <{if $item.start==0}>
                             {
                                 dates: [new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
-                                description:"<{$item.title}>", 
+                                title: "<{$item.brief}>", 
+                                description:"<{$item.content}>", 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             },
                         <{elseif $item.end==0}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/'))], 
-                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
-                                description:"<{$item.title}>", 
+                                title: "<{$item.brief}>", 
+                                description:"<{$item.content}>", 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             },
                         <{else}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.date}>".replace(/\s\w.*/,''), 
-                                description:"<{$item.title}>", 
+                                title: "<{$item.brief}>", 
+                                description:"<{$item.content}>", 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             },
@@ -348,14 +348,12 @@
                 markToday: 'line',
                 draggable: false,
                 toolbar: [
-                            {'title': "<{T w='PreTimeline'}>", 'view':'icon-chevron-left',callback:function(t){ t.backTimeline();}},
                             {'title': "<{T w='ZoomIn'}>", 'view':'icon-zoom-in',callback:function(t){t.zoomIn();}},
                             {'title': "<{T w='AddEvent'}>", 'view':'icon-edit',callback:AddEvent},
                             {'title': "<{T w='FitTimeline'}>", 'view':'icon-eye-open',callback:function(t){ t.fullView();}},
                             {'title': "<{T w='ListEvent'}>",'view':'icon-list',callback:ListEvent},
                             {'title': "",'view':'icon-tasks',callback:ListSection},
-                            {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}},
-                            {'title': "<{T w='NextTimeline'}>", 'view':'icon-chevron-right',callback:function(t){ t.forwardTimeline();}}
+                            {'title': "<{T w='ZoomOut'}>", 'view':'icon-zoom-out',callback:function(t){t.zoomOut();}}
                          ]
             }
         );
