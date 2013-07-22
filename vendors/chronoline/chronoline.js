@@ -60,7 +60,6 @@ $.fn.Chronoline = function (events, options) {
     var msToPx = function(ms){ 
         return (ms - t.startTime) * t.pxRatio;
     }
-    
     var defaults = {
         startDate: null,  // start of the timeline. Defaults to first event date
         endDate: null,    // end of the timeline. Defauls to the last event date
@@ -279,7 +278,6 @@ $.fn.Chronoline = function (events, options) {
             $(t.wrapper).unbind('mousemove').unbind('mouseup').css({'cursor':'default'});
         });
     });
-    
     t.config.toolbar = [];
     if(t.config.toolbar.length){
         this.on('toolbarItemClick', function(e,p){
@@ -292,19 +290,27 @@ $.fn.Chronoline = function (events, options) {
         tbLayer += '</div>';
         this.toolbar({'content':tbLayer,'position':'docktop'});
     }
-
     // 按升序排列事件对象
     // event row描述一种表现形式，保证在同一个层面上不出现事件的重叠
     t.events = events;
     t.events.sort(sortEvents);
-   
-    var sections = [
+    t.sections = [
         {   
             'name':'project', 
             'ready':false,
             'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width':5,'opacity':'1'}, 
             'draw' :function(event, startX, Y, endX){
                         if(event.element){
+                            event.element.transform('T0,0');
+                            for(i=0;i<t.sections.length && t.sections[i].elements;i++){
+                                t.sections[i].elements.forEach(function(pair){
+                                    pair.forEach(function(elem){
+                                        bbox = elem.getBBox();
+                                        if(Raphael.isPointInsideBBox(bbox, startX+4,Y-16))
+                                            Y -= 25;
+                                    });
+                                });
+                            }
                             txt = event.element.pop();
                             rect = event.element.pop();
                             txt.transform('T'+(startX+4)+','+(Y-16));
@@ -313,15 +319,14 @@ $.fn.Chronoline = function (events, options) {
                             event.element.push(rect,txt);
                             return;
                         }
+                        
                         if(this.elements==null)
                             this.elements = t.paper.set();
                         txt = t.paper.text(0, 0, event.title)
-                            .attr({'text-anchor':'start','opacity':this.eventAttr.opacity})
-                            .transform('T'+(startX+4)+','+(Y-16));
+                            .attr({'text-anchor':'start','opacity':this.eventAttr.opacity});
                         bbox = txt.getBBox();
                         rect = t.paper.rect(0,0, bbox.width+8,bbox.height+4)
-                            .attr({'fill':'#8CEA00', 'stroke':'white','opacity':this.eventAttr.opacity})
-                            .transform('T'+(bbox.x-4)+','+(bbox.y-2));
+                            .attr({'fill':'#8CEA00', 'stroke':'white','opacity':this.eventAttr.opacity});
                         rect.insertBefore(txt);
                         txt.click(function(){
                         });
@@ -330,6 +335,7 @@ $.fn.Chronoline = function (events, options) {
                         elem = t.paper.set().push(rect,txt);
                         this.elements.push(elem);
                         event.element = elem;
+                        this.draw(event,startX,Y,endX);
                     },
             'events': Array(),
             'visible':true,
@@ -341,15 +347,16 @@ $.fn.Chronoline = function (events, options) {
             'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width':5,'opacity':'1' }, 
             'draw' :function(event, startX, Y, endX){
                         if(event.element){
-                            this.elements.forEach(function(pair){
-                                pair.forEach(function(elem){
-                                    if(elem != event.elem) {
+                            event.element.transform('T0,0');
+                            for(i=0;i<t.sections.length;i++){
+                                t.sections[i].elements.forEach(function(pair){
+                                    pair.forEach(function(elem){
                                         bbox = elem.getBBox();
                                         if(Raphael.isPointInsideBBox(bbox, startX+4,Y-16))
                                             Y -= 25;
-                                    }
+                                    });
                                 });
-                            });
+                            }
                             txt = event.element.pop();
                             rect = event.element.pop();
                             txt.transform('T'+(startX+4)+','+(Y-16));
@@ -385,34 +392,15 @@ $.fn.Chronoline = function (events, options) {
             'elements': null
         }
     ];
-    t.event_rows = [];
+
     for(i=0;i<t.events.length;i++){
         var found = false;
         if(t.events[i].section=='task')
-            t.events[i].section = sections[1];
+            t.events[i].section = t.sections[1];
         else
-            t.events[i].section = sections[0];
+            t.events[i].section = t.sections[0];
         t.events[i].section.events.push(t.events[i]);
         t.events[i].element = null;
-        for(j=0;j<t.event_rows.length;j++){
-            if(t.event_rows[j][t.event_rows[j].length-1].dates[t.event_rows[j][t.event_rows[j].length-1].dates.length-1].getTime()<t.events[i].dates[0].getTime()){
-                found = true;
-                t.event_rows[j].push(t.events[i]);
-                break;
-            }   
-        }
-        
-        if(!found){
-            var new_row = new Array();
-            new_row.push(t.events[i]);
-            t.event_rows.push(new_row);
-        }
-    }
-    
-    t.sections = Array();
-    for(i=0; i<sections.length;i++){
-        if(sections[i].events.length)
-            t.sections.push(sections[i]);
     }
    
     // 设置视口的时间区域
@@ -453,21 +441,11 @@ $.fn.Chronoline = function (events, options) {
     t.axis = t.paper.set();
     
     var DrawEvents = function(startTime, endTime){
-        for(var row = 0; row < t.event_rows.length; row++){
+        for(var row = 0; row < t.events.length; row++){
             var upperY = t.visibleHeight-t.config.dateLabelHeight-8;
-            for(var col = 0; col < t.event_rows[row].length; col++){
-                var event = t.event_rows[row][col];
-                if(!event.section.visible)
-                    continue;
-                if(event.dates.length == 1 || ((event.dates[1].getTime()-event.dates[0].getTime())<t.resolution*DAY)){
-                    var startX = msToPx(event.dates[0].getTime());
-                    event.section.draw(event,startX,upperY);
-                } else {
-                    var startX = (event.dates[0].getTime() - t.startTime) * t.pxRatio;
-                    var endX = (event.dates[1].getTime() - t.startTime) * t.pxRatio;
-                    event.section.draw(event,startX,upperY,endX);
-                }
-            }
+            var event = t.events[row];
+            var startX = msToPx(event.dates[0].getTime());
+            event.section.draw(event,startX,upperY);
         }
         
         for(i=0;i<t.sections.length;i++){
