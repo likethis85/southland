@@ -324,10 +324,8 @@ $.fn.Chronoline = function (events, options) {
                             .transform('T'+(bbox.x-4)+','+(bbox.y-2));
                         rect.insertBefore(txt);
                         txt.click(function(){
-                            alert(event.description);
                         });
                         rect.click(function(){
-                            alert(event.description);
                         });
                         elem = t.paper.set().push(rect,txt);
                         this.elements.push(elem);
@@ -343,6 +341,15 @@ $.fn.Chronoline = function (events, options) {
             'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width':5,'opacity':'1' }, 
             'draw' :function(event, startX, Y, endX){
                         if(event.element){
+                            this.elements.forEach(function(pair){
+                                pair.forEach(function(elem){
+                                    if(elem != event.elem) {
+                                        bbox = elem.getBBox();
+                                        if(Raphael.isPointInsideBBox(bbox, startX+4,Y-16))
+                                            Y -= 25;
+                                    }
+                                });
+                            });
                             txt = event.element.pop();
                             rect = event.element.pop();
                             txt.transform('T'+(startX+4)+','+(Y-16));
@@ -351,25 +358,27 @@ $.fn.Chronoline = function (events, options) {
                             event.element.push(rect,txt);
                             return;
                         }
+
                         if(this.elements==null)
                             this.elements = t.paper.set();
                         txt = t.paper.text(0, 0, event.title)
-                            .attr({'text-anchor':'start', 'opacity':this.eventAttr.opacity})
-                            .transform('T'+(startX+4)+','+(Y-16));
+                            .attr({'text-anchor':'start', 'opacity':this.eventAttr.opacity});
                         bbox = txt.getBBox();
                         rect = t.paper.rect(0,0,bbox.width+8,bbox.height+4)
-                            .attr({'fill':'#FF00FF', 'stroke':'white','opacity':this.eventAttr.opacity})
-                            .transform('T'+(bbox.x-4)+','+(bbox.y-2));
+                            .attr({'fill':'#FF00FF', 'stroke':'white','opacity':this.eventAttr.opacity});
                         rect.insertBefore(txt);
                         txt.click(function(){
-                            alert(event.description);
+                            bbox = this.getBBox();
+                            alert('x='+bbox.x+',y='+bbox.y);
                         });
                         rect.click(function(){
-                            alert(event.description);
+                            bbox = this.getBBox();
+                            alert('x='+bbox.x+',y='+bbox.y);
                         });
                         elem = t.paper.set().push(rect,txt);
                         this.elements.push(elem);
                         event.element = elem;
+                        this.draw(event,startX,Y,endX);
                     },
             'events': Array(),
             'visible':true,
@@ -445,7 +454,7 @@ $.fn.Chronoline = function (events, options) {
     
     var DrawEvents = function(startTime, endTime){
         for(var row = 0; row < t.event_rows.length; row++){
-            var upperY = t.visibleHeight-t.config.dateLabelHeight-(row)*25;
+            var upperY = t.visibleHeight-t.config.dateLabelHeight-8;
             for(var col = 0; col < t.event_rows[row].length; col++){
                 var event = t.event_rows[row][col];
                 if(!event.section.visible)

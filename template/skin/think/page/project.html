@@ -228,13 +228,23 @@
                 onAdd: function AddEvent(){
                             var bb = new BlackBox();
                             bb.popup(
-                                '<form action="/project.php?a=addEvent" method="post"><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
+                                '<form id="frm" action="/project.php?a=addEvent" method="post"><div style="width:605px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
                                         '<tr><td><{T w="EventStartTime"}>:</td><td><input name="EventStartTime" id="est" /><td><{T w="EventEndTime"}></td><td><input name="EventEndTime" id="eet" /></td></tr>'+
-                                        '<tr><td colspan=4><{T w="EventSummary"}></td></tr>'+
-                                        '<tr><td colspan=4><textarea name="EventSummary" cols="63" rows="15" /></td></tr>' +
-                                        '<tr><td colspan=4 align=center><input type="submit" class="btn-rounded" value=<{T w="Submit"}>></td></tr>' +
+                                        '<tr><td><{T w="EventSummary"}></td><td colspan=3><input name="EventSummary" size=71 /></td></tr>'+
+                                        '<tr><td colspan=4><textarea id="content" name="content" cols="63" rows="15" /></td></tr>' +
+                                        '<tr><td colspan=4 align=center><div class="btn-rounded" onclick="javascript:frm.submit();"><{T w="Submit"}></div></td></tr>' +
                                 '</table></div></form>',
                                 function(content) {
+                                    var editor = new UE.ui.Editor({
+                                        //focus时自动清空初始化时的内容
+                                        autoClearinitialContent:false,
+                                        //关闭字数统计
+                                        wordCount:true,
+                                        //关闭elementPath
+                                        elementPathEnabled:false
+                                        //更多其他参数，请参考editor_config.js中的配置项
+                                    });
+                                    editor.render(content.find('#content')[0]);
                                     content.find('#est').datepicker({dateFormat:'yy-mm-dd'});
                                     content.find('#eet').datepicker({dateFormat:'yy-mm-dd'});
                                     content.find('#close').click(function(){
@@ -254,7 +264,7 @@
                                         var tbl = content.find('#events');
                                         tbl.css({'cursor':'default', 'margin-bottom':'8px'});
                                         $(obj.events).each(function(i,e){
-                                            row = '<tr class="event"><td>'+i+'</td><td>'+e.description.substr(0,16).replace(/[\r\n]/g,"")+'</td><td>'+fdate(e.dates[0])+'</td>';
+                                            row = '<tr class="event"><td>'+i+'</td><td>'+e.title+'</td><td>'+fdate(e.dates[0])+'</td>';
                                             if(typeof e.dates[1] == 'undefined')
                                                 row += '<td></td><td><img class="DelEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/delete.png"></td><td><img class="EditEvent" id="'+e.id+'" src="<{$skinpath}>/img/project/edit.png"></td></tr>';
                                             else
@@ -279,25 +289,41 @@
                                                var est = this.parentNode.parentNode.childNodes[2].outerText;
                                                var eet = this.parentNode.parentNode.childNodes[3].outerText;
                                                var tid = this.id;
+                                               var title = '';
                                                var description = '';
                                                $(obj.events).each(function(i,e){
                                                    if(e.id == tid) {
-                                                       description = e.description.replace(/<\s*br\s*\/\s*>/ig,"\n");
+                                                       title = e.title;
+                                                       description = e.description;
                                                        return false;
                                                    }
                                                });
                                                bb.popup(
-                                                '<form action="/project.php?a=updateEvent&id='+this.id+'" method="post"><div style="width:470px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
+                                                '<form id="frm" action="/project.php?a=updateEvent&id='+this.id+'" method="post"><div style="width:604px;"><div id="close" class="close">x</div><h3><{T w="ProjectAddEvent"}></h3><table>' +
                                                 '<tr><td><{T w="EventStartTime"}>:</td><td><input name="EventStartTime" id="est" value="'+est+'"/><td><{T w="EventEndTime"}></td><td><input name="EventEndTime" id="eet" value="'+eet+'"/></td></tr>'+
-                                                '<tr><td colspan=4><{T w="EventSummary"}></td></tr>'+
-                                                '<tr><td colspan=4><textarea name="EventSummary" cols="63" rows="15">'+description+'</textarea></td></tr>' +
-                                                '<tr><td colspan=4 align=center><input type="submit" class="btn-rounded" value=<{T w="Submit"}>></td></tr>' +
+                                                '<tr><td ><{T w="EventSummary"}></td><td colspan=3><input name="EventSummary" size=71 value="'+title+'"/></td></tr>'+
+                                                '<tr><td colspan=4><textarea id="content" name="content" cols="63" rows="15">'+description+'</textarea></td></tr>' +
+                                                '<tr><td colspan=4 align=center><div id="submit" class="btn-rounded"><{T w="Submit"}></div></td></tr>' +
                                                 '</table></div></form>',
                                                 function(content){
+                                                    var editor = new UE.ui.Editor({
+                                                        //focus时自动清空初始化时的内容
+                                                        autoClearinitialContent:false,
+                                                        //关闭字数统计
+                                                        wordCount:true,
+                                                        //关闭elementPath
+                                                        elementPathEnabled:false
+                                                        //更多其他参数，请参考editor_config.js中的配置项
+                                                    });
+                                                    editor.render(content.find('#content')[0]);
                                                     content.find('#est').datepicker({dateFormat:'yy-mm-dd'});
                                                     content.find('#eet').datepicker({dateFormat:'yy-mm-dd'});
                                                     content.find('#close').click(function(){
                                                         bb.boxClose();
+                                                    });
+                                                    content.find('#submit').click(function(){
+                                                        editor.sync();
+                                                        content.find('#frm').submit();
                                                     });
                                                 });
                                                 

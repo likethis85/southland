@@ -118,7 +118,7 @@ class main extends general
 
         $newline = array("\n", "\r\n", "\r");
         $title = str_replace($newline, '<br/>', $title);
-        if(false == spClass('timelineModel')->createForProject($pid, $uid, $est, $eet, $title)) {
+        if(false == spClass('timelineModel')->createForProject($pid, $uid, $est, $eet, $title, $this->spArgs('content'))) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {
             $this->jumpProjectPage();
@@ -157,7 +157,7 @@ class main extends general
         $newline = array("\n", "\r\n", "\r");
         $title = str_replace($newline, '<br/>', $title);
         $title = preg_replace('/(<\s*br\s*\/\s*>)+/i','<br/>', $title);
-        if(false == spClass('timelineModel')->updateTimeline($eid, $est, $eet, $title)) {
+        if(false == spClass('timelineModel')->updateTimeline($eid, $est, $eet, $title, $this->spArgs('content'))) {
             spClass('keeper')->speak(T('Error DB operation failed'));
         } else {
             $this->jumpProjectPage();

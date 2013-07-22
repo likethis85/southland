@@ -10,22 +10,24 @@ class timelineModel extends spModel
     var $scope_project = 1;
     var $scope_task = 2;
 
-    public function updateTimeline($id,$start,$end,$brief){
+    public function updateTimeline($id,$start,$end,$brief,$content){
         return $this->Update(array('id'=> $id),
                              array( 'brief' => $brief,
+                                    'content'=>$content,
                                     'stime' => $start,
                                     'etime' => $end==null ? 0:$end));
     }
     /** @brief create timeline event for project
      *
      */
-    public function createForProject($pid, $uid, $start, $end, $brief) {
+    public function createForProject($pid, $uid, $start, $end, $brief,$content) {
         $data = array(
             'uid' => $uid,
             'prj' => $pid,
             'scope' => $this->scope_project,
             'sid' => $pid,
             'brief' => $brief,
+            'content'=>$content,
             'stime' => $start,
             'etime' => $end==null ? 0:$end
         );
