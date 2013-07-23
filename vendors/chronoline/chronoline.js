@@ -290,24 +290,21 @@ $.fn.Chronoline = function (events, options) {
         tbLayer += '</div>';
         this.toolbar({'content':tbLayer,'position':'docktop'});
     }
-    // 按升序排列事件对象
-    // event row描述一种表现形式，保证在同一个层面上不出现事件的重叠
     t.events = events;
     t.events.sort(sortEvents);
-    t.sections = [
-        {   
-            'name':'project', 
-            'ready':false,
-            'eventAttr':{ 'fill': '#8CEA00','stroke': '#8CEA00','stroke-width':5,'opacity':'1'}, 
-            'draw' :function(event, startX, Y, endX){
+    function section(name,opt){
+        this.name = name;
+        this.events = Array();
+        this.elements = null;
+        this.opt = opt;
+        this.draw = function(event, startX, Y){
                         if(event.element){
-                            event.element.transform('T0,0');
+                            event.element.transform('T0,0S0,0');
                             for(i=0;i<t.sections.length && t.sections[i].elements;i++){
                                 t.sections[i].elements.forEach(function(pair){
                                     pair.forEach(function(elem){
                                         bbox = elem.getBBox();
-                                        if(Raphael.isPointInsideBBox(bbox, startX+4,Y-16))
-                                            Y -= 25;
+                                        if(Raphael.isPointInsideBBox(bbox, startX+4,Y-16)) Y -= 25;
                                     });
                                 });
                             }
@@ -323,78 +320,51 @@ $.fn.Chronoline = function (events, options) {
                         if(this.elements==null)
                             this.elements = t.paper.set();
                         txt = t.paper.text(0, 0, event.title)
-                            .attr({'text-anchor':'start','opacity':this.eventAttr.opacity});
+                            .attr({'text-anchor':'start'});
                         bbox = txt.getBBox();
                         rect = t.paper.rect(0,0, bbox.width+8,bbox.height+4)
-                            .attr({'fill':'#8CEA00', 'stroke':'white','opacity':this.eventAttr.opacity});
+                            .attr(this.opt);
                         rect.insertBefore(txt);
-                        txt.click(function(){
-                        });
-                        rect.click(function(){
-                        });
                         elem = t.paper.set().push(rect,txt);
+                        elem.forEach(function(el){
+                            $(el.node).qtip({
+                                content:{
+                                    text:event.description,
+                                    title:{
+                                        text:event.title,
+                                        button:'X'
+                                    }
+                                },
+                                position:{
+                                    corner:{
+                                        target:'topLeft',
+                                        tooltip:'bottomRight'
+                                    },
+                                    adjust: {
+                                        screen: true
+                                    }
+                                },
+                                show:{
+                                    when:'click',
+                                    solo: true
+                                },
+                                hide:'unfocus',
+                                style:{
+                                    name:'Light'
+                                }
+                            });
+                        });
                         this.elements.push(elem);
                         event.element = elem;
-                        this.draw(event,startX,Y,endX);
-                    },
-            'events': Array(),
-            'visible':true,
-            'elements':null
-        },
-        {   
-            'name':'task', 
-            'ready':false,
-            'eventAttr':{ 'fill': '#FF00FF','stroke': '#FF00FF','stroke-width':5,'opacity':'1' }, 
-            'draw' :function(event, startX, Y, endX){
-                        if(event.element){
-                            event.element.transform('T0,0');
-                            for(i=0;i<t.sections.length;i++){
-                                t.sections[i].elements.forEach(function(pair){
-                                    pair.forEach(function(elem){
-                                        bbox = elem.getBBox();
-                                        if(Raphael.isPointInsideBBox(bbox, startX+4,Y-16))
-                                            Y -= 25;
-                                    });
-                                });
-                            }
-                            txt = event.element.pop();
-                            rect = event.element.pop();
-                            txt.transform('T'+(startX+4)+','+(Y-16));
-                            bbox = txt.getBBox();
-                            rect.transform('T'+(bbox.x-4)+','+(bbox.y-2));
-                            event.element.push(rect,txt);
-                            return;
-                        }
-
-                        if(this.elements==null)
-                            this.elements = t.paper.set();
-                        txt = t.paper.text(0, 0, event.title)
-                            .attr({'text-anchor':'start', 'opacity':this.eventAttr.opacity});
-                        bbox = txt.getBBox();
-                        rect = t.paper.rect(0,0,bbox.width+8,bbox.height+4)
-                            .attr({'fill':'#FF00FF', 'stroke':'white','opacity':this.eventAttr.opacity});
-                        rect.insertBefore(txt);
-                        txt.click(function(){
-                            bbox = this.getBBox();
-                            alert('x='+bbox.x+',y='+bbox.y);
-                        });
-                        rect.click(function(){
-                            bbox = this.getBBox();
-                            alert('x='+bbox.x+',y='+bbox.y);
-                        });
-                        elem = t.paper.set().push(rect,txt);
-                        this.elements.push(elem);
-                        event.element = elem;
-                        this.draw(event,startX,Y,endX);
-                    },
-            'events': Array(),
-            'visible':true,
-            'elements': null
-        }
+                        this.draw(event,startX,Y);
+                    };
+    }
+    t.sections = [
+            new section('project',{'fill':'#8CEA00', 'stroke':'white'}),
+            new section('task',   {'fill':'#FF00FF', 'stroke':'white'})
     ];
 
     for(i=0;i<t.events.length;i++){
-        var found = false;
         if(t.events[i].section=='task')
             t.events[i].section = t.sections[1];
         else
@@ -449,7 +419,7 @@ $.fn.Chronoline = function (events, options) {
         }
         
         for(i=0;i<t.sections.length;i++){
-            t.sections[i].ready = true;
+            t.sections[i].elements.attr({'cursor':'pointer'});
         }
     }
 
