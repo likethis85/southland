@@ -335,6 +335,7 @@ $.fn.Chronoline = function (events, options) {
                                         button:'X'
                                     }
                                 },
+<<<<<<< HEAD
                                 position:{
                                     corner:{
                                         target:'topLeft',
@@ -351,6 +352,14 @@ $.fn.Chronoline = function (events, options) {
                                 hide:'unfocus',
                                 style:{
                                     name:'Light'
+=======
+                                show:{
+                                    event:'mouseenter',
+                                    solo: true
+                                },
+                                style:{
+                                    classes:'qtip-dark'
+>>>>>>> work
                                 }
                             });
                         });
