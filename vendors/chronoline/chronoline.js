@@ -335,31 +335,12 @@ $.fn.Chronoline = function (events, options) {
                                         button:'X'
                                     }
                                 },
-<<<<<<< HEAD
-                                position:{
-                                    corner:{
-                                        target:'topLeft',
-                                        tooltip:'bottomRight'
-                                    },
-                                    adjust: {
-                                        screen: true
-                                    }
-                                },
-                                show:{
-                                    when:'click',
-                                    solo: true
-                                },
-                                hide:'unfocus',
-                                style:{
-                                    name:'Light'
-=======
                                 show:{
                                     event:'mouseenter',
                                     solo: true
                                 },
                                 style:{
                                     classes:'qtip-dark'
->>>>>>> work
                                 }
                             });
                         });
