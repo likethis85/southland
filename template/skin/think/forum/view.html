@@ -24,6 +24,23 @@ $(document).ready(function(){
         function(){ $(this).css('color','red');}, 
         function(){ $(this).css('color','white');}
     );
+
+    $('div.comment').each(function(i,e){
+        if(e.offsetHeight>200){
+            $(e).addClass('comment-collapse')
+            .find('div.comment-ce').show()
+            .css({'cursor':'pointer'})
+            .click(function(){
+                if($(this).text()=='[-]'){
+                    $(this).text('[+]');
+                    $(e).addClass('comment-collapse');
+                } else {
+                    $(this).text('[-]');
+                    $(e).removeClass('comment-collapse');
+                }
+            });
+        }
+    });
 });
 </script>
 <div style="float:left;margin-left:32px;margin-top:22px;width:600px;">
@@ -45,7 +62,10 @@ $(document).ready(function(){
                     <div class="comment">
                         <table width=100%>
                             <tr>
-                                <td colspan=2 style="background:#C2D5F5;"><{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}></td>
+                                <td colspan=2 style="background:#C2D5F5;">
+                                    <{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}>
+                                    <div class='comment-ce'>[+]</div>
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width:32px;"><img src="<{$tUser.avatar}>"></td>

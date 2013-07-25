@@ -41,7 +41,7 @@ class userorgModel extends spModel
             return false;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select a.role,b.nick,b.id from {$prefix}userorg as a,{$prefix}user as b where a.uid=b.id and a.pid=$pid and a.role<9";
+        $sql = "select b.avatar,a.role,b.nick,b.id from {$prefix}userorg as a,{$prefix}user as b where a.uid=b.id and a.pid=$pid and a.role<9";
         return $this->findSql($sql);
 	}
     /** @brief 获取该用户参与的所有项目

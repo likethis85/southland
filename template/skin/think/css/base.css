@@ -139,6 +139,15 @@ div.box_page {
 }
 div.comment {
 }
+div.comment-collapse {
+    height:200px;
+    overflow:hidden;
+}
+div.comment div.comment-ce {
+    display:none;
+    float:right;
+    margin-right:12px;
+}
 li.puser {
     border:1px solid grey;
     width:100%;
