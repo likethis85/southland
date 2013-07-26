@@ -65,10 +65,6 @@
     -moz-box-shadow: 0 0 5px #40b5e2;
     -webkit-box-shadow: 0 0 5px #40b5e2;
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> work
 /* Applied whenever the dropdown is open */
 .dk_open {
     box-shadow: 0 0 5px #40b5e2;
@@ -125,10 +121,7 @@
     border-bottom-color: #999;
     text-shadow: none;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> work
 /* Inner container for options, this is what makes the scrollbar possible. */
 .dk_options_inner {
     border: 1px solid #8c8c8e;
@@ -147,17 +140,10 @@
 .dk_touch .dk_options {
     max-height: 250px;
 }
-<<<<<<< HEAD
-/******  End Theme ******/
-
-/***** Critical to the continued enjoyment of working dropdowns ******/
-=======
-
 /******  End Theme ******/
 
 /***** Critical to the continued enjoyment of working dropdowns ******/
 
->>>>>>> work
 .dk_container {
     display: none;
     float: left;
@@ -205,8 +191,5 @@
   top: -99999em;
   visibility: hidden;
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> work
 /***** End Critical to the continued enjoyment of working dropdowns ******/

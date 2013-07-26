@@ -160,7 +160,7 @@ $.fn.Chronoline = function (events, options) {
                 .transform('T'+(t.visibleWidth-56)+',0S0.5,0.5')
                 .hover(function(){ray2.stop().animate({opacity:1},200)},function(){ray2.stop().animate({opacity:0},200)})
                 .click(function(){
-                    for(i=0;i<t.sections.length;i++){
+                    for(i=0;i<t.sections.length&&t.sections[i].elements;i++){
                         if(t.sections[i].name !='task')
                             continue;
                         if(t.sections[i].visible){
@@ -408,7 +408,7 @@ $.fn.Chronoline = function (events, options) {
             event.section.draw(event,startX,upperY);
         }
         
-        for(i=0;i<t.sections.length;i++){
+        for(i=0;i<t.sections.length&&t.sections[i].elements;i++){
             t.sections[i].elements.attr({'cursor':'pointer'});
         }
     }
