@@ -174,24 +174,24 @@
                         <{if $item.start==0}>
                             {
                                 dates: [new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.brief}>", 
-                                description:"<{$item.content}>", 
+                                title: '<{$item.brief}>', 
+                                description:'<{$item.content}>', 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                              }
                         <{elseif $item.end==0}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/'))], 
-                                title: "<{$item.brief}>", 
-                                description:"<{$item.content}>", 
+                                title: '<{$item.brief}>', 
+                                description:'<{$item.content}>', 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             }
                         <{else}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.brief}>", 
-                                description:"<{$item.content}>", 
+                                title: '<{$item.brief}>', 
+                                description:'<{$item.content}>', 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             }
@@ -200,24 +200,24 @@
                         <{if $item.start==0}>
                             {
                                 dates: [new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.brief}>", 
-                                description:"<{$item.content}>", 
+                                title: '<{$item.brief}>', 
+                                description:'<{$item.content}>', 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             },
                         <{elseif $item.end==0}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/'))], 
-                                title: "<{$item.brief}>", 
-                                description:"<{$item.content}>", 
+                                title: '<{$item.brief}>', 
+                                description:'<{$item.content}>', 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             },
                         <{else}>
                             {
                                 dates: [new Date("<{$item.start}>".replace('-','/')), new Date("<{$item.end}>".replace('-','/'))], 
-                                title: "<{$item.brief}>", 
-                                description:"<{$item.content}>", 
+                                title: '<{$item.brief}>', 
+                                description:'<{$item.content}>', 
                                 id:"<{$item.id}>",
                                 section: "<{$item.source}>"
                             },
@@ -233,7 +233,7 @@
                                         '<tr><td><{T w="EventStartTime"}>:</td><td><input name="EventStartTime" id="est" /><td><{T w="EventEndTime"}></td><td><input name="EventEndTime" id="eet" /></td></tr>'+
                                         '<tr><td><{T w="EventSummary"}></td><td colspan=3><input name="EventSummary" size=71 /></td></tr>'+
                                         '<tr><td colspan=4><textarea id="content" name="content" cols="63" rows="15" /></td></tr>' +
-                                        '<tr><td colspan=4 align=center><div class="btn-rounded" onclick="javascript:frm.submit();"><{T w="Submit"}></div></td></tr>' +
+                                        '<tr><td colspan=4 align=center><div class="btn-rounded"><{T w="Submit"}></div></td></tr>' +
                                 '</table></div></form>',
                                 function(content) {
                                     var editor = new UE.ui.Editor({
@@ -242,10 +242,12 @@
                                         //关闭字数统计
                                         wordCount:true,
                                         //关闭elementPath
-                                        elementPathEnabled:false
+                                        elementPathEnabled:false,
+                                        autoHeightEnabled:false
                                         //更多其他参数，请参考editor_config.js中的配置项
                                     });
                                     editor.render(content.find('#content')[0]);
+                                    content.find('.btn-rounded').click(function(){ editor.sync();content.find('#frm').submit();});
                                     content.find('#est').datepicker({dateFormat:'yy-mm-dd'});
                                     content.find('#eet').datepicker({dateFormat:'yy-mm-dd'});
                                     content.find('#close').click(function(){
