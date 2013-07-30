@@ -131,10 +131,10 @@ $.fn.Chronoline = function (events, options) {
             };
             ray1 = t.paper.path(t.icons.tag)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
-                .transform('T'+(t.visibleWidth-32)+',0S0.5,0.5');
+                .transform('T104,0S0.5,0.5');
             t.paper.path(t.icons.tag)
                 .attr({fill: "#8CEA00", stroke: "none",'title':'项目'})
-                .transform('T'+(t.visibleWidth-32)+',0S0.5,0.5')
+                .transform('T104,0S0.5,0.5')
                 .hover(function(){ray1.stop().animate({opacity:1},200)},function(){ray1.stop().animate({opacity:0},200)})
                 .click(function(){
                     for(i=0;i<t.sections.length;i++){
@@ -154,10 +154,10 @@ $.fn.Chronoline = function (events, options) {
                 
             ray2 = t.paper.path(t.icons.tag)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
-                .transform('T'+(t.visibleWidth-56)+',0S0.5,0.5');
+                .transform('T80,0S0.5,0.5');
             t.paper.path(t.icons.tag)
                 .attr({fill: "#FF00FF", stroke: "none",'title':'任务'})
-                .transform('T'+(t.visibleWidth-56)+',0S0.5,0.5')
+                .transform('T80,0S0.5,0.5')
                 .hover(function(){ray2.stop().animate({opacity:1},200)},function(){ray2.stop().animate({opacity:0},200)})
                 .click(function(){
                     for(i=0;i<t.sections.length&&t.sections[i].elements;i++){
@@ -177,26 +177,26 @@ $.fn.Chronoline = function (events, options) {
             
             ray3 = t.paper.path(t.icons.view)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
-                .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6');  
+                .transform('T56,0S0.6,0.6');  
             t.paper.path(t.icons.view)
                 .attr({fill: "#888", stroke: "none", 'title':'全视图'})
-                .transform('T'+(t.visibleWidth-80)+',0S0.6,0.6')
+                .transform('T56,0S0.6,0.6')
                 .hover(function(){ray3.stop().animate({opacity:1},200)},function(){ray3.stop().animate({opacity:0},200)})
                 .click(t.fullView);
             ray4 = t.paper.path(t.icons.plus)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
-                .transform('T'+(t.visibleWidth-104)+',0S0.6,0.6');  
+                .transform('T32,0S0.6,0.6');  
             t.paper.path(t.icons.plus)
                 .attr({fill: "#888", stroke: "none", 'title':'新事件'})
-                .transform('T'+(t.visibleWidth-104)+',0S0.6,0.6')
+                .transform('T32,0S0.6,0.6')
                 .hover(function(){ray4.stop().animate({opacity:1},200)},function(){ray4.stop().animate({opacity:0},200)})
                 .click(t.config.onAdd);
             ray5 = t.paper.path(t.icons.wrench)
                 .attr({stroke: "#fff", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0})
-                .transform('T'+(t.visibleWidth-128)+',0S0.6,0.6');  
+                .transform('T8,0S0.6,0.6');  
             t.paper.path(t.icons.wrench)
                 .attr({fill: "#888", stroke: "none", 'title':'新事件'})
-                .transform('T'+(t.visibleWidth-128)+',0S0.6,0.6')
+                .transform('T8,0S0.6,0.6')
                 .hover(function(){ray5.stop().animate({opacity:1},200)},function(){ray5.stop().animate({opacity:0},200)})
                 .click(function(){t.config.onSetting(t)});
         }
