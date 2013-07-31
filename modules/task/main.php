@@ -224,14 +224,7 @@ class main extends general
             exit;
         }
 
-        $data = array(
-            'uid' => $uid,
-            'prj' => $pid,
-            'owner' => 'task',
-            'rid' => $tid,
-            'content' => $comment
-        );
-        spClass('commentModel')->create($data);
+        spClass('commentModel')->createForTask($uid,$pid,$tid,$comment);
         $this->navi("/task.php?c=main&a=view&id=$tid");
     }
 }

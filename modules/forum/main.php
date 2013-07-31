@@ -130,14 +130,7 @@ class main extends general
             return;
         }
 
-        $data = array(
-                'uid' => $uid,
-                'prj' => $this->tCurrProj,
-                'owner' => 'forum',
-                'rid' => $fid,
-                'content' => $comment
-                );
-        spClass('commentModel')->create($data);
+        spClass('commentModel')->createForForum($uid,$this->tCurrProj,$fid, $comment);
 
         $this->navi("/forum.php?a=view&id=$fid");
     }

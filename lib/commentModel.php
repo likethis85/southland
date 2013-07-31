@@ -73,6 +73,21 @@ class commentModel extends spModel
 
         return $this->update(array('sid'=>$tid,'scope' => $this->scope_task), array('prj' => $pid));
     }
+    /** @brief 问题相关的注释
+     *
+     */
+    public function createForIssue($uid, $pid, $iid, $content){
+        if(empty($tid) || empty($pid) || empty($content))
+            return false;
+
+        return $this->create(array(
+                        'uid' => $uid,
+                        'prj' => $pid,
+                        'scope' => $this->scope_issue,
+                        'sid' => $iid,
+                        'content' => $content
+                        ));
+    }
     /** @brief 转移Bug相关的注释到新的项目
      *
      */
@@ -107,7 +122,21 @@ class commentModel extends spModel
         );
         return $this->spLinker()->findAll($condition);
     }
+    /** @brief 话题相关的注释
+     *
+     */
+    public function createForForum($uid, $pid, $fid, $content){
+        if(empty($tid) || empty($pid) || empty($content))
+            return false;
 
+        return $this->create(array(
+                        'uid' => $uid,
+                        'prj' => $pid,
+                        'scope' => $this->scope_forum,
+                        'sid' => $tid,
+                        'content' => $content
+                        ));
+    }
     public function getForumComments($tid) {
 
         $this->linker = array(

@@ -145,17 +145,7 @@ class main extends general
             return;
         }
 
-        if($this->spArgs('submit')==1) {
-            $sess = spClass('spSession');
-            $data = array(
-                'uid' => $uid,
-                'prj' => $pid,
-                'owner' => 'issue',
-                'rid' => $iid,
-                'content' => $comment
-            );
-            spClass('commentModel')->create($data);
-        }
+        spClass('commentModel')->createForIssue($uid,$pid,$iid,$comment);
         $this->navi("/issue.php?a=view&id=$iid");
     }
 }
