@@ -42,10 +42,7 @@ class main extends general
             exit;
         }
 
-        $condition = array(
-            'id' => $tid
-        );
-        if(spClass('taskModel')->updateField($condition, 'priority', $val) === TRUE) {
+        if(spClass('taskModel')->updateField(array('id'=>$tid), 'priority', $val) === TRUE) {
             echo spClass('Services_JSON')->encode($this->ajaxResult);
         }
         exit;
@@ -312,7 +309,19 @@ class main extends general
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
 	}
-	
+    function pdf_task() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $tid = $this->spArgs('tid');
+        define('FPDF_FONTPATH',APP_PATH.'/font/');
+        import('html2fpdf.php');
+        $pdf=new HTML2FPDF();
+        $pdf->AddPage();
+        $pdf->SetFont('courier','B',8);
+        $pdf->Cell(40,10,'Hello World!');
+        $pdf->Output('example.pdf','D');
+        exit;
+    }
 	function __destruct(){
 		parent::__destruct(); // 这是必须的
 	}

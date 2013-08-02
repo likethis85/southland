@@ -48,11 +48,19 @@
     });
 </script>
 <div style="float:left;margin-left:32px;margin-top:22px;width:600px;">
-    <table id="box" cellpadding="5" cellspacing="0">
+    <table id="box" cellpadding="5" cellspacing="0" width=100%>
         <tr>
             <td id="content" valign="top">
-                <div style="border-bottom:2px solid #E0E0E0;">
+                <div style="border-bottom:2px solid #E0E0E0;min-height:64px;">
                     <h1 class="title"><{$tTask.subject}></h1>
+                    <div style="float:right;">
+                        <a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded">
+                            <{T w='IssueReport'}>
+                        </a>
+                    </div>
+                    <div style="float:right;margin-right:3px;">
+                        <a href="/ajax.php?a=pdf_task&tid=<{$tTask.id}>" class="btn-rounded">PDF</a>
+                    </div>
                 </div>
                 <div>
                     <{foreach item=attach from=$tAttachments}>
@@ -61,11 +69,6 @@
                 </div>
                 <div>
                     <{$tTask.detail}>
-                    <div>
-                        <a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded">
-                            <{T w='IssueReport'}>
-                        </a>
-                    </div>
                 </div>
             </td> 
         </tr>
