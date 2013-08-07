@@ -126,14 +126,14 @@ class commentModel extends spModel
      *
      */
     public function createForForum($uid, $pid, $fid, $content){
-        if(empty($tid) || empty($pid) || empty($content))
+        if(empty($fid) || empty($pid) || empty($content))
             return false;
 
         return $this->create(array(
                         'uid' => $uid,
                         'prj' => $pid,
                         'scope' => $this->scope_forum,
-                        'sid' => $tid,
+                        'sid' => $fid,
                         'content' => $content
                         ));
     }

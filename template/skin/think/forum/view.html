@@ -43,46 +43,56 @@ $(document).ready(function(){
     });
 });
 </script>
-<div style="float:left;margin-left:32px;margin-top:22px;width:600px;">
-    <table id="box" align="center" cellpadding="5" cellspacing="0" width="490">
+<div class="page_content">
+    <table width=100%>
         <tr>
-            <td id="content" valign="top">
-                <h1 class="title"><{$tRow.subject}></h1>
-                <div><{$tRow.content}></div>
-            </td> 
+            <td colspan=2>
+                <div style="border-bottom:2px solid #E0E0E0;min-height:64px;">
+                    <h1 class="title"><{$tRow.subject}></h1>
+                </div>
+            </td>
         </tr>
-    </table>
-</div>
-<div style="margin-left:32px;margin-top:76px;">
-    <table>
+
         <tr>
-            <td>
+            <td valign="top" width=50%>
                 <div>
-                    <{foreach item=item from=$tComments}>
-                    <div class="comment">
-                        <table width=100%>
-                            <tr>
-                                <td colspan=2 style="background:#C2D5F5;">
-                                    <{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}>
-                                    <div class='comment-ce'>[+]</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:32px;"><img src="<{$tUser.avatar}>"></td>
-                                <td style="padding-left:8px;"><{$item.content}></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <{/foreach}>
+                    <{$tRow.content}>
                 </div>
-                <div style="width:600px;">
-                    <form id="form" method="post" action="/forum.php?a=cmt&id=<{$tRow.id}>">
-                        <div style="margin-top:32px;">
-                            <input class="btn-rounded" type=submit value="<{T w='Reply'}>">
-                            <textarea id="reply" name="reply"></textarea>
-                        </div>
-                    <input name="submitreply" type="hidden" id="submitreply" value="1" />
-                </div>
+            </td> 
+            <td>
+                <table>
+                    <tr>
+                        <td>
+                            <div>
+                                <{foreach item=item from=$tComments}>
+                                <div class="comment">
+                                    <table width=100%>
+                                        <tr>
+                                            <td colspan=2 style="background:#C2D5F5;">
+                                                <{$item.user.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}>
+                                                <div class='comment-ce'>[+]</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:32px;" valign='top'><img src="<{$item.user.avatar}>"></td>
+                                            <td style="padding-left:8px;"><{$item.content}></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <{/foreach}>
+                            </div>
+                            <div style="width:600px;">
+                                <form id="form" method="post" action="/forum.php?a=cmt&id=<{$tRow.id}>">
+                                    <div style="margin-top:32px;">
+                                        <input class="btn-rounded" type=submit value="<{T w='Reply'}>">
+                                        <textarea id="reply" name="reply"></textarea>
+                                    </div>
+                                    <input name="submitreply" type="hidden" id="submitreply" value="1" />
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>

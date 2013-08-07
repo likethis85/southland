@@ -47,10 +47,10 @@
         });
     });
 </script>
-<div style="float:left;margin-left:32px;margin-top:22px;width:600px;">
-    <table id="box" cellpadding="5" cellspacing="0" width=100%>
+<div class="page_content">
+    <table width=100%>
         <tr>
-            <td id="content" valign="top">
+            <td colspan=2>
                 <div style="border-bottom:2px solid #E0E0E0;min-height:64px;">
                     <h1 class="title"><{$tTask.subject}></h1>
                     <div style="float:right;">
@@ -58,53 +58,58 @@
                             <{T w='IssueReport'}>
                         </a>
                     </div>
+                    <div style="float:left;">
+                        <{foreach item=attach from=$tAttachments}>
+                        <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
+                        <{/foreach}>
+                    </div>
                     <div style="float:right;margin-right:3px;">
                         <a href="/ajax.php?a=pdf_task&tid=<{$tTask.id}>" class="btn-rounded">PDF</a>
                     </div>
                 </div>
-                <div>
-                    <{foreach item=attach from=$tAttachments}>
-                    <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
-                    <{/foreach}>
-                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td valign="top" width=50%>
                 <div>
                     <{$tTask.detail}>
                 </div>
             </td> 
-        </tr>
-    </table>
-</div>
-<div style="margin-left:32px;margin-top:76px;">
-    <table>
-        <tr>
             <td>
-                <div>
-                    <{foreach item=item from=$tComments}>
-                    <div class="comment">
-                        <table width=100%>
-                            <tr>
-                                <td colspan=2 style="background:#C2D5F5;">
-                                    <{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}>
-                                    <div class='comment-ce'>[+]</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:32px;" valign='top'><img src="<{$tUser.avatar}>"></td>
-                                <td style="padding-left:8px;"><{$item.content}></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <{/foreach}>
-                </div>
-                <div style="width:600px;">
-                    <form id="form" method="post" action="/task.php?a=cmt&id=<{$tTask.id}>">
-                        <div style="margin-top:32px;">
-                            <input id="cmt" type="submit" class="btn-rounded" value=<{T w='Reply'}> />
-                            <textarea id="reply" name="reply"></textarea>
-                        </div>
-                        <input name="submitreply" type="hidden" id="submitreply" value="1" />
-                    </form>
-                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <div>
+                                <{foreach item=item from=$tComments}>
+                                <div class="comment">
+                                    <table width=100%>
+                                        <tr>
+                                            <td colspan=2 style="background:#C2D5F5;">
+                                                <{$tUser.nick}>&nbsp;&nbsp;<{T w="Posted On"}>&nbsp;&nbsp;<{$item.addtime}>
+                                                <div class='comment-ce'>[+]</div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width:32px;" valign='top'><img src="<{$tUser.avatar}>"></td>
+                                            <td style="padding-left:8px;"><{$item.content}></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <{/foreach}>
+                            </div>
+                            <div style="width:600px;">
+                                <form id="form" method="post" action="/task.php?a=cmt&id=<{$tTask.id}>">
+                                    <div style="margin-top:32px;">
+                                        <input id="cmt" type="submit" class="btn-rounded" value=<{T w='Reply'}> />
+                                        <textarea id="reply" name="reply"></textarea>
+                                    </div>
+                                    <input name="submitreply" type="hidden" id="submitreply" value="1" />
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
