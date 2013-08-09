@@ -126,7 +126,7 @@ class main extends general
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
     }
-    /** @brief Add user to the project 
+    /** @brief 为项目添加用户
      *
      */
     function pau() {
@@ -139,7 +139,7 @@ class main extends general
         }
         
         $pid = $this->spArgs('pid');
-        $uid = spClass('spSession')->getUser()->getUserId();
+        $uid = $this->tUser['id'];
         if(!spClass('projectModel')->allow($pid, $uid)){
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
             $this->ajaxResult->msg = T('Error Operation not permit');
