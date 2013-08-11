@@ -99,7 +99,7 @@
                 <td><{$itemI.reporter.nick}></td>
                 <td><{$itemI.assigner.nick}></td>
                 <td>
-                    <{if $tUser.role.manager || ($tUser.uid == $itemI.owner.id)}>
+                    <{if $tUser.role.manager || ($tUser.id == $itemI.owner.id)}>
                         <select>
                         <{foreach item=itemM from=$tMembers}>
                             <option value="<{$itemM.id}>" <{if $itemM.id==$itemI.owner.id}>selected<{/if}>><{$itemM.nick}></option>

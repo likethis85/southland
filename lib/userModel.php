@@ -2,7 +2,7 @@
 if (!defined('SOUTHLAND')) { exit(1);}
 class userModel extends spModel
 {
-	var $pk = "uid"; // 每个留言唯一的标志，可以称为主键
+	var $pk = "id"; // 每个留言唯一的标志，可以称为主键
 	var $table = "user"; // 数据表的名称
 	var $verifier = array( // 验证登录信息，由于密码是加密的输入框生成的，所以不需要进行“格式验证”
 		"rules" => array( // 规则
