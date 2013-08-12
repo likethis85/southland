@@ -4,6 +4,11 @@ class main extends general
 {
 	function __construct(){ // 公用
 		parent::__construct(); // 这是必须的
+		$this->tView = array(
+		    'require' => array(
+		        'editor' => true
+		    )
+		);
 	}
 	
 	function publish() {

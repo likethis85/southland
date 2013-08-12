@@ -15,7 +15,7 @@ $spConfig = array(
 			'host' => 'localhost',
 			'login' => 'root',
 			'password' => 'pass',
-			'database' => 'speedcms',
+			'database' => 'meon',
 			'prefix' => 'sc_'
 	),
 	'lang' => array( 
