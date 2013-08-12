@@ -82,6 +82,11 @@ class main extends general
 		}
 		
 		if($this->tNid==1) {
+		    $this->tView = array(
+		        'require' => array(
+		            'chronoline' => true
+		        )
+		    );
 		    $this->tTitle = $this->tProject['title'].'-'.T('ProjectDesc');
             $this->tMembers = spClass('projectModel')->getProjectMembers();
 		    $tTimeline = array();
@@ -109,12 +114,12 @@ class main extends general
         $op_edit = array(
             'icon' => '/'.$this->skinpath.'/img/edit.png',
             'caption' => T('EditTopic'),
-            'callback'=> 'location.href="/forum.php?a=edit&id="+elem.id.replace("f","")'
+            'callback'=> 'location.href=\"/forum.php?a=edit&id=\"+elem.id.replace(\"f\",\"\")'
         );
         $op_del = array(
             'icon' => '/'.$this->skinpath.'/img/delete.png',
             'caption' => T('DelTopic'),
-            'callback'=> 'if(confirm("'.T('Confirm?').T('DelTopic').'"))location.href="/forum.php?a=del&id="+elem.id.replace("f","")'
+            'callback'=> 'if(confirm(\"'.T('Confirm?').T('DelTopic').'\"))location.href=\"/forum.php?a=del&id=\"+elem.id.replace(\"f\",\"\")'
         );
         if($uid == $topic['author']){
             echo spClass('Services_JSON')->encode(array(
@@ -292,6 +297,11 @@ class main extends general
         $this->tMembers = $tMembers;
         unset($tMembers);
         spAddViewFunction('spIssueOperation', array(&$this, '__template_IssueOperation'));
+        $this->tView = array(
+            'require' => array(
+                'dataTable' => true
+            )
+        );
     }
     function _wiki() {
         $this->tTitle = $this->tProject['title'].'-'.T('Wiki');
@@ -302,6 +312,12 @@ class main extends general
         }
         $this->tWikis = $Wikis;
         $this->tKeywords = spClass('keywordsModel')->findForProject($this->tCurrProj);
+        
+        $this->tView = array(
+            'require' => array(
+                'tagball' => true
+            )
+        );
     }
 	public function __destruct(){
 		parent::__destruct(); // 这是必须的

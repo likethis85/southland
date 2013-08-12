@@ -130,10 +130,6 @@ class user extends general
 	        }
 	    	
 	    	$userObj = spClass("userModel"); // 实例化userModel类
-			// 使用spVerifier进行第一次检查
-			$rows = array('uname' => $uname, 'upass' => $upass);
-			$results = $userObj->spVerifier($rows);
-			
 			if( false == $results ){ // 当spVerifier返回false的时候，则是表示已经通过验证，数据是合格的
 			
 				// 使用lib_user类中我们新建的userlogin方法来验证用户名和密码
@@ -159,6 +155,12 @@ class user extends general
 			}
 		}
 		// 这里是还没有填入用户名，所以将自动显示main_login.html的登录表单
+		$this->tView = array(
+		    'require' => array(
+		        'user_sign' => true,
+		        'form'  => true
+		    )
+		);
 		$this->display("user/login.html");
 	}
 	
