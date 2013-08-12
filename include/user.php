@@ -124,7 +124,7 @@ class user extends general
 		if( $uname = $this->spArgs("uname") ){ // 已经提交，这里开始进行登录验证
 			$upass = $this->spArgs("upass"); // 通过acl的upass获取提交的密码
 		
-		    if(!spClass('spVerifyCode')->verify($this->spArgs('gcc'))) {
+		    if($GLOBALS['G_SP']['mode']!='debug' && !spClass('spVerifyCode')->verify($this->spArgs('gcc'))) {
     	        $this->jump(spUrl('user','login'));
     	        return;
 	        }
