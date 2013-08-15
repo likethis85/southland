@@ -35,4 +35,5 @@ class subscriberModel extends spModel
 
         return $this->create($data);
     }
+    
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title><{$tTitle}></title>
+<link rel="stylesheet" href="<{$skinpath}>/css/base.css" type="text/css" />
+<script src="/media/js/jquery.js" type="text/javascript"></script>
+
+<{if $tView.require.form || $tView.require.editor}>
+<script src="/media/js/jquery.metadata.js" type="text/javascript"></script>
+<script src="/media/js/jquery.validate.js" type="text/javascript"></script>
+<script src="/media/js/jquery.form.js" type="text/javascript"></script>
+<{/if}>
+
+<script src="/vendors/hovermenu/stuHover.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/vendors/blackbox/css/blackbox.css" media="screen"/>
+<script type="text/javascript" src="/vendors/blackbox/js/jquery.blackbox.js"></script>
+
+<{if $tView.require.editor}>
+<script src="/vendors/ueditor/editor_config.js" type="text/javascript"></script>
+<script src="/vendors/ueditor/editor_all.js" type="text/javascript"></script>
+<{/if}>
+
+<!-- used by user page -->
+<{if $tView.require.user_sign}>
+<script src="/media/js/jquery.md5.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/vendors/dropkick/dropkick.css" type="text/css" />
+<script src="/vendors/dropkick/jquery.dropkick-1.0.2.js" type="text/javascript"></script>
+<{/if}>
+<!-- -->
+
+<!-- used by issue page -->
+<{if $tView.require.dataTable}>
+<script src="/media/js/jquery-ui.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/vendors/DataTables/media/css/demo_page.css" type="text/css" />
+<link rel="stylesheet" href="/vendors/DataTables/media/css/demo_table_jui.css" type="text/css" />
+<link rel="stylesheet" href="/vendors/DataTables/examples/examples_support/themes/smoothness/jquery-ui-1.8.4.custom.css" type="text/css" />
+<script src="/vendors/DataTables/media/js/jquery.dataTables.js" type="text/javascript"></script>
+<{/if}>
+<!-- -->
+
+<!-- used by project page -->
+<{if $tView.require.chronoline}>
+<link rel="stylesheet" type="text/css" href="/vendors/chronoline/jquery.qtip.min.css" />
+<script type="text/javascript" src="/vendors/chronoline/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="/vendors/chronoline/raphael-min.js"></script>
+<link rel="stylesheet" type="text/css" href="/vendors/chronoline/chronoline.css" />
+<script type="text/javascript" src="/vendors/chronoline/chronoline.js"></script>
+<script src="/vendors/chronoline/jquery.toolbar.js" type="text/javascript"></script>
+<link rel="stylesheet" type="text/css" href="/vendors/chronoline/toolbars.css" media="screen"/>
+<link rel="stylesheet" type="text/css" href="/vendors/chronoline/bootstrap.icons.css" media="screen"/>
+<{/if}>
+<!-- -->
+
+<!-- used by wiki page -->
+<{if $tView.require.tagball}>
+<script src="/vendors/tagball/tagball.js" type="text/javascript"></script>
+<{/if}>
+<!-- -->
+
+</head>
+
+<body>
+    <div class="box">
+        <div style="position:relative;top:0px;width:100%;height:164px;background:url(<{$skinpath}>/img/bg.jpg) repeat-x;">
+            <div style="position:absolute;width:100%;top:0px;height:16px;">
+                <div class="login_bar">
+                    <{if $tUser.id==0}>
+                        <a href="/index.php?c=user&a=login">[<{T w='Login'}>]</a>&nbsp;&nbsp;
+                        <a href="/index.php?c=user&a=signon">[<{T w='Signon'}>]</a>
+                    <{else}>
+                        <{T w='Welcome'}>&nbsp;&nbsp;<{$tUser.nick}>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a href="/index.php?c=user&a=logout">[<{T w='Logout'}>]</a>
+                    <{/if}>
+                </div>
+                <{if $tUser.id}>
+                <div style="clear:both;position:relative;float:right;margin-top:32px;margin-right:32px;">
+                    <a href="/project.php?a=create" class="btn-rounded" ><{T w='CreateNewProject'}></a>
+                </div>   
+                <{/if}>
+            </div>
+
+            <div style="clear:both;color:white;margin-left:60px;padding-top:22px;">
+                <h1><{$tProject.title}></h1>
+            </div>
+
+            <div style="position:absolute;top:132px;left:32px;width:100%;height:32px;overflow:hidden;">
+                <ul class="navigator">
+                    <li <{if $tNid eq $item.nid}>class="active_nav"<{/if}>><a href="/"><{T w="FirstPage"}></a></li>
+                    <{if !empty($tCurrProj) }>
+                        <{foreach item=item name=nav from=$tNavigation}>
+                            <{if $item.enabled}>
+                                <li <{if $tNid eq $item.nid}>class="active_nav"<{/if}>><a href="index.php?a=page&nid=<{$item.nid}>&pid=<{$tProject.id}>" class="parent"><span><{T w=$item.name}></span></a></li>
+                            <{/if}>
+                        <{/foreach}>
+                    <{/if}>
+				</ul>
+            </div>
+        </div>

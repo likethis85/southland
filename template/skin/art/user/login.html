@@ -1,0 +1,24 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title><{$tTitle}></title>
+<link rel="stylesheet" href="<{$skinpath}>/css/base.css" type="text/css" />
+<script src="/media/js/jquery.js" type="text/javascript"></script>
+<script src="/vendors/chronoline/raphael-min.js" type="text/javascript"></script>
+<script src="<{$skinpath}>/media/world.js" type="text/javascript"></script>
+</head>
+<body>
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function(){
+            Raphael('country',360,320)
+            .path(worldmap.shapes.CN)
+            .attr({stroke: "#666","stroke-width": 1,"stroke-linejoin": "round"})
+            .transform('T-570,0S2.1,2.1');
+        });
+    </script>
+    <div style="top:180px;left:72px;position:absolute;">
+        <div id="me" align="bottom" style="font-size:72px;font-family:华文新魏;float:left;top:160px;position:relative;">我,</div>
+        <div id="country" style="float:left;width:360px;height:320px;"></div> 
+    </div>
+</body>
