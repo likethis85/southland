@@ -11,20 +11,24 @@
 <body>
     <script language="javascript" type="text/javascript">
         $(document).ready(function(){
-            Raphael('country',360,320)
-            .path(worldmap.shapes.CN)
+            var R = Raphael('country',360,320);
+            R.path(worldmap.shapes.CN)
             .attr({stroke: "#666","stroke-width": 1,"stroke-linejoin": "round",fill:'fff'})
             .transform('T-570,0S2.1,2.1');
+            R.path(worldmap.shapes.TW)
+            .attr({stroke: "#666","stroke-width": 1,"stroke-linejoin": "round",fill:'fff'})
+            .transform('T-510,30S2.1,2.1');
         });
     </script>
     <div style="top:180px;left:200px;position:absolute;">
         <div id="me" align="bottom" style="font-size:72px;font-family:华文新魏;float:left;top:160px;position:relative;">我,</div>
         <div id="country" style="float:left;width:360px;height:320px;"></div> 
-        <div style="float:left;top:180px;position:relative;">
-            <form>
-                <input name="uname" id="uname" size="40" />
-                <br/>
-                <input type="password" name="pass" id="pass" size="40" />
+        <div style="float:left;top:160px;position:relative;">
+            <form id="form" name="form" action="<{spUrl c=user a=login}>" method="POST">
+                <input name="uname" id="uname" style="width:230px;"/><br/>
+                <input type="password" name="pass" id="pass" style="width:230px;"/><br/>
+                <input name="gcc" style="width:150px;"/><div style="float:right;background-image: url('/ajax.php?a=gcc');margin-top:2px;width:60px;height:22px;" /></div>
+                <input type="hidden" name="upass" id="upass" />
             </form>
         </div>
     </div>
