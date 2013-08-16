@@ -12,15 +12,27 @@
     <script language="javascript" type="text/javascript">
         $(document).ready(function(){
             var R = Raphael('country',360,320);
+            R.setStart();
             R.path(worldmap.shapes.CN)
             .attr({stroke: "#666","stroke-width": 1,"stroke-linejoin": "round",fill:'fff'})
             .transform('T-570,0S2.1,2.1');
             R.path(worldmap.shapes.TW)
             .attr({stroke: "#666","stroke-width": 1,"stroke-linejoin": "round",fill:'fff'})
             .transform('T-510,30S2.1,2.1');
+            var china = R.setFinish();
+            china.click(function(){
+                $(form).submit();
+            }).attr({cursor:"pointer"}).hover(
+                function(){ china.forEach(function(e){
+                    e.stop().animate({fill:"red"},500);
+                });},
+                function(){ china.forEach(function(e){
+                    e.stop().animate({fill:"white"},500);
+                });}
+            );
         });
     </script>
-    <div style="top:180px;left:200px;position:absolute;">
+    <div style="top:180px;left:260px;position:absolute;">
         <div id="me" align="bottom" style="font-size:72px;font-family:华文新魏;float:left;top:160px;position:relative;">我,</div>
         <div id="country" style="float:left;width:360px;height:320px;"></div> 
         <div style="float:left;top:160px;position:relative;">

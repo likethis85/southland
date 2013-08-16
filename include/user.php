@@ -130,29 +130,16 @@ class user extends general
 	        }
 	    	
 	    	$userObj = spClass("userModel"); // 实例化userModel类
-			if( false == $results ){ // 当spVerifier返回false的时候，则是表示已经通过验证，数据是合格的
-			
-				// 使用lib_user类中我们新建的userlogin方法来验证用户名和密码
-				if( false == $userObj->userlogin($uname, $upass) ){
-					// 登录失败，提示后跳转回登录页面
-					$this->error(T("The username address or password you provided does not match our records."), spUrl("user","login"));//"用户名/密码错误，请重新输入！"
-					
-				}else{
-				    // 登录成功，跳转到首页
-					$this->jump(spUrl("main","index"));
-				}
+			// 使用lib_user类中我们新建的userlogin方法来验证用户名和密码
+			if( false == $userObj->userlogin($uname, $upass) ){
+				// 登录失败，提示后跳转回登录页面
+				$this->error(T("The username address or password you provided does not match our records."), spUrl("user","login"));//"用户名/密码错误，请重新输入！"
+				
 			}else{
-				// $results不是false，所以没有通过验证，错误信息是$results
-				// dump($results);
-				foreach($results as $item){ // 开始循环错误信息的规则，这里只有用户名
-					// 每一个规则，都有可能返回多个错误信息，所以这里我们也循环$item来获取多个信息
-					foreach($item as $msg){ 
-						// 虽然我们使用了循环，但是这里我们只需要第一条出错信息就行。
-						// 所以取到了第一条错误信息的时候，我们使用$this->error来提示并跳转
-						$this->error($msg,spUrl("user","login"));
-					}
-				}
+			    // 登录成功，跳转到首页
+				$this->jump(spUrl("main","index"));
 			}
+
 		}
 		// 这里是还没有填入用户名，所以将自动显示main_login.html的登录表单
 		$this->tTitle = T('Login');
