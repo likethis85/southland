@@ -7,7 +7,7 @@ define("SP_PATH",APP_PATH."/SpeedPHP");
 // 默认时区设置
 @date_default_timezone_set('PRC');
 // 皮肤名称存放在template/skin/default
-define("__SKIN_NAME",'art');
+define("__SKIN_NAME",'think');
 
 // 通用的全局配置
 $spConfig = array(
