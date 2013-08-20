@@ -11,10 +11,11 @@ class main extends general
 	}
 	
 	function index(){ // 这里是首页
+	    $uid = $this->tUser['id'];
 	    $this->tTitle = T('FirstPage');
 	    $this->tNid = 0;
         spClass('spSession')->getUser()->setCurrentNid($this->tNid);
-        $this->tProjects = spClass('projectModel')->getProjects();
+        $this->tProjects = spClass('projectModel')->getUserProjects($uid);
 		$this->display("index.html");
 	}
 	
@@ -84,11 +85,12 @@ class main extends general
 		if($this->tNid==1) {
 		    $this->tView = array(
 		        'require' => array(
-		            'chronoline' => true
+		            'chronoline' => true,
+		            'editor' => true
 		        )
 		    );
 		    $this->tTitle = $this->tProject['title'].'-'.T('ProjectDesc');
-            $this->tMembers = spClass('projectModel')->getProjectMembers();
+            $this->tMembers = spClass('projectModel')->getProjectMembers($this->tCurrProj);
 		    $tTimeline = array();
             $timelines = spClass('timelineModel')->getProject($this->tCurrProj);
             foreach($timelines as $timeline){

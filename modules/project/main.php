@@ -23,20 +23,14 @@ class main extends general
             exit;
         }
 
-        $data = array(
-            'uid' => $uid,
-            'title' => $this->spArgs('title'),
-            'description'=> $this->spArgs('projDesc'),
-            'acl'   => $this->spArgs('acl')
-        );
-        $pid = spClass('projectModel')->create($data);
+        $pid = spClass('projectModel')->createProject($uid,$this->spArgs('title'),$this->spArgs('projDesc'),$this->spArgs('acl'));
         if($pid === false) {
             spClass('keeper')->speak(T('Error DB operation failed'), '/index.php');
             exit;
         }
-        spClass('spSession')->getUser()->setCurrentProject($pid);
-        spClass('userorgModel')->addProjectCreator($pid,spClass('spSession')->getUser()->getUserId());
+        spClass('userroleModel')->addProjectMember($pid,$uid);
         spClass('timelineModel')->createForProject($pid, $uid, date('y-m-d'), null, T('Create'));
+        spClass('spSession')->getUser()->setCurrentProject($pid);
         $this->jumpProjectPage();
 	}
 

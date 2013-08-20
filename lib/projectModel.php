@@ -2,27 +2,31 @@
 if (!defined('SOUTHLAND')) { exit(1);}
 class projectModel extends spModel
 {
-	var $pk = "id";					// 按ID排序
+	var $pk = "id";			// 按ID排序
 	var $table = "project"; // 数据表的名称
     var $linker = null;
 
     var $status_open = 0;
     var $status_close = 1;
 
-    public function getProjects() {
-        $uid = spClass('spSession')->getUser()->GetUserId();
+    /** @brief 创建项目 */
+    public function createProject($uid,$title,$desc,$acl){
+        if(empty($uid) || empty($title) || empty($acl))
+            return false;
+            
+        $data = array(
+            'uid' => $uid,
+            'title' => $title,
+            'description' => $desc,
+            'acl' => $acl
+        );
+        return $this->create($data);
+    }
+    
+    public function getUserProjects($uid) {
         $items = array();
-        $projects = spClass('userorgModel')->getProjectsByUser($uid);
-        if(!empty($projects)) {
-            foreach($projects as $item)
-                $items[$item['id']] = $item;
-        }
-
-        $projects = $this->findAll(array('acl' => 0, 'droptime' => 0));
-        if(!empty($projects)) {
-            foreach($projects as $item)
-                $items[$item['id']] = $item;
-        }
+        $projects = spClass('userroleModel')->getProjectsByUser($uid);
+        $items = array_values($projects);
         return $items;
     }
     /** @brief detect does current user is permit to view the project
@@ -45,7 +49,7 @@ class projectModel extends spModel
         if(empty($uid))
             return false;
 
-        return spClass('userorgModel')->isMemberOfProject($pid, $uid);
+        return spClass('userroleModel')->isMemberOfProject($pid, $uid);
     }
 	public function getCurrentInfo() {
 	    $linker = array(
@@ -63,8 +67,8 @@ class projectModel extends spModel
         if($info === false) return array();
         else return $info;
     }
-    public function getProjectMembers() {
-        $members = spClass('userorgModel')->getUsersByProject(spClass('spSession')->getUser()->getCurrentProject());
+    public function getProjectMembers($pid) {
+        $members = spClass('userroleModel')->getUsersByProject($pid);
         return $members;
     }
     public function closeProject($pid) {

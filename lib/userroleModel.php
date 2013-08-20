@@ -4,91 +4,56 @@ if (!defined('SOUTHLAND')) { exit(1);}
 class userroleModel extends spModel
 {
 	var $pk = "id";
-	var $table = "userorg"; // 数据表的名称
+	var $table = "userrole"; // 数据表的名称
 	
 	var $scope_project = 1;
 	var $scope_task = 2;
 	var $scope_issue = 3;
+
+    var $role = array(
+        'role_project_member' => 1,
+    	'role_project_owner' => 9,
+    	'role_task_member' => 11,
+    	'role_task_owner'  => 19,
+    	'role_topic_member' => 21,
+    	'role_issue_member' => 31,
+    	'role_issue_owner'  => 39
+    );	
 	
-	var $role_project_member = 1;
-	var $role_project_owner= 3;
-	
-	var $role_task_member = 11;
-	var $role_task_creator= 12;
-	var $role_task_owner  = 13;
-	
-	var $role_topic_member = 21;
-	var $role_topic_creator= 22;
-	
-	var $role_issue_member = 31;
-	var $role_issue_creator= 32;
-	var $role_issue_reporter=33;
-	var $role_issue_owner   = 34;
 	
 
     /************************************************************************************************
 	 * project related
      ***********************************************************************************************/
 
-    /** @brief 添加项目创建者角色
-     *
-     */
-    public function addProjectCreator($pid,$uid) {
-        $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_project_creator));
-    }
-    /** @brief 获取所有的项目成员
-     *
-     */
+    /** @brief 获取项目的所有成员 */
 	public function getUsersByProject($pid) {
         if(!is_numeric($pid))
             return false;
 
+        $role = $this->role['role_project_member'];
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select b.avatar,a.role,b.nick,b.id from {$prefix}userorg as a,{$prefix}user as b where a.uid=b.id and a.pid=$pid and a.role<9";
+        $sql = "select b.avatar,a.role,b.nick,b.id from {$prefix}userrole as a,{$prefix}user as b where a.uid=b.id and a.pid=$pid and a.role=$role";
         return $this->findSql($sql);
 	}
-    /** @brief 获取该用户参与的所有项目
-     *
-     */
+    /** @brief 获取该用户参与的所有项目 */
 	public function getProjectsByUser($uid) {
         if(empty($uid))
             return false;
 
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-//	    $sql = "select a.* from {$prefix}project as a,{$prefix}userorg as b where a.droptime=0 and a.id=b.sid and b.uid=$uid and b.scope=".$this->scope_project;
-	    $sql = "select * from {$prefix}project where droptime=0 and id in(select sid from {$prefix}userorg where uid=$uid and scope=".$this->scope_project.')';
+        $scope = $this->scope_project;
+	    $sql = "select * from {$prefix}project where droptime=0 and 
+	             id in(select sid from {$prefix}userrole where uid=$uid and scope=$scope) or 
+	             uid=$uid or 
+	             acl=0";
 	    return $this->findSql($sql);
 	}
-    /** @brief 添加开发经理
-     *
-     */
-    public function addDevManager($pid,$uid){
-	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_manager));
-    }
-    /** @brief 添加开发成员
-     *
-     */
-	public function addDevMember($pid,$uid) {
-	    return $this->create(array('uid' => $uid, 'pid' => $pid, 'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_dev_member));
-	}
-    /** @brief 添加测试经理
-     *
-     */
-    public function addQAManager($pid,$uid){
-	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_manager));
-    }
-    /** @brief 添加测试成员
-     *
-     */
-	public function addQAMember($pid,$uid) {
-	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_qa_member));
-	}
-    /** @brief 添加项目成员
-     *
-     */
+    /** @brief 添加为项目成员 */
 	public function addProjectMember($pid, $uid) {
-	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role_member));
+	    $this->create(array('uid' => $uid, 'pid' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role['role_project_member'], 'role_project_member'));
 	}
+	
     /** @brief 添加项目经理
      *
      */
