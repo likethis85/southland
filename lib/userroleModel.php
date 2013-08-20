@@ -1,7 +1,7 @@
 <?php
 if (!defined('SOUTHLAND')) { exit(1);}
 
-class userorgModel extends spModel
+class userroleModel extends spModel
 {
 	var $pk = "id";
 	var $table = "userorg"; // 数据表的名称
@@ -10,18 +10,21 @@ class userorgModel extends spModel
 	var $scope_task = 2;
 	var $scope_issue = 3;
 	
-	var $role_member            = 0;
-	var $role_dev_owner         = 1;
-	var $role_qa_owner          = 2;
-	var $role_project_manager   = 3;
-	var $role_dev_manager       = 4;
-	var $role_qa_manager        = 5;
-    var $role_dev_member        = 6;
-    var $role_qa_member         = 7;
-    var $role_project_creator   = 8;
-    var $role_bug_owner         = 9;
-    var $role_bug_reporter      = 10;
-    var $role_bug_assigner      = 11;
+	var $role_project_member = 1;
+	var $role_project_owner= 3;
+	
+	var $role_task_member = 11;
+	var $role_task_creator= 12;
+	var $role_task_owner  = 13;
+	
+	var $role_topic_member = 21;
+	var $role_topic_creator= 22;
+	
+	var $role_issue_member = 31;
+	var $role_issue_creator= 32;
+	var $role_issue_reporter=33;
+	var $role_issue_owner   = 34;
+	
 
     /************************************************************************************************
 	 * project related
