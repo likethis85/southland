@@ -14,7 +14,7 @@ class issueModel extends spModel
     var $STATUS_DEFER = 7;            
 
     /** @brief 创建Issue */
-    public function createIssue($pid,$uid,$tid,$prio,$brief,$detail,$acl,$owner) {
+    public function createIssue($pid,$uid,$tid,$prio,$brief,$detail,$acl) {
         $iid = $this->create(array(
     			    'uid' => $uid,
     			    'prj' => $pid,
@@ -31,7 +31,6 @@ class issueModel extends spModel
 	    if(false === spClass('userroleModel')->addIssueCreator($pid,$iid,$uid))
 	        return false;
 	        
-	    spClass('userroleModel')->addIssueOwner($pid,$iid,$owner);
 	    return $iid;
     }
     /** @brief retrieve issues belongs to current project

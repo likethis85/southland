@@ -34,9 +34,10 @@ class main extends general
 			                                            $this->spArgs('IssuePri'),
 			                                            $this->spArgs('IssueBrief'),
 			                                            $this->spArgs('IssueDesc'),
-			                                            $this->spArgs('acl'),
-			                                            $this->spArgs('oid')
+			                                            $this->spArgs('acl')
 			                                         );
+            if(false != $iid)
+                spClass('userroleModel')->addIssueOwner($pid,$iid,$this->spArgs('oid'));
 			$this->jumpIssuePage();
 		} else {
 		    $this->tTitle = $this->tProject['title'].'-'.T('CreateNewIssue');
