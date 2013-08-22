@@ -51,35 +51,6 @@ class main extends general
 		    spClass('spSession')->getUser()->setCurrentProject($pid);
 		    $this->tCurrProj = spClass('spSession')->getUser()->getCurrentProject();
 		    $this->tProject  = spClass('projectModel')->getCurrentInfo();
-		    $uom = spClass('userorgModel');
-		    $ur = array('Manager' => false, 
-		                'Dev' => false, 
-		                'DevMgr' => false,
-		                'QA' => false,
-		                'QAMgr' => false);
-            $roles = $uom->getUserRole($pid,$uid);
-            foreach($roles as $role) {
-                switch($role){
-                case $uom->role_project_manager:
-                    $ur['Manager'] = true;
-                    break;
-                case $uom->role_dev_owner:
-                case $uom->role_dev_member:
-                    $ur['Dev'] = true;
-                    break;
-                case $uom->role_dev_manager:
-                    $ur['DevMgr'] = true;
-                    break;
-                case $uom->role_qa_owner:
-                case $uom->role_qa_member:
-                    $ur['QA'] = true;
-                    break;
-                case $uom->role_qa_manager:
-                    $ur['QAMgr'] = true;
-                    break;
-                }
-            }
-            spClass('spSession')->getUser()->setRole($ur);
 		}
 		
 		if($this->tNid==1) {
@@ -266,8 +237,11 @@ class main extends general
     }
     /** @brief 获取Issue的负责人 */
     function __template_GetIssueOwner($param) {
-        $user = spClass('userroleModel')->getIssueOwner($param['issue']['id']);
-        if(!empty($user)) echo $user['nick'];
+        $users = spClass('userroleModel')->getIssueOwner($param['issue']['id']);
+        foreach($users as $user) {
+            $nick .=$user['nick'].',';
+        }
+        echo $nick;
     }
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');

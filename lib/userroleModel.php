@@ -32,11 +32,25 @@ class userroleModel extends spModel
      ***********************************************************************************************/
     /** @brief 添加项目创建者 */
     public function addProjectCreator($pid,$uid) {
-        return $this->create(array('uid'=>$uid, 'prj'=>$pid, 'sid'=>$pid, 'scope'=>$this->scope_project,'role' => $this->role['role_project_creator'], 'role_project_creator'));
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $pid, 
+                                'scope' => $this->scope_project,
+                                'role' => $this->role['role_project_creator'], 
+                                'title'=>'role_project_creator')
+                            );
     }
     /** @brief 添加为项目成员 */
 	public function addProjectMember($pid, $uid) {
-	    $this->create(array('uid' => $uid, 'prj' => $pid,  'sid' => $pid, 'scope' => $this->scope_project, 'role' => $this->role['role_project_member'], 'role_project_member'));
+	    return $this->create(array(
+	                    'uid' => $uid, 
+	                    'prj' => $pid,  
+	                    'sid' => $pid, 
+	                    'scope' => $this->scope_project, 
+	                    'role' => $this->role['role_project_member'], 
+	                    'title'=>'role_project_member')
+	                 );
 	}
     /** @brief 获取项目的所有成员 */
 	public function getUsersByProject($pid) {
@@ -147,6 +161,7 @@ class userroleModel extends spModel
 	             (select uid from {$prefix}userrole where sid=$iid and scope=$scope and role=$role)";
 	    $user = $this->findSql($sql);
 	    if(!empty($user)) return $user[0];
+	    else return array();
     }
     /** @brief 获取Issue的负责人信息 */
     public function getIssueOwner($iid) {

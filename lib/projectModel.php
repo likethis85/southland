@@ -11,16 +11,16 @@ class projectModel extends spModel
 
     /** @brief 创建项目 */
     public function createProject($uid,$title,$desc,$acl){
-        if(empty($uid) || empty($title) || empty($acl))
+        if(empty($uid) || empty($title))
             return false;
             
-        $data = array(
-            'uid' => $uid,
-            'title' => $title,
-            'description' => $desc,
-            'acl' => $acl
-        );
-        $pid = $this->create($data);
+        $pid = $this->create(array(
+                                'uid' => $uid,
+                                'title' => $title,
+                                'description' => $desc,
+                                'acl' => $acl
+                            )
+                      );
         if($pid===false)
             return false;
             
