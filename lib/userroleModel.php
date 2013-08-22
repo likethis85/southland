@@ -138,7 +138,25 @@ class userroleModel extends spModel
         }
         return $temp;
     }
-
+    /** @brief 获取Issue的创建人信息 */
+    public function getIssueCreator($iid) {
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $scope = $this->scope_issue;
+	    $role = $this->role['role_issue_creator'];
+	    $sql = "select * from {$prefix}user where id in 
+	             (select uid from {$prefix}userrole where sid=$iid and scope=$scope and role=$role)";
+	    $user = $this->findSql($sql);
+	    if(!empty($user)) return $user[0];
+    }
+    /** @brief 获取Issue的负责人信息 */
+    public function getIssueOwner($iid) {
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $scope = $this->scope_issue;
+	    $role = $this->role['role_issue_owner'];
+	    $sql = "select * from {$prefix}user where id in 
+	             (select uid from {$prefix}userrole where sid=$iid and scope=$scope and role=$role)";
+	    return $this->findSql($sql);
+    }
     /************************************************************************************************
 	 * topic related
      ***********************************************************************************************/

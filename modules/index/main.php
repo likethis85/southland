@@ -261,11 +261,13 @@ class main extends general
     }
     /** @brief 获取Issue的创建人 */
     function __template_GetIssueCreator($param) {
-        echo 'creator';
+        $user = spClass('userroleModel')->getIssueCreator($param['issue']['id']);
+        if(!empty($user)) echo $user['nick'];
     }
     /** @brief 获取Issue的负责人 */
     function __template_GetIssueOwner($param) {
-        echo 'owner';
+        $user = spClass('userroleModel')->getIssueOwner($param['issue']['id']);
+        if(!empty($user)) echo $user['nick'];
     }
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
