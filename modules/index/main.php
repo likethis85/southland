@@ -219,7 +219,6 @@ class main extends general
     function __template_IssueOperation($param) {
         $uid = $this->tUser['id'];
         $issue = $param['issue'];
-        $uo = spClass('spSession')->getUser()->getRole();
         $op_open = array(
             'icon' => '/'.$this->skinpath.'/img/open.png',
             'caption' => T('IssueOpen'),
@@ -249,21 +248,10 @@ class main extends general
             'caption' => T('IssuePost')
         );
 
-        if($uo['Manager'])
+        if($issue['role']==spClass('userroleModel')->role['role_issue_owner'])
             echo spClass('Services_JSON')->encode(array(
                     $this->array2class($op_open),
                     $this->array2class($op_fixed),
-                    $this->array2class($op_verified),
-                    $this->array2class($op_completed),
-                    $this->array2class($op_post)));
-        else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$issue['owner']['id']))
-            echo spClass('Services_JSON')->encode(array(
-                    $this->array2class($op_open),
-                    $this->array2class($op_fixed),
-                    $this->array2class($op_post)));
-        else if($uo['QAMgr'] || ($uo['QA']&&$uid==$issue['owner']['id']))
-            echo spClass('Services_JSON')->encode(array(
-                    $this->array2class($op_open),
                     $this->array2class($op_verified),
                     $this->array2class($op_completed),
                     $this->array2class($op_post)));
@@ -272,32 +260,9 @@ class main extends general
     }
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
-        $uom = spClass('userorgModel');
         $pid = $this->tCurrProj;
         $uid = $this->tUser['id'];
-        $owners = $uom->getUsersByIssue($pid);
-        $this->tIssues = spClass('issueModel')->getIssues();
-        $issues = $this->tIssues;
-        foreach($issues as &$issue){
-            foreach($owners as $member){
-                if($member['role']==$uom->role_bug_reporter)
-                    $issue['reporter'] = $member;
-                else if($member['role']==$uom->role_bug_assigner)
-                    $issue['assigner'] = $member;
-                else if($member['role']==$uom->role_bug_owner)
-                    $issue['owner'] = $member;
-            }
-        }
-        $this->tIssues = $issues;
-        unset($issues);
-        
-        $tMembers = array();
-        $members = $uom->getUsersByProject($pid);
-        foreach($members as $member){
-            $tMembers[$member['id']] = $member;
-        }
-        $this->tMembers = $tMembers;
-        unset($tMembers);
+        $this->tIssues = spClass('userroleModel')->getIssuesByUser($pid, $uid);
         spAddViewFunction('spIssueOperation', array(&$this, '__template_IssueOperation'));
         $this->tView = array(
             'require' => array(

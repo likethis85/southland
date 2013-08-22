@@ -20,7 +20,14 @@ class projectModel extends spModel
             'description' => $desc,
             'acl' => $acl
         );
-        return $this->create($data);
+        $pid = $this->create($data);
+        if($pid===false)
+            return false;
+            
+        if(false === spClass('userroleModel')->addProjectCreator($pid,$uid))
+            return false;
+           
+        return $pid;
     }
     
     public function getUserProjects($uid) {

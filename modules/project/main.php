@@ -28,7 +28,6 @@ class main extends general
             spClass('keeper')->speak(T('Error DB operation failed'), '/index.php');
             exit;
         }
-        spClass('userroleModel')->addProjectMember($pid,$uid);
         spClass('timelineModel')->createForProject($pid, $uid, date('y-m-d'), null, T('Create'));
         spClass('spSession')->getUser()->setCurrentProject($pid);
         $this->jumpProjectPage();

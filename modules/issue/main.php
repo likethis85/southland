@@ -28,24 +28,15 @@ class main extends general
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
 		    $files = $this->saveFile($uid, $_FILES, 'attachments for issue '.$this->spArgs('IssueBrief'));
-			$data = array(
-			    'prj' => $pid,
-                'tid' => $this->spArgs('tid'),
-                'reporter' => $uid,
-                'assigner' => $uid,
-				'owner'    => $this->spArgs('oid'),
-				'priority' => $this->spArgs('IssuePri'),
-				'brief'    => $this->spArgs('IssueBrief'),
-                'detail'   => $this->spArgs('IssueDesc'),
-                'acl'      => $this->spArgs('acl')
-			);
-			$iid = spClass('issueModel')->create($data);
-			if($iid !== false) {
-			    spClass('attachmentModel')->createForIssue($uid, $pid, $iid, $files);
-			    spClass('userorgModel')->addIssueReporter($iid, spClass('spSession')->getUser()->getUserId());
-			    spClass('userorgModel')->addIssueAssigner($iid, spClass('spSession')->getUser()->getUserId());
-			    spClass('userorgModel')->addIssueOwner($iid, spClass('spSession')->getUser()->getUserId());
-			}
+			$iid = spClass('issueModel')->createIssue(  $pid,
+			                                            $uid,
+			                                            $this->spArgs('tid'),
+			                                            $this->spArgs('IssuePri'),
+			                                            $this->spArgs('IssueBrief'),
+			                                            $this->spArgs('IssueDesc'),
+			                                            $this->spArgs('acl'),
+			                                            $this->spArgs('oid')
+			                                         );
 			$this->jumpIssuePage();
 		} else {
 		    $this->tTitle = $this->tProject['title'].'-'.T('CreateNewIssue');

@@ -13,6 +13,27 @@ class issueModel extends spModel
     var $STATUS_KNOWISSUE = 6;
     var $STATUS_DEFER = 7;            
 
+    /** @brief 创建Issue */
+    public function createIssue($pid,$uid,$tid,$prio,$brief,$detail,$acl,$owner) {
+        $iid = $this->create(array(
+    			    'uid' => $uid,
+    			    'prj' => $pid,
+                    'tid' => $tid,
+    				'priority' => $prio,
+    				'brief'    => $brief,
+                    'detail'   => $detail,
+                    'acl'      => $acl
+    			    )
+	           );
+	    if(false===$iid)
+	        return false;
+	        
+	    if(false === spClass('userroleModel')->addIssueCreator($pid,$iid,$uid))
+	        return false;
+	        
+	    spClass('userroleModel')->addIssueOwner($pid,$iid,$owner);
+	    return $iid;
+    }
     /** @brief retrieve issues belongs to current project
      *
      */
