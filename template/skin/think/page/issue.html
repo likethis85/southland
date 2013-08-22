@@ -17,7 +17,6 @@
                 null,
                 null,
                 null,
-                null,
                 null
             ]
         });
@@ -76,7 +75,6 @@
                 <th><{T w="IssueStatus"}></th>
                 <th><{T w="IssueTitle"}></th>
                 <th><{T w="IssueReporter"}></th>
-                <th><{T w="IssueAssigner"}></th>
                 <th><{T w="IssueOwner"}></th>
                 <th><{T w="IssueDate"}></th>
             </tr>
@@ -96,19 +94,8 @@
                     <{/if}>
                 </td>
                 <td><a href="/issue.php?a=view&id=<{$itemI.id}>"><{$itemI.brief}></a></td>
-                <td><{$itemI.reporter.nick}></td>
-                <td><{$itemI.assigner.nick}></td>
-                <td>
-                    <{if $tUser.role.manager || ($tUser.id == $itemI.owner.id)}>
-                        <select>
-                        <{foreach item=itemM from=$tMembers}>
-                            <option value="<{$itemM.id}>" <{if $itemM.id==$itemI.owner.id}>selected<{/if}>><{$itemM.nick}></option>
-                        <{/foreach}>
-                        </select>
-                    <{else}>
-                        <{$itemI.owner.nick}>
-                    <{/if}>
-                </td>
+                <td><{spIssueReporter issue=$item}></td>
+                <td><{spIssueOwner issue=$item}></td>
                 <td><{$itemI.addtime}></td>
             </tr>
             <{/foreach}>

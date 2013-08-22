@@ -216,6 +216,7 @@ class main extends general
         spAddViewFunction('spTaskOperation', array(&$this, '__template_TaskOperation'));
     }
 
+    /** @brief 配置用户允许的Issue操作 */
     function __template_IssueOperation($param) {
         $uid = $this->tUser['id'];
         $issue = $param['issue'];
@@ -258,12 +259,22 @@ class main extends general
         else
             echo spClass('Services_JSON')->encode(array());
     }
+    /** @brief 获取Issue的创建人 */
+    function __template_GetIssueCreator($param) {
+        echo 'creator';
+    }
+    /** @brief 获取Issue的负责人 */
+    function __template_GetIssueOwner($param) {
+        echo 'owner';
+    }
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
         $pid = $this->tCurrProj;
         $uid = $this->tUser['id'];
         $this->tIssues = spClass('userroleModel')->getIssuesByUser($pid, $uid);
         spAddViewFunction('spIssueOperation', array(&$this, '__template_IssueOperation'));
+        spAddViewFunction('spIssueReporter', array(&$this, '__template_GetIssueCreator'));
+        spAddViewFunction('spIssueOwner', array(&$this, '__template_GetIssueOwner'));
         $this->tView = array(
             'require' => array(
                 'dataTable' => true
