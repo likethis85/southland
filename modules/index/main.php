@@ -190,7 +190,11 @@ class main extends general
     /** @brief 配置用户允许的Issue操作 */
     function __template_IssueOperation($param) {
         $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
         $issue = $param['issue'];
+        $role = spClass('userroleModel')->getUserRoleOnProject($pid, $uid);
+        $role = array_merge($role, $issue['role']);
+        
         $op_open = array(
             'icon' => '/'.$this->skinpath.'/img/open.png',
             'caption' => T('IssueOpen'),
@@ -220,7 +224,9 @@ class main extends general
             'caption' => T('IssuePost')
         );
 
-        if($issue['role']==spClass('userroleModel')->role['role_issue_owner'])
+        if(in_array(spClass('userroleModel')->role['role_issue_owner'],$role) ||
+            in_array(spClass('userroleModel')->role['role_project_owner'],$role) ||
+            in_array(spClass('userroleModel')->role['role_project_creator'],$role) )
             echo spClass('Services_JSON')->encode(array(
                     $this->array2class($op_open),
                     $this->array2class($op_fixed),
@@ -243,6 +249,7 @@ class main extends general
         }
         echo $nick;
     }
+    /** @brief Issue的页面数据 */
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
         $pid = $this->tCurrProj;

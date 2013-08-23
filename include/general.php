@@ -11,26 +11,6 @@ if (!defined('SOUTHLAND')) { exit(1);}
 class general extends spController
 {
 	/**
-	 * 默认风格
-	 */
-	var $themes = "default";
-	
-	/**
-	 * 站点配置
-	 */
-	var $defined = "";
-	
-	/**
-	 * 当前页面title
-	 */
-	var $title = "";
-
-	/**
-	 * 侧栏显示着谁的资料呢？
-	 */
-	var $sidebar_username = "";
-	
-	/**
 	 * 覆盖控制器构造函数，进行相关的赋值操作
 	 */
 	function __construct(){ // 公用
@@ -48,7 +28,6 @@ class general extends spController
 		$this->tAction = $__action;
 		$this->tUser = $spSess->getUser()->getUserInfo();
         $this->tCurrProj = $spSess->getUser()->getCurrentProject();
-        $tCurrProj = $this->tCurrProj;
         $this->tProject = spClass('projectModel')->getCurrentInfo();
         $this->tNavigation = array(
             array('nid' => 1, 'enabled' => true, 'name' =>'ProjectDesc', 'module' => 'project'),

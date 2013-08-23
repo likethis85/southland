@@ -73,6 +73,18 @@ class userroleModel extends spModel
 	             id in(select sid from {$prefix}userrole where uid=$uid and scope=$scope))";
 	    return $this->findSql($sql);
 	}
+	/** @brief 获取用户角色 */
+	public function getUserRoleOnProject($pid, $uid) {
+	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        $scope = $this->scope_project;
+        $sql = "select role from {$prefix}userrole where sid=$pid and scope=$scope and uid=$uid";
+        $items = $this->findSql($sql);
+        $roles = array();
+        foreach($items as $role) {
+            array_push($roles, $role['role']);
+        }
+        return $roles;
+	}
 	/** @brief 判断用户是否为项目成员 */
     public function isMemberOfProject($pid,$uid) {
         $rcd = $this->find(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project));
@@ -138,7 +150,7 @@ class userroleModel extends spModel
 	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
 	    $scope = $this->scope_issue;
         $sql = "select I.*,R.role from {$prefix}issue as I inner join {$prefix}userrole as R 
-                 on I.droptime=0 and I.prj=$pid and I.id=R.sid and R.scope=$scope ";
+                 on I.droptime=0 and (I.prj=$pid and I.id=R.sid and R.scope=$scope and R.uid=$uid or I.acl=0 and I.prj=$pid)";
         $issues = $this->findSql($sql);
         foreach($issues as $issue) {
             $id = $issue['id'];

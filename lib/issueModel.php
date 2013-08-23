@@ -33,20 +33,6 @@ class issueModel extends spModel
 	        
 	    return $iid;
     }
-    /** @brief retrieve issues belongs to current project
-     *
-     */
-    public function getIssues() {
-        $projId = spClass('spSession')->getUser()->getCurrentProject();
-        if(!empty($projId)) {
-            $condition=array(
-                'prj' => "$projId",
-            );
-            return $this->findAll($condition);
-        } else {
-            return array();
-        }
-    }
     /** @brief update status of the issue 
      *
      */
