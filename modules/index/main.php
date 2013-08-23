@@ -114,8 +114,11 @@ class main extends general
      */
     function __template_TaskOperation($param){
         $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
         $task = $param['task'];
-        $uo = spClass('spSession')->getUser()->getRole();
+        $role = spClass('userroleModel')->getUserRoleOnProject($pid, $uid);
+        $role = array_merge($role, $task['role']);
+        
         $op_work = array(
                 'icon' => '/'.$this->skinpath.'/img/working.png',
                 'caption' => T('TaskWorking'),
@@ -151,7 +154,10 @@ class main extends general
              'callback'=> 'location.href=\"/issue.php?a=add&tid=\"+elem.id.replace(\"t\",\"\")'
         ); 
            
-        if($uo['Manager'])
+        if( in_array(spClass('userroleModel')->role['role_task_owner'],$role) ||
+            in_array(spClass('userroleModel')->role['role_task_creator'],$role) ||
+            in_array(spClass('userroleModel')->role['role_project_owner'],$role) ||
+            in_array(spClass('userroleModel')->role['role_project_creator'],$role) )
             echo spClass('Services_JSON')->encode(array(
                     $this->array2class($op_work),
                     $this->array2class($op_cc),
@@ -159,21 +165,6 @@ class main extends general
                     $this->array2class($op_edit),
                     $this->array2class($op_del),
                     $this->array2class($op_transfer),
-                    $this->array2class($op_bug)));                 
-        else if($uo['DevMgr'] || ($uo['Dev']&&$uid==$task['owner']))
-            echo spClass('Services_JSON')->encode(array(
-                    $this->array2class($op_work),
-                    $this->array2class($op_cc),
-                    $this->array2class($op_edit),
-                    $this->array2class($op_del),
-                    $this->array2class($op_transfer),
-                    $this->array2class($op_bug)));
-        else if($uo['QAMgr'] || ($uo['QA']&&$uid==$task['owner']))
-            echo spClass('Services_JSON')->encode(array(
-                    $this->array2class($op_work),
-                    $this->array2class($op_veri),
-                    $this->array2class($op_edit),
-                    $this->array2class($op_del),
                     $this->array2class($op_bug)));
         else
             echo spClass('Services_JSON')->encode(array());
@@ -182,8 +173,10 @@ class main extends general
      *
      */
     function _task() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
         $this->tTitle = $this->tProject['title'].'-'.T('Task');
-        $this->tTasks = spClass('taskModel')->getTasks($this->tCurrProj);
+        $this->tTasks = spClass('userroleModel')->getTasksByUser($pid, $uid);
         spAddViewFunction('spTaskOperation', array(&$this, '__template_TaskOperation'));
     }
 
@@ -224,7 +217,8 @@ class main extends general
             'caption' => T('IssuePost')
         );
 
-        if(in_array(spClass('userroleModel')->role['role_issue_owner'],$role) ||
+        if( in_array(spClass('userroleModel')->role['role_issue_owner'],$role) ||
+            in_array(spClass('userroleModel')->role['role_issue_creator'],$role) ||
             in_array(spClass('userroleModel')->role['role_project_owner'],$role) ||
             in_array(spClass('userroleModel')->role['role_project_creator'],$role) )
             echo spClass('Services_JSON')->encode(array(

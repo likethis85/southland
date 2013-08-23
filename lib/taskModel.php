@@ -11,6 +11,24 @@ class taskModel extends spModel
     var $STATUS_VERIFIED = 3;
     var $STATUS_COMPLETED = 4;
         
+    /** @brief 创建Task */
+    public function createTask($pid,$uid,$prio,$subject,$detail,$acl) {
+        $tid = $this->create(array(
+                			    'pid' => 0,
+                			    'prj' => $pid,
+                                'assigner' => $uid,
+                				'owner'=> $uid,
+                				'priority'=> $prio,
+                				'subject'=> $subject,
+                                'detail'=> $detail,
+                                'acl'   => $acl)
+			                );
+        if(false === $tid)
+            return false;
+        if(spClass('userroleModel')->addTaskCreator($pid,$tid,$uid)===false)
+            return false;
+        return $tid;
+    }
     public function getTasks($pid) {
         if(empty($pid))
             return array();

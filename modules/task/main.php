@@ -23,17 +23,12 @@ class main extends general
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
 		    $files = $this->saveFile($uid, $_FILES, 'attachments for task '.$this->spArgs('subject'));
-			$data = array(
-			    'pid' => $this->spArgs('id'),
-			    'prj' => $pid,
-                'assigner' => $uid,
-				'owner'=> $uid,
-				'priority'=>$this->spArgs('TaskPri'),
-				'subject'=>$this->spArgs('subject'),
-                'detail'=>$this->spArgs('TaskDesc'),
-                'acl'   =>$this->spArgs('acl')
-			);
-			$tid = spClass('taskModel')->create($data);
+			$tid = spClass('taskModel')->createTask($pid,  
+			                                        $uid,
+			                                        $this->spArgs('TaskPri'),
+			                                        $this->spArgs('subject'),
+			                                        $this->spArgs('TaskDesc'),
+			                                        $this->spArgs('acl'));
             if($tid == false){
                 spClass('keeper')->speak(T('Error DB operation failed'));
                 exit;
@@ -41,14 +36,6 @@ class main extends general
             spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
             if($data['acl']<2) {
                 spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
-                $uos = spClass('userorgModel')->getUsersByProject($pid);
-                $msg = array(
-                    'subject' => T('NewTask'),
-                    'msgbody' => "/task.php?a=view&tid=$tid"
-                );
-                foreach($uos as $uo){
-                    spClass('messageModel')->send_message($uid, $uo['id'],$msg);
-                }
             }
 			$this->jumpTaskPage();
 		} else {

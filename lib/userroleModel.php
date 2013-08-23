@@ -94,16 +94,43 @@ class userroleModel extends spModel
     /************************************************************************************************
 	 * task related
      ***********************************************************************************************/
+    /** @brief 添加Task创建人 */
+    public function addTaskCreator($pid,$tid,$uid){
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $tid, 
+                                'scope' => $this->scope_task,
+                                'role' => $this->role['role_task_creator'], 
+                                'title'=>'role_task_creator')
+                            );
+    }
     /** @brief 获取任务相关的所有人员 */
 	public function getUsersByTask($tid) {
-	    return $this->findAll(array('scope' => $this->scope_task, 'sid' => $tid));
-	}
-    /** @brief 获取用户相关的所有任务 */
-    public function getTasksByUser($uid) {
 	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
 	    $scope = $this->scope_task;
-        $sql = "select * from {$prefix}task as T inner join {$prefix}userrole as R on R.uid=$uid and R.sid=T.id and R.scope=$scope";
-        return $this->findSql($sql);
+	    $sql = "select * from {$prefix}user where id in (select uid from {$prefix}userrole where sid=$tid and scope=$scope)";
+	    return $this->runSql($sql);
+	}
+    /** @brief 获取用户相关的所有任务 */
+    public function getTasksByUser($pid,$uid) {
+	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $scope = $this->scope_task;
+        $sql = "select * from {$prefix}task as T inner join {$prefix}userrole as R on T.droptime=0 and R.prj=$pid and R.uid=$uid and R.sid=T.id and R.scope=$scope";
+        $tasks = $this->findSql($sql);
+        
+        foreach($tasks as $task) {
+            $id = $task['id'];
+            if(isset($temp[$id])) {
+                array_push($temp[$id]['role'],$task['role']);
+            } else {
+                $role = $task['role'];
+                $task['role'] = array($role);
+                $temp[$id] = $task;
+            }
+        }
+
+        return $temp;
     }
     /** @brief 判断是否为Task相关用户 */
     public function isMemberOfTask($tid,$uid) {
@@ -117,13 +144,13 @@ class userroleModel extends spModel
     /** @brief 添加Issue创建者 */
     public function addIssueCreator($pid,$iid,$uid) {
         return $this->create(array(
-            'uid' => $uid,
-            'prj' => $pid,
-            'sid' => $iid,
-            'scope' => $this->scope_issue,
-            'role' => $this->role['role_issue_creator'],
-            'title'=> 'role_issue_creator'
-        ));
+                                'uid' => $uid,
+                                'prj' => $pid,
+                                'sid' => $iid,
+                                'scope' => $this->scope_issue,
+                                'role' => $this->role['role_issue_creator'],
+                                'title'=> 'role_issue_creator')
+                            );
     }
     /** @brief 添加Issue的负责人 */
     public function addIssueOwner($pid,$iid,$uid) {
