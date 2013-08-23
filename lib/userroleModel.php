@@ -116,9 +116,8 @@ class userroleModel extends spModel
     public function getTasksByUser($pid,$uid) {
 	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
 	    $scope = $this->scope_task;
-        $sql = "select * from {$prefix}task as T inner join {$prefix}userrole as R on T.droptime=0 and R.prj=$pid and R.uid=$uid and R.sid=T.id and R.scope=$scope";
+        $sql = "select T.*,R.role from {$prefix}task as T left join {$prefix}userrole as R on R.uid=$uid and T.id=R.sid and scope=$scope and R.prj=$pid where T.droptime=0 and ( R.uid=$uid or T.acl=0 and T.prj=$pid)";
         $tasks = $this->findSql($sql);
-        
         foreach($tasks as $task) {
             $id = $task['id'];
             if(isset($temp[$id])) {
@@ -129,7 +128,6 @@ class userroleModel extends spModel
                 $temp[$id] = $task;
             }
         }
-
         return $temp;
     }
     /** @brief 判断是否为Task相关用户 */
@@ -176,8 +174,8 @@ class userroleModel extends spModel
     public function getIssuesByUser($pid,$uid){
 	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
 	    $scope = $this->scope_issue;
-        $sql = "select I.*,R.role from {$prefix}issue as I inner join {$prefix}userrole as R 
-                 on I.droptime=0 and (I.prj=$pid and I.id=R.sid and R.scope=$scope and R.uid=$uid or I.acl=0 and I.prj=$pid)";
+        $sql = "select I.*,R.role from {$prefix}issue as I left join {$prefix}userrole as R 
+                 on R.uid=$uid and I.id=R.sid and R.scope=$scope and R.prj=$pid where I.droptime=0 and (R.uid=$uid or I.acl=0 and I.prj=$pid)";
         $issues = $this->findSql($sql);
         foreach($issues as $issue) {
             $id = $issue['id'];
