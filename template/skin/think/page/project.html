@@ -197,7 +197,9 @@
         <tr>
             <td>
                 <ul style="list-style:none;">
+                <{assign var="isMember" value=0}>
                 <{foreach item=item from=$tMembers}>
+                <{if $item.id==$tUser.id}><{$isMember=1}><{assign var="isMember" value=1}><{/if}>
                 <li>
                     <div>
                         <table>
@@ -221,9 +223,11 @@
                 </ul>
             </td>
         </tr>
+        <{if $isMember>0}>
         <tr>
             <td><input name="inviteusername" /></td>
         </tr>
+        <{/if}>
     </table>
     <table style="margin-top:180px;">
         <tr><td><div class="btn-capsule"><a href="/project.php?&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
