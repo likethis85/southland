@@ -64,9 +64,6 @@ class userroleModel extends spModel
 	}
     /** @brief 获取该用户参与的所有项目 */
 	public function getProjectsByUser($uid) {
-        if(empty($uid))
-            return false;
-
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
         $scope = $this->scope_project;
 	    $sql = "select * from {$prefix}project where droptime=0 and (acl=0 or  

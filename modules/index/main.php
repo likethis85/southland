@@ -15,7 +15,7 @@ class main extends general
 	    $this->tTitle = T('FirstPage');
 	    $this->tNid = 0;
         spClass('spSession')->getUser()->setCurrentNid($this->tNid);
-        $this->tProjects = spClass('projectModel')->getUserProjects($uid);
+        $this->tProjects = spClass('userroleModel')->getProjectsByUser($uid);
 		$this->display("index.html");
 	}
 	
