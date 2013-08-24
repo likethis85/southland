@@ -74,10 +74,6 @@ class projectModel extends spModel
         if($info === false) return array();
         else return $info;
     }
-    public function getProjectMembers($pid) {
-        $members = spClass('userroleModel')->getUsersByProject($pid);
-        return $members;
-    }
     public function closeProject($pid) {
         if(false == $this->update(array('id' => $pid), array('status' => $this->status_close)))
             return false;

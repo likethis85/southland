@@ -59,8 +59,20 @@ class userroleModel extends spModel
 
         $scope=$this->scope_project;
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
-        $sql = "select b.avatar,a.role,b.nick,b.id from {$prefix}userrole as a,{$prefix}user as b where a.uid=b.id and a.sid=$pid and a.scope=$scope";
-        return $this->findSql($sql);
+        $sql = "select U.*,R.role from {$prefix}user as U inner join {$prefix}userrole as R on U.id=R.uid and R.prj=$pid and R.sid=$pid and R.scope=$scope";
+        $users = $this->findSql($sql);
+        foreach($users as $user) {
+            $id = $user['id'];
+            if(isset($temp[$id])) {
+                array_push($temp[$id]['role'],$user['role']);
+                array_unique($temp[$id]['role']);
+            } else {
+                $role = $user['role'];
+                $user['role'] = array($role);
+                $temp[$id] = $user;
+            }
+        }
+        return $temp;
 	}
     /** @brief 获取该用户参与的所有项目 */
 	public function getProjectsByUser($uid) {

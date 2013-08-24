@@ -1,87 +1,4 @@
 <script language="javascript" type="text/javascript">
-    var fillMember = function(data){
-        $('#Developer ul').empty();
-        $('#QA ul').empty();
-        $('#Observer ul').empty();
-        var members = new Array();
-        for(i=0;i<data.length;i++){
-            var member = null;
-            for(j=0;j<members.length;j++){
-                if(members[j].uid == data[i].uid) {
-                    member = members[j];
-                    break;
-                }   
-            }
-            
-            if(null==member) {
-                member = new Object;
-                member.avatar = data[i].avatar;
-                member.uid = data[i].uid;
-                member.nick = data[i].nick;
-                member.role = new Array(/*'dev'*/new Array(),/*'qa'*/new Array(),/*'observer'*/new Array());
-                members.push(member);
-            }
-        }
-        $.each(data,function(i,item){
-            $.each(members,function(j,mbr){
-                if(mbr.uid==item.uid) {
-                    switch(item.role) {
-                    case 1:
-                    case 4:
-                    case 6:
-                        mbr.role[0].push(item.role);
-                        break;
-                    case 2:
-                    case 5:
-                    case 7:
-                        mbr.role[1].push(item.role);
-                        break;
-                    default:
-                        mbr.role[2].push(item.role);
-                        break;
-                    }
-                }
-            });
-        });
-
-        $.each(members,function(idx,item){
-            $.each(item.role,function(i,role){
-                if(role.length==0)
-                    return;
-                
-                var elem = '<li class="puser"><table width="100%"><tr><td align="left" width="88"><img src="'+item.avatar+'"></td><td align="left"><table><tr><td align="left"><strong>'+item.nick+'</strong></td></tr><tr><td align="left">';
-                $.each(role,function(j,r){
-                    switch(r) {
-                    case 1:
-                    case 2:
-                        elem += '<img src="<{$skinpath}>/img/owner.jpg" alt="owner" title=<{T w="Owner"}> >';
-                        break;
-                    case 3:
-                    case 4:
-                    case 5:
-                        elem += '<img src="<{$skinpath}>/img/manager.jpg" alt="manager" title=<{T w="Manager"}> >';
-                        break;
-                    case 6:
-                    case 7:
-                    default:
-                        if(i==0)
-                            elem += '<img src="<{$skinpath}>/img/dev.jpg" alt="member" title=<{T w="Member"}> >';
-                        else if(i==1)
-                            elem += '<img src="<{$skinpath}>/img/qa.jpg" alt="member"  title=<{T w="Member"}> >';
-                        break;
-                    }
-                });
-                elem += '</td></tr></table></td></tr></table></li>';
-                if(i==0)
-                    $('#Developer ul').append(elem);
-                else if(i==1)
-                    $('#QA ul').append(elem);
-                else if(i==2)
-                    $('#Observer ul').append(elem);
-            });
-        });
-    }
-    
     $(document).ready(function(){
         $("#Del").click(function(){
             return confirm('<{T w="Confirm?"}>'+$(this).html());
@@ -156,16 +73,6 @@
                 } 
             ); 
         });
-
-        fillMember([
-            <{foreach item=item from=$tMembers name=iterUsers}>
-                <{if $smarty.foreach.iterUsers.last }>
-                    {"avatar":"<{$item.avatar}>","uid":<{$item.id}>,"nick":"<{$item.nick}>","role":<{$item.role}>}
-                <{else}>
-                    {"avatar":"<{$item.avatar}>","uid":<{$item.id}>,"nick":"<{$item.nick}>","role":<{$item.role}>},
-                <{/if}>
-            <{/foreach}>
-        ]);
 
         $('#ptl').Chronoline(
             [
@@ -346,11 +253,33 @@
 
 <div style="margin-left:36px;margin-top:16px;border-right:#c3daf9 1px solid;overflow:none;width:20%;float:left;">
 	<table>
-		<tr><td><h2><{T w="ProjectAuthor"}></h2></td></tr>
-		<tr><td><div title="<{$tProject.uid.email}>"><{$tProject.uid.nick}></td></tr>
-		<tr><td><h2><{T w="ProjectCreateTime"}></h2></td></tr>
-		<tr><td><{$tProject.addtime}></td></tr>
-		<tr><td><h2><{T w="ProjectOperator"}></h2></td></tr>
+        <tr>
+            <td>
+                <ul style="list-style:none;">
+                <{foreach item=item from=$tMembers}>
+                <li>
+                    <div>
+                        <table>
+                            <tr>
+                                <td><img src="<{$item.avatar}>"></td>
+                                <td style="padding-left:6px;">
+                                    <table>
+                                    <tr><td><{$item.nick}></td></tr>
+                                    <tr><td>
+                                        <{foreach item=itemR from=$item.role}>
+                                        <{$itemR}>
+                                        <{/foreach}>
+                                    </td></tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </li>
+                <{/foreach}>
+                </ul>
+            </td>
+        </tr>
         <tr><td><div class="btn-capsule"><a id="btn-PAU" href="#"><{T w="ProjectAddUser"}></a></div></td></tr>
         <tr><td><div class="btn-capsule"><a href="/project.php?&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
         <tr><td><div class="btn-capsule"><a id="Del" href="/project.php?a=del&id=<{$tCurrProj}>"><{T w="DeleteProject"}></a></div></td></tr>
@@ -362,16 +291,4 @@
 	    <{$tProject.description}>
     </div>
     <div id='ptl' style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;height:168px;"></div>
-	<table width=100% border=1>
-	    <thead>
-	       <th style="background-color:#333366;width:33%;color:white;"><{T w='Developer'}></th>
-	       <th style="background-color:#669966;width:33%;color:white;"><{T w='QA'}></th>
-	       <th style="background-color:#ADD8E6;width:33%;color:white;"><{T w='Observer'}></th>
-	    </thead>
-	    <tbody>
-            <td valign="top"><div id="Developer"><ul style="float:left;list-style:none;width:100%;"></ul></div></td>
-            <td valign="top"><div id="QA"><ul style="float:left;list-style:none;width:100%;"></ul></div></td>
-            <td valign="top"><div id="Observer"><ul style="float:left;list-style:none;width:100%;"></ul></div></td>
-        </tbody>
-	</table>
 </div>
