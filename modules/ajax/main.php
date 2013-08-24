@@ -129,8 +129,8 @@ class main extends general
     /** @brief 为项目添加用户
      *
      */
-    function pau() {
-        $user = spClass('userModel')->getUserByUname($this->spArgs('u'));
+    function AddProjectUser() {
+        $user = spClass('userModel')->getUserByUname($this->spArgs('name'));
         if(false === $user) {
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
             $this->ajaxResult->msg = T('Error no this user');
@@ -147,7 +147,6 @@ class main extends general
             exit;
         }
 
-        $obj = spClass('userorgModel');
         $uid = $user['id'];
         if(empty($pid) || empty($uid)){
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
@@ -155,44 +154,7 @@ class main extends general
             echo spClass('Services_JSON')->encode($this->ajaxResult);
             exit;
         }
-
-        $role = $this->spArgs('to');
-        if($role=='DevMember') {
-            if(false === $obj->AddDevMember($pid, $uid)) {
-                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-                $this->ajaxResult->msg = T('Error DB operation failed');
-            }
-        }
-        else if($role == 'QAMember') {
-            if(false == $obj->AddQAMember($pid, $uid)) {
-                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-                $this->ajaxResult->msg = T('Error DB operation failed');
-            }
-        }
-        else if($role == 'DevMgr') {
-            if(false === $obj->AddDevManager($pid, $uid)) {
-                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-                $this->ajaxResult->msg = T('Error DB operation failed');
-            }
-        }
-        else if($role == 'QAMgr') {
-            if(false === $obj->AddQAManager($pid, $uid)) {
-                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-                $this->ajaxResult->msg = T('Error DB operation failed');
-            }
-        }
-        else if($role == 'PrjMgr') {
-            if(false === $obj->AddProjectManager($pid, $uid)) {
-                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-                $this->ajaxResult->msg = T('Error DB operation failed');
-            }
-        }
-        else {
-            if(false === $obj->AddProjectMember($pid, $uid)) {
-                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-                $this->ajaxResult->msg = T('Error DB operation failed');
-            }
-        }
+        spClass('userroleModel')->addProjectMember($pid,$uid);
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
     }

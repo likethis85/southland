@@ -1,5 +1,11 @@
 <script language="javascript" type="text/javascript">
     $(document).ready(function(){
+        $("#ProjectAddUser").click(function(){
+            var user=$.trim($('#inviteusername').val());
+            $.getJSON('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user),function(){
+                
+            });
+        });
         $("#Del").click(function(){
             return confirm('<{T w="Confirm?"}>'+$(this).html());
         });
@@ -225,7 +231,7 @@
         </tr>
         <{if $isMember>0}>
         <tr>
-            <td><input name="inviteusername" /></td>
+            <td><input name="inviteusername" id="inviteusername" /><div id="ProjectAddUser" class="btn-rounded" style="float:right;margin-top:2px;"><{T w='ProjectAddUser'}></div></td>
         </tr>
         <{/if}>
     </table>
