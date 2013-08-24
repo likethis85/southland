@@ -261,13 +261,13 @@
                     <div>
                         <table>
                             <tr>
-                                <td><img src="<{$item.avatar}>"></td>
-                                <td style="padding-left:6px;">
+                                <td valign="top"><img src="<{$item.avatar}>"></td>
+                                <td style="padding-left:6px;" valign="top">
                                     <table>
-                                    <tr><td><{$item.nick}></td></tr>
-                                    <tr><td>
+                                    <tr><td valign="top"><{$item.nick}></td></tr>
+                                    <tr><td valign="top">
                                         <{foreach item=itemR from=$item.role}>
-                                        <{$itemR}>
+                                        <img src="<{$skinpath}>/img/role/<{$itemR}>.png" width=16 height=16>
                                         <{/foreach}>
                                     </td></tr>
                                     </table>
