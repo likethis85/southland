@@ -4,65 +4,6 @@
             return confirm('<{T w="Confirm?"}>'+$(this).html());
         });
         
-        $("#btn-PAU").click(function() {
-            var bb = new BlackBox();
-            bb.popup('<div style="width:460px;"><div id="close" class="close">x</div>' +
-                        '<h3><{T w="ProjectAddUser"}></h3>' +
-                        '<table width=460>'+
-                            '<tr>' +
-                                '<td><{T w="User"}>:</td>' +
-                                '<td><input id="uname" type="text" size=40></td>' +
-                                '<td>' +
-                                    '<div id="PAU" class="btn-rounded" align="center"><{T w="ProjectMemberAdd"}></div>' +
-                                '</td>' +
-                            '</tr>' +
-                            '<tr><td colspan=3>'+
-                                '<table width=100% style="cursor:default;background:white;color:black;">' +
-                                    '<tr class="role" id="DevMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="DevManager"}> title=<{T w="DevManager"}>></td>' +
-                                    '<td><{T w="DevManager"}></td></tr>' +
-                                    '<tr class="role" id="DevMember"><td><img src="<{$skinpath}>/img/dev.jpg" alt=<{T w="Developer"}> title=<{T w="Developer"}>></td>' +
-                                    '<td><{T w="Developer"}></td></tr>' +
-                                    '<tr class="role" id="QAMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="QAManager"}> title=<{T w="QAManager"}>></td>' +
-                                    '<td><{T w="QAManager"}></td></tr>' +
-                                    '<tr class="role" id="QAMember"><td><img src="<{$skinpath}>/img/qa.jpg" alt=<{T w="QA"}> title=<{T w="QA"}>></td>' +
-                                    '<td><{T w="QA"}></td></tr>' +
-                                    '<tr class="role" id="PrjMgr"><td><img src="<{$skinpath}>/img/manager.jpg" alt=<{T w="ProjectManager"}> title=<{T w="ProjectManager"}>></td>' +
-                                    '<td><{T w="ProjectManager"}></td></tr>' +
-                                    '<tr class="role" id="PrjMember"><td><img src="<{$skinpath}>/img/member.png" alt=<{T w="ProjectMemeber"}> title=<{T w="ProjectMember"}>></td>' +
-                                    '<td><{T w="ProjectMember"}></td></tr>' +
-                                '</table>'+
-                            '</td></tr>' +
-                        '</table>' +
-                    '</div>',
-                    
-                    function(content) {
-                        content.find('#close').click(function(){
-                            bb.boxClose();
-                        });
-                        
-                        content.find('.role').hover(
-                            function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','#FF5809');},
-                            function(){ if(!$(this).hasClass('selectedrole')) $(this).css('background-color','transparent');}
-                        ).click(function(){
-                            content.find('.selectedrole').css('background-color','transparent').toggleClass('selectedrole');
-                            $(this).css('background-color','#FF5809').toggleClass('selectedrole');
-                        });
-                        content.find("#PAU").click(function(){
-                            var url = "/ajax.php?a=pau&pid=<{$tProject.id}>&to=" +
-                                        content.find('.selectedrole').attr('id') +
-                                        "&u="+escape($("#uname").attr('value'));
-                            $.getJSON(url,function(data) {
-                                if(data.error != 0) alert(data.msg);
-                                else {
-                                    location.reload();
-                                }
-                            });
-                        });
-                    }
-            );
-        });
-        
-        
         $("#Clo").click(function(){
             var bb = new BlackBox();
             bb.popup('<div><div id="close" class="close">x</div><form id="cp" action="/project.php?a=close&id=<{$tProject.id}>" method="post"><h3><{T w="CloseProject"}></h3><textarea name="reason" cols="80" rows="15"></textarea><div class="btn-rounded" onclick="javascript:cp.submit();"><{T w="CloseProject"}></div></form></div>',
@@ -280,7 +221,11 @@
                 </ul>
             </td>
         </tr>
-        <tr><td><div class="btn-capsule"><a id="btn-PAU" href="#"><{T w="ProjectAddUser"}></a></div></td></tr>
+        <tr>
+            <td><input name="inviteusername" /></td>
+        </tr>
+    </table>
+    <table style="margin-top:180px;">
         <tr><td><div class="btn-capsule"><a href="/project.php?&a=update&id=<{$tCurrProj}>"><{T w="EditProject"}></a></div></td></tr>
         <tr><td><div class="btn-capsule"><a id="Del" href="/project.php?a=del&id=<{$tCurrProj}>"><{T w="DeleteProject"}></a></div></td></tr>
         <tr><td><div class="btn-capsule"><a id="Clo" href="#"><{T w="CloseProject"}></a></div></td></tr>
@@ -290,5 +235,5 @@
     <div style="min-height:124px;">
 	    <{$tProject.description}>
     </div>
-    <div id='ptl' style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;height:168px;"></div>
+    <div id='ptl' style="background:url(<{$skinpath}>/img/bg.gif) repeat;margin-top:12px;margin-bottom:12px;height:368px;"></div>
 </div>

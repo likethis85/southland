@@ -11,9 +11,13 @@ class userroleModel extends spModel
 	var $scope_issue = 3;
 
     var $role = array(
-        'role_project_member' => 1,
-        'role_project_creator'=> 2,
-    	'role_project_owner' => 9,
+        'role_project_member'   => 1,
+        'role_project_creator'  => 2,
+        'role_project_dev'      => 3,
+        'role_project_dev_owner'=> 4,
+        'role_project_qa'       => 5,
+        'role_project_qa_owner' => 6,
+    	'role_project_owner'    => 9,
     	
     	'role_task_member' => 11,
     	'role_task_creator'=> 12,
@@ -39,6 +43,50 @@ class userroleModel extends spModel
                                 'scope' => $this->scope_project,
                                 'role' => $this->role['role_project_creator'], 
                                 'title'=>'role_project_creator')
+                            );
+    }
+    /** @brief 添加项目的开发负责人 */
+    public function addProjectDevOwner($pid,$uid) {
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $pid, 
+                                'scope' => $this->scope_project,
+                                'role' => $this->role['role_project_dev_owner'], 
+                                'title'=>'role_project_dev_owner')
+                            );
+    }
+    /** @brief 添加项目的开发人员 */
+    public function addProjectDev($pid,$uid) {
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $pid, 
+                                'scope' => $this->scope_project,
+                                'role' => $this->role['role_project_dev'], 
+                                'title'=>'role_project_dev')
+                            );
+    }
+    /** @brief 添加项目的测试负责人 */
+    public function addProjectQAOwner($pid,$uid) {
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $pid, 
+                                'scope' => $this->scope_project,
+                                'role' => $this->role['role_project_qa_owner'], 
+                                'title'=>'role_project_qa_owner')
+                            );
+    }
+    /** @brief 添加项目的测试人员 */
+    public function addProjectQA($pid,$uid) {
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $pid, 
+                                'scope' => $this->scope_project,
+                                'role' => $this->role['role_project_qa'],
+                                'title'=>'role_project_qa')
                             );
     }
     /** @brief 添加为项目成员 */
