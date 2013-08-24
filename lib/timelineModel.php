@@ -73,8 +73,22 @@ class timelineModel extends spModel
     /** @brief get all timeline events for the project
      *
      */
-    public function getProject($pid) {
-        return $this->findAll(array('prj' => $pid, 'droptime'=>0));
+    public function getProject($pid,$uid) {
+        $events = $this->findAll(array('prj' => $pid, 'droptime'=>0));
+        foreach($events as $event){
+            if(!isset($scopes[$event['scope']]))
+                $scopes[$event['scope']] = array();
+           array_push($scopes[$event['scope']],$event['sid']);
+        }
+        $timelines = array();
+        foreach($scopes as $key => $scope) {
+            $items = array_intersect(spClass('userroleModel')->getItemsBy($key,$scope,$uid),$scope);
+            foreach($events as $event){
+                if($event['scope']==$key && in_array($event['sid'],$items))
+                    array_push($timelines,$event);
+            }
+        }
+        return $timelines;
     }
 
     /** @brief 把scope值从数值转化为字符串

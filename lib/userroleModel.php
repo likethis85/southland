@@ -31,6 +31,31 @@ class userroleModel extends spModel
     	'role_issue_owner'  => 39
     );
 
+    public function getItemsBy($scope,$sid,$uid){
+        if(!is_numeric($scope))
+            return array();
+            
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        switch($scope) {
+        case $this->scope_project:
+            $table="{$prefix}project";break;
+        case $this->scope_task:
+            $table="{$prefix}task";break;
+        case $this->scope_issue:
+            $table="{$prefix}issue";break;
+        default:
+            return array();
+        }
+        $sid = implode(',',$sid);
+        $sql="select T.id from $table as T inner join {$prefix}userrole as R on T.droptime=0 and T.id=R.sid and R.scope=$scope where R.sid in ($sid) and R.uid=$uid or T.acl=0";
+        $temp = $this->findSql($sql);
+        $items=array();
+        foreach($temp as $t) {
+            array_push($items,$t['id']);
+        }
+        $items = array_unique($items);
+        return $items;
+    }
     /************************************************************************************************
 	 * project related
      ***********************************************************************************************/

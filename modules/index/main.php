@@ -62,8 +62,8 @@ class main extends general
 		    );
 		    $this->tTitle = $this->tProject['title'].'-'.T('ProjectDesc');
             $this->tMembers = spClass('userroleModel')->getUsersByProject($this->tCurrProj);
-		    $tTimeline = array();
-            $timelines = spClass('timelineModel')->getProject($this->tCurrProj);
+            $timelines = spClass('timelineModel')->getProject($pid,$uid);
+            $tTimeline = array();
             foreach($timelines as $timeline){
                 array_push($tTimeline, array('brief' => $timeline['brief'], 
                                              'content' => $timeline['content'],
