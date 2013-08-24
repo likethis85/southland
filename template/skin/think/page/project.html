@@ -2,8 +2,10 @@
     $(document).ready(function(){
         $("#ProjectAddUser").click(function(){
             var user=$.trim($('#inviteusername').val());
-            $.getJSON('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user),function(){
-                
+            $.getJSON('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user),function(data){
+                if(data.error != 0) alert(data.msg);
+                else 
+                    location.reload();
             });
         });
         $("#Del").click(function(){
