@@ -33,15 +33,12 @@ class main extends general
         $this->jumpProjectPage();
 	}
 
-    /** @brief 更新项目基本信息
-     *
-     */
+    /** @brief 更新项目基本信息 */
     public function update() {
         $uid = $this->tUser['id'];
         $pid = $this->spArgs('id');
-        if(empty($pid))
-            $pid = $this->tCurrProj;
-        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
+        $pid = empty($pid) ? $this->tCurrProj:$this->spArgs('id');
+        if(!spClass('projectModel')->allow($pid, $uid, 'EditProject')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -64,9 +61,7 @@ class main extends general
 		}
     }
 
-    /** @brief 关闭项目
-     *
-     */
+    /** @brief 关闭项目 */
     public function close(){
         $uid = $this->tUser['id'];
         $pid = $this->spArgs('id');
@@ -75,7 +70,7 @@ class main extends general
             exit;
         }
 
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(!spClass('projectModel')->allow($pid, $uid, 'CloseProject')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -167,13 +162,14 @@ class main extends general
     }
     public function del() {
         $uid = $this->tUser['id'];
-        $pid = $this->tCurrProj;
-        if(empty($uid) || !spClass('projectModel')->allow($pid, $uid)){
+        $pid = $this->spArgs('id');
+        $pid = empty($pid) ? $this->tCurrProj:$this->spArgs('id');
+        if(!spClass('projectModel')->allow($pid, $uid, 'DeleteProject')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
 
-        spClass('projectModel')->deleteProject($this->spArgs('id'));
+        spClass('projectModel')->deleteProject($pid);
         spClass('spSession')->getUser()->setCurrentProject(0);
 		$this->tCurrProj = 0;
         $this->jumpFirstPage();
