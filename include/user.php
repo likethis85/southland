@@ -11,101 +11,6 @@ class user extends general
 {
 	public function __construct(){ // 公用
 		parent::__construct(); // 这是必须的
-		$this->tpl_title = T("Users");
-		$this->navigation_current = 'user';
-	}
-	
-	public function index(){ // 这里是首页
-		$current_page = $this->spArgs("page",1);
-		$page_size = $this->spArgs("size",10);
-		
-		$objUser = spClass("userModel");
-		$arrUser = $objUser->spPager($current_page, $page_size)->findAll(null,'uid desc');
-		$arrBar = $objUser->spPager()->getPager();
-		$this->tPageBar = $arrBar;
-		$this->tUsers = $arrUser;
-		$this->display("admin/user_index.html");
-	}
-	
-	public function add(){
-		$intNid = $this->spArgs("nid");
-		$objUser = spClass("userModel");
-		$this->tUserEnabled = $objUser->userEnabled();
-		$objUsergroup = spClass("usergroupModel");
-		$this->tUserGroup = $objUsergroup->glist($this->getLang());
-		$this->action = 'add';
-		$this->display("admin/user_form.html");
-	}
-	
-	public function edit(){
-		$uid = $this->spArgs("uid");
-		$objUser = spClass("userModel");
-		$this->user = $objUser->userDetail($uid);
-		$this->tUserEnabled = $objUser->userEnabled();
-		$objUsergroup = spClass("usergroupModel");
-		$this->tUserGroup = $objUsergroup->glist($this->getLang());
-		$this->action = 'edit';
-		$this->display("admin/user_form.html");
-	}
-	
-	public function profile(){
-		$uid = $this->spArgs("uid");
-		$objUser = spClass("userModel");
-		$this->user = $objUser->userDetail($uid);
-		$this->tUserEnabled = $objUser->userEnabled();
-		$objUsergroup = spClass("usergroupModel");
-		$this->tUserGroup = $objUsergroup->glist($this->getLang());
-		$this->display("admin/user_profile.html");
-	}
-	
-	public function post(){
-		$uid = $this->spArgs("uid");
-		$strAction = $this->spArgs("action");
-		$data = array(
-			'uname'		=>	$this->spArgs("uname"),
-			'firstname'	=>	$this->spArgs("firstname"),
-			'lastname'	=>	$this->spArgs("lastname"),
-			'email'	=>	$this->spArgs("email"),
-			'street'	=>	$this->spArgs("street"),
-			'city'	=>	$this->spArgs("city"),
-			'country'	=>	$this->spArgs("country"),
-			'state'	=>	$this->spArgs("state"),
-			'zip'	=>	$this->spArgs("zip"),
-			'tel'	=>	$this->spArgs("tel"),
-			'enabled'	=>	$this->spArgs("enabled"),
-		);
-		$password = $this->spArgs("upass");
-		$confirmpassword = $this->spArgs("confirmpassword");
-		if($password!='' && $password=$confirmpassword){
-			$data['upass'] = md5($password);
-		}
-		
-		$objUser = spClass("userModel");
-		$userExist = $objUser->userExist($data['uname'], $uid);
-		if($userExist){
-			$this->jsonerror("'uname': '".T('Username occupied.')."'");
-		}
-		
-		$emailExist = $objUser->emailExist($data['email'], $uid);
-		if($emailExist){
-			$this->jsonerror("'email': '".T('Email occupied.')."'");
-		}
-		if ($strAction == 'add'){
-			
-			$objUser->create($data);
-		}elseif($strAction == 'edit'){
-			$conditions = array('uid'=>$uid);
-			$objUser->update($conditions, $data);
-		}
-		$this->jsonsuccess(T('Successfully ' . $strAction . 'ed!' ), spUrl("user","index"));
-	}
-	
-	public function delete(){
-		$uid = $this->spArgs("uid");
-		$objUser = spClass("userModel");
-		$conditions = array('uid' => $uid);
-		$objUser->delete($conditions); // 删除记录
-		$this->success(T('Successfully  deleted!' ), spUrl("user","index"));
 	}
 	
 	// 退出登录
@@ -155,6 +60,12 @@ class user extends general
 	// 用户注册
 	public function signon(){
 	    if($this->spArgs('submit') != 1) {
+	        $this->tView = array(
+	            'require' => array(
+	                'form' => true,
+	                'user_sign' => true
+	            )
+	        );
 	        $this->display('user/signon.html');
 	    } else {
             $uname=$this->spArgs('uname');
