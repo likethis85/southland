@@ -36,17 +36,32 @@ class projectModel extends spModel
         $items = array_values($projects);
         return $items;
     }
-    /** @brief detect does current user is permit to view the project
+    /** @brief 用户在项目层面的访问权限控制 
      *
+     *  @Detail
+     *      用户项目层面上的访问控制，如Task，Issue等页面是否允许浏览，
+     *  是否允许添加Task，Issue等对项目本身的修改
+     *  
+     *  @Parameters
+     *      @param  pid 项目id
+     *      @param  uid 用户id
+     *      @operation 操作类型 Default(默认),View(浏览),AddTask(添加Task),etc
      */
-    public function allow($pid, $uid) {
-        if(empty($pid))
-            return false;
-
+    public function allow($pid,$uid,$operation='View'){
         $proj = $this->find(array('id' => $pid));
         if(empty($proj))
             return false;
+            
+        $op = "allow{$operation}";
+        if(!method_exists($this,$op))
+            return $this->allowDefault($pid,$uid);
 
+        return $this->{$op}($pid,$uid);
+    }
+    private function allowDefault($pid,$uid){
+        return spClass('userroleModel')->isMemberOfProject($pid,$uid);
+    }
+    public function allowView($pid, $uid) {
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;

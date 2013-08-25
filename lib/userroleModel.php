@@ -170,6 +170,7 @@ class userroleModel extends spModel
 	/** @brief 判断用户是否为项目成员 */
     public function isMemberOfProject($pid,$uid) {
         $rcd = $this->find(array('uid' => $uid, 'sid' => $pid, 'scope' => $this->scope_project));
+
         return !empty($rcd);
     }
     

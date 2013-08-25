@@ -17,11 +17,11 @@ class main extends general
 		);
 	}
 	
-    /** @brief 添加新bug */
+    /** @brief 添加Issue */
 	function add() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
-        if(empty($uid) || !spClass('projectModel')->allow($pid,$uid)){
+        if(!spClass('projectModel')->allow($pid,$uid,'AddIssue')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }

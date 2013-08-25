@@ -13,7 +13,15 @@ class main extends general
 	
 	function publish()
 	{
+	    $pid = $this->tCurrProj;
+	    $uid = $this->tUser['id'];
+	    if(!spClass('projectModel')->allow($pid,$uid,'AddTopic')) {
+	        spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+	    }
+	    
 	    $this->tTitle = $this->tProject['title'].'-'.T('Publish New Topic');
+	    
 		$submittopic = $this->spArgs("submit");
 		if($submittopic == 1)
 		{

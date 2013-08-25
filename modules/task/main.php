@@ -19,7 +19,11 @@ class main extends general
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
-
+        if(false === spClass('projectModel')->allow($pid,$uid,'AddTask')){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        
 		$submit = $this->spArgs("submit");
 		if($submit == 1) {
 		    $files = $this->saveFile($uid, $_FILES, 'attachments for task '.$this->spArgs('subject'));
@@ -34,9 +38,7 @@ class main extends general
                 exit;
             }
             spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
-            if($data['acl']<2) {
-                spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
-            }
+            spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
 			$this->jumpTaskPage();
 		} else {
 		    $this->tTitle = $this->tProject['title'].'-'.T('AddTask');
