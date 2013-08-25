@@ -48,20 +48,23 @@ class projectModel extends spModel
      *      @operation 操作类型 Default(默认),View(浏览),AddTask(添加Task),etc
      */
     public function allow($pid,$uid,$operation='View'){
+        if(empty($pid) || !is_numeric($pid))
+            return false;
+            
         $proj = $this->find(array('id' => $pid));
         if(empty($proj))
             return false;
             
         $op = "allow{$operation}";
         if(!method_exists($this,$op))
-            return $this->allowDefault($pid,$uid);
+            return $this->allowDefault($proj,$uid);
 
-        return $this->{$op}($pid,$uid);
+        return $this->{$op}($proj,$uid);
     }
-    private function allowDefault($pid,$uid){
-        return spClass('userroleModel')->isMemberOfProject($pid,$uid);
+    private function allowDefault($proj,$uid){
+        return spClass('userroleModel')->isMemberOfProject($proj['id'],$uid);
     }
-    public function allowView($pid, $uid) {
+    public function allowView($proj, $uid) {
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;
@@ -71,7 +74,7 @@ class projectModel extends spModel
         if(empty($uid))
             return false;
 
-        return spClass('userroleModel')->isMemberOfProject($pid, $uid);
+        return spClass('userroleModel')->isMemberOfProject($proj['id'], $uid);
     }
 	public function getCurrentInfo() {
 	    $linker = array(

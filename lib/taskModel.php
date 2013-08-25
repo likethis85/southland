@@ -39,34 +39,44 @@ class taskModel extends spModel
             
         return $tasks;
     }
-
-    public function allow($tid, $uid) {
-        if(empty($tid))
+    /** @brief 基于Task层面的ACL 
+     *
+     *  @Detail
+     *      对于基于Task的状态修改，如：删除，修改状态，添加用户等
+     *  由该函数控制
+     */
+    public function allow($tid, $uid, $operation='View') {
+        if(empty($tid) || !is_numeric($tid))
             return false;
-
+            
         $task = $this->find(array('id' => $tid));
-        if(empty($task))
-            return false;
-
+        if(empty($task)) return false;
+        
+        $op = "allow{$operation}";
+        if(!method_exists($this,$op))
+            return $op='allowDefault';
+            
+        return $this->{$op}($task,$uid);
+    }
+    private function allowDefault($task,$uid){
+        return spClass('userroleModel')->isMemberOfTask($task['id'],$uid);
+    }
+    private function allowView($task, $uid) {
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;
         if($task['acl']==$allow_public)
             return true;
 
-        if(empty($uid))
-            return false;
+        if(empty($uid)) return false;
 
         if($task['acl']==$allow_protected)
-            return spClass('userorgModel')->isMemberOfProject($task['prj'], $uid);
+            return spClass('userroleModel')->isMemberOfProject($task['prj'], $uid);
         else
-            return spClass('userorgModel')->isMemberOfTask($tid, $uid);
+            return spClass('userroleModel')->isMemberOfTask($task['id'], $uid);
     }
 
     public function drop($tid) {
-        if(empty($tid))
-            return true;
-
         $droptime=date('Y-m-d H:i:s');
         spClass('timelineModel')->dropTask($tid, $droptime);
         spClass('commentModel')->dropTask($tid, $droptime);
