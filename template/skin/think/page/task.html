@@ -1,6 +1,29 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
-        $().ready(function(){           
+        $().ready(function(){
+            $('#tasks').dataTable({
+                "bJQueryUI":true,
+                "sPaginationType":"full_numbers",
+                "oLanguage":{
+                    "sLengthMenu": "每页显示_MENU_记录",
+                    "sZeroRecorders": "暂无记录",
+                    "sInfo":"显示从_START_到_END_/_TOTAL_",
+                    "sInfoEmpty":"",
+                    "sInfoFiltered":"",
+                    "sSearch" : "过滤",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sNext": "下一页",
+                        "sPrevious": "上一页",
+                        "sLast": "最后一页"
+                      }
+                },
+                "aoColumns" : [
+                    null,
+                    null,
+                    null
+                ]
+            });           
             <{foreach item=item from=$tTasks}>
             $('#t<{$item.id}>').each(function(i,e){
                 $(e).HoverMenu({
@@ -49,32 +72,41 @@
         </table>
         <div style="clear:both;"></div>
     </div>
-    <table>
-    <{foreach item=item from=$tTasks}>
-    <tr>
-        <td width=22>
-            <div id="t<{$item.id}>"></div>
-            <{if $item.status eq 1}>
-            <img src="<{$skinpath}>/img/working.png" width=16 height=16>
-            <{elseif $item.status eq 2}>
-            <img src="<{$skinpath}>/img/codecompleted.png" width=16 height=16>
-            <{elseif $item.status eq 3}>
-            <img src="<{$skinpath}>/img/verified.png" width=16 height=16>
-            <{elseif $item.status eq 4}>
-            <img src="<{$skinpath}>/img/completed.png" width=16 height=16>
-            <{else}>
-            <img src="<{$skinpath}>/img/pending.png" width=16 height=16>
-            <{/if}>
-        </td>
-        <td width=22>
-            <{if $item.priority eq 1}><img src="<{$skinpath}>/img/1.gif"/><{/if}>
-            <{if $item.priority eq 2}><img src="<{$skinpath}>/img/2.gif"/><{/if}>
-            <{if $item.priority gt 2}><img src="<{$skinpath}>/img/3.gif"/><{/if}>
-        </td>
-        <td>
-            <a href="/task.php?c=main&a=view&id=<{$item.id}>"><{$item.subject}></a>
-        </td>
-    </tr>
-    <{/foreach}>
+    <table id="tasks" class="display">
+        <thead>
+            <tr>
+                <th width="88"><{T w="TaskStatus"}></th>
+                <th width="88"><{T w="TaskPriority"}></th>
+                <th><{T w="TaskTitle"}></th>
+            </tr>
+        </thead>
+        <tbody>
+            <{foreach item=item from=$tTasks}>
+            <tr>
+                <td width=22>
+                    <div id="t<{$item.id}>"></div>
+                    <{if $item.status eq 1}>
+                    <img src="<{$skinpath}>/img/working.png" width=16 height=16>
+                    <{elseif $item.status eq 2}>
+                    <img src="<{$skinpath}>/img/codecompleted.png" width=16 height=16>
+                    <{elseif $item.status eq 3}>
+                    <img src="<{$skinpath}>/img/verified.png" width=16 height=16>
+                    <{elseif $item.status eq 4}>
+                    <img src="<{$skinpath}>/img/completed.png" width=16 height=16>
+                    <{else}>
+                    <img src="<{$skinpath}>/img/pending.png" width=16 height=16>
+                    <{/if}>
+                </td>
+                <td width=22>
+                    <{if $item.priority eq 1}><img src="<{$skinpath}>/img/1.gif"/><{/if}>
+                    <{if $item.priority eq 2}><img src="<{$skinpath}>/img/2.gif"/><{/if}>
+                    <{if $item.priority gt 2}><img src="<{$skinpath}>/img/3.gif"/><{/if}>
+                </td>
+                <td>
+                    <a href="/task.php?c=main&a=view&id=<{$item.id}>"><{$item.subject}></a>
+                </td>
+            </tr>
+            <{/foreach}>
+        </tbody>
     </table>
 </div>

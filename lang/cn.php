@@ -64,6 +64,7 @@ return array(
 'TaskCategory' => '任务类型',
 'TaskTodo' => '计划任务',
 'TaskFeature' => '新功能',
+'TaskTitle' => '任务简述',
 
 /* 话题相关 */
 'Topic'     =>  '讨论组',

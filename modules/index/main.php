@@ -178,6 +178,11 @@ class main extends general
         $this->tTitle = $this->tProject['title'].'-'.T('Task');
         $this->tTasks = spClass('userroleModel')->getTasksByUser($pid, $uid);
         spAddViewFunction('spTaskOperation', array(&$this, '__template_TaskOperation'));
+        $this->tView = array(
+            'require' => array(
+                'dataTable' => true
+            )
+        );
     }
 
     /** @brief 配置用户允许的Issue操作 */
