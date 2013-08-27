@@ -52,14 +52,14 @@ class taskModel extends spModel
         $task = $this->find(array('id' => $tid));
         if(empty($task)) return false;
         
+        if(empty($operaton)) $operation = 'Default';
         $op = "allow{$operation}";
-        if(!method_exists($this,$op))
-            return $op='allowDefault';
-            
+        if(!method_exists($this,$op)) return $op='allowDefault';
+
         return $this->{$op}($task,$uid);
     }
     private function allowDefault($task,$uid){
-        return spClass('userroleModel')->isMemberOfTask($task['id'],$uid);
+        return spClass('userroleModel')->isMemberOfProject($task['prj'], $uid);
     }
     private function allowView($task, $uid) {
         $allow_public = 0;
@@ -70,10 +70,7 @@ class taskModel extends spModel
 
         if(empty($uid)) return false;
 
-        if($task['acl']==$allow_protected)
-            return spClass('userroleModel')->isMemberOfProject($task['prj'], $uid);
-        else
-            return spClass('userroleModel')->isMemberOfTask($task['id'], $uid);
+        return spClass('userroleModel')->isMemberOfProject($task['prj'], $uid);
     }
 
     public function drop($tid) {
