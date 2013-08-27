@@ -78,8 +78,8 @@ class taskModel extends spModel
 
     public function drop($tid) {
         $droptime=date('Y-m-d H:i:s');
-        spClass('timelineModel')->dropTask($tid, $droptime);
-        spClass('commentModel')->dropTask($tid, $droptime);
+        //spClass('timelineModel')->dropTask($tid, $droptime);
+        //spClass('commentModel')->dropTask($tid, $droptime);
         return $this->update(array('id'=>$tid), array('droptime'=>$droptime));
     }
 

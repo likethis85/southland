@@ -19,18 +19,11 @@ class main extends general
 	        spClass('keeper')->speak(T('Error Operation not permit'));
             return;
 	    }
-	    
 	    $this->tTitle = $this->tProject['title'].'-'.T('Publish New Topic');
 	    
-		$submittopic = $this->spArgs("submit");
-		if($submittopic == 1)
+		$submit = $this->spArgs("submit");
+		if($submit == 1)
 		{
-            $uid = spClass('spSession')->getUser()->getUserId();
-            $pid = $this->tCurrProj;
-            if(empty($uid) || !spClass('projectModel')->allow($pid,$uid)){
-                spClass('keeper')->speak(T('Error Operation not permit'));
-                return;
-            }
 			$data = array(
 			    'prj' => $pid,
 			    'author' => $uid,
@@ -38,8 +31,11 @@ class main extends general
 				'content'=>$this->spArgs('Artical'),
                 'acl'    =>$this->spArgs('acl')
 			);
-			$objMod = spClass('forumModel');
-			$objMod->create($data);
+			spClass('forumModel')->addTopic($pid,
+			                                $uid,
+			                                $this->spArgs('subject'),
+			                                $this->spArgs('Artical'),
+			                                $this->spArgs('acl'));
 			$this->jumpTopicPage();
 		}
 		else
@@ -83,27 +79,18 @@ class main extends general
 	}
     function del() {
         $fid = $this->spArgs('id');
+        $uid = $this->tUser['id'];
         if(empty($fid)) {
             spClass('keeper')->speak(T('Error Invalid Parameters'));
             return;
         }
-
-        $uid = $this->tUser['id'];
-        if(empty($uid) || !spClass('forumModel')->allow($fid, $uid)){
+        
+        if(!spClass('forumModel')->allow($fid, $uid)){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }
 
-        $condition = array(
-            'id' => $fid
-        );
-        spClass('forumModel')->delete($condition);
-
-        $condition = array(
-            'owner' => 'forum',
-            'rid' => $fid
-        );
-        spClass('commentModel')->delete($condition);
+        spClass('forumModel')->drop($fid);
         $this->jumpTopicPage();
     }
 

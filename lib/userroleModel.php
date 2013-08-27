@@ -9,6 +9,7 @@ class userroleModel extends spModel
 	var $scope_project = 1;
 	var $scope_task = 2;
 	var $scope_issue = 3;
+	var $scope_topic = 4;
 
     var $role = array(
         'role_project_member'   => 1,
@@ -295,8 +296,53 @@ class userroleModel extends spModel
     /************************************************************************************************
 	 * topic related
      ***********************************************************************************************/
-
+    /** @brief 添加话题创建者 */
+    public function addTopicCreator($pid,$tid,$uid){
+        return $this->create(array(
+                                'uid' => $uid,
+                                'prj' => $pid,
+                                'sid' => $tid,
+                                'scope' => $this->scope_topic,
+                                'role' => $this->role['role_topic_creator'],
+                                'title'=> 'role_topic_creator')
+                            );
+    }
+    /** @brief 添加Topic参与者 */
+    public function addTopicMember($tip,$uid){
+        return $this->create(array(
+                                'uid' => $uid,
+                                'prj' => $pid,
+                                'sid' => $tid,
+                                'scope' => $this->scope_topic,
+                                'role' => $this->role['role_topic_member'],
+                                'title'=> 'role_topic_member')
+                            );
+    }
+    /** @brief 获取User相关的Topic */
+    public function getTopicsByUser($pid, $uid) {
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $scope = $this->scope_topic;
+        $sql = "select F.*,R.role from {$prefix}forum as F left join {$prefix}userrole as R 
+                 on R.uid=$uid and F.id=R.sid and R.scope=$scope and R.prj=$pid where F.droptime=0 and (R.uid=$uid or F.acl=0 and F.prj=$pid)";
+        $topics = $this->findSql($sql);
+        foreach($topics as $topic) {
+            $id = $topic['id'];
+            if(isset($temp[$id])) {
+                array_push($temp[$id]['role'],$topic['role']);
+            } else {
+                $role = $topic['role'];
+                $topic['role'] = array($role);
+                $temp[$id] = $topic;
+            }
+        }
+        return $temp;
+    }
+    /** @brief 判断是否为Topic成员 */
     public function  isMemberOfTopic($tid, $uid) {
-        return false;
+        $member = $this->find(array('uid' => $uid,
+                                    'sid' => $tid,
+                                    'scope' => $this->scope_topic)
+                              );
+        return !empty($member);
     }
 }

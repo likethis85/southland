@@ -103,9 +103,10 @@ class main extends general
         }
     }
 	function _forum(){
+	    $uid = $this->tUser['id'];
+	    $pid = $this->tCurrProj;
 	    $this->tTitle = $this->tProject['title'].'-'.T('Topic');
-    	$objForum = spClass("forumModel");
-        $this->tSubjects = $objForum->getTopics();
+        $this->tSubjects = spClass('userroleModel')->getTopicsByUser($pid, $uid);
         spAddViewFunction('spTopicOperation', array(&$this, '__template_TopicOperation'));
 	}
 

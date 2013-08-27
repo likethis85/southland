@@ -5,13 +5,6 @@ class forumModel extends spModel
     var $pk = "id";				// 按id排序
     var $table = "forum"; // 数据表的名称
     
-    public function getTopics() {
-        $projId = spClass('spSession')->getUser()->getCurrentProject();
-        $topics = $this->findAll(array('prj' => $projId));
-        if(false == $topics) $topics = array();
-        return $topics;
-    }
-
     public function allow($tid, $uid) {
         if(empty($tid))
             return false;
@@ -33,5 +26,27 @@ class forumModel extends spModel
             return spClass('userorgModel')->isMemberOfProject($topic['prj'], $uid);
         else
             return spClass('userorgModel')->isMemberOfTopic($tid, $uid);
+    }
+    /** @brief 添加Topic */
+    public function addTopic($pid,$uid,$subject,$content,$acl){
+        $tid = $this->create(array(
+			                'prj' => $pid,
+            			    'author' => $uid,
+            				'subject'=> $subject,
+            				'content'=> $content,
+                            'acl'    => $acl)
+            			   );
+        if($tid === false)
+            return false;
+            
+        if(false == spClass('userroleModel')->addTopicCreator($pid,$tid,$uid))
+            return false;
+            
+        return $tid;
+    }
+    /** @brief 删除Topic */
+    public function drop($tid) {
+        $droptime=date('Y-m-d H:i:s');
+        return $this->update(array('id' => $tid), array('droptime' => $droptime));
     }
 }
