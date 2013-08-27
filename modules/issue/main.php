@@ -44,6 +44,7 @@ class main extends general
 		    $tid = $this->spArgs('tid');
 		    $this->tTid = $tid===null ? 0:$tid;  
 		    $this->tTasks = spClass('taskModel')->getTasks($pid);
+		    $this->tMembers = spClass('userroleModel')->getUsersByProject($pid);
 			$this->display("issue/add.html");
 		}
 	}

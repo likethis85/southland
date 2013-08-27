@@ -67,7 +67,9 @@
                 <td><label style="margin-right:8px"><{T w='IssueOwner'}></label></td>
                 <td>
                     <select style="width:490px;" name="oid">
-                        <option value="<{$tUser.id}>" selected><{$tUser.nick}></option>
+                        <{foreach item=item from=$tMembers}>
+                        <option value="<{$item.id}>" selected><{$item.nick}></option>
+                        <{/foreach}>
                     </select>
                 </td>
             </tr>

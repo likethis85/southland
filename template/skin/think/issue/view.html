@@ -52,18 +52,10 @@
             <td colspan=2>
                 <div style="border-bottom:2px solid #E0E0E0;min-height:64px;">
                     <h1 class="title"><{$tIssue.brief}></h1>
-                    <div style="float:right;">
-                        <a href="/issue.php?a=add&tid=<{$tTask.id}>" class="btn-rounded">
-                            <{T w='IssueReport'}>
-                        </a>
-                    </div>
                     <div style="float:left;">
                         <{foreach item=attach from=$tAttachments}>
                         <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
                         <{/foreach}>
-                    </div>
-                    <div style="float:right;margin-right:3px;">
-                        <a href="/ajax.php?a=pdf_task&tid=<{$tTask.id}>" class="btn-rounded">PDF</a>
                     </div>
                 </div>
             </td>
