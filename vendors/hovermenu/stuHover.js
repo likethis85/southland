@@ -6,7 +6,8 @@ $.fn.HoverMenu = function(options) {
     var _e = this[0];
     var m = $('<div style="background:transparent;position:absolute;">'+
                 '<div style="width:23px;height:16px;background:transparent;"><div id="hm_icon"  style="width:16px;height:16px;float:left;background:transparent;"></div>' +
-                '<div id="hm_arrow" style="display:none;background-color:#6E88B7;text-align:center;color:white;line-height:16px;width:7px;height:16px;float:left;">v</div></div>' +
+                '<div id="hm_arrow" style="display:none;background-color:#6E88B7;text-align:center;color:white;line-height:16px;width:7px;height:16px;float:left;">' +
+                '<div style="border:3px solid;border-color:white #6E88B7 #6E88B7 #6E88B7;margin-top:6px;"></div></div>' +
               '</div>');
     m.hover(
         function(){
