@@ -5,14 +5,23 @@ class forumModel extends spModel
     var $pk = "id";				// 按id排序
     var $table = "forum"; // 数据表的名称
     
-    public function allow($tid, $uid) {
-        if(empty($tid))
+    public function allow($tid, $uid, $operation='View') {
+        if(empty($tid) || !is_numeric($tid))
             return false;
             
         $topic = $this->find(array('id' => $tid));
-        if(empty($topic))
-            return false;
+        if(empty($topic)) return false;
+        
+        $op = 'allow{$operation}';
+        if(!method_exists($this,$op))
+            $op = 'allowDefault';
             
+        return $this->{$op}($topic,$uid);
+    }    
+    private function allowDefault($topic,$uid) {
+        return spClass('userroleModel')->isMemberOfProject($topic['prj'], $uid);
+    }   
+    private function allowView($topic,$uid){
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;
@@ -23,9 +32,9 @@ class forumModel extends spModel
             return false;
  
         if($topic['acl']==$allow_protected)
-            return spClass('userorgModel')->isMemberOfProject($topic['prj'], $uid);
+            return spClass('userroleModel')->isMemberOfProject($topic['prj'], $uid);
         else
-            return spClass('userorgModel')->isMemberOfTopic($tid, $uid);
+            return spClass('userroleModel')->isMemberOfTopic($tid, $uid);
     }
     /** @brief 添加Topic */
     public function addTopic($pid,$uid,$subject,$content,$acl){

@@ -53,7 +53,7 @@ class main extends general
             exit;
         }
 
-        if(!spClass('taskModel')->allow($tid, $uid)){
+        if(!spClass('taskModel')->allow($tid, $uid, 'View')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }

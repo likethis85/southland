@@ -59,17 +59,24 @@ class issueModel extends spModel
         
         return $status[$str];
     }
-    /** @brief detect doe user has privalege to access the issue 
-     *
-     */
+    /** @brief Issue的ACL控制 */
     public function allow($iid, $uid) {
-        if(empty($iid))
+        if(empty($iid) || !is_numeric($iid))
             return false;
 
         $issue = $this->find(array('id' => $iid));
-        if(empty($issue))
-            return false;
-
+        if(empty($issue)) return false;
+        
+        $op = 'allow{$operation}';
+        if(!method_exists($this, $op))
+            $op='allowDefault';
+            
+        return $this->{$op}($issue,$uid);
+    }
+    private function allowDefault($issue,$uid) {
+        return spClass('userorgModel')->isMemberOfProject($issue['prj'], $uid);
+    }
+    private function allowView($issue,$uid) {
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;

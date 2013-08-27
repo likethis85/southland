@@ -45,7 +45,7 @@ class taskModel extends spModel
      *      对于基于Task的状态修改，如：删除，修改状态，添加用户等
      *  由该函数控制
      */
-    public function allow($tid, $uid, $operation='View') {
+    public function allow($tid, $uid) {
         if(empty($tid) || !is_numeric($tid))
             return false;
             

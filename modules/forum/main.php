@@ -102,7 +102,7 @@ class main extends general
             return;
         }
         $uid = $this->tUser['id'];
-        if(!spClass('forumModel')->allow($fid,$uid)){
+        if(!spClass('forumModel')->allow($fid,$uid, 'View')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }

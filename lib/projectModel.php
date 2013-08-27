@@ -47,17 +47,16 @@ class projectModel extends spModel
      *      @param  uid 用户id
      *      @operation 操作类型 Default(默认),View(浏览),AddTask(添加Task),etc
      */
-    public function allow($pid,$uid,$operation='View'){
+    public function allow($pid,$uid, $operation){
         if(empty($pid) || !is_numeric($pid))
             return false;
             
         $proj = $this->find(array('id' => $pid));
-        if(empty($proj))
-            return false;
+        if(empty($proj)) return false;
             
         $op = "allow{$operation}";
         if(!method_exists($this,$op))
-            return $this->allowDefault($proj,$uid);
+            $op = "allowDefault";
 
         return $this->{$op}($proj,$uid);
     }

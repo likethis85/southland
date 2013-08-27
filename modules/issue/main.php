@@ -58,7 +58,7 @@ class main extends general
             return;
         }
         
-        if(!spClass('projectModel')->allow($pid,$uid)){
+        if(!spClass('projectModel')->allow($pid,$uid, 'View')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }

@@ -42,7 +42,7 @@ class main extends general
         if(empty($pid))
             $pid = $this->tCurrProj;
         $uid = $this->tUser['id'];
-        if(!spClass('projectModel')->allow($pid,$uid)) {
+        if(!spClass('projectModel')->allow($pid,$uid,'View')) {
             spClass('keeper')->speak(T('Error Operation not permit'), '/index.php');
             exit;
         }

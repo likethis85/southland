@@ -80,7 +80,7 @@ class main extends general
             spClass('keeper')->speak(T('Error Invalid Parameters'));
             exit;
         }
-        if(!spClass('wikiModel')->allow($wid, $uid)){
+        if(!spClass('wikiModel')->allow($wid, $uid, 'View')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
