@@ -50,10 +50,10 @@ class projectModel extends spModel
     public function allow($pid,$uid, $operation){
         if(empty($pid) || !is_numeric($pid))
             return false;
-            
+
         $proj = $this->find(array('id' => $pid));
         if(empty($proj)) return false;
-            
+        if(empty($operation)) $operation='Default';    
         $op = "allow{$operation}";
         if(!method_exists($this,$op))
             $op = "allowDefault";
