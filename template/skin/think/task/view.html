@@ -6,14 +6,17 @@
         });
         
         UE.getEditor('reply',{
-            //focusÊ±×Ô¶¯Çå¿Õ³õÊ¼»¯Ê±µÄÄÚÈİ
+            <{if $tUser.id==0}>
+            initialContent: '<center><div class="btn-rounded" style="margin-top:64px;">å›å¤å‰å…ˆç™»å½•</div></center>',
+            <{/if}>
+            //focusæ—¶è‡ªåŠ¨æ¸…ç©ºåˆå§‹åŒ–æ—¶çš„å†…å®¹
             autoClearinitialContent:false,
-            //¹Ø±Õ×ÖÊıÍ³¼Æ
+            //å…³é—­å­—æ•°ç»Ÿè®¡
             wordCount:true,
-            //¹Ø±ÕelementPath
+            //å…³é—­elementPath
             elementPathEnabled:false
-            //¸ü¶àÆäËû²ÎÊı£¬Çë²Î¿¼editor_config.jsÖĞµÄÅäÖÃÏî
-        });
+            //æ›´å¤šå…¶ä»–å‚æ•°ï¼Œè¯·å‚è€ƒeditor_config.jsä¸­çš„é…ç½®é¡¹
+        })<{if $tUser.id==0}>.ready(function(){this.disable();})<{/if}>;
         
         $("#form").submit(function(){
     	    UE.getEditor('reply').sync();    
