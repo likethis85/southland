@@ -60,13 +60,14 @@ class issueModel extends spModel
         return $status[$str];
     }
     /** @brief Issue的ACL控制 */
-    public function allow($iid, $uid) {
+    public function allow($iid, $uid, $operation) {
         if(empty($iid) || !is_numeric($iid))
             return false;
 
         $issue = $this->find(array('id' => $iid));
         if(empty($issue)) return false;
         
+        if(empty($operation))$operation='Default';
         $op = 'allow{$operation}';
         if(!method_exists($this, $op))
             $op='allowDefault';
@@ -74,7 +75,7 @@ class issueModel extends spModel
         return $this->{$op}($issue,$uid);
     }
     private function allowDefault($issue,$uid) {
-        return spClass('userorgModel')->isMemberOfProject($issue['prj'], $uid);
+        return spClass('userroleModel')->isMemberOfProject($issue['prj'], $uid);
     }
     private function allowView($issue,$uid) {
         $allow_public = 0;
@@ -87,9 +88,9 @@ class issueModel extends spModel
             return false;
 
         if($issue['acl']==$allow_protected)
-            return spClass('userorgModel')->isMemberOfProject($issue['prj'], $uid);
+            return spClass('userroleModel')->isMemberOfProject($issue['prj'], $uid);
         else
-            return spClass('userorgModel')->isMemberOfIssue($iid, $uid);
+            return spClass('userroleModel')->isMemberOfIssue($iid, $uid);
     }
 
     /** @brief 推迟bug到指定的项目 

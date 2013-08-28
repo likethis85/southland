@@ -1,5 +1,12 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
+        $.fn.dataTableExt.afnSortData['iStatus'] = function  ( oSettings, iColumn ){
+            var aData = [];
+            $( 'td:eq('+iColumn+')>img', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+                aData.push( this.src );
+            });
+            return aData;
+        }
         $().ready(function(){
             $('#tasks').dataTable({
                 "bJQueryUI":true,
@@ -19,8 +26,8 @@
                       }
                 },
                 "aoColumns" : [
-                    null,
-                    null,
+                    {"sSortDataType": "iStatus", "sType": "string" },
+                    {"sSortDataType": "iStatus", "sType": "string" },
                     null
                 ]
             });           
