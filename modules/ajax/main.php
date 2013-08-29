@@ -262,7 +262,7 @@ class main extends general
             exit;
         }
         $names = array();
-        $projects = spClass('userorgModel')->getProjectsByUser($uid);
+        $projects = spClass('userroleModel')->getProjectsByUser($uid,true);
         foreach($projects as $project){
             if($project['status']==0)
                 array_push($names, array('title'=>$project['title'], 'id'=>$project['id']));

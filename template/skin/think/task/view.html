@@ -9,13 +9,6 @@
             <{if $tUser.id==0}>
             initialContent: '<center><div class="btn-rounded" style="margin-top:64px;">回复前先登录</div></center>',
             <{/if}>
-            //focus时自动清空初始化时的内容
-            autoClearinitialContent:false,
-            //关闭字数统计
-            wordCount:true,
-            //关闭elementPath
-            elementPathEnabled:false
-            //更多其他参数，请参考editor_config.js中的配置项
         })<{if $tUser.id==0}>.ready(function(){this.disable();})<{/if}>;
         
         $("#form").submit(function(){

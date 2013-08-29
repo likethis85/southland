@@ -149,11 +149,14 @@ class userroleModel extends spModel
         return $temp;
 	}
     /** @brief 获取该用户参与的所有项目 */
-	public function getProjectsByUser($uid) {
+	public function getProjectsByUser($uid, $memberonly=false) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
         $scope = $this->scope_project;
-	    $sql = "select * from {$prefix}project where droptime=0 and (acl=0 or  
-	             id in(select sid from {$prefix}userrole where uid=$uid and scope=$scope))";
+        if(true==$memberonly)
+	        $sql = "select * from {$prefix}project where droptime=0 and (acl=0 or  
+	                 id in(select sid from {$prefix}userrole where uid=$uid and scope=$scope))";
+        else
+            $sql = "select * from {$prefix}project where droptime=0 and id in (select sid from {$prefix}userrole where uid=$uid and scope=$scope)";
 	    return $this->findSql($sql);
 	}
 	/** @brief 获取用户角色 */
