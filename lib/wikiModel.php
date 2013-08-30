@@ -14,13 +14,12 @@ class wikiModel extends spModel
         if(false === $wid)
             return false;
 
+        $uid = $data['uid'];
+        $pid = $data['prj'];
         spClass('keywordsModel')->createForWiki($data['prj'], $wid, $kwds);
+        spClass('userroleModel')->addWikiCreator($pid, $wid, $uid);
 
         return $wid;
-    }
-
-    public function getWikis() {
-        return $this->findAll(array('prj' => spClass('spSession')->getUser()->getCurrentProject()));
     }
     
     public function getWikiDetail($wid) {
@@ -40,14 +39,26 @@ class wikiModel extends spModel
         return $tW;
     }
 
-    public function allow($wid, $uid) {
-        if(empty($wid))
+    /** @brief acl控制函数 */
+    public function allow($wid,$uid,$operation) {
+        if(empty($wid) || !is_numeric($wid))
             return false;
-
+            
         $wiki = $this->find(array('id' => $wid));
         if(empty($wiki))
             return false;
-
+            
+        if(empty($operation)) $operation='Default';
+        $op="allow{$operation}";
+        if(!method_exists($this,$op))
+            $op = 'allowDefault';
+            
+        return $this->{$op}($wiki,$uid);
+    }
+    private function allowDefault($wiki,$uid) {
+        return $this->isMemberOfProject($wiki['prj'],$uid);
+    }
+    private function allowView($wiki, $uid) {
         $allow_public = 0;
         $allow_protected = 1;
         $allow_private = 2;
@@ -57,9 +68,6 @@ class wikiModel extends spModel
         if(empty($uid))
             return false;
 
-        if($wiki['acl']==$allow_protected)
-            return spClass('userorgModel')->isMemberOfProject($wiki['prj'], $uid);
-        else
-            return spClass('userorgModel')->isMemberOfProject($wiki['prj'], $uid);
+        return spClass('userroleModel')->isMemberOfProject($wiki['prj'], $uid);
     }
 }

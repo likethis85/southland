@@ -18,7 +18,7 @@ class main extends general
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(!spClass('projectModel')->allow($pid, $uid, 'AddWiki')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             exit;
         }
@@ -26,14 +26,14 @@ class main extends general
 		$submit = $this->spArgs("submit");
 		if( $submit == 1 ){
             $keywords = $this->spArgs('kwd');
-            $data = array(
+            $wiki = array(
                     'uid' => $this->tUser['id'],
                     'prj' => $this->tCurrProj,
                     'subject' => $this->spArgs('subject'),
                     'content' => $this->spArgs('WikiContent'),
                     'acl'     => $this->spArgs('acl')
             );
-            spClass('wikiModel')->CreateWiki($data, $keywords);
+            spClass('wikiModel')->CreateWiki($wiki, $keywords);
             $this->jumpWikiPage();
         } else {
             $this->tTitle = $this->tProject['title'].'-'.T('Publish New Wiki');

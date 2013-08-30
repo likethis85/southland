@@ -17,8 +17,12 @@
     <{foreach item=item from=$tWikis}>
     <tr>
         <table width=100%>
-        <tr><td><h1><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1></td></tr>
-        <tr><td><div style="margin-left:10%;"><{$item.content}></div></td></tr>
+        <tr><td><h1 style="font:bold 14px;"><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1></td></tr>
+        <tr>
+            <td>
+                <{$item.content}>
+            </td>
+        </tr>
         </table>
     </tr>
     <{/foreach}>

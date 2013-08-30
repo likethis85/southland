@@ -265,10 +265,12 @@ class main extends general
         );
     }
     function _wiki() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
         $this->tTitle = $this->tProject['title'].'-'.T('Wiki');
-        $Wikis = spClass('wikiModel')->getWikis();
+        $Wikis = spClass('userroleModel')->getWikisByUser($pid,$uid);;
         foreach($Wikis as &$wiki){
-            $str = strip_tags(substr($wiki['content'], 0, 512), '<img>');
+            $str = strip_tags($wiki['content'], '<img>');
             $wiki['content'] = preg_replace('/<\s*img/i', '<img width=128 height=128', $str);
         }
         $this->tWikis = $Wikis;

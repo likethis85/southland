@@ -7,9 +7,10 @@ class userroleModel extends spModel
 	var $table = "userrole"; // 数据表的名称
 	
 	var $scope_project = 1;
-	var $scope_task = 2;
+	var $scope_task  = 2;
 	var $scope_issue = 3;
 	var $scope_topic = 4;
+	var $scope_wiki  = 5;
 
     var $role = array(
         'role_project_member'   => 1,
@@ -29,7 +30,10 @@ class userroleModel extends spModel
     	
     	'role_issue_member' => 31,
     	'role_issue_creator'=> 32,
-    	'role_issue_owner'  => 39
+    	'role_issue_owner'  => 39,
+    	
+    	'role_wiki_creator' => 41,
+    	'role_wiki_member'  => 42
     );
 
     public function getItemsBy($scope,$sid,$uid){
@@ -58,7 +62,7 @@ class userroleModel extends spModel
         return $items;
     }
     /************************************************************************************************
-	 * project related
+	 * project 相关的逻辑
      ***********************************************************************************************/
     /** @brief 添加项目创建者 */
     public function addProjectCreator($pid,$uid) {
@@ -152,7 +156,7 @@ class userroleModel extends spModel
 	public function getProjectsByUser($uid, $memberonly=false) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
         $scope = $this->scope_project;
-        if(true==$memberonly)
+        if(true!==$memberonly)
 	        $sql = "select * from {$prefix}project where droptime=0 and (acl=0 or  
 	                 id in(select sid from {$prefix}userrole where uid=$uid and scope=$scope))";
         else
@@ -179,7 +183,7 @@ class userroleModel extends spModel
     }
     
     /************************************************************************************************
-	 * task related
+	 * task 相关的逻辑
      ***********************************************************************************************/
     /** @brief 添加Task创建人 */
     public function addTaskCreator($pid,$tid,$uid){
@@ -224,7 +228,7 @@ class userroleModel extends spModel
     }
 
     /************************************************************************************************
-	 * issue related
+	 * issue 相关的逻辑
      ***********************************************************************************************/
     /** @brief 添加Issue创建者 */
     public function addIssueCreator($pid,$iid,$uid) {
@@ -297,7 +301,7 @@ class userroleModel extends spModel
 	    return $this->findSql($sql);
     }
     /************************************************************************************************
-	 * topic related
+	 * topic 相关的逻辑
      ***********************************************************************************************/
     /** @brief 添加话题创建者 */
     public function addTopicCreator($pid,$tid,$uid){
@@ -347,5 +351,26 @@ class userroleModel extends spModel
                                     'scope' => $this->scope_topic)
                               );
         return !empty($member);
+    }
+    /************************************************************************************************
+	 * Wiki 相关的逻辑
+     ***********************************************************************************************/
+    public function addWikiCreator($pid, $wid, $uid) {
+        return $this->create(array(
+                                'uid' => $uid,
+                                'prj' => $pid,
+                                'sid' => $wid,
+                                'scope' => $this->scope_wiki,
+                                'role' => $this->role['role_wiki_creator'],
+                                'title'=> 'role_wiki_creator')
+                            );
+    }
+    /** @brief 获取User相关的Wiki */
+    public function getWikisByUser($pid, $uid) {
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $scope = $this->scope_wiki;
+	    $sql = "select W.id,W.uid,W.prj,W.subject,left(W.content,512) as content from {$prefix}wiki as W inner join {$prefix}userrole as R on 
+	             W.id=R.sid and R.scope=$scope and W.prj=$pid where W.droptime=0 and (R.uid=$uid or W.acl=0)";
+        return $this->findSql($sql);
     }
 }
