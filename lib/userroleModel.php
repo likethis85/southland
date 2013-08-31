@@ -369,8 +369,8 @@ class userroleModel extends spModel
     public function getWikisByUser($pid, $uid) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];
 	    $scope = $this->scope_wiki;
-	    $sql = "select W.id,W.uid,W.prj,W.subject,left(W.content,512) as content from {$prefix}wiki as W inner join {$prefix}userrole as R on 
-	             W.id=R.sid and R.scope=$scope and W.prj=$pid where W.droptime=0 and (R.uid=$uid or W.acl=0)";
+	    $sql = "select U.id,U.nick,U.avatar,W.id,W.uid,W.prj,W.subject,W.summary as content from {$prefix}wiki as W inner join {$prefix}userrole as R inner join {$prefix}user as U on 
+	             W.id=R.sid and R.scope=$scope and W.prj=$pid and W.uid=U.id where W.droptime=0 and (R.uid=$uid or W.acl=0)";
         return $this->findSql($sql);
     }
 }

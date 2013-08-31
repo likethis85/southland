@@ -7,7 +7,7 @@ body {
     line-height: 180%; 
     font-family: "Trebuchet MS",Trebuchet,Arial,Helvetica,Sans-serif;
 }
-ol, ul { 
+ol,ul,dl,dt,dd { 
     margin:0;
     padding:0;
     list-style: none; 

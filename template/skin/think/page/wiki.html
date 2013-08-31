@@ -17,10 +17,13 @@
     <{foreach item=item from=$tWikis}>
     <tr>
         <table width=100%>
-        <tr><td><h1 style="font:bold 14px;"><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1></td></tr>
+        <tr><td><h1 style="font:bold 14px;margin-bottom:6px;"><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1></td></tr>
         <tr>
             <td>
-                <{$item.content}>
+                <dl>
+                    <dt style="float:left;width:54px;overflow:hideen;"><img src="<{$item.avatar}>" /></dt>
+                    <dd style="float:left;width:680px;"><{$item.content}></dd>
+                </dl>
             </td>
         </tr>
         </table>
