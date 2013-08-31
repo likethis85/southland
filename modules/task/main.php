@@ -37,11 +37,13 @@ class main extends general
                 spClass('keeper')->speak(T('Error DB operation failed'));
                 exit;
             }
+            spClass('userroleModel')->addTaskOwner($pid,$tid,$uid);
             spClass('attachmentModel')->createForTask($uid, $pid, $tid, $files);
             spClass('timelineModel')->createForTask($pid,$tid,$uid,date('y-m-d'),null,$this->spArgs('subject'));
 			$this->jumpTaskPage();
 		} else {
 		    $this->tTitle = $this->tProject['title'].'-'.T('AddTask');
+		    $this->tMembers = spClass('userroleModel')->getUsersByProject($pid);
 			$this->display("task/add.html");
 		}
 	}

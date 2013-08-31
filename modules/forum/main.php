@@ -11,7 +11,7 @@ class main extends general
 		);
 	}
 	
-	function publish()
+	function add()
 	{
 	    $pid = $this->tCurrProj;
 	    $uid = $this->tUser['id'];
@@ -19,7 +19,6 @@ class main extends general
 	        spClass('keeper')->speak(T('Error Operation not permit'));
             return;
 	    }
-	    $this->tTitle = $this->tProject['title'].'-'.T('Publish New Topic');
 	    
 		$submit = $this->spArgs("submit");
 		if($submit == 1)
@@ -27,20 +26,27 @@ class main extends general
 			$data = array(
 			    'prj' => $pid,
 			    'author' => $uid,
-				'subject'=>$this->spArgs('subject'),
-				'content'=>$this->spArgs('Artical'),
-                'acl'    =>$this->spArgs('acl')
+				'subject'=> $this->spArgs('subject'),
+				'content'=> $this->spArgs('Artical'),
+                'acl'    => $this->spArgs('acl')
 			);
-			spClass('forumModel')->addTopic($pid,
+			$tid = spClass('forumModel')->addTopic($pid,
 			                                $uid,
 			                                $this->spArgs('subject'),
 			                                $this->spArgs('Artical'),
 			                                $this->spArgs('acl'));
+            if($tid !== false) {
+                $members = $this->spArgs('members');
+                foreach($members as $key => $member)
+                    spClass('userroleModel')->addTopicMember($pid,$tid,$key);
+            }
 			$this->jumpTopicPage();
 		}
 		else
 		{
-			$this->display("forum/publish.html");
+		    $this->tTitle = $this->tProject['title'].'-'.T('Publish New Topic');
+		    $this->tMembers = spClass('userroleModel')->getUsersByProject($pid);
+			$this->display("forum/add.html");
 		}
 	}
     function update()

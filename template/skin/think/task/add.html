@@ -71,6 +71,16 @@
                 </td>
             </tr>
             <tr>
+                <td><label style="margin-right:12px;" for="oid"><{T w='TaskOwner'}></label></td>
+                <td>
+                    <select style="width:490px;" name="oid">
+                        <{foreach item=item from=$tMembers}>
+                        <option value="<{$item.id}>" <{if $tUser.id==$item.id}>selected<{/if}>><{$item.nick}></option>
+                        <{/foreach}>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='Attachment'}></label></td>
                 <td>
                     <div class="file">

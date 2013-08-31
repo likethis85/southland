@@ -196,6 +196,16 @@ class userroleModel extends spModel
                                 'title'=>'role_task_creator')
                             );
     }
+    public function addTaskOwner($pid,$tid,$uid) {
+        return $this->create(array(
+                                'uid' => $uid, 
+                                'prj' => $pid, 
+                                'sid' => $tid, 
+                                'scope' => $this->scope_task,
+                                'role' => $this->role['role_task_owner'], 
+                                'title'=>'role_task_owner')
+                            );
+    }
     /** @brief 获取任务相关的所有人员 */
 	public function getUsersByTask($tid) {
 	    $prefix = $GLOBALS['G_SP']['db']['prefix'];
@@ -315,7 +325,7 @@ class userroleModel extends spModel
                             );
     }
     /** @brief 添加Topic参与者 */
-    public function addTopicMember($tip,$uid){
+    public function addTopicMember($pid,$tid,$uid){
         return $this->create(array(
                                 'uid' => $uid,
                                 'prj' => $pid,

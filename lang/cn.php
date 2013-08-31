@@ -65,6 +65,7 @@ return array(
 'TaskTodo' => '计划任务',
 'TaskFeature' => '新功能',
 'TaskTitle' => '任务简述',
+'TaskOwner' => '负责人',
 
 /* 话题相关 */
 'Topic'     =>  '讨论组',
@@ -72,6 +73,7 @@ return array(
 'DelTopic' => '删除话题',
 'EditTopic' => '编辑话题',
 'UpdateTopic' => '更新话题',
+'TopicMember' => '成员',
 
 /* 问题相关 */
 'BugTracker'    =>  '问题跟踪',

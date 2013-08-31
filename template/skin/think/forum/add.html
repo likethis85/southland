@@ -32,6 +32,20 @@
                 <td><input name="subject" id="subject" type="text" value="" style="width:490px"/></td>
             </tr>
             <tr>
+                <td><label for="members" style="margin-right:3px;"><{T w='TopicMember'}></label></td>
+                <td>
+                    <{foreach item=item from=$tMembers}>
+                    <div style="float:left;margin-left:8px;background-color:#DCDCDC;">
+                        <table>
+                        <tr><td align=center><img src="<{$item.avatar}>" width=32 height=32 /></td></tr>
+                        <tr><td align=center><label><{$item.nick}></label></td></tr>
+                        <tr><td align=center><input type="checkbox" name="members[<{$item.id}>]" <{if $item.id==$tUser.id}>checked<{/if}> /></td></tr>
+                        </table>
+                    </div>
+                    <{/foreach}>
+                </td>
+            </tr>
+            <tr>
                 <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
                 <td>
                     <select name='acl' id='acl'>
