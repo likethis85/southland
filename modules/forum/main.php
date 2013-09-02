@@ -75,6 +75,12 @@ class main extends general
 		else
 		{
             $this->tTopic = spClass('forumModel')->find(array('id' => $this->spArgs('id')));
+            $members = spClass('userroleModel')->getUsersByProject($this->tCurrProj);
+            $this->tTopicMembers = spClass('userroleModel')->getUsersByTopic($fid);
+            foreach($this->tTopicMembers as $key => $val){
+                unset($members[$key]);
+            }
+            $this->tMembers = $members;
             $this->tTitle = $this->tProject['title'].'-'.T('EditTopic').'-'.$this->tTopic['subject'];
 			$this->display("forum/update.html");
 		}

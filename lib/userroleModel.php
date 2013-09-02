@@ -354,6 +354,26 @@ class userroleModel extends spModel
         }
         return $temp;
     }
+    /** @brief 获取Topic相关的所有成员 */
+    public function getUsersByTopic($fid) {
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+	    $scope = $this->scope_topic;
+	    $sql = "select U.*,R.role,R.uid from {$prefix}user as U inner join {$prefix}userrole as R 
+	                on U.id=R.uid and R.sid=$fid and R.scope=$scope";
+	                
+        $members = $this->findSql($sql);
+        foreach($members as $member) {
+            $id = $member['id'];
+            if(isset($temp[$id])) {
+                array_push($temp[$id]['role'],$member['role']);
+            } else {
+                $role = $member['role'];
+                $member['role'] = array($role);
+                $temp[$id] = $member;
+            }
+        }
+        return $temp;
+    }
     /** @brief 判断是否为Topic成员 */
     public function  isMemberOfTopic($tid, $uid) {
         $member = $this->find(array('uid' => $uid,

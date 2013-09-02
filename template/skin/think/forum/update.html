@@ -24,8 +24,32 @@
     <form id="form" method="post">
         <table width=100%>
             <tr>
-                <td><label for="subject"><{T w='Subject'}></label></td>
+                <td><label for="subject"><{T w='Title'}></label></td>
                 <td><input name="subject" id="subject" type="text" value="<{$tTopic.subject}>" style="width:490px"/></td>
+            </tr>
+            <tr>
+                <td><label for="members" style="margin-right:3px;"><{T w='TopicMember'}></label></td>
+                <td>
+                    <{foreach item=item from=$tTopicMembers}>
+                    <div style="float:left;margin-left:8px;background-color:#DCDCDC;">
+                        <table>
+                        <tr><td align=center><img src="<{$item.avatar}>" width=32 height=32 /></td></tr>
+                        <tr><td align=center><label><{$item.nick}></label></td></tr>
+                        <tr><td align=center><input type="checkbox" name="members[<{$item.id}>]" checked /></td></tr>
+                        </table>
+                    </div>
+                    <{/foreach}>
+                    
+                    <{foreach item=item from=$tMembers}>
+                    <div style="float:left;margin-left:8px;background-color:#DCDCDC;">
+                        <table>
+                        <tr><td align=center><img src="<{$item.avatar}>" width=32 height=32 /></td></tr>
+                        <tr><td align=center><label><{$item.nick}></label></td></tr>
+                        <tr><td align=center><input type="checkbox" name="members[<{$item.id}>]" /></td></tr>
+                        </table>
+                    </div>
+                    <{/foreach}>
+                </td>
             </tr>
             <tr>
                 <td><label style="margin-right:12px;" for="subject"><{T w='ACL'}></label></td>
