@@ -10,7 +10,8 @@ class main extends general
 		parent::__construct(); // 这是必须的
 	}
 	
-	function index(){ // 这里是首页
+	/** @brief 显示首页 */
+	function index(){
 	    $uid = $this->tUser['id'];
 	    $this->tTitle = T('FirstPage');
 	    $this->tNid = 0;
@@ -18,8 +19,8 @@ class main extends general
         $this->tProjects = spClass('userroleModel')->getProjectsByUser($uid);
 		$this->display("index.html");
 	}
-	
-	function page(){ // 其他内容
+	/** @brief 显示相应的页面 */
+	function page(){ 
 	    $nid = $this->spArgs('nid');
 	    $module = $this->tNavigation[$nid-1];
 	    if(empty($module)) {
@@ -33,10 +34,12 @@ class main extends general
     		$this->display("page.html");
     	}
 	}
-	function project() {// 选择项目
+	/** @brief 首页选定项目 */
+	function project() { 
 	    $this->_project();
         $this->jumpTaskPage();
 	}
+	/** @brief 项目简介页面内容 */
 	function _project() {
 		$pid = $this->spArgs('pid');
         if(empty($pid))
@@ -77,9 +80,7 @@ class main extends general
         }
 	}
 
-    /** @brief 用户smarty的函数，显示讨论组话题的可操作项
-     *
-     */
+    /** @brief 用户smarty的函数，显示讨论组话题的可操作项 */
     function __template_TopicOperation($param){
         $uid = $this->tUser['id'];
         $topic = $param['topic'];
@@ -87,7 +88,7 @@ class main extends general
         $op_edit = array(
             'icon' => '/'.$this->skinpath.'/img/edit.png',
             'caption' => T('EditTopic'),
-            'callback'=> 'location.href=\"/forum.php?a=edit&id=\"+elem.id.replace(\"f\",\"\")'
+            'callback'=> 'location.href=\"/forum.php?a=update&id=\"+elem.id.replace(\"f\",\"\")'
         );
         $op_del = array(
             'icon' => '/'.$this->skinpath.'/img/delete.png',
@@ -102,6 +103,7 @@ class main extends general
             echo spClass('Services_JSON')->encode(array());
         }
     }
+    /** @brief Topic页面内容 */
 	function _forum(){
 	    $uid = $this->tUser['id'];
 	    $pid = $this->tCurrProj;
@@ -110,9 +112,7 @@ class main extends general
         spAddViewFunction('spTopicOperation', array(&$this, '__template_TopicOperation'));
 	}
 
-    /** @brief 用于Smarty的函数，用于显示可用的Task操作项
-     *
-     */
+    /** @brief 用于Smarty的函数，用于显示可用的Task操作项 */
     function __template_TaskOperation($param){
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -170,9 +170,7 @@ class main extends general
         else
             echo spClass('Services_JSON')->encode(array());
     }
-    /** @brief 任务页
-     *
-     */
+    /** @brief Task页面内容 */
     function _task() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -249,7 +247,7 @@ class main extends general
         }
         echo $nick;
     }
-    /** @brief Issue的页面数据 */
+    /** @brief Issue的页面内容 */
     function _issue() {
         $this->tTitle = $this->tProject['title'].'-'.T('BugTracker');
         $pid = $this->tCurrProj;
@@ -264,6 +262,7 @@ class main extends general
             )
         );
     }
+    /** @brief wiki的页面内容 */
     function _wiki() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;
@@ -283,8 +282,6 @@ class main extends general
         );
     }
 	public function __destruct(){
-		parent::__destruct(); // 这是必须的
-		//$objLog = spClass("logModel");
-		//$objLog->add($this->logNid,$this->logModule,$this->logModuleAction,$this->logModuleXid);
+		parent::__destruct();
 	}
 }	

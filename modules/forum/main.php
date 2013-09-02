@@ -51,34 +51,30 @@ class main extends general
 	}
     function update()
 	{
-        $uid = spClass('spSession')->getUser()->getUserId();
+        $uid = $this->tUser['id'];
         $fid = $this->spArgs('id');
-        if(empty($uid) || !spClass('forumModel')->allow($fid, $uid)){
+        if(!spClass('forumModel')->allow($fid, $uid, 'Update')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }
 
-		$submittopic = $this->spArgs("submit");
-		if($submittopic == 1)
+		$submit = $this->spArgs("submit");
+		if($submit == 1)
 		{
             $condition = array(
                 'id' => $this->spArgs('id')
             );
 			$data = array(
-				'subject'=>$this->spArgs('subject'),
-				'content'=>$this->spArgs('Artical'),
-                'acl'    =>$this->spArgs('acl')
+				'subject'=> $this->spArgs('subject'),
+				'content'=> $this->spArgs('Artical'),
+                'acl'    => $this->spArgs('acl')
 			);
-			$objMod = spClass('forumModel');
-			$objMod->update($condition, $data);
+			spClass('forumModel')->update($condition, $data);
 			$this->jumpTopicPage();
 		}
 		else
 		{
-            $condition = array(
-                'id' => $this->spArgs('id')
-            );
-            $this->tTopic = spClass('forumModel')->find($condition);
+            $this->tTopic = spClass('forumModel')->find(array('id' => $this->spArgs('id')));
             $this->tTitle = $this->tProject['title'].'-'.T('EditTopic').'-'.$this->tTopic['subject'];
 			$this->display("forum/update.html");
 		}
@@ -91,7 +87,7 @@ class main extends general
             return;
         }
         
-        if(!spClass('forumModel')->allow($fid, $uid)){
+        if(!spClass('forumModel')->allow($fid, $uid, 'Delete')){
             spClass('keeper')->speak(T('Error Operation not permit'));
             return;
         }

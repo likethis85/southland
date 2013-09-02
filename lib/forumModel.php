@@ -32,7 +32,10 @@ class forumModel extends spModel
         if(empty($uid))
             return false;
  
-        return spClass('userroleModel')->isMemberOfProject($topic['prj'], $uid);
+        if($topic['acl']==$allow_protected)
+            return spClass('userroleModel')->isMemberOfProject($topic['prj'], $uid);
+        else
+            return spClass('userroleModel')->isMemberOfTopic($topic['id'], $uid);
     }
     /** @brief 添加Topic */
     public function addTopic($pid,$uid,$subject,$content,$acl){
