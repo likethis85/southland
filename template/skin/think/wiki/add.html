@@ -26,6 +26,10 @@
                     WikiContent:{required:true}
                 }
             });
+            $('#form').submit(function(e){
+                $('#summary').val(UE.getEditor('WikiContent').getContentTxt().substr(0,512));
+                return true;
+            });
         });
 </script>
 <div style="clear:both;margin-left:32px;margin-top:32px;">
@@ -56,6 +60,7 @@
                         <textarea id="WikiContent" name="WikiContent"></textarea>
                         <input class="btn-rounded" type="submit" value=<{T w="CreateNewWiki"}> />
                         <input name="submit" type="hidden" id="submit" value="1" />
+                        <input name="summary" type="hidden" id="summary" value="" />
                     </td>
                 </tr>
             </table>

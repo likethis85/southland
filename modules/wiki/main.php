@@ -30,7 +30,7 @@ class main extends general
                     'uid' => $this->tUser['id'],
                     'prj' => $this->tCurrProj,
                     'subject' => $this->spArgs('subject'),
-                    'summary' => spGetStr(strip_tags($this->spArgs('WikiContent')),500).'...',
+                    'summary' => $this->spArgs('summary'),
                     'content' => $this->spArgs('WikiContent'),
                     'acl'     => $this->spArgs('acl')
             );
