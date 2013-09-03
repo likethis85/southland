@@ -8,7 +8,7 @@
         return aData;
     }
     $(document).ready(function(){
-        $('#issues').dataTable({
+        $('table.display').dataTable({
             "bJQueryUI":true,
             "sPaginationType":"full_numbers",
             "oLanguage":{
@@ -26,7 +26,6 @@
                   }
             },
             "aoColumns" : [
-                null,
                 {"sSortDataType": "iStatus", "sType": "string" },
                 null,
                 null,
@@ -85,7 +84,6 @@
     <table id="issues" class="display" style="line-height:108%;">
         <thead>
             <tr>
-                <th>ID</th>
                 <th><{T w="IssueStatus"}></th>
                 <th><{T w="IssueTitle"}></th>
                 <th><{T w="IssueReporter"}></th>
@@ -96,7 +94,6 @@
         <tbody>
             <{foreach item=itemI from=$tIssues}>
             <tr>
-                <td><{$itemI.id}></td>
                 <td>
                     <div id="i<{$itemI.id}>"></div>
                     <{if $itemI.status==1}>

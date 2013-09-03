@@ -50,7 +50,7 @@ return array(
 'UpdateTask' => '更新该任务',
 'PostTask'  => '推迟任务到...',
 'TaskPriority' => '任务优先级',
-'TaskStatus' => '任务状态',
+'TaskStatus' => '状态',
 'TaskPending' => '等待任务安排',
 'TaskWorking' => '进行中...',
 'TaskCC' => '代码完成',
@@ -74,6 +74,9 @@ return array(
 'EditTopic' => '编辑话题',
 'UpdateTopic' => '更新话题',
 'TopicMember' => '成员',
+'TopicSubject' => '话题',
+'TopicStatus' => '状态',
+'TopicCreateTime' => '创建时间',
 
 /* 问题相关 */
 'BugTracker'    =>  '问题跟踪',

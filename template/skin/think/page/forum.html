@@ -1,7 +1,38 @@
 <div class="box_page">
     <script language="javascript" type="text/javascript">
+        $.fn.dataTableExt.afnSortData['iStatus'] = function  ( oSettings, iColumn ){
+            var aData = [];
+            $( 'td:eq('+iColumn+')>img', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+                aData.push( this.src );
+            });
+            return aData;
+        }
         $().ready(function(){
-            <{foreach item=item from=$tSubjects}>
+            $('table.display').dataTable({
+                "bJQueryUI":true,
+                "sPaginationType":"full_numbers",
+                "oLanguage":{
+                    "sLengthMenu": "每页显示_MENU_记录",
+                    "sZeroRecords": "暂无记录",
+                    "sInfo":"共_TOTAL_页",
+                    "sInfoEmpty":"",
+                    "sInfoFiltered":"",
+                    "sSearch" : "过滤",
+                    "oPaginate": {
+                        "sFirst": "第一页",
+                        "sNext": "下一页",
+                        "sPrevious": "上一页",
+                        "sLast": "最后一页"
+                      }
+                },
+                "aoColumns" : [
+                    {"sSortDataType": "iStatus", "sType": "string" },
+                    null,
+                    null,
+                    null
+                ]
+            });           
+            <{foreach item=item from=$tTopics}>
             $('#f<{$item.id}>').each(function(i,e){
                 $(e).HoverMenu({
                     'item' : <{spTopicOperation topic=$item}>
@@ -19,16 +50,32 @@
         <div style="clear:both;"></div>
     </div>
     
-    <table>
-    <{foreach item=item from=$tSubjects}>
-    <tr>
-        <td>
-            <div id="f<{$item.id}>"></div>
-            <img src="<{$skinpath}>/img/topic.png" width=16 height=16>
-        </td>
-        <td><a href="forum.php?a=view&id=<{$item.id}>"><{$item.subject}></a></td>
-    </tr>
-    <{/foreach}>
+    <table id="topics" class="display">
+        <thead>
+            <tr>
+                <th><{T w='TopicStatus'}></th>
+                <th><{T w='TopicSubject'}></th>
+                <th><{T w='TopicMember}></th>
+                <th><{T w='TopicCreateTime'}></th>
+            </tr>
+        </thead>
+        <tbody>
+            <{foreach item=item from=$tTopics}>
+            <tr>
+                <td>
+                    <div id="f<{$item.id}>"></div>
+                    <img src="<{$skinpath}>/img/topic.png" width=16 height=16>
+                </td>
+                <td><a href="forum.php?a=view&id=<{$item.id}>"><{$item.subject}></a></td>
+                <td>
+                    <{foreach item=member from=$item.member}>
+                    <img src="<{$member.avatar}>" alt="<{$member.nick}>" title="<{$member.nick}>" width=32 height=32 />
+                    <{/foreach}>
+                </td>
+                <td><{ $item.addtime }></td>
+            </tr>
+            <{/foreach}>
+        </tbody>
     </table>
 
     <script type="text/javascript">

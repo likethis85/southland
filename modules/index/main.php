@@ -108,8 +108,17 @@ class main extends general
 	    $uid = $this->tUser['id'];
 	    $pid = $this->tCurrProj;
 	    $this->tTitle = $this->tProject['title'].'-'.T('Topic');
-        $this->tSubjects = spClass('userroleModel')->getTopicsByUser($pid, $uid);
+        $topics = spClass('userroleModel')->getTopicsByUser($pid, $uid);
+        foreach($topics as &$topic){
+            $topic['member'] = spClass('userroleModel')->getUsersByTopic($topic['id']);
+        }
+        $this->tTopics = $topics;
         spAddViewFunction('spTopicOperation', array(&$this, '__template_TopicOperation'));
+        $this->tView = array(
+		        'require' => array(
+		            'dataTable' => true
+		        )
+		    );
 	}
 
     /** @brief 用于Smarty的函数，用于显示可用的Task操作项 */
