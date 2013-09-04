@@ -140,7 +140,7 @@ class main extends general
         
         $pid = $this->spArgs('pid');
         $uid = $this->tUser['id'];
-        if(!spClass('projectModel')->allow($pid, $uid)){
+        if(!spClass('projectModel')->allow($pid, $uid, 'AddMember')){
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
             $this->ajaxResult->msg = T('Error Operation not permit');
             echo spClass('Services_JSON')->encode($this->ajaxResult);

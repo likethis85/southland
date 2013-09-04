@@ -374,6 +374,14 @@ class userroleModel extends spModel
         }
         return $temp;
     }
+    /** @brief 判断是否为Topic的创建者 */
+    public function isTopicCreator($tid,$uid) {
+        $member = $this->find(array('uid' => $uid,
+                                    'sid' => $tid,
+                                    'scope' => $this->scope_topic,
+                                    'role' => $this->role['role_topic_creator']));
+        return !empty($member);
+    }
     /** @brief 判断是否为Topic成员 */
     public function  isMemberOfTopic($tid, $uid) {
         $member = $this->find(array('uid' => $uid,

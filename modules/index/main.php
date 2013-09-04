@@ -84,7 +84,6 @@ class main extends general
     function __template_TopicOperation($param){
         $uid = $this->tUser['id'];
         $topic = $param['topic'];
-        $uo = spClass('spSession')->getUser()->getRole();
         $op_edit = array(
             'icon' => '/'.$this->skinpath.'/img/edit.png',
             'caption' => T('EditTopic'),
@@ -95,7 +94,7 @@ class main extends general
             'caption' => T('DelTopic'),
             'callback'=> 'if(confirm(\"'.T('Confirm?').T('DelTopic').'\"))location.href=\"/forum.php?a=del&id=\"+elem.id.replace(\"f\",\"\")'
         );
-        if($uid == $topic['author']){
+        if(spClass('userroleModel')->isTopicCreator($topic['id'],$uid)){
             echo spClass('Services_JSON')->encode(array(
                             $this->array2class($op_edit),
                             $this->array2class($op_del)));                 
