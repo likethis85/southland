@@ -135,17 +135,23 @@ table.display thead th div.DataTables_sort_wrapper span {
 	float: right;
 	text-align: right;
 }
-
 .dataTables_info {
 	width: 50%;
 	float: left;
 }
-
 .dataTables_paginate {
 	float: right;
 	text-align: right;
 }
+.wikiFilter {
+    position:absolute;
+    left:615px;
+    top:-40px;
+}
 
+.wikiLength,.wikiInfo,.wikiPagingfull_numbers {
+    display:none;
+}
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

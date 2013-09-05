@@ -1,6 +1,29 @@
 <script language="javascript" type="text/javascript">
+    $.fn.dataTableExt.oStdClasses.sFilter="wikiFilter";
+    $.fn.dataTableExt.oStdClasses.sInfo="wikiInfo";
+    $.fn.dataTableExt.oStdClasses.sPaging="wikiPaging";
+    $.fn.dataTableExt.oStdClasses.sLength="wikiLength";
     $().ready(function(){
         $('#TagBall').TagBall();
+        
+        $('table.display').dataTable({
+            "bSortClasses":false,
+            "sPaginationType":"full_numbers",
+            "oLanguage":{
+                "sLengthMenu": "每页显示_MENU_记录",
+                "sZeroRecords": "暂无记录",
+                "sInfo":"共_TOTAL_页",
+                "sInfoEmpty":"",
+                "sInfoFiltered":"",
+                "sSearch" : "过滤",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sNext": "下一页",
+                    "sPrevious": "上一页",
+                    "sLast": "最后一页"
+                  }
+            }
+        });
     });
 </script>
 <div class="box_page">
@@ -13,22 +36,23 @@
         <div style="clear:both;"></div>
     </div>
     
-    <table>
-    <{foreach item=item from=$tWikis}>
-    <tr>
-        <table width=100%>
-        <tr><td><h1 style="font:bold 14px;margin-bottom:6px;"><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1></td></tr>
-        <tr>
-            <td>
-                <dl>
-                    <dt style="float:left;width:54px;overflow:hideen;"><img src="<{$item.avatar}>" /></dt>
-                    <dd style="float:left;width:680px;"><{$item.content}></dd>
-                </dl>
-            </td>
-        </tr>
-        </table>
-    </tr>
-    <{/foreach}>
+    <table class="display">
+        <thead>
+            <tr><th></th></tr>
+        </thead>
+        <tbody>
+            <{foreach item=item from=$tWikis}>
+            <tr>
+                <td>
+                    <h1 style="font:bold 14px;margin-bottom:6px;"><a href="wiki.php?a=view&id=<{$item.id}>"><{$item.subject}></a></h1>
+                    <dl>
+                        <dt style="float:left;width:54px;overflow:hideen;"><img src="<{$item.avatar}>" /></dt>
+                        <dd style="float:left;width:680px;"><{$item.content}></dd>
+                    </dl>
+                </td>
+            </tr>
+            <{/foreach}>
+        </tbody>
     </table>
 </div>
 

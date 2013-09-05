@@ -285,7 +285,8 @@ class main extends general
         
         $this->tView = array(
             'require' => array(
-                'tagball' => true
+                'tagball' => true,
+                'dataTable' => true
             )
         );
     }
