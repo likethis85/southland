@@ -3,6 +3,8 @@
     $.fn.dataTableExt.oStdClasses.sInfo="wikiInfo";
     $.fn.dataTableExt.oStdClasses.sPaging="wikiPaging";
     $.fn.dataTableExt.oStdClasses.sLength="wikiLength";
+    $.fn.dataTableExt.oStdClasses.sStripeOdd="wikiOdd";
+    $.fn.dataTableExt.oStdClasses.sStripeEven="wikiEven";
     $().ready(function(){
         $('#TagBall').TagBall();
         
@@ -22,7 +24,10 @@
                     "sPrevious": "上一页",
                     "sLast": "最后一页"
                   }
-            }
+            },
+            "aoColumns" : [
+                    {"bSortable":false }
+                ]
         });
     });
 </script>
