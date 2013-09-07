@@ -10,6 +10,8 @@
         $().ready(function(){
             $('table.display').dataTable({
                 "bJQueryUI":true,
+                "iDisplayLength": 30,
+                "aLengthMenu": [[30, 100, -1], [30, 100, "全部"]],
                 "sPaginationType":"full_numbers",
                 "oLanguage":{
                     "sLengthMenu": "每页显示_MENU_记录",
