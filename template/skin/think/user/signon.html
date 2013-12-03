@@ -19,7 +19,12 @@
                     form.submit();
                 },
             });
-            $('#avatar').dropkick({'width':'160px'});
+            $('#avatar').dropkick({
+                'width':'160px',
+                'change' : function(value) {
+                    $('input[name="avatar"]').attr('value', value);
+                }
+            });
         });
     </script>
     <{if !empty($tErrorMsg)}><div style="color:red;"><{T w=$tErrorMsg}></div><{/if}>
@@ -37,9 +42,9 @@
                 <td><label for="avatar"><span class="fontwhite"><{T w='Avatar'}></span></label>
                 <td>
                     <input name="avatar" type=hidden />
-                    <div style="display:hide;" id="avatar">  
-                        <option value="/template/skin/think/img/avatar/1.jpg" selected><img src="/avatar/huitailang.jpg"></option>            
-                        <option value="/template/skin/think/img/avatar/2.jpg" ><img src="/avatar/xiyangyang.jpg"></option>            
+                    <div style="display:hide;" id="avatar" value="/avatar/huitailang.jpg"> 
+                        <option value="/avatar/huitailang.jpg" selected><img src="/avatar/huitailang.jpg"></option>            
+                        <option value="/avatar/xiyangyang.jpg"><img src="/avatar/xiyangyang.jpg"></option>            
                     </div>
                 </td>
             </tr>

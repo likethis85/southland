@@ -82,7 +82,7 @@ class user extends general
                     'upass' => $upass,
                     'email' => $uname,
                     'nick'  => $this->spArgs('nick'),
-                    //'avatar'=> $this->spArgs('avatar'),
+                    'avatar'=> $this->spArgs('avatar'),
                     'enabled' => 1,
                 );
                 if(spClass("userModel")->create($data)==false) {

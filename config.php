@@ -15,8 +15,8 @@ $spConfig = array(
 			'host' => 'localhost',
 			'login' => 'root',
 			'password' => 'pass',
-			'database' => 'meon',
-			'prefix' => 'sc_'
+			'database' => 'aeon',
+			'prefix' => 'eon_'
 	),
 	'lang' => array( 
 		'en' => 'default', // 默认语言，这里英文为默认语言

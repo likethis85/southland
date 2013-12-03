@@ -13,8 +13,8 @@
             <div id="tabHeads" class="tabhead">
                 <span tabSrc="remote"  class="focus"><var id="lang_tab_remote"></var></span>
                 <span tabSrc="local"><var id="lang_tab_local"></var></span>
-                <!-- <span tabSrc="imgManager"><var id="lang_tab_imgManager"></var></span> -->
-                <!-- <span tabSrc="imgSearch"><var id="lang_tab_imgSearch"></var></span> -->
+                <span tabSrc="imgManager"><var id="lang_tab_imgManager"></var></span>
+                <span tabSrc="imgSearch"><var id="lang_tab_imgSearch"></var></span>
             </div>
             <div id="tabBodys" class="tabbody">
                 <div id="remote" class="panel">
@@ -55,13 +55,13 @@
                 <div id="local" class="panel">
                     <div id="flashContainer"></div>
                     <div><div id="upload" style="display: none" ></div><div id="duiqi"></div><div id="localFloat"></div></div>
-                    <!--
+
                     <div class="saveDir">
                         <var id="lang_savePath" ></var>：<select id="savePath">
                             <option value="1">upload</option>
                             <option value="2">upload1</option>
                         </select>
-                    </div>-->
+                    </div>
                 </div>
                 <div id="imgManager" class="panel">
                     <div id="imageList"><var id="lang_imgLoading"></var></div>
@@ -98,7 +98,7 @@
             selectedImageCount = 0;  //当前已选择的但未上传的图片数量
 
         editor.setOpt({
-            imageFieldName:"photo",
+            imageFieldName:"upfile",
             compressSide:0,
             maxImageSideLength:900
         });
@@ -119,7 +119,7 @@
                 picDescFieldName:'pictitle',      // POST请求中图片描述的key
                 maxSize:4,                         // 文件的最大体积,单位M
                 compressSize:2,                   // 上传前如果图片体积超过该值，会先压缩,单位M
-                maxNum:1,                         // 单次最大可上传多少个文件
+                maxNum:32,                         // 单次最大可上传多少个文件
                 compressSide:editor.options.compressSide,                 //等比压缩的基准，0为按照最长边，1为按照宽度，2为按照高度
                 compressLength:editor.options.maxImageSideLength        //能接受的最大边长，超过该值Flash会自动等比压缩
             };
@@ -188,11 +188,11 @@
                  * 接口imageUploader.setPostParams()可以在提交时设置本次上传提交的参数（包括所有图片）
                  * 参数为json对象{"key1":"value1","key2":"value2"}，其中key即为向后台post提交的name，value即为值。
                  * 其中有一个特殊的保留key值为action，若设置，可以更改本次提交的处理地址
+                 */
                 var postParams = {
                     "dir":baidu.g("savePath").value
                 };
                 imageUploader.setPostParams(postParams);
-                 */
                 flashObj.upload();
                 this.style.display = "none";
                 $G("savePath").parentNode.style.display = "none";
