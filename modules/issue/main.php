@@ -142,7 +142,6 @@ class main extends general
             spClass('keeper')->speak(T('Error Invalid Parameters'));
             return;
         }
-
         spClass('commentModel')->createForIssue($uid,$pid,$iid,$comment);
         $this->navi("/issue.php?a=view&id=$iid");
     }

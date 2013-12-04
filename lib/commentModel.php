@@ -77,7 +77,7 @@ class commentModel extends spModel
      *
      */
     public function createForIssue($uid, $pid, $iid, $content){
-        if(empty($tid) || empty($pid) || empty($content))
+        if(empty($iid) || empty($pid) || empty($content))
             return false;
 
         return $this->create(array(

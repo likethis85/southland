@@ -54,7 +54,7 @@ return array(
 'TaskPending' => '等待任务安排',
 'TaskWorking' => '进行中...',
 'TaskCC' => '代码完成',
-'TaskVeri' => '等待验证...',
+'TaskVeri' => '验证通过',
 'TaskComplete' => '完成',
 'TaskProcessing' => '任务进行中',
 'TaskAccomplished' => '任务完成',

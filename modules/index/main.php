@@ -169,13 +169,15 @@ class main extends general
             in_array(spClass('userroleModel')->role['role_project_creator'],$role) ) {
             $operation = array(
                     $this->array2class($op_work),
-                    $this->array2class($op_cc),
+                    null /*$this->array2class($op_cc)*/,
                     $this->array2class($op_edit),
                     $this->array2class($op_del),
                     $this->array2class($op_transfer),
                     $this->array2class($op_bug));
-            if($task['status'] ==  $task->STATUS_CODECOMPLETED)
+            if($task['status'] == spClass('taskModel')->STATUS_CODECOMPLETE)
                 $operation[1] = $this->array2class($op_veri);
+            else
+                $operation[1] = $this->array2class($op_cc);
             echo spClass('Services_JSON')->encode($operation);
         } else
             echo spClass('Services_JSON')->encode(array());
