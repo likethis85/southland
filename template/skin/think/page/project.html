@@ -198,6 +198,12 @@
                             }
             }
         );
+
+        $('.members').powerFloat({
+            'position': '2-1',
+            'target': function() { return '/ajax.php?a=getuserinfo';},
+            'targetMode' : 'ajax'
+        });
     });
 </script>
 
@@ -210,7 +216,7 @@
                 <{foreach item=item from=$tMembers}>
                 <{if $item.id==$tUser.id}><{$isMember=1}><{assign var="isMember" value=1}><{/if}>
                 <li>
-                    <div>
+                    <div class='members' id='u<{$item.id}>'>
                         <table>
                             <tr>
                                 <td valign="top"><img src="<{$item.avatar}>"></td>

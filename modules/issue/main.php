@@ -107,6 +107,25 @@ class main extends general
         $model->updateStatus($iid, $model->STATUS_FIXED);
         $this->jumpIssuePage();
     }
+    /** @brief 标记为Verified */
+    function verified(){
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $iid = $this->spArgs('iid');
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+       
+        $model = spClass('issueModel');
+        if(!$model->allow($iid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+
+        $model->updateStatus($iid, $model->STATUS_VERIFIED);
+        $this->jumpIssuePage();
+    }
     /** @brief 推迟bug */
     function post() {
         $uid = $this->tUser['id'];

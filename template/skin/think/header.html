@@ -58,9 +58,21 @@
 <{/if}>
 <!-- -->
 
+<link rel="stylesheet" type="text/css" href="/vendors/powerfloat/powerFloat.css" />
+<script type="text/javascript" src="/vendors/powerfloat/powerFloat.js"></script>
+
 </head>
 
 <body>
+    <script type="text/javascript">
+    $(function(){
+        $('#userpanel').powerFloat({
+            'target': function() { return this.attr('href');},
+            'targetMode': 'ajax'
+        });
+        
+    });
+    </script>
     <div class="box">
         <div style="position:relative;top:0px;width:100%;height:164px;background:url(<{$skinpath}>/img/bg.jpg) repeat-x;">
             <div style="position:absolute;width:100%;top:0px;height:16px;">
@@ -69,7 +81,7 @@
                         <a href="/index.php?c=user&a=login">[<{T w='Login'}>]</a>&nbsp;&nbsp;
                         <a href="/index.php?c=user&a=signon">[<{T w='Signon'}>]</a>
                     <{else}>
-                        <{T w='Welcome'}>&nbsp;&nbsp;<{$tUser.nick}>&nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a id='userpanel' href="/ajax.php?a=getuserinfo"><{T w='Welcome'}>&nbsp;&nbsp;<{$tUser.nick}>&nbsp;&nbsp;|&nbsp;&nbsp;</a>
                         <a href="/index.php?c=user&a=logout">[<{T w='Logout'}>]</a>
                     <{/if}>
                 </div>

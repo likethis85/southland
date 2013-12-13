@@ -271,6 +271,14 @@ class main extends general
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
 	}
+    /** @brief 获取用户基本信息 */
+    function getUserInfo() {
+        $uid = $this->spArgs('id');
+        if(empty($uid)) $uid  = $this->tUser['id'];
+        
+        echo '暂未实现...';
+        exit;
+    }
     function pdf_task() {
         $uid = $this->tUser['id'];
         $pid = $this->tCurrProj;

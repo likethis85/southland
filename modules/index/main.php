@@ -241,7 +241,7 @@ class main extends general
                     $this->array2class($op_open),
                     $this->array2class($op_fixed),
                     $this->array2class($op_verified),
-                    $this->array2class($op_completed),
+                    //$this->array2class($op_completed),
                     $this->array2class($op_post)));
         else
             echo spClass('Services_JSON')->encode(array());
