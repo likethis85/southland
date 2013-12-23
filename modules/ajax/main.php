@@ -276,7 +276,7 @@ class main extends general
         $uid = $this->spArgs('id');
         if(empty($uid)) $uid  = $this->tUser['id'];
         
-        echo '暂未实现...';
+        echo '<br/><strong>暂未实现...</strong><br/>';
         exit;
     }
     function pdf_task() {

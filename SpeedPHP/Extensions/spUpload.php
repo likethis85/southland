@@ -21,7 +21,7 @@
  	 * @param string $save_path 上传的目标文件夹
  	 */
  	public function __construct($args) {
- 		$this->allow_types = 'jpg|gif|png|zip|rar|tar|gz|bz';
+ 		$this->allow_types = 'jpg|gif|png|zip|rar|tar|gz|bz|doc|ppt|docx|pptx|xls|xlsx|pdf|mm';
  		extract($args);
  		if(isset($ex_file_name))
 			$this->file_name   = $ex_file_name;//重命名方式代表以时间命名，其他则使用给予的名称
