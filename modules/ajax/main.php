@@ -273,10 +273,15 @@ class main extends general
 	}
     /** @brief 获取用户基本信息 */
     function getUserInfo() {
-        $uid = $this->spArgs('id');
+        $uid = $this->spArgs('uid');
         if(empty($uid)) $uid  = $this->tUser['id'];
-        
-        echo '<br/><strong>暂未实现...</strong><br/>';
+        if(empty($uid)) {
+            echo '<div style="margin:8px;height:32px;"><strong>暂未实现...</strong></div>';
+            exit;
+        }
+
+        $this->tUserInfo = spClass('userModel')->getUserInfo($uid);
+        $this->display('user/profile.html');
         exit;
     }
     function pdf_task() {

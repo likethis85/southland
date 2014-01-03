@@ -285,8 +285,9 @@ CREATE TABLE IF NOT EXISTS `#DBPREFIX#subscriber` (
 
 CREATE TABLE IF NOT EXISTS `#DBPREFIX#user` (
   `id`    int unsigned NOT NULL AUTO_INCREMENT,
-  `uname` varchar(20) NOT NULL,
+  `uname` varchar(32) NOT NULL,
   `upass` varchar(32) NOT NULL,
+  `oauth` varchar(32),
   `nick`  varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `avatar` varchar(255) NOT NULL default 'avatar.png',
@@ -295,7 +296,7 @@ CREATE TABLE IF NOT EXISTS `#DBPREFIX#user` (
   `enabled` tinyint(4) NOT NULL DEFAULT '0',
   `addtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   KEY(`id`),
-  PRIMARY KEY (`uname`)
+  PRIMARY KEY (`uname`, `oauth`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 INSERT INTO `#DBPREFIX#user`(`id`,`uname`,`upass`,`nick`,`email`,`enabled`) VALUES
 (1,'eon','1a1dc91c907325c69271ddf0c944bc72','eon hong','eon.hong@gmail.com',1),

@@ -201,7 +201,7 @@
 
         $('.members').powerFloat({
             'position': '2-1',
-            'target': function() { return '/ajax.php?a=getuserinfo';},
+            'target': function() { return '/ajax.php?a=getuserinfo&uid='+$(this).attr('id').replace('u','');},
             'targetMode' : 'ajax'
         });
     });

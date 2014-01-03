@@ -68,6 +68,10 @@ class userModel extends spModel
         );
         return $this->find($condition);
     }
+    /** @brief 获取用户基本信息 */
+    public function getUserInfo($uid) {
+        return $this->find(array('id' => $uid));
+    }
 	/**
 	 * 无权限提示及跳转
 	 */

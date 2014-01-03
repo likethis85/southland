@@ -46,6 +46,7 @@ class user extends general
 			}
 
 		}
+
 		// 这里是还没有填入用户名，所以将自动显示main_login.html的登录表单
 		$this->tTitle = T('Login');
 		$this->tView = array(
