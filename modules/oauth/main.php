@@ -25,12 +25,14 @@ class main extends general
             $client->setAccessToken($token);
             $userinfo = $plus->userinfo->get();
             print_r($userinfo);exit;
+        } else {
+           spClass('keeper')->speak(T('Error Google User Reject'), '/index.php?c=user&a=login');
         }
 /*
         if (isset($_GET['code'])) {
             $client->authenticate();
             $token = $client->getAccessToken();
-            $redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+            $redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'].'?a=google';
             header('Location: ' . filter_var($redirect, FILTER_SANITIZE_URL));
         }
 
@@ -39,7 +41,7 @@ class main extends general
         }
 
         if ($client->getAccessToken()) {
-            $userinfo = $plus->userinfo;
+            $userinfo = $plus->userinfo->get();
             $_SESSION['token'] = $client->getAccessToken();
             print_r($userinfo);exit;
         } else {

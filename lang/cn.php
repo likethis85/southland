@@ -9,6 +9,7 @@ return array(
 'Error Invalid Parameters'  => '输入参数无效',
 'Error Operation not permit' => '不允许该操作',
 'Error Invalid Certification Code'  => '验证码错误',
+'Error Google User Reject' => 'google用户拒绝请求',
 
 /* 项目相关 */
 'MyProject' => '我的项目',
