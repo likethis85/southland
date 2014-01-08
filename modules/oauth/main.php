@@ -32,7 +32,7 @@ class main extends general
                 'oauth' => 'google+',
                 'avatar'=> $gplus['image']['url'],
             );
-            $login = spClass('userModel')->userlogin($userinfo['email'], '', $userinfo['oauth']);
+            $login = spClass('userModel')->userlogin($userinfo['uname'], '', $userinfo['oauth']);
             if(false === $login) 
                 $login = spClass('userModel')->signon_google($userinfo);
 

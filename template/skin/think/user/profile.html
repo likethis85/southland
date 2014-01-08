@@ -2,6 +2,10 @@
     <div style="margin-left:3px"><img src="<{$tUserInfo.avatar}>"></div>
     <table>
         <tr><td><{T w='Nick'}>:</td><td><{$tUserInfo.nick}></td></tr>
+        <{if $tUserInfo.oauth==''}>
         <tr><td><{T w='Username'}>:</td><td><{$tUserInfo.uname}></td></tr>
+        <{else}>
+        <tr><td><{T w='Usertype'}>:</td><td><{$tUserInfo.oauth}></td></tr>
+        <{/if}>
     </table>
 </div>
