@@ -20,17 +20,36 @@ class userModel extends spModel
 			),
 		)
 	);
-	   
+
+    /** @brief 建立OAuth的Google用户并以google用户登录 */
+    public function signon_google($userinfo) {
+            //Array ( [id] => 101272517671095294156 [email] => issac.hong@zoom.us [verified_email] => 1 [name] => Issac Hong [given_name] => Issac [family_name] => Hong [locale] => en [hd] => zoom.us )
+        $data = array(
+                'uname' => $userinfo['email'],
+                'upass' => '',
+                'email' => $userinfo['email'],
+                'oauth' => 'google',
+                'nick'  => $userinfo['name'],
+                'enabled' => 1
+        );
+        if($this->create($data)==false || false===$this->userlogin($data['uname'], '', 'google')) {
+            spClass('keeper')->speak(T('Error Google User Reject'), '/index.php?c=user&a=login');
+        } else {
+            return true;
+        }
+    }
 	/**
 	 * 这里我们建立一个成员函数来进行用户登录验证
 	 *
 	 * @param uname    用户名
 	 * @param upass    密码，请注意，本例中使用了加密输入框，所以这里的$upass是经过MD5加密的字符串。
+     * @param oauth    oauth login, default empty to site login
 	 */
-	public function userlogin($uname, $upass){ 
+	public function userlogin($uname, $upass, $oauth=''){ 
 		$conditions = array(
 			'uname' => $uname,
 			'upass' => $upass,
+            'oauth' => $oauth,
 			'enabled'=>1,
 		);
 		//dump($conditions);

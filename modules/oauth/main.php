@@ -24,7 +24,13 @@ class main extends general
             $token = $client->getAccessToken();
             $client->setAccessToken($token);
             $userinfo = $plus->userinfo->get();
-            print_r($userinfo);exit;
+            $login = spClass('userModel')->userlogin($userinfo['email'], '', 'google');
+            if(false === $login) 
+                $login = spClass('userModel')->signon_google($userinfo);
+
+            if($login)
+                $this->jumpFirstPage();
+
         } else {
            spClass('keeper')->speak(T('Error Google User Reject'), '/index.php?c=user&a=login');
         }
