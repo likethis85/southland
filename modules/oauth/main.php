@@ -9,22 +9,30 @@ class main extends general
     /** @brief google login via OAuth */
 	function google() {
         require_once APP_PATH.'/vendors/goauth/google-api-php-client/src/Google_Client.php';
-        require_once APP_PATH.'/vendors/goauth/google-api-php-client/src/contrib/Google_Oauth2Service.php';
+        //require_once APP_PATH.'/vendors/goauth/google-api-php-client/src/contrib/Google_Oauth2Service.php';
+        require_once APP_PATH.'/vendors/goauth/google-api-php-client/src/contrib/Google_PlusService.php';
 
         $client = new Google_Client();
         $client->setApplicationName('Aeon for google OAuth2.0');
         $client->setClientId('844466437028.apps.googleusercontent.com');
         $client->setClientSecret('yTwOn8pO-OzOgnmsMKvce_Cz');
         $client->setRedirectUri('http://www.eon.com/oauth.php?a=google');
-        $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email'));
-        $plus = new Google_Oauth2Service($client);
+        $plus = new Google_PlusService($client);
         $code = $this->spArgs('code');
         if(!empty($code)) {
             $client->authenticate();
             $token = $client->getAccessToken();
             $client->setAccessToken($token);
-            $userinfo = $plus->userinfo->get();
-            $login = spClass('userModel')->userlogin($userinfo['email'], '', 'google');
+            $gplus = $plus->people->get('me');
+            //Array ( [kind] => plus#person [etag] => "RVZ_f1bhF-B19rh4H4M0uhzoFng/f-aojrUFdYRuqP5wIZORu_GScvo" [emails] => Array ( [0] => Array ( [value] => issac.hong@zoom.us [type] => account ) ) [objectType] => person [id] => 101272517671095294156 [displayName] => [name] => Array ( [familyName] => Hong [givenName] => Issac ) [image] => Array ( [url] => https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg?sz=50 ) [isPlusUser] => [language] => en [verified] => [domain] => zoom.us )
+            $userinfo = array(
+                'uname' => $gplus['id'],
+                'email' => $gplus['emails'][0]['value'],
+                'nick'  => $gplus['name']['givenName'].' '.$gplus['name']['familyName'],
+                'oauth' => 'google+',
+                'avatar'=> $gplus['image']['url'],
+            );
+            $login = spClass('userModel')->userlogin($userinfo['email'], '', $userinfo['oauth']);
             if(false === $login) 
                 $login = spClass('userModel')->signon_google($userinfo);
 

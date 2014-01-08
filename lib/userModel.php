@@ -25,14 +25,15 @@ class userModel extends spModel
     public function signon_google($userinfo) {
             //Array ( [id] => 101272517671095294156 [email] => issac.hong@zoom.us [verified_email] => 1 [name] => Issac Hong [given_name] => Issac [family_name] => Hong [locale] => en [hd] => zoom.us )
         $data = array(
-                'uname' => $userinfo['email'],
+                'uname' => $userinfo['uname'],
                 'upass' => '',
                 'email' => $userinfo['email'],
-                'oauth' => 'google',
-                'nick'  => $userinfo['name'],
+                'oauth' => $userinfo['oauth'],
+                'nick'  => $userinfo['nick'],
+                'avatar'=> $userinfo['avatar'],
                 'enabled' => 1
         );
-        if($this->create($data)==false || false===$this->userlogin($data['uname'], '', 'google')) {
+        if($this->create($data)==false || false===$this->userlogin($data['uname'], '', $userinfo['oauth'])) {
             spClass('keeper')->speak(T('Error Google User Reject'), '/index.php?c=user&a=login');
         } else {
             return true;
