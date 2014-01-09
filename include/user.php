@@ -55,6 +55,7 @@ class user extends general
 		        'form'  => true
 		    )
 		);
+        $this->tGoogleLogin = spClass('oauth2')->getGoogleOauthUrl('www.eon.com');
 		$this->display("user/login.html");
 	}
 	
@@ -95,5 +96,4 @@ class user extends general
             }
         }
 	}
-
 }	

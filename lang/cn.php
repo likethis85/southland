@@ -121,6 +121,7 @@ return array(
 'Add user'		=>	'添加用户',
 'Edit user'		=>	'编辑用户',
 'Username'		=>	'用户名',
+'Usertype'      =>  '用户类型',
 'Nick'          =>  '昵称',
 'Full Name'		=>	'全名',
 'ZIP'			=>	'邮编',
