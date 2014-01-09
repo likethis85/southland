@@ -13,10 +13,15 @@ class main extends general
         require_once APP_PATH.'/vendors/goauth/google-api-php-client/src/contrib/Google_PlusService.php';
 
         $client = new Google_Client();
-        $client->setApplicationName('Aeon for google OAuth2.0');
+        /* local testing
         $client->setClientId('844466437028.apps.googleusercontent.com');
         $client->setClientSecret('yTwOn8pO-OzOgnmsMKvce_Cz');
         $client->setRedirectUri('http://www.eon.com/oauth.php?a=google');
+        */
+        $client->setClientId('289588472225.apps.googleusercontent.com');
+        $client->setClientSecret('M1cPjAhYntLUxcbL3xBOwGwQ');
+        $client->setRedirectUri('http://aeon.tk/oauth.php?a=google');
+        
         $plus = new Google_PlusService($client);
         $code = $this->spArgs('code');
         if(!empty($code)) {
