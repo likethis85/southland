@@ -21,12 +21,12 @@ class oauth2 {
         $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email'));
         return $client;
     }
-    public function getGoogleOauthUrl($pro='www.eon.com') {
+    public function getGoogleOauthUrl($pro) {
         $client = $this->getGoogleOauthClient($pro);
         return $client->createAuthUrl();
     }
 
-    public function getGooglePlusUserInfo($pro='www.eon.com', $code) {
+    public function getGooglePlusUserInfo($code) {
         if(empty($code))
             return array();
 

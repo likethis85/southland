@@ -10,7 +10,7 @@ class main extends general
 	function google() {
         $code = $this->spArgs('code');
         if(!empty($code)) {
-            $userinfo = spClass('oauth2')->getGooglePlusUserInfo($code, 'www.eon.com');
+            $userinfo = spClass('oauth2')->getGooglePlusUserInfo($code);
             $login = spClass('userModel')->userlogin($userinfo['uname'], '', $userinfo['oauth']);
             if(false === $login) 
                 $login = spClass('userModel')->signon_google($userinfo);
