@@ -21,8 +21,8 @@ class oauth2 {
         $client->setScopes(array('https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email'));
         return $client;
     }
-    public function getGoogleOauthUrl($pro) {
-        $client = $this->getGoogleOauthClient($pro);
+    public function getGoogleOauthUrl() {
+        $client = $this->getGoogleOauthClient();
         return $client->createAuthUrl();
     }
 
@@ -30,7 +30,7 @@ class oauth2 {
         if(empty($code))
             return array();
 
-        $client = $this->getGoogleOauthClient($pro);
+        $client = $this->getGoogleOauthClient();
         $plus = new Google_PlusService($client);
         $client->authenticate();
         $token = $client->getAccessToken();
