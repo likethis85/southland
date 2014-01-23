@@ -36,8 +36,10 @@ class main extends general
 			                                            $this->spArgs('IssueDesc'),
 			                                            $this->spArgs('acl')
 			                                         );
-            if(false != $iid)
+            if(false != $iid) {
+                spClass('attachmentModel')->createForIssue($uid, $pid, $iid, $files);
                 spClass('userroleModel')->addIssueOwner($pid,$iid,$this->spArgs('oid'));
+            }
 			$this->jumpIssuePage();
 		} else {
 		    $this->tTitle = $this->tProject['title'].'-'.T('CreateNewIssue');
@@ -48,6 +50,40 @@ class main extends general
 			$this->display("issue/add.html");
 		}
 	}
+    /** @brief 编辑Issue */
+    function update() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $iid = $this->spArgs('id');
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            return;
+        }
+        if(!spClass('projectModel')->allow($pid,$uid,'Update')){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            return;
+        }
+		$submit = $this->spArgs("submit");
+        if($submit == 1) {
+            $files = $this->saveFile($uid, $_FILES, 'attachments for issue '.$this->spArgs('IssueBrief'));
+			spClass('issueModel')->updateIssue( $iid,
+                                                $this->spArgs('IssuePri'),
+                                                $this->spArgs('IssueBrief'),
+                                                $this->spArgs('IssueDesc'),
+                                                $this->spArgs('acl')
+                                             );
+            spClass('attachmentModel')->createForIssue($uid, $pid, $iid, $files);
+            $this->navi('/issue.php?a=view&id='.$iid);
+        } else {
+            $issue = spClass('issueModel')->getIssueDetail($iid);
+            if(empty($issue))
+                $this->jumpIssuePage();
+            else{
+                $this->tIssue = $issue;
+                $this->display("issue/update.html");
+            }
+        }
+    }
     /** @brief 查看bug的详细信息 */
     function view() {
         $uid = $this->tUser['id'];
@@ -146,6 +182,30 @@ class main extends general
 
         spClass('issueModel')->post($iid, $pid);
         $this->jumpIssuePage();
+    }
+    /* @brief 忽略 */
+    function ignore() {
+        $uid = $this->tUser['id'];
+        $pid = $this->tCurrProj;
+        $iid = $this->spArgs('iid');
+
+        if(empty($iid)) {
+            spClass('keeper')->speak(T('Error Invalid Parameters'));
+            exit;
+        }
+        if(empty($uid) || !spClass('issueModel')->allow($iid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+        if(!spClass('projectModel')->allow($pid,$uid)){
+            spClass('keeper')->speak(T('Error Operation not permit'));
+            exit;
+        }
+
+        $model = spClass('issueModel');
+        $model->updateStatus($iid, $model->STATUS_IGNORED);
+        $this->jumpIssuePage();
+
     }
     function cmt() {
         $uid = $this->tUser['id'];

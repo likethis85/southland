@@ -83,6 +83,7 @@ return array(
 'BugTracker'    =>  '问题跟踪',
 'CreateNewIssue' => '报告该问题',
 'NewIssues' =>  '创建新问题',
+'UpdateIssue' => '更新',
 'IssueTitle'=>'问题简述',
 'IssuePriority' => '优先级',
 'IssueStatus'   => '状态',
@@ -98,6 +99,8 @@ return array(
 'IssueFixed'    => '已修复',
 'IssueVerified' => '已验证',
 'IssuePost'     => '推迟到...',
+'IssueIgnore'   => '忽略',
+'IssueEdit'     => '编辑',
 
 /* Wiki */
 'Wiki'              => '维基',

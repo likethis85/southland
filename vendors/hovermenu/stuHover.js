@@ -28,7 +28,7 @@ $.fn.HoverMenu = function(options) {
     
     var createMenu = function(items){
         var createMenuHtml = function(items){
-            var menus = '<div id="hm_menu" style="border:1px solid #6E88B7;display:none;background:white;position:absolute;z-index:99;width:108px;top:17px;cursor:pointer;"><ul>';
+            var menus = '<div id="hm_menu" style="border:1px solid #6E88B7;display:none;background:white;position:absolute;z-index:101;width:108px;top:17px;cursor:pointer;"><ul>';
             for(var i=0; i<items.length; i++){
                 if(typeof items[i].callback == 'string')
                     items[i].callback = new Function('elem', items[i].callback);

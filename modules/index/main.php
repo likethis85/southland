@@ -228,9 +228,20 @@ class main extends general
             'callback' => 'location.href=\"/issue.php?a=completed&iid=\"+elem.id.replace(\"i\",\"\")'
         );
 
+        $op_ignore = array(
+            'icon' => '/'.$this->skinpath.'/img/ignored.png',
+            'caption' => T('IssueIgnore'),
+            'callback' => 'location.href=\"/issue.php?a=ignore&iid=\"+elem.id.replace(\"i\",\"\")'
+        );
+ 
         $op_post = array(
             'icon' => '/'.$this->skinpath.'/img/transfer.png',
             'caption' => T('IssuePost')
+        );
+        $op_edit = array(
+            'icon' => '/'.$this->skinpath.'/img/edit.png',
+            'caption' => T('IssueEdit'),
+            'callback' => 'location.href=\"/issue.php?a=update&id=\"+elem.id.replace(\"i\",\"\")'
         );
 
         if( in_array(spClass('userroleModel')->role['role_issue_owner'],$role) ||
@@ -241,8 +252,10 @@ class main extends general
                     $this->array2class($op_open),
                     $this->array2class($op_fixed),
                     $this->array2class($op_verified),
+                    $this->array2class($op_ignore),
                     //$this->array2class($op_completed),
-                    $this->array2class($op_post)));
+                    $this->array2class($op_post),
+                    $this->array2class($op_edit)));
         else
             echo spClass('Services_JSON')->encode(array());
     }

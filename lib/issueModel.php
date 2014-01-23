@@ -12,6 +12,7 @@ class issueModel extends spModel
     var $STATUS_DUPLICATED = 5;
     var $STATUS_KNOWISSUE = 6;
     var $STATUS_DEFER = 7;            
+    var $STATUS_IGNORED = 8;
 
     /** @brief 创建Issue */
     public function createIssue($pid,$uid,$tid,$prio,$brief,$detail,$acl) {
@@ -33,18 +34,43 @@ class issueModel extends spModel
 	        
 	    return $iid;
     }
-    /** @brief update status of the issue 
-     *
-     */
+    public function updateIssue($iid,$prio,$brief,$detail,$acl) {
+        return $iid = $this->update(array('id'=>$iid), 
+                                    array(
+                                        'priority' => $prio,
+                                        'brief'    => $brief,
+                                        'detail'   => $detail,
+                                        'acl'      => $acl
+                                        )
+                                   );
+    }
+    /** @brief  获取Issue详细信息 */
+    public function getIssueDetail($iid) {
+        if(empty($iid)) 
+            return false;
+
+        $issue = $this->find(array('id' => $iid));
+        if(empty($issue))
+            return false;
+        if(!empty($issue['tid']))
+            $task = spClass('taskModel')->find(array('id'=>$issue['tid']));
+        $attachments = spClass('attachmentModel')->getIssueAttachment($iid);
+        $members = spClass('userroleModel')->getUsersByProject($issue['prj']);
+        $owner = spClass('userroleModel')->getIssueOwner($iid);
+        $issue['owner'] = $owner[0]['id'];
+        $issue['task'] = $task;
+        $issue['attachment'] = $attachments;
+        $issue['member'] = $members;
+        return $issue;
+    }
+    /** @brief update status of the issue  */
     public function updateStatus($iid, $status){
         if(empty($iid) || empty($status))
             return false;
             
         return $this->update(array('id' => $iid), array('status' => $status));
     }
-    /** @brief convert string to status
-     *
-     */
+    /** @brief convert string to status */
     public function str2status($str){
         $status = array(
             'pending'   => $this->STATUS_PENDING,

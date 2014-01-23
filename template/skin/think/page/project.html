@@ -2,7 +2,6 @@
     $(document).ready(function(){
         $("#ProjectAddUser").click(function(){
             var user=$.trim($('#inviteusername').val());
-            alert('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user));return;
             $.getJSON('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user),function(data){
                 if(data.error != 0) alert(data.msg);
                 else 
@@ -219,7 +218,7 @@
                     <div class='members' id='u<{$item.id}>'>
                         <table>
                             <tr>
-                                <td valign="top"><img src="<{$item.avatar}>"></td>
+                                <td valign="top"><img src="<{$item.avatar}>" width=32 height=32></td>
                                 <td style="padding-left:6px;" valign="top">
                                     <table>
                                     <tr><td valign="top"><a href="#"><{$item.nick}>&nbsp;&nbsp;(<{$item.uname}>)</a></td></tr>

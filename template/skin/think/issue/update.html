@@ -1,38 +1,79 @@
 <{include file=skin/$skin/header.html}>
 <script type="text/javascript">
-$(document).ready(function(){
-    UE.getEditor('IssueDetail',{
-        //focus时自动清空初始化时的内容
-        autoClearinitialContent:false,
-        //关闭字数统计
-        wordCount:true,
-        //关闭elementPath
-        elementPathEnabled:false
-        //更多其他参数，请参考editor_config.js中的配置项
+    $(document).ready(function(){
+        jQuery.extend(jQuery.validator.messages, {
+            required:"<span style=\"color:red\">*</span>"
+        });
+        UE.getEditor('IssueDesc',{
+            //focus时自动清空初始化时的内容
+            autoClearinitialContent:false,
+            //关闭字数统计
+            wordCount:true,
+            //关闭elementPath
+            elementPathEnabled:false
+            //更多其他参数，请参考editor_config.js中的配置项
+        });
+        $("#form").validate({
+            rules:{
+                subject:{required:true}
+            }
+        });
+        
+        $('div.file .clear').hover(
+            function(){$(this).css({'background-color':'green'});},
+            function(){$(this).css({'background-color':'transparent'});}
+        );
+        $('input.file').hover(
+            function() { $(this).prev().css({'background-color':'orange'})},
+            function() { $(this).prev().css({'background-color':'transparent'})}
+        ).live('change', function(){
+            $(this.parentNode.parentNode.parentNode).append('<td>'+this.value+'</td>');
+            $('div.file table').append($('<tr><td><div style="position:relative;width:80px;height:24px;"><input type="button" class="browse" value=\"<{T w="Attachment"}>\" /><input type="file" class="file" name="attachments[]" /></div></td><td><input type="button" class="clear" value=\"<{T w="Clear"}>\" /></td></tr>'));
+            $('input.file').hover(
+                function() { $(this).prev().css({'background-color':'orange'})},
+                function() { $(this).prev().css({'background-color':'transparent'})}
+            );
+            $('div.file .clear').hover(
+                function(){$(this).css({'background-color':'green'});},
+                function(){$(this).css({'background-color':'transparent'});}
+            ).click(function() {
+                if($('div.file table tr').length == 1)
+                    return;
+                    
+                $(this.parentNode.parentNode).remove();
+            });
+        });
     });
-    jQuery.extend(jQuery.validator.messages, {
-        required:"<span style=\"color:red\">*</span>"
-    });
-	$("#form").validate({
-		rules:{
-			subject: {required:true}
-		}
-	});
-});
 </script>
-<div style="margin-left:12px;width:600px;">
-    <form id="form" method="post">
+<div style="clear:both;margin-left:32px;margin-top:32px;width:600px;">
+    <form id="form" method="post" enctype="multipart/form-data">
         <table>
             <tr>
-                <td><label style="margin-right:8px" for="subject"><{T w='IssueTitle'}></label></td>
-                <td><input name="subject" id="subject" type="text" value="<{$tIssue.brief}>" style="width:490px"/></td>
+                <td><label style="margin-right:8px" for="IssueBrief"><{T w='IssueTitle'}></label></td>
+                <td><input name="IssueBrief" type="text" value="<{$tIssue.brief}>" style="width:490px"/></td>
             </tr>                
+            <tr>
+                <td><label style="margin-right:8px"><{T w='IssueRef'}></label></td>
+                <td>
+                    <div><{ $tIssue.task.subject }></div>
+                </td>
+            </tr>
+            <tr>
+                <td><label style="margin-right:8px"><{T w='IssueOwner'}></label></td>
+                <td>
+                    <select style="width:490px;" name="oid">
+                        <{foreach item=item from=$tIssue.member}>
+                        <option value="<{$item.id}>" <{if $item.id==$tIssue.owner}>selected<{/if}>><{$item.nick}></option>
+                        <{/foreach}>
+                    </select>
+                </td>
+            </tr>
             <tr>
                 <td style="width:88px;"><label style="margin-right:8px" for="IssuePri"><{T w='IssuePriority'}></label></td>
                 <td>
-                    <input type="radio" name="IssuePri" value="1"<{if $tIssue.priority eq 1}> checked <{/if}>><img src="<{$skinpath}>/img/1.gif" />
-                    <input type="radio" name="IssuePri" value="2"<{if $tIssue.priority eq 1}> checked <{/if}>><img src="<{$skinpath}>/img/2.gif" />
-                    <input type="radio" name="IssuePri" value="3"<{if $tIssue.priority eq 1}> checked <{/if}>><img src="<{$skinpath}>/img/3.gif" />
+                    <input type="radio" name="IssuePri" value="1" <{if $tIssue.priority==1}>checked<{/if}>><img src="<{$skinpath}>/img/1.gif" />
+                    <input type="radio" name="IssuePri" value="2" <{if $tIssue.priority==2}>checked<{/if}>><img src="<{$skinpath}>/img/2.gif" />
+                    <input type="radio" name="IssuePri" value="3" <{if $tIssue.priority==3}>checked<{/if}>><img src="<{$skinpath}>/img/3.gif" />
                 </td>
             </tr>
             <tr>
@@ -45,12 +86,31 @@ $(document).ready(function(){
                     </select>
                 </td>
             </tr>
+            <tr>
+                <td style="width:88px;"><label style="margin-right:8px" for="TaskPri"><{T w='Attachment'}></label></td>
+                <td>
+                    <div class="file">
+                        <table>
+                            <{foreach item=item from=$tIssue.attachment}>
+                            <tr><td colspan=2><{$item.oname}></td></tr>
+                            <{/foreach}>
+                            <tr>
+                                <td><div style="position:relative;width:80px;height:24px;">
+                                    <input type='button' class='browse' value='<{T w="Attachment"}>' />
+                                    <input type="file" class="file" name="attachments[]" />
+                                </div></td>
+                                <td><input type="button" class="clear" value='<{T w="Clear"}>'/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
             <tr><td colspan="2"><label style="margin-right:8px" for="IssueDesc"><{T w='IssueDesc'}></label></td></tr>
             <tr>
                 <td colspan="2">
-                    <textarea id="IssueDetail" name="IssueDetail"><{$tIssue.detail}></textarea>
+                    <textarea id="IssueDesc" name="IssueDesc"><{$tIssue.detail}></textarea>
                     <input class="btn-rounded" type="submit" value=<{T w="UpdateIssue"}> />
-                    <input name="submit" type="hidden" id="submit" value="1" />
+                    <input name="submit" type="hidden" value="1" />
                 </td>
             </tr>
         </table>

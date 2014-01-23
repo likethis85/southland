@@ -134,6 +134,7 @@ class general extends spController
     public function display($tplname, $output = TRUE)
     {
         parent::display('skin/'.$this->skin."/$tplname", $output);
+        exit;
     }
    
     protected function navi($url) {

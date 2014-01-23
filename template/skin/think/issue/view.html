@@ -41,17 +41,19 @@
                 });
             }
         });
+
+        $('.attach_file').attr('src','<{$skinpath}>/img/ft/docx.png');
     });
 </script>
 <div class="page_content">
     <table width=100%>
         <tr>
             <td colspan=2>
-                <div style="border-bottom:2px solid #E0E0E0;min-height:64px;">
+                <div style="border-bottom:2px solid #E0E0E0;min-height:68px;">
                     <h1 class="title"><{$tIssue.brief}></h1>
                     <div style="float:left;">
                         <{foreach item=attach from=$tAttachments}>
-                        <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img src="<{$skinpath}>/img/attachment.png"></a>
+                        <a href="<{$attach.path}>" alt="<{$attach.oname}>" title="<{$attach.oname}>"><img class="attach_file" src="<{$attach.oname}>" width=32 height=32></a>
                         <{/foreach}>
                     </div>
                 </div>
