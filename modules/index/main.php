@@ -229,7 +229,7 @@ class main extends general
         );
 
         $op_ignore = array(
-            'icon' => '/'.$this->skinpath.'/img/ignored.png',
+            'icon' => '/'.$this->skinpath.'/img/ignore.png',
             'caption' => T('IssueIgnore'),
             'callback' => 'location.href=\"/issue.php?a=ignore&iid=\"+elem.id.replace(\"i\",\"\")'
         );
