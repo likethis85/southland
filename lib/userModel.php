@@ -21,9 +21,8 @@ class userModel extends spModel
 		)
 	);
 
-    /** @brief 建立OAuth的Google用户并以google用户登录 */
-    public function signon_google($userinfo) {
-            //Array ( [id] => 101272517671095294156 [email] => issac.hong@zoom.us [verified_email] => 1 [name] => Issac Hong [given_name] => Issac [family_name] => Hong [locale] => en [hd] => zoom.us )
+    /** @brief 建立OAuth用户并登录 */
+    public function signon_oauth($userinfo) {
         $data = array(
                 'uname' => $userinfo['uname'],
                 'upass' => '',

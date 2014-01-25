@@ -69,6 +69,28 @@ class oauth2 {
             'avatar'=> $gplus['image']['url'],
         );
         return $userinfo;
+    }
 
+    public function qq_login() {
+        require_once APP_PATH.'/vendors/goauth/Connect2.1/API/qqConnectAPI.php';
+        $qc = new QC();
+        $qc->qq_login();
+    }
+
+    public function getQQUserInfo($code){
+        require_once APP_PATH.'/vendors/goauth/Connect2.1/API/qqConnectAPI.php';
+        $qc = new QC();
+        $acs = $qc->qq_callback();
+        $oid = $qc->get_openid();
+        $qc = new QC($acs,$oid);
+        $qq = $qc->get_user_info();
+        $userinfo = array(
+            'uname' => $oid,
+            'email' => 'N/A',
+            'nick'  => $qq['nickname'],
+            'oauth' => 'QQ',
+            'avatar'=> $qq['figureurl_qq_1'],
+        );
+        return $userinfo;
     }
 }

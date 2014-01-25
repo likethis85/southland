@@ -29,6 +29,8 @@ function spRun(){
 	}
 	// 对路由进行后续相关操作
 	spLaunch("router_postfilter");
+
+    exit;
 }
 
 /**

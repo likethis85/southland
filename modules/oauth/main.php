@@ -13,13 +13,27 @@ class main extends general
             $userinfo = spClass('oauth2')->getGooglePlusUserInfo($code);
             $login = spClass('userModel')->userlogin($userinfo['uname'], '', $userinfo['oauth']);
             if(false === $login) 
-                $login = spClass('userModel')->signon_google($userinfo);
+                $login = spClass('userModel')->signon_oauth($userinfo);
 
             if($login)
                 $this->jumpFirstPage();
 
         } else {
            spClass('keeper')->speak(T('Error Google User Reject'), '/index.php?c=user&a=login');
+        }
+    }
+    /** @brief QQ login via OAuth */
+    function qq() {
+        $code = $this->spArgs('code');
+        if(empty($code)) {
+            spClass('oauth2')->qq_login();
+        } else {
+            $userinfo = spClass('oauth2')->getQQUserInfo();
+            $login = spClass('userModel')->userlogin($userinfo['uname'], '', $userinfo['oauth']);
+            if(false === $login) 
+                $login = spClass('userModel')->signon_oauth($userinfo);
+            if($login)
+                $this->jumpFirstPage();
         }
     }
 
