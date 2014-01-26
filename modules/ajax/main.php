@@ -4,6 +4,7 @@ if (!defined('SOUTHLAND')) { exit(1);}
 class AjaxErr {
     public $ERROR_FAIL = -1;
     public $ERROR_OK = 0;
+    public $ERROR_MULTI_USER = 1; // 添加项目成员的时候找到多个匹配用户
 }
 class spAjaxMsg {
     var $error = null;
@@ -126,11 +127,16 @@ class main extends general
         echo spClass('Services_JSON')->encode($this->ajaxResult);
         exit;
     }
-    /** @brief 为项目添加用户
-     *
-     */
+    /** @brief 为项目添加用户 */
     function AddProjectUser() {
-        $user = spClass('userModel')->getUserByUname($this->spArgs('name'));
+        $uname = $this->spArgs('account');
+        if(empty($uname)) {
+            $uname=  $this->spArgs('name');
+            $user = spClass('userModel')->getUsersByInvite($uname);
+        } else {
+            $user = spClass('userModel')->getUserInfo($uname);
+            if(!empty($user)) $user = array($user);
+        }
         if(false === $user) {
             $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
             $this->ajaxResult->msg = T('Error no this user');
@@ -147,16 +153,35 @@ class main extends general
             exit;
         }
 
-        $uid = $user['id'];
-        if(empty($pid) || empty($uid)){
-            $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
-            $this->ajaxResult->msg = T('Error Operation not permit');
+        if(count($user)==1) {
+            $uid = $user[0]['id'];
+            if(empty($pid) || empty($uid)){
+                $this->ajaxResult->error = $this->constAjaxErr->ERROR_FAIL;
+                $this->ajaxResult->msg = T('Error Operation not permit');
+                echo spClass('Services_JSON')->encode($this->ajaxResult);
+                exit;
+            }
+
+            spClass('userroleModel')->addProjectMember($pid,$uid);
+            echo spClass('Services_JSON')->encode($this->ajaxResult);
+            exit;
+        } else {
+            array_walk( $user, 
+                        function(&$value, $key){
+                            $value['utype'] = $value['oauth'];
+                            unset($value['uname']);
+                            unset($value['upass']);
+                            unset($value['oauth']);
+                            unset($value['enabled']);
+                            unset($value['addtime']);
+                            unset($value['qq']);
+                            unset($value['mobile']);
+                        });
+            $this->ajaxResult->error = $this->constAjaxErr->ERROR_MULTI_USER;
+            $this->ajaxResult->data = $user;
             echo spClass('Services_JSON')->encode($this->ajaxResult);
             exit;
         }
-        spClass('userroleModel')->addProjectMember($pid,$uid);
-        echo spClass('Services_JSON')->encode($this->ajaxResult);
-        exit;
     }
 
     /** @brief update issue status

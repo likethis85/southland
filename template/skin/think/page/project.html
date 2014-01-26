@@ -2,10 +2,37 @@
     $(document).ready(function(){
         $("#ProjectAddUser").click(function(){
             var user=$.trim($('#inviteusername').val());
+//            location.href = '/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user);
             $.getJSON('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&name='+encodeURIComponent(user),function(data){
-                if(data.error != 0) alert(data.msg);
-                else 
+                if(data.error==0)
                     location.reload();
+                else if(data.error==1){
+                    var tbl = '<table width=100%>';
+                    $(data.data).each(function(i,u){
+                        tbl += '<tr id="'+u.id+'"><td><img src="'+u.avatar+'" width=32 height=32 ></td><td>'+u.nick+'</td><td>'+u.email+'</td><td>'+u.utype+'</td></tr>';
+                    });
+                    tbl += '</table>';
+                    var bb = new BlackBox();
+                    bb.popup('<div style="width:368px;cursor:default;"><div id="close" class="close">x</div><div>'+ tbl +'</div></div>',
+                        function(content) {
+                            content.find('table tr').hover(
+                                function(){$(this).css('background-color','green');},
+                                function(){$(this).css('background-color','transparent');}
+                            ).click(function(){
+                                $.getJSON('/ajax.php?a=AddProjectUser&pid=<{$tCurrProj}>&account='+this.id,function(data){
+                                    if(data.error != 0) 
+                                        alert(data.msg);
+                                    else
+                                        location.reload();
+                                });
+                            });
+                            content.find('#close').click(function(){
+                                bb.boxClose();
+                        });
+                    }); 
+                }
+                else
+                    alert(data.msg);
             });
         });
         $("#Del").click(function(){

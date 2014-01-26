@@ -65,19 +65,22 @@ class userModel extends spModel
 			return false;
 		}
 	}
-
-    /** @brief 通过用户名查询用户
-     *
-     */
+    /** @brief 获取uname/email匹配的用户记录 */
+    public function getUsersByInvite($iname) {
+        return $this->findAll('uname="'.$iname.'" or email="'.$iname.'"');
+    }
+    /** @brief 通过用户名查询用户 */
     public function getUserByUname($uname){
         if(empty($uname))
             return false;
 
-        return $this->find(array('uname' => $uname));
+        $user = $this->find(array('uname' => $uname));
+        if(empty($user))    
+            return $user;
+        else
+            return array($user);
     }
-    /** @brief 通过登记的E-Mail查询用户
-     *
-     */
+    /** @brief 通过登记的E-Mail查询用户 */
     public function getUserByEmail($email) {
         if(empty($email))
             return false;
