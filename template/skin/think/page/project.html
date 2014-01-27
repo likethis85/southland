@@ -248,7 +248,7 @@
                                 <td valign="top"><img src="<{$item.avatar}>" width=32 height=32></td>
                                 <td style="padding-left:6px;" valign="top">
                                     <table>
-                                    <tr><td valign="top"><a href="#"><{$item.nick}>&nbsp;&nbsp;(<{$item.uname}>)</a></td></tr>
+                                    <tr><td valign="top"><a href="#"><{$item.nick}>&nbsp;&nbsp;(<{if empty($item.oauth)}><{$item.uname}><{else}><{$item.oauth}><{/if}>)</a></td></tr>
                                     <tr><td valign="top">
                                         <{foreach item=itemR from=$item.role}>
                                         <img src="<{$skinpath}>/img/role/<{$itemR}>.png" width=16 height=16>
