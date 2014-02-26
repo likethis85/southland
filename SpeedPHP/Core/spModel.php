@@ -119,7 +119,7 @@ class spModel {
 	 *
 	 * @param row 数组形式，数组的键是数据表中的字段名，键对应的值是需要新增的数据。
 	 */
-	public function create($row)
+	public function create($row, $ignore=false)
 	{
 		if(!is_array($row))return FALSE;
 		$row = $this->__prepera_format($row);
@@ -131,7 +131,10 @@ class spModel {
 		$col = join(',', $cols);
 		$val = join(',', $vals);
 
-		$sql = "INSERT INTO {$this->tbl_name} ({$col}) VALUES ({$val})";
+        if($ignore)
+            $sql = "INSERT IGNORE INTO {$this->tbl_name} ({$col}) VALUES ({$val})";
+        else
+            $sql = "INSERT INTO {$this->tbl_name} ({$col}) VALUES ({$val})";
 		if( FALSE != $this->_db->exec($sql) ){ // 获取当前新增的ID
 			if( $newinserid = $this->_db->newinsertid() ){
 				return $newinserid;

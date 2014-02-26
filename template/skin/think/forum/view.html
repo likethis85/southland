@@ -1,5 +1,19 @@
 <{include file=skin/$skin/header.html}>
 <script type="text/javascript">
+    var memberColor = {};
+    var memberCount =  0;
+$.extend({
+    getColor:function(usr){
+        var colors = new Array("#FFB5B5","#FFAAD5","#FF77FF","#E6CAFF","#84C1FF","#BBFFFF", "#96FED1", "#A6FFA6");
+        if(usr in memberColor)
+          return memberColor[usr];
+        else {
+            memberCount++;
+            memberColor[usr] = colors[memberCount % colors.length];
+            return  memberColor[usr];
+        }
+    }
+});
 $(document).ready(function(){
 	UE.getEditor('reply',{
         <{if $tUser.id==0}>
@@ -37,15 +51,27 @@ $(document).ready(function(){
             });
         }
     });
+
+    $('.tmbr').each(function(){
+        $(this).css('background-color',$.getColor(this.id));
+    })
+    $('.cmt').each(function(){
+        $(this).css('background-color',$.getColor(this.id));
+    });
 });
 </script>
 <div class="page_content">
     <table width=100%>
         <tr>
             <td colspan=2>
-                <div style="border-bottom:2px solid #E0E0E0;min-height:64px;">
+                <div style="border-bottom:2px solid #E0E0E0;min-height:88px;">
                     <h1 class="title"><{$tRow.subject}></h1>
-                </div>
+                    <{foreach item=member from=$tMembers}>
+                    <div class="tmbr" id="t<{$member.id}>" style="float:left;margin-right:3px;padding:3px;">
+                    <img src="<{$member.avatar}>" alt="<{$member.nick}>" title="<{$member.nick}>" width=32 height=32 />
+                    </div>
+                    <{/foreach}>
+            </div>
             </td>
         </tr>
 
@@ -71,7 +97,11 @@ $(document).ready(function(){
                                         </tr>
                                         <tr>
                                             <td style="width:32px;" valign='top'><img src="<{$item.user.avatar}>"></td>
-                                            <td style="padding-left:8px;"><{$item.content}></td>
+                                            <td style="padding-left:8px;">
+                                                <table><tr><td>
+                                                <div class="cmt" id="t<{$item.user.id}>"><{$item.content}></div>
+                                                </td></tr></table>
+                                            </td>
                                         </tr>
                                     </table>
                                 </div>

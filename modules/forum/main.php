@@ -51,6 +51,7 @@ class main extends general
 	}
     function update()
 	{
+	    $pid = $this->tCurrProj;
         $uid = $this->tUser['id'];
         $fid = $this->spArgs('id');
         if(!spClass('forumModel')->allow($fid, $uid, 'Update')){
@@ -70,6 +71,9 @@ class main extends general
                 'acl'    => $this->spArgs('acl')
 			);
 			spClass('forumModel')->update($condition, $data);
+            $members = $this->spArgs('members');
+            foreach($members as $key => $member)
+                spClass('userroleModel')->addTopicMember($pid,$fid,$key);
 			$this->jumpTopicPage();
 		}
 		else
@@ -117,6 +121,7 @@ class main extends general
 
 		$this->tRow = spClass('forumModel')->find(array('id'=>$fid));
 		$this->tTitle = $this->tProject['title'].'-'.$this->tRow['subject'];
+        $this->tMembers = spClass('userroleModel')->getUsersByTopic($fid);
         if($this->tRow['commentable'])
             $this->tComments = spClass('commentModel')->getForumComments($fid);
         else

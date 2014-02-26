@@ -332,7 +332,8 @@ class userroleModel extends spModel
                                 'sid' => $tid,
                                 'scope' => $this->scope_topic,
                                 'role' => $this->role['role_topic_member'],
-                                'title'=> 'role_topic_member')
+                                'title'=> 'role_topic_member'),
+                             true
                             );
     }
     /** @brief 获取User相关的Topic */
