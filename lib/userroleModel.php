@@ -290,6 +290,13 @@ class userroleModel extends spModel
         }
         return $temp;
     }
+    /** @brief 推迟Issue,更新对应的关系 */
+    public function postIssue($iid, $pid) {
+        $prefix = $GLOBALS['G_SP']['db']['prefix'];
+        $scope = $this->scope_issue;
+        $sql = "update {$prefix}userrole set prj=$pid where scope=$scope and sid=$iid";
+        $this->findSql($sql);
+    }
     /** @brief 获取Issue的创建人信息 */
     public function getIssueCreator($iid) {
         $prefix = $GLOBALS['G_SP']['db']['prefix'];

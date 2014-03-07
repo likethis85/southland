@@ -129,6 +129,7 @@ class issueModel extends spModel
             return false;
 
         spClass('commentModel')->postIssue($iid, $pid);
+        spClass('userroleModel')->postIssue($iid, $pid);
         return true;
     }
 }
