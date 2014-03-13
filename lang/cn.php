@@ -11,6 +11,9 @@ return array(
 'Error Invalid Certification Code'  => '验证码错误',
 'Error Google User Reject' => 'google用户拒绝请求',
 
+/* 管理页面相关 */
+'AdminPage' => '管理页面',
+
 /* 项目相关 */
 'MyProject' => '我的项目',
 'CreateNewProject' => '创建新项目',

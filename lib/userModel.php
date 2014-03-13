@@ -94,6 +94,10 @@ class userModel extends spModel
     public function getUserInfo($uid) {
         return $this->find(array('id' => $uid));
     }
+    /** @brief 获取site所有有效用户 */
+    public function getAllUsers() {
+        return $this->findAll(array('enabled' => '1'));
+    }
 	/**
 	 * 无权限提示及跳转
 	 */

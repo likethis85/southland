@@ -1,0 +1,40 @@
+<{include file=skin/$skin/header.html}>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $().timelinr({
+            autoPlay: 'false',
+            autoPlayDirection: 'forward',
+            startAt: 4,
+        })
+    });
+</script>
+<style type="text/css">
+    #timeline {width: 760px;height: 300px;overflow: hidden;margin: 100px auto;position: relative;background: url('/vendors/timelinr/dot.gif') left 45px repeat-x;}
+    #dates {width: 760px;height: 60px;overflow: hidden;}
+    #dates li {list-style: none;float: left;width: 100px;height: 50px;font-size: 12px;text-align: center;background: url('/vendors/timelinr/biggerdot.png') center bottom no-repeat;}
+    #dates a {line-height: 18px;padding-bottom: 10px;}
+    #dates .selected {font-size: 18px;}
+    #issues {width: 760px;height: 300px;overflow: hidden;}  
+    #issues li {width: 760px;height: 300px;list-style: none;float: left;}
+    #issues li h1,p {color: #ffcc00;font-size: 32px;text-shadow: #000 1px 1px 2px;}
+</style>
+<div class="page_content">
+   <div id="timeline">
+       <ul id="dates">
+           <{ foreach item=user from=$tSiteUsers}>
+           <li><a href="#<{$user.nick}>"><{$user.nick}></a></li>
+           <{/foreach}>
+       </ul>
+       <ul id="issues">
+           <{ foreach item=user from=$tSiteUsers}>
+           <li id="<{$user.nick}>">
+               <p><{$user.uname}></p>
+               <p><{$user.addtime}></p>
+               <p><{$user.email}></p>
+               <p><{$user.oauth}></p>
+           </li>
+           <{ /foreach }>
+       </ul>
+    </div>
+</div>
+<{include file=skin/$skin/footer.html}>
